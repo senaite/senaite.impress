@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      i18n:domain="senaite" >
+  <head>
+    <title>Print Preview</title>
+  </head>
+  <body>
+    <div id="publisher">
+      <tal:objects repeat="obj view/objs">
+        <h1 tal:content="obj/title"></h1>
+
+        <table>
+          <tr>
+            <td colspan="2" tal:content="obj/Client/Name"></td>
+          </tr>
+          <tr>
+            <td colspan="2" tal:content="obj/Client/PostalAddress/adress"></td>
+          </tr>
+          <tr>
+            <td tal:content="obj/Client/PostalAddress/zip"></td>
+            <td tal:content="obj/Client/PostalAddress/city"></td>
+          </tr>
+        </table>
+
+        <h2>Results</h2>
+        <table>
+          <tr tal:repeat="an obj/Analyses">
+            <td tal:content="an/title"></td>
+            <td tal:content="an/Result"></td>
+            <td tal:content="an/Unit"></td>
+          </tr>
+        </table>
+      </tal:objects>
+    </div>
+  </body>
+</html>
