@@ -33,7 +33,7 @@ class PublicationObject(object):
     implements(IPublicationObject)
 
     def __init__(self, uid):
-        logger.info("PublicationObject({})".format(uid))
+        logger.debug("PublicationObject({})".format(uid))
 
         self._uid = uid
         self._brain = None
@@ -130,7 +130,7 @@ class PublicationObject(object):
         """Content instance of the wrapped object
         """
         if self._instance is None:
-            logger.info("PublicationObject::instance: *Wakup object*")
+            logger.debug("PublicationObject::instance: *Wakup object*")
             self._instance = self.brain.getObject()
         return self._instance
 
@@ -139,7 +139,7 @@ class PublicationObject(object):
         """Catalog brain of the wrapped object
         """
         if self._brain is None:
-            logger.info("PublicationObject::brain: *Fetch catalog brain*")
+            logger.debug("PublicationObject::brain: *Fetch catalog brain*")
             self._brain = self.get_brain_by_uid(self.uid)
             # refetch the brain with the correct catalog
             results = self.catalog({"UID": self.uid})
@@ -152,7 +152,7 @@ class PublicationObject(object):
         """Primary registered catalog for the wrapped portal type
         """
         if self._catalog is None:
-            logger.info("PublicationObject::catalog: *Fetch catalog*")
+            logger.debug("PublicationObject::catalog: *Fetch catalog*")
             archetype_tool = api.get_tool("archetype_tool")
             portal_type = self.brain.portal_type
             catalogs = archetype_tool.getCatalogsByType(portal_type)
