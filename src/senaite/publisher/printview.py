@@ -6,6 +6,9 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 
+import json
+from DateTime import DateTime
+
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ZCatalog.Lazy import LazyMap
@@ -49,6 +52,9 @@ class PublicationObject(object):
 
     def __str__(self):
         return self.uid
+
+    def __hash__(self):
+        return hash(self.uid)
 
     def __getitem__(self, key):
         value = self.get(key, self.__empty_marker)
@@ -111,18 +117,33 @@ class PublicationObject(object):
                         .format(accessor_name, self.catalog.__name__))
             value = accessor()
 
-        # wrap referenced objects
-        if self.is_uid(value):
-            value = self.get_publish_adapter_for_uid(value)
-        elif isinstance(value, (LazyMap, list, tuple)):
-            if all(map(api.is_object, value)):
-                value = map(lambda obj: self.get_publish_adapter_for_uid(
-                                api.get_uid(obj)), value)
-        elif api.is_object(value):
-            value = self.get_publish_adapter_for_uid(api.get_uid(value))
+        # Process value for publication
+        value = self.process_value(value)
 
-        # Internal store
+        # Store value in the internal data dict
         self.data[name] = value
+
+        return value
+
+    def process_value(self, value):
+        """Process publication value
+        """
+        # UID -> PublicationObject
+        if self.is_uid(value):
+            return self.get_publish_adapter_for_uid(value)
+        # Content -> PublicationObject
+        elif api.is_object(value):
+            return self.get_publish_adapter_for_uid(api.get_uid(value))
+        # Process list values
+        elif isinstance(value, (LazyMap, list, tuple)):
+            value = map(self.process_value, value)
+        # Process dict values
+        elif isinstance(value, (dict)):
+            return {k: self.process_value(v) for k, v in value.iteritems()}
+        # Process function
+        elif callable(value):
+            return self.process_value(value())
+        # Finally return unprocessed value
         return value
 
     @property
@@ -172,6 +193,8 @@ class PublicationObject(object):
     def get_brain_by_uid(self, uid):
         """Lookup brain in the UID catalog
         """
+        if uid == "0":
+            return api.get_portal()
         uid_catalog = api.get_tool("uid_catalog")
         results = uid_catalog({"UID": uid})
         if len(results) != 1:
@@ -198,6 +221,44 @@ class PublicationObject(object):
         if not uid.isalnum():
             return False
         return True
+
+    def stringify(self, value):
+        """Convert value to string
+        """
+        # PublicationObject -> UID
+        if IPublicationObject.providedBy(value):
+            return str(value)
+        # DateTime -> ISO8601 format
+        elif isinstance(value, (DateTime)):
+            return value.ISO8601()
+        # Dict -> convert_value_to_string
+        elif isinstance(value, dict):
+            return {k: self.stringify(v) for k, v in value.iteritems()}
+        # List -> convert_value_to_string
+        if isinstance(value, (list, tuple, LazyMap)):
+            return map(self.stringify, value)
+        return value
+
+    def to_dict(self, converter=None):
+        """Returns a copy dict of the current object
+
+        If a converter function is given, pass each value to it.
+        Per default the values are converted by `self.stringify`.
+        """
+        if converter is None:
+            converter = self.stringify
+        out = dict()
+        for k, v in self.iteritems():
+            out[k] = converter(v)
+        return out
+
+    def to_json(self):
+        """Returns a JSON representation of the current object
+        """
+        out = {}
+        for k, v in self.iteritems():
+            out[k] = self.stringify(v)
+        return out
 
 
 class PrintView(BrowserView):
