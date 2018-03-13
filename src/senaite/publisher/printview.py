@@ -60,6 +60,9 @@ class PublicationObject(object):
         value = self.get(name, self.__empty_marker)
         if value is not self.__empty_marker:
             return value
+        # tab completion in pdbpp
+        if name == "__members__":
+            return self.keys()
         raise AttributeError(name)
 
     def __len__(self):
