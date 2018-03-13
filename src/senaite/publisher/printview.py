@@ -325,9 +325,18 @@ class ajaxPrintView(PrintView):
     def ajax_get_uid(self, uid, *args, **kwargs):
         """Return a list of analysisrequests
         """
-        logger.info("ajaxPrintView::ajax_get_uid:UID={}".format(uid))
+        logger.info("ajaxPrintView::ajax_get_uid:UID={} args={}"
+                    .format(uid, args))
         po = PublicationObject(uid)
         if not po.is_valid():
             return self.add_json_error("No object found for UID '{}'"
                                        .format(uid), status=404)
+
+        out = {}
+        for arg in args:
+            if arg in po.keys():
+                out[arg] = po.stringify(po.get(arg))
+        if out:
+            return out
+
         return po.to_dict()
