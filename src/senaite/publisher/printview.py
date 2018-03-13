@@ -216,8 +216,6 @@ class PublicationObject(object):
             self.brain
         except ValueError:
             return False
-        if not self.is_uid(self.uid):
-            return False
         return True
 
     def is_uid(self, uid):
