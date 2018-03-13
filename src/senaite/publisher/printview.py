@@ -237,7 +237,7 @@ class PublicationObject(object):
         # List -> convert_value_to_string
         if isinstance(value, (list, tuple, LazyMap)):
             return map(self.stringify, value)
-        return value
+        return str(value)
 
     def to_dict(self, converter=None):
         """Returns a copy dict of the current object
@@ -255,10 +255,7 @@ class PublicationObject(object):
     def to_json(self):
         """Returns a JSON representation of the current object
         """
-        out = {}
-        for k, v in self.iteritems():
-            out[k] = self.stringify(v)
-        return out
+        return json.dumps(self.to_dict())
 
 
 class PrintView(BrowserView):
