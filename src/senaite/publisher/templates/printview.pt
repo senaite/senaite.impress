@@ -28,8 +28,16 @@
             <td tal:content="an/title"></td>
             <td tal:content="an/Result"></td>
             <td tal:content="an/Unit"></td>
+            <td tal:content="an/Precision"></td>
+            <td tal:content="an/Uncertainty"></td>
+            <td tal:content="an/Price"></td>
+            <td tal:content="an/Method/MethodID|nothing"></td>
+            <td tal:content="an/Category/title|nothing"></td>
           </tr>
         </table>
+
+        <h2>Remarks</h2>
+        <div tal:content="obj/Remarks"></div>
       </tal:objects>
     </div>
   </body>
