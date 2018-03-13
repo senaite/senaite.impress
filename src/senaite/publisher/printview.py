@@ -47,6 +47,9 @@ class PublicationObject(object):
         return "<{}:UID({})>".format(
             self.__class__.__name__, self.uid)
 
+    def __str__(self):
+        return self.uid
+
     def __getitem__(self, key):
         value = self.get(key, self.__empty_marker)
         if value is not self.__empty_marker:
