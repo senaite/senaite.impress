@@ -7,20 +7,16 @@
 
 
 import json
-from DateTime import DateTime
 
+from DateTime import DateTime
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ZCatalog.Lazy import LazyMap
-
-from zope.interface import implements
-from zope.component import queryAdapter
-
 from senaite import api
-
-from senaite.publisher.interfaces import IPrintView
-from senaite.publisher.interfaces import IPublicationObject
 from senaite.publisher import logger
+from senaite.publisher.interfaces import IPrintView, IPublicationObject
+from zope.component import queryAdapter
+from zope.interface import implements
 
 
 class PublicationObject(object):
