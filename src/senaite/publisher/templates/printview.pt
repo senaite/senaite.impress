@@ -14,11 +14,11 @@
             <td colspan="2" tal:content="obj/Client/Name"></td>
           </tr>
           <tr>
-            <td colspan="2" tal:content="obj/Client/PostalAddress/adress"></td>
+            <td colspan="2" tal:content="obj/Client/PostalAddress/adress|nothing"></td>
           </tr>
           <tr>
-            <td tal:content="obj/Client/PostalAddress/zip"></td>
-            <td tal:content="obj/Client/PostalAddress/city"></td>
+            <td tal:content="obj/Client/PostalAddress/zip|nothing"></td>
+            <td tal:content="obj/Client/PostalAddress/city|nothing"></td>
           </tr>
         </table>
 
