@@ -15,8 +15,10 @@ from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.interfaces import IPrintView, IPublicationObject
+from senaite.publisher.decorators import returns_json
 from zope.component import queryAdapter
 from zope.interface import implements
+from zope.publisher.interfaces import IPublishTraverse
 
 
 class PublicationObject(object):
@@ -207,6 +209,17 @@ class PublicationObject(object):
             return PublicationObject(uid)
         return adapter
 
+    def is_valid(self):
+        """Self-check
+        """
+        try:
+            self.brain
+        except ValueError:
+            return False
+        if not self.is_uid(self.uid):
+            return False
+        return True
+
     def is_uid(self, uid):
         """Check valid UID format
         """
@@ -255,6 +268,8 @@ class PublicationObject(object):
 
 
 class PrintView(BrowserView):
+    """Print View
+    """
     implements(IPrintView)
     template = ViewPageTemplateFile("templates/printview.pt")
 
@@ -268,3 +283,51 @@ class PrintView(BrowserView):
         self.uids = self.request.get("items", "").split(",")
         self.objs = map(lambda uid: PublicationObject(uid), self.uids)
         return self.template()
+
+
+class ajaxPrintView(PrintView):
+    """Print View with Ajax exposed methods
+    """
+    implements(IPublishTraverse)
+
+    def __init__(self, context, request):
+        super(ajaxPrintView, self).__init__(context, request)
+        self.context = context
+        self.request = request
+        self.traverse_subpath = []
+
+    def publishTraverse(self, request, name):
+        """Called before __call__ for each path name
+        """
+        self.traverse_subpath.append(name)
+        return self
+
+    @returns_json
+    def __call__(self):
+        """Dispatch the path to a method and return JSON.
+        """
+        if len(self.traverse_subpath) < 1:
+            return {}
+        func_name = "ajax_{}".format(self.traverse_subpath[0])
+        func = getattr(self, func_name, None)
+        if func is None:
+            return self.add_json_error("Invalid function", status=400)
+        return func(*self.traverse_subpath[1:])
+
+    def add_json_error(self, message, status=500, **kw):
+        """Set a JSON error object and a status to the response
+        """
+        self.request.response.setStatus(status)
+        result = {"success": False, "errors": message}
+        result.update(kw)
+        return result
+
+    def ajax_get_uid(self, uid, *args, **kwargs):
+        """Return a list of analysisrequests
+        """
+        logger.info("ajaxPrintView::ajax_get_uid:UID={}".format(uid))
+        po = PublicationObject(uid)
+        if not po.is_valid():
+            return self.add_json_error("No object found for UID '{}'"
+                                       .format(uid), status=404)
+        return po.to_dict()

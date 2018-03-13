@@ -7,11 +7,18 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
+  <!-- Default Publication Adapter -->
   <adapter
       for="*"
       factory=".printview.PublicationObject"
       />
 
+  <!-- AnalysisRequest Publication Adapter -->
+  <adapter
+      for="*"
+      name="AnalysisRequest"
+      factory=".printview.PublicationObject"
+      />
 
   <!-- PrintView -->
   <browser:page
@@ -19,6 +26,14 @@
       for="*"
       class=".printview.PrintView"
       permission="zope2.View"
+      />
+
+  <!-- Ajax PrintView -->
+  <browser:page
+      for="*"
+      name="ajax_printview"
+      class=".printview.ajaxPrintView"
+      permission="zope.Public"
       />
 
 </configure>
