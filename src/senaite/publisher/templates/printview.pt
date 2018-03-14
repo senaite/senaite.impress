@@ -41,4 +41,11 @@
       </tal:objects>
     </div>
   </body>
+
+  <!-- JavaScript -->
+  <tal:js define="portal context/@@plone_portal_state/portal;">
+    <script type="text/javascript"
+            src="senaite.publisher.printview.js"
+            tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
+  </tal:js>
 </html>

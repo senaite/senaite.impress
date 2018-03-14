@@ -36,4 +36,10 @@
       permission="zope.Public"
       />
 
+  <!-- Static resource directory -->
+  <browser:resourceDirectory
+      name="senaite.publisher.static"
+      directory="static"
+      />
+
 </configure>
