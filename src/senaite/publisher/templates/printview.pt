@@ -6,39 +6,7 @@
   </head>
   <body>
     <div id="publisher">
-      <tal:objects repeat="obj view/objs">
-        <h1 tal:content="obj/title"></h1>
-
-        <table>
-          <tr>
-            <td colspan="2" tal:content="obj/Client/Name"></td>
-          </tr>
-          <tr>
-            <td colspan="2" tal:content="obj/Client/PostalAddress/adress|nothing"></td>
-          </tr>
-          <tr>
-            <td tal:content="obj/Client/PostalAddress/zip|nothing"></td>
-            <td tal:content="obj/Client/PostalAddress/city|nothing"></td>
-          </tr>
-        </table>
-
-        <h2>Results</h2>
-        <table>
-          <tr tal:repeat="an obj/Analyses">
-            <td tal:content="an/title"></td>
-            <td tal:content="an/Result"></td>
-            <td tal:content="an/Unit"></td>
-            <td tal:content="an/Precision"></td>
-            <td tal:content="an/Uncertainty"></td>
-            <td tal:content="an/Price"></td>
-            <td tal:content="an/Method/MethodID|nothing"></td>
-            <td tal:content="an/Category/title|nothing"></td>
-          </tr>
-        </table>
-
-        <h2>Remarks</h2>
-        <div tal:content="obj/Remarks"></div>
-      </tal:objects>
+      <div tal:replace="structure view/render_reports"/>
     </div>
   </body>
 

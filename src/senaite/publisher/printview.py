@@ -7,6 +7,8 @@
 
 
 import json
+from collections import defaultdict
+from operator import itemgetter
 
 from DateTime import DateTime
 from Products.Five import BrowserView
@@ -14,8 +16,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
-from senaite.publisher.interfaces import IPrintView, IPublicationObject
 from senaite.publisher.decorators import returns_json
+from senaite.publisher.interfaces import IPrintView, IPublicationObject
 from zope.component import queryAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -92,6 +94,12 @@ class PublicationObject(object):
     def items(self):
         return list(self.iteritems())
 
+    def get_field(self, name, default=None):
+        accessor = getattr(self.instance, "getField", None)
+        if accessor is None:
+            return default
+        return accessor(name)
+
     def get(self, name, default=None):
         # Internal lookup in the data dict
         value = self.data.get(name, self.__empty_marker)
@@ -99,8 +107,12 @@ class PublicationObject(object):
             return self.data[name]
 
         # Field lookup on the instance
-        field = self.instance.getField(name)
+        field = self.get_field(name)
         if field is None:
+            # expose non-private members of the instance to have access to e.g.
+            # self.absolute_url()
+            if not name.startswith("_") or not name.startswith("__"):
+                return getattr(self.instance, name, default)
             return default
 
         # Retrieve field value by accessor
@@ -156,7 +168,7 @@ class PublicationObject(object):
         """
         if self._instance is None:
             logger.debug("PublicationObject::instance: *Wakup object*")
-            self._instance = self.brain.getObject()
+            self._instance = api.get_object(self.brain)
         return self._instance
 
     @property
@@ -273,7 +285,6 @@ class PrintView(BrowserView):
 
     def __init__(self, context, request):
         super(BrowserView, self).__init__(context, request)
-
         self.context = context
         self.request = request
 
@@ -281,6 +292,66 @@ class PrintView(BrowserView):
         self.uids = self.request.get("items", "").split(",")
         self.objs = map(lambda uid: PublicationObject(uid), self.uids)
         return self.template()
+
+    def render_reports(self):
+        template = ViewPageTemplateFile("templates/reports/default.pt")
+
+        rendered_reports = []
+        for obj in self.objs:
+            # keywords are accessible in "options" in the template
+            report = template(
+                self, publication_object=obj, **self.get_template_context())
+            rendered_reports.append(report)
+        return "".join(rendered_reports)
+
+    def get_template_context(self):
+        portal = api.get_portal()
+        setup = portal.bika_setup
+        laboratory = setup.laboratory
+        context = {
+            "portal": self.to_publication_object(portal),
+            "setup": self.to_publication_object(setup),
+            "laboratory": self.to_publication_object(laboratory),
+        }
+        return context
+
+    def to_publication_object(self, brain_or_object):
+        """Wraps the given brain or object to a PublicationObject
+        """
+        uid = api.get_uid(brain_or_object)
+        portal_type = api.get_portal_type(brain_or_object)
+        adapter = queryAdapter(uid, IPublicationObject, name=portal_type)
+        if adapter is None:
+            return PublicationObject(uid)
+        return adapter
+
+    def get_image_resource(self, name, prefix="bika.lims.images"):
+        """Return the full image resouce URL
+        """
+        portal = api.get_portal()
+        portal_url = portal.absolute_url()
+
+        if not prefix:
+            return "{}/{}".format(portal_url, name)
+        return "{}/++resource++{}/{}".format(portal_url, prefix, name)
+
+    def group_items_by(self, key, items):
+        """Group the items (mappings with dict interface) by the given key
+        """
+        results = defaultdict(list)
+        for item in items:
+            group_key = item[key]
+            if callable(group_key):
+                group_key = group_key()
+            results[group_key].append(item)
+        return results
+
+    def sort_items_by(self, key, items, reverse=False):
+        """Sort the items (mappings with dict interface) by the given key
+        """
+        if not callable(key):
+            key = itemgetter(key)
+        return sorted(items, key=key, reverse=reverse)
 
 
 class ajaxPrintView(PrintView):
