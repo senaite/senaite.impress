@@ -168,11 +168,11 @@
         </tr>
         <tr>
           <td class="label" i18n:translate="">Date Received</td>
-          <td tal:content="analysisrequest/DateReceived">2013-05-31 02:02 PM</td>
+          <td tal:content="python:view.to_localized_time(analysisrequest.DateReceived)">09.03.2018 09:54</td>
         </tr>
         <tr>
           <td class="label" i18n:translate="">Date Published</td>
-          <td tal:content="analysisrequest/DatePublished">2013-06-03 12:02 PM</td>
+          <td tal:content="python:view.to_localized_time(analysisrequest.DatePublished)">13.03.2018 13:35</td>
         </tr>
 
         <tr tal:condition="reporter">

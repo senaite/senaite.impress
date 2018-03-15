@@ -7,10 +7,11 @@
 
 
 import json
-from collections import defaultdict
+from collections import Iterable, defaultdict
 from operator import itemgetter
 
 from DateTime import DateTime
+from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ZCatalog.Lazy import LazyMap
@@ -144,16 +145,19 @@ class PublicationObject(object):
         # Content -> PublicationObject
         elif api.is_object(value):
             return self.get_publish_adapter_for_uid(api.get_uid(value))
+        # DateTime -> DateTime
+        elif isinstance(value, DateTime):
+            return value
         # Process list values
         elif isinstance(value, (LazyMap, list, tuple)):
-            value = map(self.process_value, value)
+            return map(self.process_value, value)
         # Process dict values
         elif isinstance(value, (dict)):
             return {k: self.process_value(v) for k, v in value.iteritems()}
         # Process function
         elif callable(value):
             return self.process_value(value())
-        # Finally return unprocessed value
+        # Always return the unprocessed value last
         return value
 
     @property
@@ -335,9 +339,26 @@ class PrintView(BrowserView):
             return "{}/{}".format(portal_url, name)
         return "{}/++resource++{}/{}".format(portal_url, prefix, name)
 
+    def to_localized_time(self, date, **kw):
+        """Converts the given date to a localized time string
+        """
+        # default options
+        options = {
+            "long_format": True,
+            "time_only": False,
+            "context": self.context,
+            "request": self.request,
+            "domain": "bika",
+        }
+        options.update(kw)
+        return ulocalized_time(date, **options)
+
+
     def group_items_by(self, key, items):
         """Group the items (mappings with dict interface) by the given key
         """
+        if not isinstance(items, Iterable):
+            raise TypeError("Items must be iterable")
         results = defaultdict(list)
         for item in items:
             group_key = item[key]
@@ -349,6 +370,8 @@ class PrintView(BrowserView):
     def sort_items_by(self, key, items, reverse=False):
         """Sort the items (mappings with dict interface) by the given key
         """
+        if not isinstance(items, Iterable):
+            raise TypeError("Items must be iterable")
         if not callable(key):
             key = itemgetter(key)
         return sorted(items, key=key, reverse=reverse)
