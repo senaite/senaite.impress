@@ -304,30 +304,26 @@ class PrintView(BrowserView):
         for obj in self.objs:
             # keywords are accessible in "options" in the template
             report = template(
-                self, publication_object=obj, **self.get_template_context())
+                self, publication_object=obj, **self.get_template_options())
             rendered_reports.append(report)
         return "".join(rendered_reports)
 
-    def get_template_context(self):
+    def get_template_options(self):
+        """Returns a mapping object to be passed to the template.
+
+        This data will be accessible in the template in `options`, e.g.:
+
+        <div tal:define='portal options/portal'> ... </div>
+        """
         portal = api.get_portal()
         setup = portal.bika_setup
         laboratory = setup.laboratory
         context = {
-            "portal": self.to_publication_object(portal),
-            "setup": self.to_publication_object(setup),
-            "laboratory": self.to_publication_object(laboratory),
+            "portal": PublicationObject("0"),
+            "setup": PublicationObject(api.get_uid(setup)),
+            "laboratory": PublicationObject(api.get_uid(laboratory)),
         }
         return context
-
-    def to_publication_object(self, brain_or_object):
-        """Wraps the given brain or object to a PublicationObject
-        """
-        uid = api.get_uid(brain_or_object)
-        portal_type = api.get_portal_type(brain_or_object)
-        adapter = queryAdapter(uid, IPublicationObject, name=portal_type)
-        if adapter is None:
-            return PublicationObject(uid)
-        return adapter
 
     def get_image_resource(self, name, prefix="bika.lims.images"):
         """Return the full image resouce URL
@@ -352,7 +348,6 @@ class PrintView(BrowserView):
         }
         options.update(kw)
         return ulocalized_time(date, **options)
-
 
     def group_items_by(self, key, items):
         """Group the items (mappings with dict interface) by the given key
@@ -414,21 +409,20 @@ class ajaxPrintView(PrintView):
         result.update(kw)
         return result
 
-    def ajax_get_uid(self, uid, *args, **kwargs):
+    def ajax_get(self, uid, *args, **kwargs):
         """Return a list of analysisrequests
         """
         logger.info("ajaxPrintView::ajax_get_uid:UID={} args={}"
                     .format(uid, args))
-        po = PublicationObject(uid)
-        if not po.is_valid():
+
+        wrapped = PublicationObject(uid)
+        if not wrapped.is_valid():
             return self.add_json_error("No object found for UID '{}'"
                                        .format(uid), status=404)
-
         out = {}
         for arg in args:
-            if arg in po.keys():
-                out[arg] = po.stringify(po.get(arg))
+            if arg in wrapped.keys():
+                out[arg] = wrapped.stringify(wrapped.get(arg))
         if out:
             return out
-
-        return po.to_dict()
+        return wrapped.to_dict()
