@@ -4,7 +4,8 @@
   <head>
     <title>Print Preview</title>
   </head>
-  <body>
+
+  <body class="A4">
     <div id="publisher">
       <div tal:replace="structure view/render_reports"/>
     </div>
@@ -16,4 +17,11 @@
             src="senaite.publisher.printview.js"
             tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
   </tal:js>
+
+  <tal:css define="portal context/@@plone_portal_state/portal;">
+    <link type="text/css"
+          href="print.css"
+          rel="stylesheet"
+          tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
+  </tal:css>
 </html>
