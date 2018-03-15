@@ -19,6 +19,7 @@ from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView, IPublicationObject
+from senaite.publisher.config import PAPERFORMATS
 from zope.component import queryAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -398,10 +399,10 @@ class ajaxPrintView(PrintView):
         func_name = "ajax_{}".format(self.traverse_subpath[0])
         func = getattr(self, func_name, None)
         if func is None:
-            return self.add_json_error("Invalid function", status=400)
+            return self.fail("Invalid function", status=400)
         return func(*self.traverse_subpath[1:])
 
-    def add_json_error(self, message, status=500, **kw):
+    def fail(self, message, status=500, **kw):
         """Set a JSON error object and a status to the response
         """
         self.request.response.setStatus(status)
@@ -417,8 +418,8 @@ class ajaxPrintView(PrintView):
 
         wrapped = PublicationObject(uid)
         if not wrapped.is_valid():
-            return self.add_json_error("No object found for UID '{}'"
-                                       .format(uid), status=404)
+            return self.fail("No object found for UID '{}'"
+                             .format(uid), status=404)
         out = {}
         for arg in args:
             if arg in wrapped.keys():
@@ -426,3 +427,12 @@ class ajaxPrintView(PrintView):
         if out:
             return out
         return wrapped.to_dict()
+
+    def ajax_get_paperformat(self, format):
+        """Return the paperformat
+        """
+        paperformat = PAPERFORMATS.get(format)
+        if paperformat is None:
+            return self.fail("Paperformat '{}' not found"
+                             .format(format), status=404)
+        return paperformat
