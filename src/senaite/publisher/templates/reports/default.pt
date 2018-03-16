@@ -1,6 +1,10 @@
 <div class="report padding-10mm">
 
   <tal:report tal:define="analysisrequest options/publication_object;
+                          states python: analysisrequest.getObjectWorkflowStates().values();
+                          invalid analysisrequest/isInvalid;
+                          valid_states python:['verified', 'published'];
+                          prepublish python:not invalid and not any(map(lambda s: s in valid_states, states));
                           analyses analysisrequest/Analyses;
                           an_by_poc python:view.group_items_by('PointOfCapture', analyses);
                           an_by_cat python:view.group_items_by('getCategoryTitle', analyses);
@@ -113,7 +117,18 @@
       </table>
     </div>
 
-    <div id="section-alert">
+    <div id="section-alert" tal:condition="invalid">
+      <h1 i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</h1>
+      <tal:invalidreport tal:define="child analysisrequest.ChildAnalysisRequest"
+                         tal:condition="child">
+        <span i18n:translate="">This Analysis request has been replaced by</span>
+        <a tal:attributes="href child/absolute_url"
+           tal:content="child/getId"></a>
+      </tal:invalidreport>
+    </div>
+
+    <div id="section-alert" tal:condition="prepublish">
+      <h1 i18n:translate="">Provisional report</h1>
     </div>
 
     <div id="section-summary">
