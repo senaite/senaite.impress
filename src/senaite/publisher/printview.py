@@ -470,6 +470,7 @@ class ajaxPrintView(PrintView):
     def pick(self, dct, *keys, **kw):
         """Returns a copy of the dictionary filtered to only have values for the
         whitelisted keys (or list of valid keys)
+
         >>> pick({"name": "moe", "age": 50, "userid": "moe1"}, "name", "age")
         {'age': 50, 'name': 'moe'}
         """
@@ -490,7 +491,10 @@ class ajaxPrintView(PrintView):
         return converter(value)
 
     def ajax_get(self, uid, *args, **kwargs):
-        """Return a list of analysisrequests
+        """Return the JSONified
+
+        Any additional positional parameter in *args will pick only these keys
+        from the returned dictionary.
         """
         logger.info("ajaxPrintView::ajax_get_uid:UID={} args={}"
                     .format(uid, args))
@@ -506,7 +510,9 @@ class ajaxPrintView(PrintView):
         return self.pick(wrapped, converter=converter, *args)
 
     def ajax_paperformats(self, *args):
-        """Return the paperformats
+        """Returns the paperformats
 
+        Any additional positional parameter in *args will pick only these keys
+        from the returned dictionary.
         """
         return self.pick(PAPERFORMATS, *args)
