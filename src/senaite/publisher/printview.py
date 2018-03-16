@@ -6,6 +6,7 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 
+import inspect
 import json
 from collections import Iterable, defaultdict
 from operator import itemgetter
@@ -17,9 +18,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
+from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView, IPublicationObject
-from senaite.publisher.config import PAPERFORMATS
 from zope.component import queryAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -396,19 +397,57 @@ class ajaxPrintView(PrintView):
         """
         if len(self.traverse_subpath) < 1:
             return {}
-        func_name = "ajax_{}".format(self.traverse_subpath[0])
+
+        # check if the method exists
+        func_arg = self.traverse_subpath[0]
+        func_name = "ajax_{}".format(func_arg)
         func = getattr(self, func_name, None)
         if func is None:
             return self.fail("Invalid function", status=400)
-        return func(*self.traverse_subpath[1:])
+
+        # Additional provided path segments after the function name are handled
+        # as positional arguments
+        args = self.traverse_subpath[1:]
+
+        # check mandatory arguments
+        func_sig = inspect.getargspec(func)
+        # positional arguments after `self` argument
+        required_args = func_sig.args[1:]
+
+        if len(args) < len(required_args):
+            return self.fail("Wrong signature, please use '{}/{}'"
+                             .format(func_arg, "/".join(required_args)), 400)
+        return func(*args)
 
     def fail(self, message, status=500, **kw):
         """Set a JSON error object and a status to the response
         """
         self.request.response.setStatus(status)
-        result = {"success": False, "errors": message}
+        result = {"success": False, "errors": message, "status": status}
         result.update(kw)
         return result
+
+    def pick(self, dct, *keys, **kw):
+        """Returns a copy of the dictionary filtered to only have values for the
+        whitelisted keys (or list of valid keys)
+        >>> pick({"name": "moe", "age": 50, "userid": "moe1"}, "name", "age")
+        {'age': 50, 'name': 'moe'}
+        """
+        copy = dict()
+        keys = keys and keys or dct.keys()
+        converter = kw.get("converter")
+
+        for key in keys:
+            if key in dct.keys():
+                copy[key] = self.convert(dct[key], converter)
+        return copy
+
+    def convert(self, value, converter):
+        """Converts a value with a given converter function.
+        """
+        if not callable(converter):
+            return value
+        return converter(value)
 
     def ajax_get(self, uid, *args, **kwargs):
         """Return a list of analysisrequests
@@ -420,19 +459,14 @@ class ajaxPrintView(PrintView):
         if not wrapped.is_valid():
             return self.fail("No object found for UID '{}'"
                              .format(uid), status=404)
-        out = {}
-        for arg in args:
-            if arg in wrapped.keys():
-                out[arg] = wrapped.stringify(wrapped.get(arg))
-        if out:
-            return out
-        return wrapped.to_dict()
 
-    def ajax_get_paperformat(self, format):
-        """Return the paperformat
+        def converter(value):
+            return wrapped.stringify(value)
+
+        return self.pick(wrapped, converter=converter, *args)
+
+    def ajax_paperformats(self, *args):
+        """Return the paperformats
+
         """
-        paperformat = PAPERFORMATS.get(format)
-        if paperformat is None:
-            return self.fail("Paperformat '{}' not found"
-                             .format(format), status=404)
-        return paperformat
+        return self.pick(PAPERFORMATS, *args)
