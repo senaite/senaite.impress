@@ -31,7 +31,8 @@ body.legal.landscape  .report { width: 357mm; height: 215mm }
   body { background: #e0e0e0 }
   .report {
     background: white;
-    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+    /* box-shadow: 0 .5mm 2mm rgba(0,0,0,.3); */
+    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     margin: 5mm auto;
   }
 }

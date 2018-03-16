@@ -1,4 +1,4 @@
-<div class="report">
+<div class="report padding-10mm">
 
   <tal:report tal:define="analysisrequest options/publication_object;
                           analyses analysisrequest/Analyses;

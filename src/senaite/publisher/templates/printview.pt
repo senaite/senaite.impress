@@ -3,6 +3,14 @@
       i18n:domain="senaite" >
   <head>
     <title>Print Preview</title>
+
+    <tal:css define="portal context/@@plone_portal_state/portal;">
+      <link type="text/css"
+            href="print.css"
+            rel="stylesheet"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
+    </tal:css>
+    <style>@page { size: A4 }</style>
   </head>
 
   <body class="A4">
@@ -17,11 +25,4 @@
             src="senaite.publisher.printview.js"
             tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
   </tal:js>
-
-  <tal:css define="portal context/@@plone_portal_state/portal;">
-    <link type="text/css"
-          href="print.css"
-          rel="stylesheet"
-          tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
-  </tal:css>
 </html>
