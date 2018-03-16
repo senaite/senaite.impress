@@ -367,6 +367,12 @@ class PrintView(BrowserView):
         }
         return context
 
+    def get_paperformats(self):
+        """Returns a mapping of available paper formats
+        """
+        # Todo: Implement cascading lookup: client->registry->config
+        return PAPERFORMATS
+
     def get_image_resource(self, name, prefix="bika.lims.images"):
         """Return the full image resouce URL
         """
@@ -515,4 +521,4 @@ class ajaxPrintView(PrintView):
         Any additional positional parameter in *args will pick only these keys
         from the returned dictionary.
         """
-        return self.pick(PAPERFORMATS, *args)
+        return self.pick(self.get_paperformats(), *args)
