@@ -1,5 +1,4 @@
-<div class="report padding-10mm">
-
+<div class="report-body">
   <tal:report tal:define="analysisrequest options/publication_object;
                           states python: analysisrequest.getObjectWorkflowStates().values();
                           invalid analysisrequest/isInvalid;
