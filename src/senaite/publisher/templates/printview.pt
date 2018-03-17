@@ -2,27 +2,31 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       i18n:domain="senaite" >
   <head>
-    <title>Print Preview</title>
+    <meta charset="UTF-8">
+    <title i18n:translate="">Print</title>
 
+    <!-- JavaScripts -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
       <link type="text/css"
             href="print.css"
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
     </tal:css>
-    <style>@page { size: A4 }</style>
+
+    <!-- JavaScripts -->
+    <tal:js define="portal context/@@plone_portal_state/portal;">
+        <script type="text/javascript"
+                src="senaite.publisher.printview.js"
+                tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
+    </tal:js>
   </head>
 
   <body class="A4">
     <div id="publisher">
-      <div tal:replace="structure view/render_reports"/>
+      <div class="report" tal:repeat="report view/get_reports">
+        <div tal:replace="structure report"/>
+      </div>
     </div>
   </body>
 
-  <!-- JavaScript -->
-  <tal:js define="portal context/@@plone_portal_state/portal;">
-    <script type="text/javascript"
-            src="senaite.publisher.printview.js"
-            tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
-  </tal:js>
 </html>

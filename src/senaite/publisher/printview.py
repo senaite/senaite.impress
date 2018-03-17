@@ -18,6 +18,7 @@ from senaite.publisher.adapters import PublicationObject
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView
+from weasyprint import HTML
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
@@ -38,33 +39,27 @@ class PrintView(BrowserView):
         self.objs = map(lambda uid: PublicationObject(uid), self.uids)
         return self.template()
 
-    def render_reports(self):
-        template = ViewPageTemplateFile("templates/reports/default.pt")
-
-        rendered_reports = []
+    def get_reports(self):
+        reports = []
         for obj in self.objs:
-            # keywords are accessible in "options" in the template
-            report = template(
-                self, publication_object=obj, **self.get_template_options())
-            rendered_reports.append(report)
-        return "".join(rendered_reports)
+            report = self.render_report(obj)
+            reports.append(report)
+        return reports
 
-    def get_template_options(self):
-        """Returns a mapping object to be passed to the template.
-
-        This data will be accessible in the template in `options`, e.g.:
-
-        <div tal:define='portal options/portal'> ... </div>
-        """
+    def render_report(self, obj):
+        # TODO: template must be dynamic
+        template = ViewPageTemplateFile("templates/reports/default.pt")
         portal = api.get_portal()
         setup = portal.bika_setup
         laboratory = setup.laboratory
-        context = {
+
+        options = {
             "portal": PublicationObject("0"),
             "setup": PublicationObject(api.get_uid(setup)),
             "laboratory": PublicationObject(api.get_uid(laboratory)),
         }
-        return context
+
+        return template(self, publication_object=obj, **options)
 
     def get_paperformats(self):
         """Returns a mapping of available paper formats
@@ -221,3 +216,12 @@ class ajaxPrintView(PrintView):
         from the returned dictionary.
         """
         return self.pick(self.get_paperformats(), *args)
+
+    def ajax_process_html(self):
+        """Recalculate the HTML of one rendered report after all the embedded
+        JavaScripts modified the report on the client side.
+        """
+        html = self.request.form.get("html")
+        whtml = HTML(string=html)
+        document = whtml.render()
+        return html

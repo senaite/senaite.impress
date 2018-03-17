@@ -1,4 +1,18 @@
-console.log("printview loaded")
+import $ from 'jquery';
+
+$(document).ready(function () {
+  console.debug("Document Ready")
+  var html = $("#publisher").html()
+  $.ajax({
+    url: "/bikalims/analysisrequests/ajax_printview/process_html",
+    method: "POST",
+    data: {
+      html: html
+    }
+  }).done(function(data){
+    $("#publisher").html(data)
+  })
+})
 
 // import React from 'react';
 // import ReactDOM from 'react-dom';
