@@ -24,7 +24,7 @@
     </tal:js>
   </head>
 
-  <body>
+  <body class="A4">
     <div id="preview"></div>
 
     <div id="reports" style="display:none;">
