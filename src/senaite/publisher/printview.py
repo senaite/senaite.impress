@@ -18,7 +18,8 @@ from senaite.publisher.adapters import PublicationObject
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView
-from weasyprint import HTML
+from weasyprint import CSS, HTML
+from weasyprint.compat import base64_encode
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
@@ -221,7 +222,24 @@ class ajaxPrintView(PrintView):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
         """
-        html = self.request.form.get("html")
-        whtml = HTML(string=html)
-        document = whtml.render()
-        return html
+        html = self.request.form.get("html").decode("utf8")
+        whtml = HTML(string=u"<html><body>{}</body></html>".format(html))
+
+        css = "{}/++resource++senaite.publisher.static/css/print.css".format(
+            api.get_portal().absolute_url())
+
+        document = whtml.render(enable_hinting=True, stylesheets=[css])
+        images = []
+        for i, page in enumerate(document.pages):
+            png_bytes, width, height = document.copy([page]).write_png()
+            data_url = 'data:image/png;base64,' + (
+                base64_encode(png_bytes).decode('ascii').replace('\n', ''))
+
+            img = """<div class='report' style='width: {0}px; height: {1}px'>
+                       <img src='{2}'/>
+                     </div>""".format(width, height, data_url)
+            images.append(img)
+
+        # document = whtml.render()
+        # whtml.write_pdf("/Users/rbartl/Desktop/report.pdf", stylesheets=[css])
+        return "\n".join(images)

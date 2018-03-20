@@ -21,6 +21,12 @@
                           reporter python:None;">
 
     <div id="section-header" class="page-header">
+      <div id="lab-logo">
+        <a tal:attributes="href portal_url">
+          <img tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
+        </a>
+      </div>
+
       <div id="barcode-container">
         <div class="barcode"
              data-code="code128"
@@ -29,12 +35,6 @@
              data-addQuietZone="true"
              tal:attributes="data-id analysisrequest/id">
         </div>
-      </div>
-
-      <div id="lab-logo">
-        <a tal:attributes="href portal_url">
-          <img tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
-        </a>
       </div>
     </div>
 
@@ -310,4 +310,5 @@
     </div>
 
   </tal:report>
+
 </div>

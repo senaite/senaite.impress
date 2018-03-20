@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title i18n:translate="">Print</title>
 
-    <!-- JavaScripts -->
+    <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
       <link type="text/css"
             href="print.css"
@@ -15,14 +15,19 @@
 
     <!-- JavaScripts -->
     <tal:js define="portal context/@@plone_portal_state/portal;">
-        <script type="text/javascript"
-                src="senaite.publisher.printview.js"
-                tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
+      <script type="text/javascript"
+              src="senaite.publisher.printview.js"
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.barcodes.js"></script>
+      <script type="text/javascript"
+              src="senaite.publisher.printview.js"
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
     </tal:js>
   </head>
 
-  <body class="A4">
-    <div id="publisher">
+  <body>
+    <div id="preview"></div>
+
+    <div id="reports" style="display:none;">
       <div class="report" tal:repeat="report view/get_reports">
         <div tal:replace="structure report"/>
       </div>
