@@ -7,13 +7,15 @@ $(document).ready ->
   html = $('#reports').html()
   url = document.URL.split('printview')[0] + 'ajax_printview/process_html'
 
-  $.ajax(
+  $.ajax
     url: url
     method: 'POST'
-    data: html: html).done (data) ->
-    preview = $('#preview')
-    preview.empty()
-    preview.append data
+    data:
+      html: html
+  .done (data) ->
+      preview = $('#preview')
+      preview.empty()
+      preview.append data
 
 
 #document.addEventListener("DOMContentLoaded", function() {
