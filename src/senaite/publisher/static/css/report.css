@@ -14,11 +14,12 @@
     font-weight:bold;
     padding-bottom:5px !important;
 }
-
+.report #lab-logo img {
+    max-height: 150px;
+}
 .report table {
     width: 100%;
 }
-
 .report table tr td,
 .report table tr th {
     text-align:left;
