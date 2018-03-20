@@ -18,7 +18,7 @@ from senaite.publisher.adapters import PublicationObject
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView
-from weasyprint import CSS, HTML
+from weasyprint import HTML
 from weasyprint.compat import base64_encode
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -37,24 +37,20 @@ class PrintView(BrowserView):
 
     def __call__(self):
         self.uids = self.request.get("items", "").split(",")
-        self.objs = map(lambda uid: PublicationObject(uid), self.uids)
+        self.reports = map(lambda uid: PublicationObject(uid), self.uids)
         return self.template()
-
-    def get_reports(self):
-        reports = []
-        for obj in self.objs:
-            report = self.render_report(obj)
-            reports.append(report)
-        return reports
 
     def render_report(self, obj):
         # TODO: template must be dynamic
         template = ViewPageTemplateFile("templates/reports/default.pt")
+
         portal = api.get_portal()
         setup = portal.bika_setup
         laboratory = setup.laboratory
 
         options = {
+            "id": obj.getId(),
+            "uid": obj.UID(),
             "portal": PublicationObject("0"),
             "setup": PublicationObject(api.get_uid(setup)),
             "laboratory": PublicationObject(api.get_uid(laboratory)),
@@ -223,14 +219,20 @@ class ajaxPrintView(PrintView):
         JavaScripts modified the report on the client side.
         """
         html = self.request.form.get("html").decode("utf8")
-        whtml = HTML(string=u"<html><body>{}</body></html>".format(html))
+        whtml = HTML(string=u"<html><body>{}</body></html>".format(html),
+                     base_url=api.get_portal().absolute_url())
 
-        css = "{}/++resource++senaite.publisher.static/css/print.css".format(
-            api.get_portal().absolute_url())
+        portal_url = api.get_portal().absolute_url()
+        css_base_url = "{}/++resource++senaite.publisher.static/css".format(
+            portal_url)
+        print_css = "{}/print.css".format(css_base_url)
+        report_css = "{}/report.css".format(css_base_url)
 
-        document = whtml.render(enable_hinting=True, stylesheets=[css])
+        document = whtml.render(enable_hinting=True,
+                                stylesheets=[print_css, report_css])
+        logger.info("Rendering {} Pages".format(len(document.pages)))
         images = []
-        for i, page in enumerate(document.pages):
+        for page in document.pages:
             png_bytes, width, height = document.copy([page]).write_png()
             data_url = 'data:image/png;base64,' + (
                 base64_encode(png_bytes).decode('ascii').replace('\n', ''))
@@ -240,6 +242,4 @@ class ajaxPrintView(PrintView):
                      </div>""".format(width, height, data_url)
             images.append(img)
 
-        # document = whtml.render()
-        # whtml.write_pdf("/Users/rbartl/Desktop/report.pdf", stylesheets=[css])
         return "\n".join(images)

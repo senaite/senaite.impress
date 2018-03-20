@@ -7,8 +7,14 @@
 
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
+
       <link type="text/css"
             href="print.css"
+            rel="stylesheet"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
+
+      <link type="text/css"
+            href="report.css"
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
     </tal:css>
@@ -25,11 +31,15 @@
   </head>
 
   <body class="A4">
+
     <div id="preview"></div>
 
     <div id="reports" style="display:none;">
-      <div class="report" tal:repeat="report view/get_reports">
-        <div tal:replace="structure report"/>
+      <div class="report"
+           tal:repeat="report view/reports"
+           tal:attributes="id report/id;
+                           uid report/UID">
+        <div tal:replace="structure python:view.render_report(report)"/>
       </div>
     </div>
   </body>

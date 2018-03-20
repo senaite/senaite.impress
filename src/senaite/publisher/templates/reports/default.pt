@@ -295,6 +295,13 @@
         <tr>
           <td class="footer-discreeter">
             <div class="footer" tal:content="structure setup/ResultFooter"></div>
+            <div class="page-numbers">
+              <span i18n:translate="">Page</span>
+              <span class="current-page"></span>
+              <span i18n:translate="">of</span>
+              <span class="total-pages"></span>
+            </div>
+
           </td>
           <td class="barcode-container">
             <div class="barcode"
@@ -307,6 +314,7 @@
           </td>
         </tr>
       </table>
+
     </div>
 
   </tal:report>
