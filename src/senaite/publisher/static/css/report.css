@@ -196,6 +196,4 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    margin: 10em, 0;
-    counter-increment: page;
 }
