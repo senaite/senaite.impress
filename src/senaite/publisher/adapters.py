@@ -25,6 +25,11 @@ class PublicationObject(object):
     If the primary catalog of the wrapped object contains a metadata column
     with the same name as the accessor, the metadata colum value is used
     instead.
+
+    Note: Adapter lookup is done by `portal_type` name, e.g.:
+
+    >>> portal_type = api.get_portal_type(self.context)
+    >>> adapter = queryAdapter(uid, IPublicationObject, name=portal_type)
     """
     implements(IPublicationObject)
 
