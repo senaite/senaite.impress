@@ -51,10 +51,10 @@
       <table>
         <tr>
           <td id="client-info">
-            <table tal:define="fullname contact/Fullname;
-                               email contact/EmailAddress;
-                               phone contact/Phone;
-                               fax contact/Fax">
+            <table tal:define="fullname contact/Fullname|nothing;
+                               email contact/EmailAddress|nothing;
+                               phone contact/Phone|nothing;
+                               fax contact/Fax|nothing">
               <tr tal:condition="fullname">
                 <td id="client-contact" tal:content="fullname">Contact Fullname</td>
               </tr>
@@ -285,7 +285,7 @@
         <div tal:define="confidence_level laboratory/Confidence"
              tal:condition="confidence_level" i18n:translate="">
           Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level</div>
-        <div tal:condition="python:contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
+        <div tal:condition="python:contact and contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
           Methods of analysis available by clicking on the 'Request' link
         </div>
     </div>
