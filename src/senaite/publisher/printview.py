@@ -214,12 +214,13 @@ class ajaxPrintView(PrintView):
         """
         return self.pick(self.get_paperformats(), *args)
 
-    def ajax_process_html(self):
+    def ajax_load_preview(self):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
         """
+        logger.info("ajax_load_preview")
         html = self.request.form.get("html").decode("utf8")
-        whtml = HTML(string=u"<html><body>{}</body></html>".format(html),
+        whtml = HTML(string=u"{}".format(html),
                      base_url=api.get_portal().absolute_url())
 
         portal_url = api.get_portal().absolute_url()
@@ -230,6 +231,7 @@ class ajaxPrintView(PrintView):
 
         document = whtml.render(enable_hinting=True,
                                 stylesheets=[print_css, report_css])
+
         logger.info("Rendering {} Pages".format(len(document.pages)))
         images = []
         for page in document.pages:
@@ -242,4 +244,4 @@ class ajaxPrintView(PrintView):
                      </div>""".format(width, height, data_url)
             images.append(img)
 
-        return "\n".join(images)
+        return images
