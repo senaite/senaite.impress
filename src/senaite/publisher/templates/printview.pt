@@ -7,10 +7,7 @@
 
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
-      <link type="text/css"
-            href="print.css"
-            rel="stylesheet"
-            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </tal:css>
 
     <!-- JavaScripts -->
@@ -26,16 +23,20 @@
 
   <body>
 
-    <!-- Report preview images are rendered here -->
-    <div id="preview"></div>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <!-- Report preview images are rendered here -->
+        <div id="preview"></div>
+      </div>
 
-    <!-- Processed report HTML from the selected template -->
-    <div id="reports" style="display:none;">
-      <div class="report"
-           tal:repeat="report view/reports"
-           tal:attributes="id report/id;
-                           uid report/UID">
-        <div tal:replace="structure python:view.render_report(report)"/>
+      <!-- Processed report HTML from the selected template -->
+      <div id="reports" style="display:none;">
+        <div class="report"
+             tal:repeat="report view/reports"
+             tal:attributes="id report/id;
+                    uid report/UID">
+          <div tal:replace="structure python:view.render_report(report)"/>
+        </div>
       </div>
     </div>
 
