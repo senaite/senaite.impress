@@ -3,18 +3,12 @@
       i18n:domain="senaite" >
   <head>
     <meta charset="UTF-8">
-    <title i18n:translate="">Print</title>
+    <title i18n:translate="">Print Preview</title>
 
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
-
       <link type="text/css"
             href="print.css"
-            rel="stylesheet"
-            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
-
-      <link type="text/css"
-            href="report.css"
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
     </tal:css>
@@ -30,10 +24,12 @@
     </tal:js>
   </head>
 
-  <body class="A4">
+  <body>
 
+    <!-- Report preview images are rendered here -->
     <div id="preview"></div>
 
+    <!-- Processed report HTML from the selected template -->
     <div id="reports" style="display:none;">
       <div class="report"
            tal:repeat="report view/reports"
@@ -42,6 +38,6 @@
         <div tal:replace="structure python:view.render_report(report)"/>
       </div>
     </div>
-  </body>
 
+  </body>
 </html>

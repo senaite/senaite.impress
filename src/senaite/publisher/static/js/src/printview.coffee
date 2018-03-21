@@ -13,33 +13,24 @@ class ReportView
     @url = "#{base_url}/ajax_printview/load_preview"
     return @
 
-  get_reports: =>
-    ###
-     * Return all report elements
-    ###
-    return $(".report", @reports)
-
-  flush_preview: =>
+  flush: =>
     ###
      * Flush the preview panel
     ###
     @preview.empty()
 
-  load_report_preview: (html) =>
+  load: (html) =>
     ###
      * Return all report elements
     ###
 
-    console.debug "loadig report"
     $.ajax
       url: @url
-      async: no  # weasyprint `render` hangs w/o this...
       method: 'POST'
       data:
         html: html
       context: @
     .done (data) ->
-      console.debug "GOT DATA"
       @preview.append data
       @preview.fadeIn()
 
@@ -47,15 +38,9 @@ class ReportView
     ###
      * Render all reports
     ###
-    reports = @get_reports()
-    console.debug "ReportView:render: #{reports.length} reports"
-
-    me = this
-    reports.each (index, report) ->
-      html = report.outerHTML
-      me.load_report_preview html
-
-    # @load_report_preview @reports.html()
+    console.debug "ReportView:render: #{@reports.length} reports"
+    @flush()
+    @load @reports.html()
 
 
 
