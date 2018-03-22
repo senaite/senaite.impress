@@ -30,20 +30,16 @@
 
   <body>
 
-    <div class="container">
-      <div class="row">
-        <!-- Report preview images are rendered here -->
-        <div class="col-sm-12" id="preview"></div>
-      </div>
+    <!-- Report preview images are rendered here -->
+    <div id="preview"></div>
 
-      <!-- Processed report HTML from the selected template -->
-      <div class="row" id="reports" style="display:none;">
-        <div class="report"
-             tal:repeat="report view/reports"
-             tal:attributes="id report/id;
-                             uid report/UID">
-          <div tal:replace="structure python:view.render_report(report)"/>
-        </div>
+    <!-- Processed report HTML from the selected template -->
+    <div id="reports" style="display:none;">
+      <div class="report"
+           tal:repeat="report view/reports"
+           tal:attributes="id report/id;
+                           uid report/UID">
+        <div tal:replace="structure python:view.render_report(report)"/>
       </div>
     </div>
 

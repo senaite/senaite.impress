@@ -1,33 +1,33 @@
 @page {
-    margin: 0;
-}
-
-body { margin: 0 }
-.report {
   margin: 0;
-  overflow: hidden;
-  position: relative;
-  box-sizing: border-box;
-  page-break-after: always;
+
+  /* Paging */
+  @bottom-right {
+    content: counter(page) "/" counter(pages);
+    margin: -5mm 2.5mm 2.5mm 2.5mm;
+    font-size: 9pt;
+  }
 }
 
-/** Paper sizes **/
-body.A3               .report { width: 297mm; height: 419mm }
-body.A3.landscape     .report { width: 420mm; height: 296mm }
-body.A4               .report { width: 210mm; height: 296mm }
-body.A4.landscape     .report { width: 297mm; height: 209mm }
-body.A5               .report { width: 148mm; height: 209mm }
-body.A5.landscape     .report { width: 210mm; height: 147mm }
-body.letter           .report { width: 216mm; height: 279mm }
-body.letter.landscape .report { width: 280mm; height: 215mm }
-body.legal            .report { width: 216mm; height: 356mm }
-body.legal.landscape  .report { width: 357mm; height: 215mm }
-
-/** Padding area **/
-.report.padding-10mm { padding: 10mm }
-.report.padding-15mm { padding: 15mm }
-.report.padding-20mm { padding: 20mm }
-.report.padding-25mm { padding: 25mm }
+@media print {
+  /* Needed for fixed content to appear on all pages */
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+  }
+  .report {
+    margin: 0;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    page-break-after: always;
+  }
+  .report .section-footer {
+    position: fixed;
+    bottom: 0;
+  }
+}
 
 /** For screen preview **/
 @media screen {
@@ -38,20 +38,4 @@ body.legal.landscape  .report { width: 357mm; height: 215mm }
     box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     margin: 5mm auto;
   }
-}
-
-/** Fix for Chrome issue #273306 **/
-@media print {
-           body.A3.landscape { width: 420mm }
-  body.A3, body.A4.landscape { width: 297mm }
-  body.A4, body.A5.landscape { width: 210mm }
-  body.A5                    { width: 148mm }
-  body.letter, body.legal    { width: 216mm }
-  body.letter.landscape      { width: 280mm }
-  body.legal.landscape       { width: 357mm }
-}
-
-.report .section-footer {
-    position: fixed;
-    bottom: 0;
 }

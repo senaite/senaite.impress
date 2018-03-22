@@ -214,7 +214,6 @@ class ajaxPrintView(PrintView):
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
-        # return html
 
         publisher = IPublisher(html)
         publisher.link_css_file("bootstrap.min.css")
