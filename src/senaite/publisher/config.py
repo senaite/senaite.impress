@@ -11,7 +11,7 @@ PAPERFORMATS = {
     "A4": {
         "name": _("European A4"),
         "format": "A4",
-        "dpi": 90,
+        "dpi": 96,
         "margin_top": 40.0,
         "margin_right": 7.0,
         "margin_bottom": 23.0,
@@ -24,10 +24,25 @@ PAPERFORMATS = {
 
     },
 
+    "A5": {
+        "name": _("European A5"),
+        "format": "A5",
+        "dpi": 96,
+        "margin_top": 40.0,
+        "margin_right": 7.0,
+        "margin_bottom": 20.0,
+        "margin_left": 7.0,
+        "orientation": "portrait",
+        "page_width": 148.0,
+        "page_height": 210.0,
+        "header_line": False,
+        "header_spacing": 35.0,
+    },
+
     "Letter": {
         "name": _("US Letter"),
         "format": "Letter",
-        "dpi": 90,
+        "dpi": 96,
         "margin_top": 40.0,
         "margin_right": 7.0,
         "margin_bottom": 20.0,

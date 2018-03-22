@@ -20,12 +20,26 @@
                         reporter python:None;">
 
   <div class="row section-header">
-    <div class="col-sm-12 logo lab-logo pb-2">
+    <div class="col-sm-6 logo lab-logo pb-2">
       <a tal:attributes="href portal_url">
         <img style="max-width: 200px"
              tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
       </a>
     </div>
+
+    <div class="col-sm-6 pt-2">
+      <!-- Barcode -->
+      <div class="text-center float-right barcode-container">
+        <div class="barcode"
+             data-code="code128"
+             data-showHRI="true"
+             data-barHeight="15"
+             data-addQuietZone="true"
+             tal:attributes="data-id analysisrequest/id">
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="row section-info">
@@ -77,19 +91,6 @@
                    tal:attributes="src accreditation_logo/absolute_url"/>
               <img tal:condition="not:accreditation_logo"
                    tal:attributes="src python:view.get_image_resource('AccreditationBodyLogo.png')"/>
-            </div>
-          </td>
-          <td>
-
-            <!-- Barcode -->
-            <div class="float-right text-center barcode-container">
-              <div class="barcode"
-                   data-code="code128"
-                   data-showHRI="true"
-                   data-barHeight="15"
-                   data-addQuietZone="true"
-                   tal:attributes="data-id analysisrequest/id">
-              </div>
             </div>
           </td>
         </tr>

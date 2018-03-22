@@ -24,8 +24,10 @@ class ReportView
      * Return all report elements
     ###
 
+    params = document.URL.split("?")[1]
+
     $.ajax
-      url: @url
+      url: @url + "?#{params}"
       method: 'POST'
       data:
         html: html

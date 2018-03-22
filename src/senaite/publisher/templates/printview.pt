@@ -15,6 +15,9 @@
             href="print.css"
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
+      <style type="text/css"
+             tal:content="view/css">
+      </style>
     </tal:css>
 
     <!-- JavaScripts -->
@@ -28,17 +31,18 @@
     </tal:js>
   </head>
 
-  <body>
+  <body tal:define="format view/paperformat"
+        tal:attributes="class string:${format/format} ${format/orientation}">
 
     <!-- Report preview images are rendered here -->
     <div id="preview"></div>
 
     <!-- Processed report HTML from the selected template -->
     <div id="reports" style="display:none;">
-      <div class="report"
-           tal:repeat="report view/reports"
+      <div tal:repeat="report view/reports"
            tal:attributes="id report/id;
-                           uid report/UID">
+                           uid report/UID;
+                           class string:${format/format} ${format/orientation} report">
         <div tal:replace="structure python:view.render_report(report)"/>
       </div>
     </div>

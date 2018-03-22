@@ -8,6 +8,7 @@
 import inspect
 from collections import Iterable, defaultdict
 from operator import itemgetter
+from string import Template
 
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five import BrowserView
@@ -23,6 +24,18 @@ from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
+CSS = Template("""/** Paper size **/
+@page { size: ${format} ${orientation} }
+.report.${format} {
+  width: ${page_width}mm;
+  height: ${page_height}mm;
+}
+.report.${format}.landscape {
+  width: ${page_height}mm;
+  height: ${page_width}mm;
+}
+""")
+
 
 class PrintView(BrowserView):
     """Print View
@@ -37,6 +50,7 @@ class PrintView(BrowserView):
 
     def __call__(self):
         self.uids = self.request.get("items", "").split(",")
+        self.css = CSS.substitute(self.paperformat)
         self.reports = map(lambda uid: PublicationObject(uid), self.uids)
         return self.template()
 
@@ -49,6 +63,19 @@ class PrintView(BrowserView):
                                    ITemplateOptionsProvider)
         options = provider.options
         return template(self, publication_object=obj, **options)
+
+    @property
+    def paperformat(self):
+        paperformats = self.get_paperformats()
+        format = self.request.get("format")
+        if format not in paperformats:
+            format = "A4"
+        orientation = self.request.get("orientation", "portrait")
+        paperformat = paperformats.get(format)
+        paperformat.update({
+            "orientation": orientation,
+        })
+        return paperformat
 
     def get_paperformats(self):
         """Returns a mapping of available paper formats
@@ -214,10 +241,12 @@ class ajaxPrintView(PrintView):
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
+        css = CSS.substitute(self.paperformat)
 
         publisher = IPublisher(html)
         publisher.link_css_file("bootstrap.min.css")
         publisher.link_css_file("print.css")
+        publisher.add_inline_css(css)
         images = publisher.write_png(merge=True)
 
         preview = ""

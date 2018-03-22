@@ -18,7 +18,7 @@ from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.interfaces import (IPublicationObject, IPublisher,
                                           ITemplateOptionsProvider)
-from weasyprint import HTML
+from weasyprint import CSS, HTML
 from weasyprint.compat import base64_encode
 from zope.component import queryAdapter
 from zope.interface import implements
@@ -47,6 +47,11 @@ class Publisher(object):
         path = "{}/{}/{}".format(self.base_url, self.css_resources, css)
         if path not in self.css:
             self.css.append(path)
+
+    def add_inline_css(self, css):
+        """Add an inline CSS
+        """
+        self.css.append(CSS(string=css))
 
     @property
     def base_url(self):
