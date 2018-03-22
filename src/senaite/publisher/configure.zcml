@@ -7,17 +7,23 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
-  <!-- Default Publication Adapter -->
+  <!-- HTML Publisher -->
   <adapter
       for="*"
-      factory=".printview.PublicationObject"
+      factory=".adapters.Publisher"
       />
 
-  <!-- AnalysisRequest Publication Adapter -->
+  <!-- Publication Content Wrapper -->
   <adapter
       for="*"
-      name="AnalysisRequest"
-      factory=".printview.PublicationObject"
+      factory=".adapters.PublicationObject"
+      />
+
+  <!-- Template Options Provider -->
+  <adapter
+      for="zope.interface.Interface
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      factory=".adapters.TemplateOptionsProvider"
       />
 
   <!-- PrintView -->

@@ -1,4 +1,6 @@
-@page { margin: 0 }
+@page {
+    margin: 0;
+}
 
 body { margin: 0 }
 .report {
@@ -47,4 +49,9 @@ body.legal.landscape  .report { width: 357mm; height: 215mm }
   body.letter, body.legal    { width: 216mm }
   body.letter.landscape      { width: 280mm }
   body.legal.landscape       { width: 357mm }
+}
+
+.report .section-footer {
+    position: fixed;
+    bottom: 0;
 }

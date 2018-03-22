@@ -35,6 +35,7 @@ setup(
         'setuptools',
         'senaite.api',
         'senaite.core',
+        'beautifulsoup4',
     ],
     extras_require={
         'test': [

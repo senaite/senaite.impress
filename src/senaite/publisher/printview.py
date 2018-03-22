@@ -17,9 +17,9 @@ from senaite.publisher import logger
 from senaite.publisher.adapters import PublicationObject
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.decorators import returns_json
-from senaite.publisher.interfaces import IPrintView
-from weasyprint import HTML
-from weasyprint.compat import base64_encode
+from senaite.publisher.interfaces import (IPrintView, IPublisher,
+                                          ITemplateOptionsProvider)
+from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
@@ -44,18 +44,10 @@ class PrintView(BrowserView):
         # TODO: template must be dynamic
         template = ViewPageTemplateFile("templates/reports/default.pt")
 
-        portal = api.get_portal()
-        setup = portal.bika_setup
-        laboratory = setup.laboratory
-
-        options = {
-            "id": obj.getId(),
-            "uid": obj.UID(),
-            "portal": PublicationObject("0"),
-            "setup": PublicationObject(api.get_uid(setup)),
-            "laboratory": PublicationObject(api.get_uid(laboratory)),
-        }
-
+        # Get the template options
+        provider = getMultiAdapter((self.context, self.request),
+                                   ITemplateOptionsProvider)
+        options = provider.options
         return template(self, publication_object=obj, **options)
 
     def get_paperformats(self):
@@ -218,30 +210,18 @@ class ajaxPrintView(PrintView):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
         """
-        logger.info("ajax_load_preview")
+        # This is the html after it was rendered by the client browser and
+        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
+        # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
-        whtml = HTML(string=u"{}".format(html),
-                     base_url=api.get_portal().absolute_url())
+        # return html
 
-        portal_url = api.get_portal().absolute_url()
-        css_base_url = "{}/++resource++senaite.publisher.static/css".format(
-            portal_url)
-        print_css = "{}/print.css".format(css_base_url)
-        report_css = "{}/report.css".format(css_base_url)
+        publisher = IPublisher(html)
+        publisher.link_css_file("bootstrap.min.css")
+        publisher.link_css_file("print.css")
+        images = publisher.write_png(merge=True)
 
-        document = whtml.render(enable_hinting=True,
-                                stylesheets=[print_css, report_css])
-
-        logger.info("Rendering {} Pages".format(len(document.pages)))
-        images = []
-        for page in document.pages:
-            png_bytes, width, height = document.copy([page]).write_png()
-            data_url = 'data:image/png;base64,' + (
-                base64_encode(png_bytes).decode('ascii').replace('\n', ''))
-
-            img = """<div class='report' style='width: {0}px; height: {1}px'>
-                       <img src='{2}'/>
-                     </div>""".format(width, height, data_url)
-            images.append(img)
-
-        return images
+        preview = ""
+        for image in images:
+            preview += publisher.png_to_img(*image)
+        return preview

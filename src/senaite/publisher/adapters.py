@@ -6,14 +6,160 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import json
+import logging
+import os
+import time
 
+from bs4 import BeautifulSoup
 from DateTime import DateTime
+from plone.memoize import instance
 from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
-from senaite.publisher.interfaces import IPublicationObject
+from senaite.publisher.interfaces import (IPublicationObject, IPublisher,
+                                          ITemplateOptionsProvider)
+from weasyprint import HTML
+from weasyprint.compat import base64_encode
 from zope.component import queryAdapter
 from zope.interface import implements
+
+
+class Publisher(object):
+    """Publishes HTML into printable formats
+    """
+    implements(IPublisher)
+
+    css_class_report = "report"
+    css_class_header = "section-header"
+    css_class_footer = "section-footer"
+    css_resources = "++resource++senaite.publisher.static/css"
+
+    def __init__(self, html):
+        # Ignore WeasyPrint warnings for unknown CSS properties
+        logging.getLogger('weasyprint').setLevel(logging.ERROR)
+        self.html = html
+        self.css = []
+
+    def link_css_file(self, css_file):
+        """Link a CSS file
+        """
+        css = os.path.basename(css_file)
+        path = "{}/{}/{}".format(self.base_url, self.css_resources, css)
+        if path not in self.css:
+            self.css.append(path)
+
+    @property
+    def base_url(self):
+        """Portal Base URL
+        """
+        return api.get_portal().absolute_url()
+
+    def get_parser(self, html, parser="html.parser"):
+        """Returns a HTML parser instance
+        """
+        return BeautifulSoup(html, parser)
+
+    def get_reports(self):
+        """Returns a list of parsed reports
+        """
+        parser = self.get_parser(self.html)
+        reports = parser.find_all("div", class_=self.css_class_report)
+        return map(lambda report: report.prettify(), reports)
+
+    def parse_report_sections(self, report_html):
+        """Returns a dictionary of {header, report, footer}
+        """
+
+        parser = self.get_parser(report_html)
+        report = parser.find("div", class_=self.css_class_report)
+
+        header = report.find("div", class_=self.css_class_header)
+        if header is not None:
+            header = header.extract()
+
+        footer = report.find("div", class_=self.css_class_footer)
+        if footer is not None:
+            footer = footer.extract()
+
+        return {
+            "header": header.prettify(),
+            "report": report.prettify(),
+            "footer": footer.prettify(),
+        }
+
+    @instance.memoize
+    def _layout_and_paginate(self, html):
+        """Layout and paginate the given HTML into WeasyPrint `Document` objects
+
+        http://weasyprint.readthedocs.io/en/stable/api.html#python-api
+        """
+        start = time.time()
+        # Represents an HTML document parsed by html5lib.
+        html = HTML(string=html, base_url=self.base_url)
+        # Lay out and paginate the document
+        document = html.render(stylesheets=self.css)
+        end = time.time()
+        logger.info("Publisher::Layout step took {:.2f}s for {} pages"
+                    .format(end-start, len(document.pages)))
+        return document
+
+    def write_png(self, merge=False):
+        """Write PNGs from the given HTML
+        """
+        pages = []
+        reports = self.get_reports()
+        if merge:
+            reports = ["".join(reports)]
+
+        for report in reports:
+            document = self._layout_and_paginate(report)
+            for i, page in enumerate(document.pages):
+                # Render page to PNG
+                png_bytes, width, height = document.copy([page]).write_png()
+                # Append tuple of (png_bytes, width, height)
+                pages.append((png_bytes, width, height))
+
+        return pages
+
+    def png_to_img(self, png, width, height):
+        """Generate a data url image tag
+        """
+        data_url = 'data:image/png;base64,' + (
+            base64_encode(png).decode('ascii').replace('\n', ''))
+        img = """<div class='report' style='width: {0}px; height: {1}px'>
+                    <img src='{2}'/>
+                  </div>""".format(width, height, data_url)
+        return img
+
+
+class TemplateOptionsProvider(object):
+    """Provides options which can be passed into oage templates as keywords
+
+    In Zope Page Templates the keywords are then available in `options`:
+    https://docs.zope.org/zope2/zope2book/AppendixC.html#built-in-names
+    """
+    implements(ITemplateOptionsProvider)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    @property
+    def options(self):
+        """Template options dictionary
+        """
+
+        portal = api.get_portal()
+        setup = portal.bika_setup
+        laboratory = setup.laboratory
+
+        # Note: We wrap objects to Publication Objects to have a dictionary
+        #       like access to the provided fields and methods
+        return {
+            "portal": PublicationObject("0"),
+            "setup": PublicationObject(api.get_uid(setup)),
+            "laboratory": PublicationObject(api.get_uid(laboratory)),
+        }
 
 
 class PublicationObject(object):

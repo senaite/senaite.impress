@@ -20,79 +20,86 @@
                         reporter python:None;">
 
   <div class="row section-header">
-    <div class="col-sm-12 logo lab-logo">
+    <div class="col-sm-12 logo lab-logo pb-2">
       <a tal:attributes="href portal_url">
         <img style="max-width: 200px"
              tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
       </a>
     </div>
-
-    <div class="col-sm-12">
-      <hr/>
-      <div class="float-right text-center barcode-container">
-        <div class="barcode"
-             data-code="code128"
-             data-showHRI="true"
-             data-barHeight="15"
-             data-addQuietZone="true"
-             tal:attributes="data-id analysisrequest/id">
-        </div>
-      </div>
-    </div>
   </div>
 
-
   <div class="row section-info">
-    <div tal:define="accredited laboratory/LaboratoryAccredited;
-                     accreditation_logo laboratory/AccreditationBodyLogo"
-         tal:condition="accredited">
-      <img tal:condition="accreditation_logo"
-           tal:attributes="src accreditation_logo/absolute_url"/>
-      <img tal:condition="not:accreditation_logo"
-           tal:attributes="src python:view.get_image_resource('AccreditationBodyLogo.png')"/>
+    <div class="col-sm-12 pt-2">
+      <!-- Client Info -->
+      <table class="table">
+        <tr>
+          <td>
+            <address class="contact-address" tal:condition="contact">
+              <div class="client-fullname">
+                <div tal:replace="contact/Fullname|nothing"></div>
+              </div>
+              <div class="client-name font-weight-bold">
+                <div tal:replace="client/Name|nothing"></div>
+              </div>
+              <div class="client-email">
+                <a tal:content="contact/EmailAddress|nothing"
+                   tal:attributes="href string:mailto:${contact/EmailAddress}"></a>
+              </div>
+              <div class="client-phone">
+                <div tal:replace="contact/Phone|nothing"></div>
+                <div class="client-phone">
+                  <div tal:replace="contact/Fax|nothing"></div>
+                </div>
+              </div>
+            </address>
+          </td>
+          <td>
+            <!-- Laboratory Info -->
+            <address class="laboratory-address" tal:condition="laboratory">
+              <div class="lab-title font-weight-bold">
+                <div tal:replace="laboratory/title|nothing"/>
+              </div>
+              <div class="lab-address">
+              </div>
+              <div class="lab-url">
+                <a tal:attributes="href laboratory/LabURL"
+                   tal:content="laboratory/LabURL"></a>
+              </div>
+              <div class="lab-supervisor">
+                <div tal:replace="laboratory/Supervisor|nothing"/>
+              </div>
+            </address>
+
+            <div tal:define="accredited laboratory/LaboratoryAccredited;
+                             accreditation_logo laboratory/AccreditationBodyLogo"
+                 tal:condition="accredited">
+              <img tal:condition="accreditation_logo"
+                   tal:attributes="src accreditation_logo/absolute_url"/>
+              <img tal:condition="not:accreditation_logo"
+                   tal:attributes="src python:view.get_image_resource('AccreditationBodyLogo.png')"/>
+            </div>
+          </td>
+          <td>
+
+            <!-- Barcode -->
+            <div class="float-right text-center barcode-container">
+              <div class="barcode"
+                   data-code="code128"
+                   data-showHRI="true"
+                   data-barHeight="15"
+                   data-addQuietZone="true"
+                   tal:attributes="data-id analysisrequest/id">
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <div class="col-sm-6">
-      <address class="contact-address" tal:condition="contact">
-        <div class="client-fullname">
-          <div tal:replace="contact/Fullname|nothing"></div>
-        </div>
-        <div class="client-name font-weight-bold">
-          <div tal:replace="client/Name|nothing"></div>
-        </div>
-        <div class="client-email">
-          <a tal:content="contact/EmailAddress|nothing"
-             tal:attributes="href string:mailto:${contact/EmailAddress}"></a>
-        </div>
-        <div class="client-phone">
-          <div tal:replace="contact/Phone|nothing"></div>
-          <div class="client-phone">
-            <div tal:replace="contact/Fax|nothing"></div>
-          </div>
-        </div>
-      </address>
-    </div>
-
-    <div class="col-sm-6">
-      <address class="laboratory-address" tal:condition="laboratory">
-        <div class="lab-title font-weight-bold">
-          <div tal:replace="laboratory/title|nothing"/>
-        </div>
-        <div class="lab-address">
-        </div>
-        <div class="lab-url">
-          <a tal:attributes="href laboratory/LabURL"
-             tal:content="laboratory/LabURL"></a>
-        </div>
-        <div class="lab-supervisor">
-          <div tal:replace="laboratory/Supervisor|nothing"/>
-        </div>
-      </address>
-    </div>
   </div>
 
   <div class="alert alert-danger" tal:condition="invalid">
-    <h1 i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</h1>
+    <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
     <tal:invalidreport tal:define="child analysisrequest.ChildAnalysisRequest"
                        tal:condition="child">
       <span i18n:translate="">This Analysis request has been replaced by</span>
@@ -102,7 +109,7 @@
   </div>
 
   <div class="alert alert-danger" tal:condition="prepublish">
-    <h1 i18n:translate="">Provisional report</h1>
+    <div i18n:translate="">Provisional report</div>
   </div>
 
   <div class="row section-summary">
@@ -249,57 +256,47 @@
   </div>
 
   <div class="row section-discreeter">
-    <div class="col-sm-12 text-muted">
-      <small>
-        <div class="discreeter-outofrange" i18n:translate="">
-          * Result out of client specified range.
-        </div>
-        <div tal:condition="analysisrequest/InvoiceExclude" i18n:translate="">
-          Not invoiced
-        </div>
-        <div tal:condition="laboratory/LaboratoryAccredited" i18n:translate="">
-          Methods included in the
-          <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
-          schedule of Accreditation for this Laboratory. Analysis remarks are not
-          accredited
-        </div>
-        <div i18n:translate="">
-          Analysis results relate only to the samples tested.
-        </div>
-        <div i18n:translate="">
-          This document shall not be reproduced except in full, without the written approval of
-          <tal:block replace="laboratory/title" i18n:name="name_lab"/>
-        </div>
-        <div tal:define="confidence_level laboratory/Confidence"
-             tal:condition="confidence_level" i18n:translate="">
-          Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
-        </div>
-        <div tal:condition="python:contact and contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
-          Methods of analysis available by clicking on the 'Request' link
-        </div>
-      </small>
+    <div class="col-sm-12 text-muted font-weight-light small">
+      <div class="discreeter-outofrange"
+           i18n:translate="">
+        * Result out of client specified range.
+      </div>
+      <div class="discreeter-not-invoiced"
+           tal:condition="analysisrequest/InvoiceExclude"
+           i18n:translate="">
+        Not invoiced
+      </div>
+      <div class="discreeter-methods"
+           tal:condition="laboratory/LaboratoryAccredited"
+           i18n:translate="">
+        Methods included in the
+        <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+        schedule of Accreditation for this Laboratory. Analysis remarks are not
+        accredited
+      </div>
+      <div class="discreeter-disclaimer"
+           i18n:translate="">
+        Analysis results relate only to the samples tested.
+      </div>
+      <div class="discreeter-copyright"
+           i18n:translate="">
+        This document shall not be reproduced except in full, without the written approval of
+        <tal:block replace="laboratory/title" i18n:name="name_lab"/>
+      </div>
+      <div tal:define="confidence_level laboratory/Confidence"
+           tal:condition="confidence_level" i18n:translate="">
+        Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
+      </div>
+      <div class="discreeter-linkage"
+           tal:condition="python:contact and contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
+        Methods of analysis available by clicking on the 'Request' link
+      </div>
     </div>
   </div>
 
   <div class="row section-footer">
-    <div class="col-sm-12">
-
-      <table class="table table-sm">
-        <tr>
-          <td class="table-default">
-            <div class="footer" tal:content="structure setup/ResultFooter"></div>
-          </td>
-          <td class="barcode-container">
-            <div class="barcode"
-                 data-code="code128"
-                 data-showHRI="false"
-                 data-barHeight="12"
-                 data-addQuietZone="true"
-                 tal:attributes="data-id analysisrequest/id">
-            </div>
-          </td>
-        </tr>
-      </table>
+    <div class="container">
+      <div tal:replace="structure setup/ResultFooter"></div>
     </div>
   </div>
 

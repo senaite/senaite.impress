@@ -9,10 +9,20 @@ from zope.interface import Interface
 
 
 class IPrintView(Interface):
-    """Publisher Print View
+    """Printing controller view
+    """
+
+
+class ITemplateOptionsProvider(Interface):
+    """Provides a data dict which can be used for templates
     """
 
 
 class IPublicationObject(Interface):
-    """An object to be published
+    """The content to be published
+    """
+
+
+class IPublisher(Interface):
+    """HTML Publisher
     """
