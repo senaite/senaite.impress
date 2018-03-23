@@ -35,10 +35,10 @@
         tal:attributes="class string:${format/format} ${format/orientation}">
 
     <!-- Report preview images are rendered here -->
-    <div id="preview"></div>
+    <div id="preview" class="container"></div>
 
     <!-- Processed report HTML from the selected template -->
-    <div id="reports" style="display:none;">
+    <div id="reports" class="container" style="display:none;">
       <div tal:repeat="report view/reports"
            tal:attributes="id report/id;
                            uid report/UID;

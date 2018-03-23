@@ -34,6 +34,10 @@ CSS = Template("""/** Paper size **/
   width: ${page_height}mm;
   height: ${page_width}mm;
 }
+@media print {
+  .report.${format} { width: ${page_width}mm; }
+  .report.${format}.landscape { width: ${page_height}mm; }
+}
 """)
 
 
