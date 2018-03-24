@@ -7,8 +7,6 @@ class ReportView
   constructor: ->
     console.debug "ReportView::constructor"
     @preview = $("#preview")
-    @reports = $("#reports")
-
     base_url = document.URL.split('printview')[0]
     @url = "#{base_url}/ajax_printview/load_preview"
     return @
@@ -17,40 +15,51 @@ class ReportView
     ###
      * Flush the preview panel
     ###
-    @preview.empty()
+    @preview.fadeOut 500, ->
+      $(@).empty()
 
-  load: (html) =>
+  load: (options) =>
     ###
      * Return all report elements
     ###
 
-    params = document.URL.split("?")[1]
+    params = location.search.substring(1)
 
     $.ajax
       url: @url + "?#{params}"
       method: 'POST'
-      data:
-        html: html
+      data: options
       context: @
     .done (data) ->
       @preview.append data
       @preview.fadeIn()
 
-  render: =>
+  render: (options) =>
     ###
      * Render all reports
     ###
-    console.debug "ReportView:render: #{@reports.length} reports"
+    console.debug "ReportView:render"
     @flush()
-    @load @reports.html()
 
+    options ?= {}
+    options.orientation ?= "portrait"
+    options.format ?= "A4"
+    options.merge ?= false
+
+    cls = "report #{options.format} #{options.orientation}"
+    reports = $(".report")
+    reports.removeClass()
+    reports.addClass cls
+
+    options["html"] = $("#reports").html()
+    @load options
 
 
 $(document).ready ($) ->
   console.debug '*** SENAITE.PUBLISHER.PRINTVIEW Ready'
 
-  report_view = new ReportView()
-  report_view.render()
+  window.report_view = new ReportView()
+  window.report_view.render()
 
 
 #document.addEventListener("DOMContentLoaded", function() {
