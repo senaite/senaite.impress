@@ -6,6 +6,28 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import json
+import threading
+
+from senaite.publisher import logger
+
+
+def synchronized(func, max_connections=1):
+    """Synchronize function call via semaphore
+    """
+    semaphore = threading.BoundedSemaphore(max_connections)
+    logger.debug("Semaphore for {} -> {}".format(func, semaphore))
+
+    def decorator(*args, **kwargs):
+        try:
+            logger.info("==> {}::Acquire Semaphore ...".format(
+                func.__name__))
+            semaphore.acquire()
+            return func(*args, **kwargs)
+        finally:
+            logger.info("<== {}::Release Semaphore ...".format(
+                func.__name__))
+            semaphore.release()
+    return decorator
 
 
 def returns_json(func):
