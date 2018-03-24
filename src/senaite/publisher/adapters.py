@@ -165,7 +165,9 @@ class Publisher(object):
             document = self._layout_and_paginate(report)
             for i, page in enumerate(document.pages):
                 # Render page to PNG
-                png_bytes, width, height = document.copy([page]).write_png()
+                # What is the default DPI of the browser print dialog?
+                png_bytes, width, height = document.copy([page]).write_png(
+                    resolution=144)
                 # Append tuple of (png_bytes, width, height)
                 pages.append((png_bytes, width, height))
 

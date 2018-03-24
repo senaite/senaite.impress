@@ -16,6 +16,7 @@ class ReportView
      * Return all report elements
     ###
 
+
     params = location.search.substring(1)
 
     $.ajax
@@ -24,11 +25,31 @@ class ReportView
       data: options
       context: @
     .done (data) ->
+      if data == ""
+        data = "No reports found"
+      me = @
       @preview.fadeOut 500, ->
         el = $(@)
         el.empty()
         el.append data
         el.fadeIn()
+        me.set_css options
+
+  set_css: (options) =>
+    options ?= {}
+    options.orientation ?= $("#orientation").val()
+    options.format ?= $("#paperformats").val()
+
+    size_cls = "#{options.format} #{options.orientation}"
+    report_cls = "report #{size_cls}"
+
+    reports = $(".report")
+    reports.removeClass()
+    reports.addClass report_cls
+
+    body = $("body")
+    body.removeClass()
+    body.addClass size_cls
 
   render: (options) =>
     ###
@@ -37,35 +58,16 @@ class ReportView
     console.debug "ReportView:render"
 
     options ?= {}
-    options.orientation ?= "portrait"
-    options.format ?= "A4"
+    options.orientation ?= $("#orientation").val()
+    options.format ?= $("#paperformats").val()
     options.merge ?= false
-
-    cls = "report #{options.format} #{options.orientation}"
-    reports = $(".report")
-    reports.removeClass()
-    reports.addClass cls
-
-    options["html"] = $("#reports").html()
-    @load options
-
-  get_pdf: (options) =>
-
-    options ?= {}
-    options.orientation ?= "portrait"
-    options.format ?= "A4"
-    options.merge ?= false
+    @set_css options
     options.html = $("#reports").html()
 
-    $.ajax
-      url: @url + "/download_pdfs"
-      method: 'POST'
-      data: options
-      context: @
-    .done (data) ->
-      debugger
+    return @load(options)
 
 
+# Document Ready handler
 $(document).ready ($) ->
   console.debug '*** SENAITE.PUBLISHER.PRINTVIEW Ready'
 
@@ -73,45 +75,17 @@ $(document).ready ($) ->
   window.report_view.render()
 
   $("#download").on "click", (event) =>
-    console.log "DOWNLOAD"
     event.preventDefault()
-
     form = $("form[name='printform']")
+    report_view.set_css()
     html = $("#reports").html()
     $("input[name='html']").val html
-
     form.submit()
 
-#document.addEventListener("DOMContentLoaded", function() {
-#
-#  console.debug("DOM Content Loaded")
-#
-#  const html = document.getElementById("publisher")
-#  const url = document.URL.split("printview")[0] + "ajax_printview/process_html"
-#
-#  fetch(url, {
-#    method: "POST",
-#    body: {
-#      html: html
-#    }
-#  }).then((data) => {
-#
-#      debugger
-#  })
-#
-#
-#});
-# */
-#
-#import React from 'react';
-#import ReactDOM from 'react-dom';
-#
-#const container = document.getElementById('container');
-#
-#const app = (
-#    <div>
-#        <h1>JSX</h1>
-#        <span>My first JSX span!</span>
-#    </div>
-#);
-#ReactDOM.render(app, container); */
+  $("select#orientation").on "change", (event) =>
+    console.log "Orientation changed"
+    report_view.render()
+
+  $("select#paperformats").on "change", (event) =>
+    console.log "Paperformats changed"
+    report_view.render()

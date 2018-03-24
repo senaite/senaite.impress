@@ -11,7 +11,7 @@
 body { margin: 0 }
 .report {
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: relative;
   box-sizing: border-box;
   page-break-after: always;
@@ -20,6 +20,9 @@ body { margin: 0 }
   .report .section-footer {
     position: fixed;
     bottom: 0;
+  }
+  #printform {
+    display: none;
   }
 }
 /** For screen preview **/

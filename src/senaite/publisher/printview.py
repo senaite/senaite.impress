@@ -26,6 +26,13 @@ from zope.publisher.interfaces import IPublishTraverse
 
 CSS = Template("""/** Paper size **/
 @page { size: ${format} ${orientation} }
+
+.report {
+  padding-top: ${margin_top}mm;
+  padding-right: ${margin_right}mm;
+  padding-bottom: ${margin_bottom}mm;
+  padding-left: ${margin_left}mm;
+}
 .report.${format} {
   width: ${page_width}mm;
   height: ${page_height}mm;
