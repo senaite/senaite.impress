@@ -7,6 +7,8 @@
 
 from senaite.publisher import senaiteMessageFactory as _
 
+# Value of key `format` must match the allowed CSS size attribute:
+# https://developer.mozilla.org/en-US/docs/Web/CSS/@page/size
 PAPERFORMATS = {
     "A4": {
         "name": _("European A4"),
@@ -41,7 +43,7 @@ PAPERFORMATS = {
 
     "Letter": {
         "name": _("US Letter"),
-        "format": "Letter",
+        "format": "letter",
         "dpi": 96,
         "margin_top": 40.0,
         "margin_right": 7.0,

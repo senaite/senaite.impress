@@ -251,7 +251,8 @@ class ajaxPrintView(PrintView):
         publisher.link_css_file("bootstrap.min.css")
         publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
-        images = publisher.write_png(merge=True)
+        merge = self.request.get("merge", False)
+        images = publisher.write_png(merge=merge)
 
         preview = ""
         for image in images:

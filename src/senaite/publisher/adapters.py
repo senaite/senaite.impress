@@ -271,9 +271,9 @@ class PublicationObject(object):
         # Metadata lookup by accessor name
         value = getattr(self.brain, accessor_name, self.__empty_marker)
         if value is self.__empty_marker:
-            logger.info("Add metadata column '{}' to the catalog '{}' "
-                        "to increase performance!"
-                        .format(accessor_name, self.catalog.__name__))
+            logger.debug("Add metadata column '{}' to the catalog '{}' "
+                         "to increase performance!"
+                         .format(accessor_name, self.catalog.__name__))
             value = accessor()
 
         # Process value for publication

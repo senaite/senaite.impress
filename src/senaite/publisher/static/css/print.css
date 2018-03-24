@@ -8,27 +8,20 @@
     font-size: 9pt;
   }
 }
-
+body { margin: 0 }
+.report {
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  page-break-after: always;
+}
 @media print {
-  /* Needed for fixed content to appear on all pages */
-  html,
-  body {
-    margin: 0;
-    height: 100%;
-  }
-  .report {
-    margin: 0;
-    height: 100%;
-    position: relative;
-    box-sizing: border-box;
-    page-break-after: always;
-  }
   .report .section-footer {
     position: fixed;
     bottom: 0;
   }
 }
-
 /** For screen preview **/
 @media screen {
   body { background: #e0e0e0 }
