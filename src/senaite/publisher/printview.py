@@ -53,9 +53,11 @@ class PrintView(BrowserView):
         self.request = request
 
     def __call__(self):
-        self.uids = self.request.get("items", "").split(",")
+        self.uids = filter(None, self.request.get("items", "").split(","))
         self.css = CSS.substitute(self.paperformat)
         self.reports = map(lambda uid: PublicationObject(uid), self.uids)
+        if self.request.form.get("submitted", False):
+            return self.download()
         return self.template()
 
     def render_report(self, obj):
@@ -80,6 +82,29 @@ class PrintView(BrowserView):
             "orientation": orientation,
         })
         return paperformat
+
+    def download(self):
+        # This is the html after it was rendered by the client browser and
+        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
+        # N.B. It might also contain multiple reports!
+        html = self.request.form.get("html").decode("utf8")
+        css = CSS.substitute(self.paperformat)
+
+        publisher = IPublisher(html)
+        publisher.link_css_file("bootstrap.min.css")
+        publisher.link_css_file("print.css")
+        publisher.add_inline_css(css)
+        merge = self.request.get("merge") == "true"
+        pdf = publisher.write_pdf(merge=merge)
+
+        filename = "_".join(map(lambda r: r.getId(), self.reports))
+        self.request.response.setHeader(
+            "Content-Disposition", "attachment; filename=%s.pdf" % filename)
+        self.request.response.setHeader("Content-Type", "application/pdf")
+        self.request.response.setHeader("Content-Length", len(pdf))
+        self.request.response.setHeader("Cache-Control", "no-store")
+        self.request.response.setHeader("Pragma", "no-cache")
+        self.request.response.write(pdf)
 
     def get_paperformats(self):
         """Returns a mapping of available paper formats

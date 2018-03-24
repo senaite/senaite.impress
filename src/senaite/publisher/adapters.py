@@ -171,24 +171,6 @@ class Publisher(object):
 
         return pages
 
-    def write_pdf(self, merge=False):
-        """Write PDFs from the given HTML
-        """
-        pages = []
-        reports = self.get_reports()
-        if merge:
-            reports = ["".join(reports)]
-
-        for report in reports:
-            document = self._layout_and_paginate(report)
-            for i, page in enumerate(document.pages):
-                # Render page to PNG
-                png_bytes, width, height = document.copy([page]).write_png()
-                # Append tuple of (png_bytes, width, height)
-                pages.append((png_bytes, width, height))
-
-        return pages
-
     def png_to_img(self, png, width, height):
         """Generate a data url image tag
         """
@@ -198,6 +180,25 @@ class Publisher(object):
                     <img src='{2}'/>
                   </div>""".format(width, height, data_url)
         return img
+
+    def write_pdf(self, merge=False):
+        """Write PDFs from the given HTML
+        """
+        reports = self.get_reports()
+        if merge:
+            reports = ["".join(reports)]
+
+        pages = []
+        main_document = None
+        for n, report in enumerate(reports):
+            document = self._layout_and_paginate(report)
+            if n == 0:
+                main_document = document
+            pages.extend(document.pages)
+
+        # Render page to PDF
+        pdf = main_document.copy(pages).write_pdf()
+        return pdf
 
 
 class TemplateOptionsProvider(object):
