@@ -15,9 +15,6 @@
             href="print.css"
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
-      <!-- <style type="text/css"
-           tal:content="view/css">
-           </style> -->
     </tal:css>
 
     <!-- JavaScripts -->
@@ -35,49 +32,68 @@
         tal:attributes="class string:${format/format} ${format/orientation}">
 
     <div class="container">
-      <form id="printform"
-            name="printform"
-            method="post">
+      <div class="row">
+        <div class="col-sm">
+          <form id="printform"
+                name="printform"
+                method="post">
 
-        <div class="jumbotron">
-          <div class="form-group">
-            <div class="input-group">
-              <button id="download" class="btn btn-outline-success">Download</button>
-              <select class="custom-select" id="paperformats">
-                <tal:option tal:repeat="format python:view.get_paperformats().values()">
-                  <option tal:content="format/name"
-                          tal:attributes="value format/format;
-                                          selected python:format['format'] == 'A4'"></option>
-                </tal:option>
-              </select>
-              <div class="input-group-prepend">
-                <select class="custom-select" id="orientation">
-                  <option value="portrait" selected>Portrait</option>
-                  <option value="landscape">Landscape</option>
-                </select>
+            <input type="hidden" name="html" value="" />
+            <input type="hidden" name="submitted" value="1" />
+
+            <div class="jumbotron">
+              <div class="form-group">
+                <div class="input-group">
+                  <button id="download" class="btn btn-outline-success">Download</button>
+                  <select class="custom-select" name="format">
+                    <tal:option tal:repeat="format python:view.get_paperformats().values()">
+                      <option tal:content="format/name"
+                              tal:attributes="value format/format;
+                                           selected python:format['format'] == 'A4'"></option>
+                    </tal:option>
+                  </select>
+                  <div class="input-group-prepend">
+                    <select class="custom-select" name="orientation">
+                      <option value="portrait" selected>Portrait</option>
+                      <option value="landscape">Landscape</option>
+                    </select>
+                  </div>
+                </div>
               </div>
+            </div>
+
+          </form>
+        </div> <!-- column -->
+      </div> <!-- row -->
+
+    </div> <!-- /container -->
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-sm">
+          <!-- Report preview images are rendered here -->
+          <div id="preview" class="text-center" i18n:translate="">
+            Loading, please wait...
+          </div>
+        </div>
+      </div> <!-- /row -->
+
+      <div class="row">
+        <div class="col-sm-12">
+          <!-- Processed report HTML from the selected template -->
+          <div id="reports" style="display:none;">
+            <div tal:repeat="report view/reports"
+                 tal:attributes="id report/id;
+                             uid report/UID;
+                             class string:${format/format} ${format/orientation} report">
+              <div tal:replace="structure python:view.render_report(report)"/>
             </div>
           </div>
         </div>
+      </div> <!-- row -->
 
-        <input type="hidden" name="html" value="" />
-        <input type="hidden" name="submitted" value="1" />
-      </form>
-
-      <!-- Report preview images are rendered here -->
-      <div id="preview" class="text-center">Loading, please wait...</div>
-
-      <!-- Processed report HTML from the selected template -->
-      <div id="reports" style="display:none;">
-        <div tal:repeat="report view/reports"
-             tal:attributes="id report/id;
-                         uid report/UID;
-                         class string:${format/format} ${format/orientation} report">
-          <div tal:replace="structure python:view.render_report(report)"/>
-        </div>
-      </div>
-
-    </div>
+    </div> <!-- /container-fluid -->
 
   </body>
 </html>
