@@ -167,7 +167,7 @@ class Publisher(object):
                 # Render page to PNG
                 # What is the default DPI of the browser print dialog?
                 png_bytes, width, height = document.copy([page]).write_png(
-                    resolution=144)
+                    resolution=96)
                 # Append tuple of (png_bytes, width, height)
                 pages.append((png_bytes, width, height))
 
@@ -178,8 +178,8 @@ class Publisher(object):
         """
         data_url = 'data:image/png;base64,' + (
             base64_encode(png).decode('ascii').replace('\n', ''))
-        img = """<div class='report' style='width: {0}px; height: {1}px'>
-                    <img src='{2}'/>
+        img = """<div class='report'>
+                    <img src='{2}' style='width: {0}px; height: {1}px'/>
                   </div>""".format(width, height, data_url)
         return img
 
