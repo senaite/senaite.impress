@@ -25,12 +25,29 @@ from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
 CSS = Template("""/** Paper size **/
-@page { size: ${format} ${orientation} }
-.report.${format} {
+@page {
+  size: ${format} ${orientation};
+  margin: 0;
+
+  /* needed on every page */
   padding-top: ${margin_top}mm;
-  padding-right: ${margin_right}mm;
+  padding-right: 0;
   padding-bottom: ${margin_bottom}mm;
+  padding-left: 0;
+
+  /* Paging */
+  @bottom-right {
+    content: counter(page) "/" counter(pages);
+    margin-top: -${margin_top}mm;
+    margin-right: ${margin_right}mm;
+    margin-bottom: ${margin_bottom}mm;
+    padding: 0 2.5mm 0 2.5mm;
+    font-size: 9pt;
+  }
+}
+.report.${format} {
   padding-left: ${margin_left}mm;
+  padding-right: ${margin_right}mm;
 }
 .report.${format} {
   width: ${page_width}mm;
@@ -43,6 +60,12 @@ CSS = Template("""/** Paper size **/
 @media print {
   .report.${format} { width: ${page_width}mm; }
   .report.${format}.landscape { width: ${page_height}mm; }
+
+  .report .section-footer {
+    position: fixed;
+    bottom: -3mm; /* align with counter in bootom-right page box */
+    margin-right: ${margin_right}mm;
+  }
 }
 """)
 
