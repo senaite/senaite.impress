@@ -33,5 +33,6 @@ body { margin: 0 }
     /* box-shadow: 0 .5mm 2mm rgba(0,0,0,.3); */
     box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     margin: 5mm auto;
+    padding: 0!important; /* Avoid double padding in the screen view */
   }
 }
