@@ -41,7 +41,22 @@ PAPERFORMATS = {
         "header_spacing": 35.0,
     },
 
-    "Letter": {
+    "A6": {
+        "name": _("European A6"),
+        "format": "A6",
+        "dpi": 96,
+        "margin_top": 10.0,
+        "margin_right": 10.0,
+        "margin_bottom": 10.0,
+        "margin_left": 10.0,
+        "orientation": "portrait",
+        "page_width": 105.0,
+        "page_height": 148.0,
+        "header_line": False,
+        "header_spacing": 35.0,
+    },
+
+    "letter": {
         "name": _("US Letter"),
         "format": "letter",
         "dpi": 96,
