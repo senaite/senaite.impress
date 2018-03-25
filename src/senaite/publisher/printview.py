@@ -26,8 +26,7 @@ from zope.publisher.interfaces import IPublishTraverse
 
 CSS = Template("""/** Paper size **/
 @page { size: ${format} ${orientation} }
-
-.report {
+.report.${format} {
   padding-top: ${margin_top}mm;
   padding-right: ${margin_right}mm;
   padding-bottom: ${margin_bottom}mm;
@@ -80,10 +79,10 @@ class PrintView(BrowserView):
     @property
     def paperformat(self):
         paperformats = self.get_paperformats()
-        format = self.request.get("format")
+        format = self.request.form.get("format")
         if format not in paperformats:
             format = "A4"
-        orientation = self.request.get("orientation", "portrait")
+        orientation = self.request.form.get("orientation", "portrait")
         paperformat = paperformats.get(format)
         paperformat.update({
             "orientation": orientation,
@@ -99,9 +98,11 @@ class PrintView(BrowserView):
 
         publisher = IPublisher(html)
         publisher.link_css_file("bootstrap.min.css")
-        publisher.link_css_file("print.css")
+        # publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
         merge = self.request.get("merge") == "true"
+
+        logger.info("PDF CSS: {}".format(css))
         pdf = publisher.write_pdf(merge=merge)
 
         filename = "_".join(map(lambda r: r.getId(), self.reports))
@@ -284,9 +285,12 @@ class ajaxPrintView(PrintView):
         publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
         merge = self.request.get("merge") == "true"
+
+        logger.info("Preview CSS: {}".format(css))
         images = publisher.write_png(merge=merge)
 
         preview = ""
         for image in images:
             preview += publisher.png_to_img(*image)
+        preview += "<style type='text/css'>{}</style>".format(css)
         return preview
