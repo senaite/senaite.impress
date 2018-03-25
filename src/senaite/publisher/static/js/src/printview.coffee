@@ -37,8 +37,8 @@ class ReportView
 
   set_css: (options) =>
     options ?= {}
-    options.orientation ?= $("#orientation").val()
-    options.format ?= $("#paperformats").val()
+    options.orientation ?= $("[name='orientation']").val()
+    options.format ?= $("[name='format']").val()
 
     size_cls = "#{options.format} #{options.orientation}"
     report_cls = "report #{size_cls}"
@@ -56,10 +56,11 @@ class ReportView
      * Render all reports
     ###
     console.debug "ReportView:render"
+    @preview.empty()
 
     options ?= {}
-    options.orientation ?= $("#orientation").val()
-    options.format ?= $("#paperformats").val()
+    options.orientation ?= $("[name='orientation']").val()
+    options.format ?= $("[name='format']").val()
     options.merge ?= false
     @set_css options
     options.html = $("#reports").html()
@@ -82,10 +83,10 @@ $(document).ready ($) ->
     $("input[name='html']").val html
     form.submit()
 
-  $("select#orientation").on "change", (event) =>
+  $("select[name='orientation']").on "change", (event) =>
     console.log "Orientation changed"
     report_view.render()
 
-  $("select#paperformats").on "change", (event) =>
-    console.log "Paperformats changed"
+  $("select[name='format']").on "change", (event) =>
+    console.log "Paperformat changed"
     report_view.render()
