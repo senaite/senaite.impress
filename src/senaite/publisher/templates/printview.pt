@@ -45,8 +45,8 @@
               <p class="lead" i18n:translate="">
                 Print Report for
               </p>
-              <ul>
-                <li tal:repeat="report view/reports">
+              <ul class="list-inline">
+                <li class="list-inline-item" tal:repeat="report view/reports">
                   <a href=""
                      tal:attributes="href report/absolute_url">
                      <span tal:content="report/title"/>
@@ -58,7 +58,7 @@
                 <div class="input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text">
-                    <input type="checkbox" name="merge" />
+                    <input type="checkbox" name="merge" title="Merge" />
                   </div>
                 </div>
                   <select class="custom-select" name="format">
