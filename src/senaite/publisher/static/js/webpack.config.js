@@ -10,7 +10,7 @@ module.exports = {
 
   output: {
     filename: 'senaite.publisher.[name].js',
-    path: path.resolve(__dirname, './js'),
+    path: path.resolve(__dirname, './dist'),
   },
   module: {
     rules: [
