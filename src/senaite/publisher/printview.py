@@ -42,6 +42,8 @@ CSS = Template("""/** Paper size **/
     margin-right: ${margin_right}mm;
     font-size: 9pt;
   }
+
+  /* Footer */
   @bottom-left {
     content: "${footer}";
     margin-top: -${margin_top}mm;
@@ -130,7 +132,7 @@ class PrintView(BrowserView):
         publisher.link_css_file("bootstrap.min.css")
         # publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
-        merge = self.request.get("merge") == "true"
+        merge = self.request.get("merge") in ["on", "true", "yes", "1"]
 
         logger.info("PDF CSS: {}".format(css))
         pdf = publisher.write_pdf(merge=merge)
@@ -314,7 +316,7 @@ class ajaxPrintView(PrintView):
         publisher.link_css_file("bootstrap.min.css")
         publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
-        merge = self.request.get("merge") == "true"
+        merge = self.request.get("merge") in ["on", "true", "yes", "1"]
 
         logger.info("Preview CSS: {}".format(css))
         images = publisher.write_png(merge=merge)

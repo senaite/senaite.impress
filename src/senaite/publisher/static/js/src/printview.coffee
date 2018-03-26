@@ -16,7 +16,6 @@ class ReportView
      * Return all report elements
     ###
 
-
     params = location.search.substring(1)
 
     $.ajax
@@ -61,7 +60,7 @@ class ReportView
     options ?= {}
     options.orientation ?= $("[name='orientation']").val()
     options.format ?= $("[name='format']").val()
-    options.merge ?= false
+    options.merge ?= $("[name='merge']").val()
     @set_css options
     options.html = $("#reports").html()
 
@@ -89,4 +88,8 @@ $(document).ready ($) ->
 
   $("select[name='format']").on "change", (event) =>
     console.log "Paperformat changed"
+    report_view.render()
+
+  $("input[name='merge']").on "change", (event) =>
+    console.log "Merge changed"
     report_view.render()

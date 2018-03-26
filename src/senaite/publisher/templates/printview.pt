@@ -42,21 +42,38 @@
             <input type="hidden" name="submitted" value="1" />
 
             <div class="jumbotron">
+              <p class="lead" i18n:translate="">
+                Print Report for
+              </p>
+              <ul>
+                <li tal:repeat="report view/reports">
+                  <a href=""
+                     tal:attributes="href report/absolute_url">
+                     <span tal:content="report/title"/>
+                  </a>
+                </li>
+              </ul>
+              <hr class="my-4">
               <div class="form-group">
                 <div class="input-group">
-                  <button id="download" class="btn btn-outline-success">Download</button>
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" name="merge" />
+                  </div>
+                </div>
                   <select class="custom-select" name="format">
                     <tal:option tal:repeat="format python:view.get_paperformats().values()">
-                      <option tal:content="format/name"
+                      <option tal:content="string: ${format/name} (${format/page_width}mm x ${format/page_height}mm)"
                               tal:attributes="value format/format;
-                                           selected python:format['format'] == 'A4'"></option>
+                                              selected python:format['format'] == 'A4'"></option>
                     </tal:option>
                   </select>
-                  <div class="input-group-prepend">
-                    <select class="custom-select" name="orientation">
-                      <option value="portrait" selected>Portrait</option>
-                      <option value="landscape">Landscape</option>
-                    </select>
+                  <select class="custom-select" name="orientation">
+                    <option value="portrait" selected>Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                  <div class="input-group-append">
+                    <button id="download" class="btn btn-outline-secondary">Download</button>
                   </div>
                 </div>
               </div>
