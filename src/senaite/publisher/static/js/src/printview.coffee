@@ -58,9 +58,11 @@ class ReportView
     @preview.empty()
 
     options ?= {}
+
     options.orientation ?= $("[name='orientation']").val()
     options.format ?= $("[name='format']").val()
-    options.merge ?= $("[name='merge']").val()
+    options.merge ?= $("[name='merge']").prop("checked")
+
     @set_css options
     options.html = $("#reports").html()
 
