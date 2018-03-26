@@ -14,6 +14,7 @@ import time
 from bs4 import BeautifulSoup
 from DateTime import DateTime
 from plone.subrequest import subrequest
+from Products.CMFPlone.utils import safe_callable, safe_hasattr
 from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
@@ -369,7 +370,7 @@ class PublicationObject(object):
         elif isinstance(value, (dict)):
             return {k: self.process_value(v) for k, v in value.iteritems()}
         # Process function
-        elif callable(value):
+        elif safe_callable(value):
             return self.process_value(value())
         # Always return the unprocessed value last
         return value
@@ -508,13 +509,20 @@ class PublicationObject(object):
         # DateTime -> ISO8601 format
         elif isinstance(value, (DateTime)):
             return value.ISO8601()
+        # Image/Files -> filename
+        elif safe_hasattr(value, "filename"):
+            return value.filename
         # Dict -> convert_value_to_string
         elif isinstance(value, dict):
             return {k: self.stringify(v) for k, v in value.iteritems()}
         # List -> convert_value_to_string
         if isinstance(value, (list, tuple, LazyMap)):
             return map(self.stringify, value)
-        return str(value)
+        try:
+            return str(value)
+        except (AttributeError, TypeError, ValueError):
+            logger.warn("Could not convert {} to string".format(repr(value)))
+            return None
 
     def to_dict(self, converter=None):
         """Returns a copy dict of the current object
