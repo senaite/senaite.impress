@@ -40,8 +40,12 @@ CSS = Template("""/** Paper size **/
     content: counter(page) "/" counter(pages);
     margin-top: -${margin_top}mm;
     margin-right: ${margin_right}mm;
-    margin-bottom: ${margin_bottom}mm;
-    padding: 0 2.5mm 0 2.5mm;
+    font-size: 9pt;
+  }
+  @bottom-left {
+    content: "${footer}";
+    margin-top: -${margin_top}mm;
+    margin-left: ${margin_left}mm;
     font-size: 9pt;
   }
 }
@@ -60,12 +64,6 @@ CSS = Template("""/** Paper size **/
 @media print {
   .report.${format} { width: ${page_width}mm; }
   .report.${format}.landscape { width: ${page_height}mm; }
-
-  .report .section-footer {
-    position: fixed;
-    bottom: -3mm; /* align with counter in bootom-right page box */
-    margin-right: ${margin_right}mm;
-  }
 }
 """)
 
@@ -83,7 +81,6 @@ class PrintView(BrowserView):
 
     def __call__(self):
         self.uids = filter(None, self.request.get("items", "").split(","))
-        self.css = CSS.substitute(self.paperformat)
         self.reports = map(lambda uid: PublicationObject(uid), self.uids)
         if self.request.form.get("submitted", False):
             return self.download()
@@ -112,12 +109,22 @@ class PrintView(BrowserView):
         })
         return paperformat
 
+    @property
+    def css(self):
+        setup = api.get_portal().bika_setup
+        footer = setup.getResultFooter()
+        context = self.paperformat
+        context.update({
+            "footer": "{}".format(footer.replace("\r\n", "\A"))
+        })
+        return CSS.substitute(context)
+
     def download(self):
         # This is the html after it was rendered by the client browser and
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
-        css = CSS.substitute(self.paperformat)
+        css = self.css
 
         publisher = IPublisher(html)
         publisher.link_css_file("bootstrap.min.css")
@@ -301,7 +308,7 @@ class ajaxPrintView(PrintView):
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
-        css = CSS.substitute(self.paperformat)
+        css = self.css
 
         publisher = IPublisher(html)
         publisher.link_css_file("bootstrap.min.css")

@@ -79,8 +79,8 @@
                 <a tal:attributes="href laboratory/LabURL"
                    tal:content="laboratory/LabURL"></a>
               </div>
-              <div class="lab-supervisor">
-                <div tal:replace="laboratory/Supervisor|nothing"/>
+              <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
+                <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
               </div>
             </address>
 
@@ -292,12 +292,6 @@
            tal:condition="python:contact and contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
         Methods of analysis available by clicking on the 'Request' link
       </div>
-    </div>
-  </div>
-
-  <div class="row section-footer">
-    <div class="container">
-      <div tal:replace="structure setup/ResultFooter"></div>
     </div>
   </div>
 
