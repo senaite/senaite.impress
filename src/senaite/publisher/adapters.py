@@ -14,7 +14,7 @@ import time
 from bs4 import BeautifulSoup
 from DateTime import DateTime
 from plone.subrequest import subrequest
-from Products.CMFPlone.utils import safe_callable, safe_hasattr
+from Products.CMFPlone.utils import safe_callable, safe_hasattr, safe_unicode
 from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
@@ -360,6 +360,9 @@ class PublicationObject(object):
         # Content -> PublicationObject
         elif api.is_object(value):
             return self.get_publish_adapter_for_uid(api.get_uid(value))
+        # String -> Unicode
+        elif isinstance(value, basestring):
+            return safe_unicode(value)
         # DateTime -> DateTime
         elif isinstance(value, DateTime):
             return value
