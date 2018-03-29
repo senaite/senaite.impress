@@ -6,23 +6,21 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import inspect
-from collections import Iterable, defaultdict
-from operator import itemgetter
 from string import Template
 
-from Products.CMFPlone.i18nl10n import ulocalized_time
-from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
-from senaite.publisher import logger
-from senaite.publisher.adapters import PublicationObject
-from senaite.publisher.config import PAPERFORMATS
-from senaite.publisher.decorators import returns_json
-from senaite.publisher.interfaces import (IPrintView, IPublisher,
-                                          ITemplateOptionsProvider)
+from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.interface import implements
+from senaite.publisher import logger
+from senaite.publisher.config import PAPERFORMATS
 from zope.publisher.interfaces import IPublishTraverse
+from senaite.publisher.adapters import PublicationObject
+from senaite.publisher.decorators import returns_json
+from senaite.publisher.interfaces import IPrintView
+from senaite.publisher.interfaces import IPublisher
+from senaite.publisher.interfaces import IReportView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 CSS = Template("""/** Paper size **/
 @page {
@@ -88,15 +86,12 @@ class PrintView(BrowserView):
             return self.download()
         return self.template()
 
-    def render_report(self, obj):
-        # TODO: template must be dynamic
-        template = ViewPageTemplateFile("templates/reports/default.pt")
-
-        # Get the template options
-        provider = getMultiAdapter((self.context, self.request),
-                                   ITemplateOptionsProvider)
-        options = provider.options
-        return template(self, publication_object=obj, **options)
+    def render_report(self, uid):
+        context = PublicationObject(uid)
+        request = self.request
+        report = getMultiAdapter((context, request), IReportView,
+                                 name="reportview")
+        return report.render()
 
     @property
     def paperformat(self):
@@ -137,7 +132,7 @@ class PrintView(BrowserView):
         logger.info("PDF CSS: {}".format(css))
         pdf = publisher.write_pdf(merge=merge)
 
-        filename = "_".join(map(lambda r: r.getId(), self.reports))
+        filename = "_".join(map(lambda r: r.id, self.reports))
         self.request.response.setHeader(
             "Content-Disposition", "attachment; filename=%s.pdf" % filename)
         self.request.response.setHeader("Content-Type", "application/pdf")
@@ -151,52 +146,6 @@ class PrintView(BrowserView):
         """
         # Todo: Implement cascading lookup: client->registry->config
         return PAPERFORMATS
-
-    def get_image_resource(self, name, prefix="bika.lims.images"):
-        """Return the full image resouce URL
-        """
-        portal = api.get_portal()
-        portal_url = portal.absolute_url()
-
-        if not prefix:
-            return "{}/{}".format(portal_url, name)
-        return "{}/++resource++{}/{}".format(portal_url, prefix, name)
-
-    def to_localized_time(self, date, **kw):
-        """Converts the given date to a localized time string
-        """
-        # default options
-        options = {
-            "long_format": True,
-            "time_only": False,
-            "context": self.context,
-            "request": self.request,
-            "domain": "bika",
-        }
-        options.update(kw)
-        return ulocalized_time(date, **options)
-
-    def group_items_by(self, key, items):
-        """Group the items (mappings with dict interface) by the given key
-        """
-        if not isinstance(items, Iterable):
-            raise TypeError("Items must be iterable")
-        results = defaultdict(list)
-        for item in items:
-            group_key = item[key]
-            if callable(group_key):
-                group_key = group_key()
-            results[group_key].append(item)
-        return results
-
-    def sort_items_by(self, key, items, reverse=False):
-        """Sort the items (mappings with dict interface) by the given key
-        """
-        if not isinstance(items, Iterable):
-            raise TypeError("Items must be iterable")
-        if not callable(key):
-            key = itemgetter(key)
-        return sorted(items, key=key, reverse=reverse)
 
 
 class ajaxPrintView(PrintView):
@@ -310,6 +259,7 @@ class ajaxPrintView(PrintView):
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
+        return html
         css = self.css
 
         publisher = IPublisher(html)

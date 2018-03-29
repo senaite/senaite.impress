@@ -8,21 +8,21 @@
 from zope.interface import Interface
 
 
-class IPrintView(Interface):
-    """Printing controller view
-    """
-
-
-class ITemplateOptionsProvider(Interface):
-    """Provides a data dict which can be used for templates
-    """
-
-
 class IPublicationObject(Interface):
-    """The content to be published
+    """Model: Wraps a content to be published
+    """
+
+
+class IReportView(Interface):
+    """View: Renders a Publication Object
+    """
+
+
+class IPrintView(Interface):
+    """Controller: Publishes Reports
     """
 
 
 class IPublisher(Interface):
-    """HTML Publisher
+    """HTML -> PDF Publishing Engine
     """

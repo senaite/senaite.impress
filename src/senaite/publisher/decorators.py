@@ -8,7 +8,10 @@
 import json
 import threading
 
+from zope.component import queryAdapter
+from senaite.publisher.interfaces import IPublicationObject
 from senaite.publisher import logger
+from senaite import api
 
 
 def synchronized(func, max_connections=1):
@@ -39,4 +42,33 @@ def returns_json(func):
         request = getattr(instance, "request", None)
         request.response.setHeader("Content-Type", "application/json")
         return json.dumps(result)
+    return decorator
+
+
+def returns_publication_object(func):
+    """Wraps a returned object into a publication object
+    """
+    def decorator(*args, **kwargs):
+        obj = func(*args, **kwargs)
+
+        # avoid circular imports
+        from senaite.publisher.adapters import PublicationObject
+
+        # Object is already a Publication Object, return immediately
+        if isinstance(obj, PublicationObject):
+            return obj
+
+        # Only portal objects are supported
+        if not api.is_object(obj):
+            raise TypeError("Expected a portal object, got '{}'"
+                            .format(type(obj)))
+
+        # Wrap the object into a specific Publication Object Adapter
+        uid = api.get_uid(obj)
+        portal_type = api.get_portal_type(obj)
+
+        adapter = queryAdapter(uid, IPublicationObject, name=portal_type)
+        if adapter is None:
+            return PublicationObject(uid)
+        return adapter
     return decorator

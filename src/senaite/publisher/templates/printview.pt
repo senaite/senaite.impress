@@ -100,11 +100,10 @@
         <div class="col-sm-12">
           <!-- Processed report HTML from the selected template -->
           <div id="reports" style="display:none;">
-            <div tal:repeat="report view/reports"
-                 tal:attributes="id report/id;
-                             uid report/UID;
-                             class string:${format/format} ${format/orientation} report">
-              <div tal:replace="structure python:view.render_report(report)"/>
+            <div tal:repeat="uid view/uids"
+                 tal:attributes="uid uid;
+                                class string:${format/format} ${format/orientation} report">
+              <div tal:replace="structure python:view.render_report(uid)"/>
             </div>
           </div>
         </div>

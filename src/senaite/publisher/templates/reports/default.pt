@@ -1,27 +1,27 @@
-<tal:report tal:define="analysisrequest options/publication_object;
-                        states python: analysisrequest.getObjectWorkflowStates().values();
-                        invalid analysisrequest/isInvalid;
-                        valid_states python:['verified', 'published'];
-                        prepublish python:not invalid and not any(map(lambda s: s in valid_states, states));
-                        analyses analysisrequest/Analyses;
-                        an_by_poc python:view.group_items_by('PointOfCapture', analyses);
-                        an_by_cat python:view.group_items_by('getCategoryTitle', analyses);
-                        sample analysisrequest/Sample;
-                        batch analysisrequest/Batch;
-                        client analysisrequest/Client;
-                        specification analysisrequest/Specification;
-                        publication_specification analysisrequest/PublicationSpecification;
-                        specifications python:publication_specification or specification;
-                        contact analysisrequest/Contact;
-                        portal options/portal;
-                        portal_url portal/absolute_url;
-                        setup options/setup;
-                        laboratory options/laboratory;
-                        reporter python:None;">
+<tal:report define="analysisrequest view/context;
+                    states python: analysisrequest.getObjectWorkflowStates().values();
+                    invalid analysisrequest/isInvalid;
+                    valid_states python:['verified', 'published'];
+                    prepublish python:not invalid and not any(map(lambda s: s in valid_states, states));
+                    analyses analysisrequest/Analyses;
+                    an_by_poc python:view.group_items_by('PointOfCapture', analyses);
+                    an_by_cat python:view.group_items_by('getCategoryTitle', analyses);
+                    sample analysisrequest/Sample;
+                    batch analysisrequest/Batch;
+                    client analysisrequest/Client;
+                    specification analysisrequest/Specification;
+                    publication_specification analysisrequest/PublicationSpecification;
+                    specifications python:publication_specification or specification;
+                    contact analysisrequest/Contact;
+
+                    portal python:view.portal;
+                    laboratory python:view.laboratory;
+
+                    reporter python:None;">
 
   <div class="row section-header">
     <div class="col-sm-6 logo lab-logo pb-2">
-      <a tal:attributes="href portal_url">
+      <a tal:attributes="href portal/absolute_url">
         <img style="max-width: 200px"
              tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
       </a>
@@ -195,6 +195,7 @@
     <div class="col col-sm-12">
       <h1 i18n:translate="">Results</h1>
       <tal:poc tal:repeat="poc python:an_by_poc">
+        <h2 tal:content="poc"></h2>
         <tal:cat tal:repeat="cat python:view.sort_items_by(0, an_by_cat)">
           <table class="table table-sm"
                  tal:define="analyses_in_category python:view.sort_items_by('sortable_title', an_by_cat[cat])">
@@ -212,14 +213,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr tal:repeat="analysis analyses_in_category">
-                <td class="analysis" tal:condition="python:analysis.PointOfCapture == poc">
+              <tal:analyses repeat="analysis analyses_in_category">
+              <tr tal:condition="python: analysis.PointOfCapture == poc">
+                <td class="analysis">
                   <img tal:attributes="src python:view.get_image_resource('accredited.png')"
                        tal:condition="analysis/Accredited"
                        alt="accredited"
                        class="accredited-ico"/>
                   <span tal:condition="not:analysis/ScientificName"
-                        tal:content="analysis/title">
+                        tal:content="analysis/Title">
                     Total 25-OHD
                   </span>
                   <span tal:condition="analysis/ScientificName">
@@ -233,6 +235,7 @@
                   <span class="units" tal:content="structure analysis/Unit|nothing"></span>
                 </td>
               </tr>
+              </tal:analyses>
             </tbody>
             <tfoot>
               <tr>

@@ -7,23 +7,25 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
-  <!-- HTML Publisher -->
+  <!-- Publisher -->
   <adapter
       for="*"
-      factory=".adapters.Publisher"
+      factory=".publisher.Publisher"
       />
 
-  <!-- Publication Content Wrapper -->
+  <!-- Publication Object Wrapper -->
   <adapter
       for="*"
       factory=".adapters.PublicationObject"
       />
 
-  <!-- Template Options Provider -->
+  <!-- Report View -->
   <adapter
-      for="zope.interface.Interface
+      name="reportview"
+      for="senaite.publisher.interfaces.IPublicationObject
            zope.publisher.interfaces.browser.IBrowserRequest"
-      factory=".adapters.TemplateOptionsProvider"
+      factory="senaite.publisher.reportview.ReportView"
+      permission="zope2.View"
       />
 
   <!-- PrintView -->
