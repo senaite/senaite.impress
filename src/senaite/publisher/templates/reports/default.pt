@@ -236,8 +236,8 @@
                     <td class="text-right">
                       <span class="result" tal:content="structure analysis/getFormattedResult">23</span>
                     </td>
-                    <td class="text-left">
-                      <span class="units" tal:content="structure analysis/Unit|nothing"></span>
+                    <td class="text-left text-muted font-italic">
+                      <span class="units" tal:content="structure python: view.to_formatted_unit(analysis.Unit)"></span>
                     </td>
                   </tr>
                 </tal:analyses>

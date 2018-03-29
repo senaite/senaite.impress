@@ -7,12 +7,14 @@
 
 
 from collections import Iterable
-from collections import defaultdict
 from collections import OrderedDict
+from collections import defaultdict
 from operator import itemgetter
 
 from bika.lims import POINTS_OF_CAPTURE
-
+from bika.lims.utils import format_supsub
+from bika.lims.utils import formatDecimalMark
+from bika.lims.utils import to_utf8
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
@@ -123,6 +125,11 @@ class ReportView(object):
             return cmp(st1, st2)
 
         return sorted(items, cmp=_cmp, reverse=reverse)
+
+    def to_formatted_unit(self, unit):
+        """Return formatted Unit
+        """
+        return format_supsub(to_utf8(unit))
 
     def to_localized_time(self, date, **kw):
         """Converts the given date to a localized time string
