@@ -234,7 +234,7 @@
                       </span>
                     </td>
                     <td class="text-right">
-                      <span class="result" tal:content="structure analysis/Result">23</span>
+                      <span class="result" tal:content="structure analysis/getFormattedResult">23</span>
                     </td>
                     <td class="text-left">
                       <span class="units" tal:content="structure analysis/Unit|nothing"></span>
