@@ -14,8 +14,8 @@ from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
 from senaite.publisher import logger
+from senaite.publisher.decorators import returns_report_model
 from senaite.publisher.interfaces import IReportView
-from senaite.publisher.decorators import returns_publication_object
 from zope.interface import implements
 
 
@@ -37,17 +37,17 @@ class ReportView(object):
         return ViewPageTemplateFile("templates/reports/default.pt")
 
     @property
-    @returns_publication_object
+    @returns_report_model
     def portal(self):
         return api.get_portal()
 
     @property
-    @returns_publication_object
+    @returns_report_model
     def setup(self):
         return self.portal.bika_setup
 
     @property
-    @returns_publication_object
+    @returns_report_model
     def laboratory(self):
         return self.setup.laboratory
 

@@ -14,13 +14,13 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.Lazy import LazyMap
 from senaite import api
 from senaite.publisher import logger
-from senaite.publisher.interfaces import IPublicationObject
-from senaite.publisher.decorators import returns_publication_object
+from senaite.publisher.decorators import returns_report_model
+from senaite.publisher.interfaces import IReportModel
 from zope.interface import implements
 
 
-class PublicationObject(object):
-    """Publication Content Wrapper
+class ReportModel(object):
+    """Generic wrapper for content objects
 
     This wrapper exposes the schema fields of the wrapped content object as
     attributes. The schema field values are looked up by their accessors.
@@ -32,12 +32,12 @@ class PublicationObject(object):
     Note: Adapter lookup is done by `portal_type` name, e.g.:
 
     >>> portal_type = api.get_portal_type(self.context)
-    >>> adapter = queryAdapter(uid, IPublicationObject, name=portal_type)
+    >>> adapter = queryAdapter(uid, IReportModel, name=portal_type)
     """
-    implements(IPublicationObject)
+    implements(IReportModel)
 
     def __init__(self, uid):
-        logger.debug("PublicationObject({})".format(uid))
+        logger.debug("ReportModel({})".format(uid))
 
         self._uid = uid
         self._brain = None
@@ -139,12 +139,12 @@ class PublicationObject(object):
     def process_value(self, value):
         """Process publication value
         """
-        # UID -> PublicationObject
+        # UID -> ReportModel
         if self.is_uid(value):
-            return self.to_publication_object(value)
-        # Content -> PublicationObject
+            return self.to_report_model(value)
+        # Content -> ReportModel
         elif api.is_object(value):
-            return self.to_publication_object(value)
+            return self.to_report_model(value)
         # String -> Unicode
         elif isinstance(value, basestring):
             return safe_unicode(value)
@@ -174,7 +174,7 @@ class PublicationObject(object):
         """Content instance of the wrapped object
         """
         if self._instance is None:
-            logger.debug("PublicationObject::instance: *Wakup object*")
+            logger.debug("ReportModel::instance: *Wakup object*")
             self._instance = api.get_object(self.brain)
         return self._instance
 
@@ -183,7 +183,7 @@ class PublicationObject(object):
         """Catalog brain of the wrapped object
         """
         if self._brain is None:
-            logger.debug("PublicationObject::brain: *Fetch catalog brain*")
+            logger.debug("ReportModel::brain: *Fetch catalog brain*")
             self._brain = self.get_brain_by_uid(self.uid)
             # refetch the brain with the correct catalog
             results = self.catalog({"UID": self.uid})
@@ -196,7 +196,7 @@ class PublicationObject(object):
         """Primary registered catalog for the wrapped portal type
         """
         if self._catalog is None:
-            logger.debug("PublicationObject::catalog: *Fetch catalog*")
+            logger.debug("ReportModel::catalog: *Fetch catalog*")
             archetype_tool = api.get_tool("archetype_tool")
             portal_type = self.brain.portal_type
             catalogs = archetype_tool.getCatalogsByType(portal_type)
@@ -258,12 +258,15 @@ class PublicationObject(object):
             raise ValueError("Failed to get brain by UID")
         return results[0]
 
-    @returns_publication_object
-    def to_publication_object(self, thing):
-        """Wraps an object into a Publication Object
+    @returns_report_model
+    def to_report_model(self, thing):
+        """Wraps an object into a Report Model
         """
         if self.is_uid(thing):
             return self.get_brain_by_uid(thing)
+        if not api.is_object(thing):
+            raise TypeError("Expected a portal object, got '{}'"
+                            .format(type(thing)))
         return thing
 
     def is_valid(self):
@@ -289,8 +292,8 @@ class PublicationObject(object):
     def stringify(self, value):
         """Convert value to string
         """
-        # PublicationObject -> UID
-        if IPublicationObject.providedBy(value):
+        # ReportModel -> UID
+        if IReportModel.providedBy(value):
             return str(value)
         # DateTime -> ISO8601 format
         elif isinstance(value, (DateTime)):

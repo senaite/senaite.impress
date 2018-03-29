@@ -13,22 +13,22 @@
       factory=".publisher.Publisher"
       />
 
-  <!-- Publication Object Wrapper -->
+  <!-- Report Model -->
   <adapter
       for="*"
-      factory=".adapters.PublicationObject"
+      factory=".reportmodel.ReportModel"
       />
 
   <!-- Report View -->
   <adapter
       name="reportview"
-      for="senaite.publisher.interfaces.IPublicationObject
+      for="senaite.publisher.interfaces.IReportModel
            zope.publisher.interfaces.browser.IBrowserRequest"
       factory="senaite.publisher.reportview.ReportView"
       permission="zope2.View"
       />
 
-  <!-- PrintView -->
+  <!-- Report Controller View -->
   <browser:page
       name="printview"
       for="*"

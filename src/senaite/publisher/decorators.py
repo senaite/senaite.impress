@@ -9,7 +9,7 @@ import json
 import threading
 
 from zope.component import queryAdapter
-from senaite.publisher.interfaces import IPublicationObject
+from senaite.publisher.interfaces import IReportModel
 from senaite.publisher import logger
 from senaite import api
 
@@ -45,17 +45,17 @@ def returns_json(func):
     return decorator
 
 
-def returns_publication_object(func):
-    """Wraps a returned object into a publication object
+def returns_report_model(func):
+    """Wraps an object into a report model
     """
     def decorator(*args, **kwargs):
         obj = func(*args, **kwargs)
 
         # avoid circular imports
-        from senaite.publisher.adapters import PublicationObject
+        from senaite.publisher.reportmodel import ReportModel
 
         # Object is already a Publication Object, return immediately
-        if isinstance(obj, PublicationObject):
+        if isinstance(obj, ReportModel):
             return obj
 
         # Only portal objects are supported
@@ -67,8 +67,8 @@ def returns_publication_object(func):
         uid = api.get_uid(obj)
         portal_type = api.get_portal_type(obj)
 
-        adapter = queryAdapter(uid, IPublicationObject, name=portal_type)
+        adapter = queryAdapter(uid, IReportModel, name=portal_type)
         if adapter is None:
-            return PublicationObject(uid)
+            return ReportModel(uid)
         return adapter
     return decorator

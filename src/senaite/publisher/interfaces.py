@@ -8,18 +8,18 @@
 from zope.interface import Interface
 
 
-class IPublicationObject(Interface):
-    """Model: Wraps a content to be published
+class IReportModel(Interface):
+    """Report Model
     """
 
 
 class IReportView(Interface):
-    """View: Renders a Publication Object
+    """Report View
     """
 
 
 class IPrintView(Interface):
-    """Controller: Publishes Reports
+    """Print View
     """
 
 

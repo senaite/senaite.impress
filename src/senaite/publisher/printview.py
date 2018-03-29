@@ -8,19 +8,19 @@
 import inspect
 from string import Template
 
-from senaite import api
 from Products.Five import BrowserView
-from zope.component import getMultiAdapter
-from zope.interface import implements
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.config import PAPERFORMATS
-from zope.publisher.interfaces import IPublishTraverse
-from senaite.publisher.adapters import PublicationObject
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView
 from senaite.publisher.interfaces import IPublisher
 from senaite.publisher.interfaces import IReportView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from senaite.publisher.reportmodel import ReportModel
+from zope.component import getMultiAdapter
+from zope.interface import implements
+from zope.publisher.interfaces import IPublishTraverse
 
 CSS = Template("""/** Paper size **/
 @page {
@@ -81,13 +81,13 @@ class PrintView(BrowserView):
 
     def __call__(self):
         self.uids = filter(None, self.request.get("items", "").split(","))
-        self.reports = map(lambda uid: PublicationObject(uid), self.uids)
+        self.reports = map(lambda uid: ReportModel(uid), self.uids)
         if self.request.form.get("submitted", False):
             return self.download()
         return self.template()
 
     def render_report(self, uid):
-        context = PublicationObject(uid)
+        context = ReportModel(uid)
         request = self.request
         report = getMultiAdapter((context, request), IReportView,
                                  name="reportview")
@@ -233,7 +233,7 @@ class ajaxPrintView(PrintView):
         logger.info("ajaxPrintView::ajax_get_uid:UID={} args={}"
                     .format(uid, args))
 
-        wrapped = PublicationObject(uid)
+        wrapped = ReportModel(uid)
         if not wrapped.is_valid():
             return self.fail("No object found for UID '{}'"
                              .format(uid), status=404)
