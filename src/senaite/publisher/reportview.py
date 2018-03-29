@@ -8,7 +8,10 @@
 
 from collections import Iterable
 from collections import defaultdict
+from collections import OrderedDict
 from operator import itemgetter
+
+from bika.lims import POINTS_OF_CAPTURE
 
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -51,6 +54,39 @@ class ReportView(object):
     def laboratory(self):
         return self.setup.laboratory
 
+    @property
+    def points_of_capture(self):
+        items = POINTS_OF_CAPTURE.items()
+        return OrderedDict(items)
+
+    def get_analyses_by_poc(self):
+        """Returns a dictionary of POC -> Analyses
+        """
+        return self.group_items_by("getPointOfCapture", self.context.Analyses)
+
+    def get_analyses_in_poc(self, poc):
+        """Returns a sorted list of sorted Analyses in the given POC
+        """
+        return self.get_analyses_by_poc().get(poc)
+
+    def get_categories_in_poc(self, poc):
+        """Returns a list of sorted Categories in the given POC
+        """
+        an_in_poc = self.get_analyses_in_poc(poc)
+        categories = set(map(lambda an: an.Category, an_in_poc))
+        return self.sort_items(categories)
+
+    def get_analyses(self, poc=None, cat=None):
+        """Returns a sorted list of Analyses for the given POC which are in the
+        given Category
+        """
+        analyses = self.context.Analyses
+        if poc is not None:
+            analyses = filter(lambda an: an.PointOfCapture == poc, analyses)
+        if cat is not None:
+            analyses = filter(lambda an: an.Category == cat, analyses)
+        return self.sort_items(analyses)
+
     def group_items_by(self, key, items):
         """Group the items (mappings with dict interface) by the given key
         """
@@ -72,6 +108,21 @@ class ReportView(object):
         if not callable(key):
             key = itemgetter(key)
         return sorted(items, key=key, reverse=reverse)
+
+    def sort_items(self, items, reverse=False):
+        """Default sort which mixes in the sort key
+        """
+        def sortable_title(obj):
+            sort_key = obj.get("SortKey", 0.0)
+            title = obj.title
+            return u"{:010.3f}{}".format(sort_key, title)
+
+        def _cmp(obj1, obj2):
+            st1 = sortable_title(obj1)
+            st2 = sortable_title(obj2)
+            return cmp(st1, st2)
+
+        return sorted(items, cmp=_cmp, reverse=reverse)
 
     def to_localized_time(self, date, **kw):
         """Converts the given date to a localized time string

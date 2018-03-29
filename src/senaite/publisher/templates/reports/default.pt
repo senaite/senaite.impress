@@ -194,63 +194,68 @@
   <div class="row section-results">
     <div class="col col-sm-12">
       <h1 i18n:translate="">Results</h1>
-      <tal:poc tal:repeat="poc python:an_by_poc">
-        <h2 tal:content="poc"></h2>
-        <tal:cat tal:repeat="cat python:view.sort_items_by(0, an_by_cat)">
-          <table class="table table-sm"
-                 tal:define="analyses_in_category python:view.sort_items_by('sortable_title', an_by_cat[cat])">
-            <thead>
-              <tr>
-                <th class="analysis">
-                  <span tal:content="string:${cat}">Category</span>
-                </th>
-                <th class="text-right result">
-                  <span i18n:translate="">Result</span>
-                </th>
-                <th class="text-left unit">
-                  <span i18n:translate="">Unit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:analyses repeat="analysis analyses_in_category">
-              <tr tal:condition="python: analysis.PointOfCapture == poc">
-                <td class="analysis">
-                  <img tal:attributes="src python:view.get_image_resource('accredited.png')"
-                       tal:condition="analysis/Accredited"
-                       alt="accredited"
-                       class="accredited-ico"/>
-                  <span tal:condition="not:analysis/ScientificName"
-                        tal:content="analysis/Title">
-                    Total 25-OHD
-                  </span>
-                  <span tal:condition="analysis/ScientificName">
-                    <em tal:content="analysis/title"></em>
-                  </span>
-                </td>
-                <td class="text-right">
-                  <span class="result" tal:content="structure analysis/Result">23</span>
-                </td>
-                <td class="text-left">
-                  <span class="units" tal:content="structure analysis/Unit|nothing"></span>
-                </td>
-              </tr>
-              </tal:analyses>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td tal:attributes="colspan python:3"
-                    tal:define="category python:analyses_in_category[0].Category">
-                  <div class="category_comments"
-                       tal:content="python:category.Comments">
-                    Category Comments
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </tal:cat>
-      </tal:poc>
+
+      <!-- Point of Capture -->
+      <tal:analyses_by_poc tal:repeat="poc python:view.get_analyses_by_poc()">
+        <h2 tal:content="python:view.points_of_capture.get(poc)"></h2>
+
+        <!-- Analysis Category -->
+        <tal:categories_in_poc tal:repeat="category python:view.get_categories_in_poc(poc)">
+
+          <!-- Analysis in POC and Category -->
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th class="analysis">
+                    <span tal:content="category/Title">Category</span>
+                  </th>
+                  <th class="text-right result">
+                    <span i18n:translate="">Result</span>
+                  </th>
+                  <th class="text-left unit">
+                    <span i18n:translate="">Unit</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tal:analyses tal:repeat="analysis python:view.get_analyses(poc, category)">
+                  <tr>
+                    <td class="analysis">
+                      <img tal:attributes="src python:view.get_image_resource('accredited.png')"
+                           tal:condition="analysis/Accredited"
+                           alt="accredited"
+                           class="accredited-ico"/>
+                      <span tal:condition="not:analysis/ScientificName"
+                            tal:content="analysis/title">
+                        Total 25-OHD
+                      </span>
+                      <span tal:condition="analysis/ScientificName">
+                        <em tal:content="analysis/title"></em>
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <span class="result" tal:content="structure analysis/Result">23</span>
+                    </td>
+                    <td class="text-left">
+                      <span class="units" tal:content="structure analysis/Unit|nothing"></span>
+                    </td>
+                  </tr>
+                </tal:analyses>
+              </tbody>
+              <tfoot tal:define="category_comments python:category.Comments">
+                <tr tal:condition="category_comments">
+                  <td colspan="3">
+                    <div class="category_comments"
+                         tal:content="category_comments">
+                      Category Comments
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+
+        </tal:categories_in_poc>
+      </tal:analyses_by_poc>
     </div>
   </div>
 

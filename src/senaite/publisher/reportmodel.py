@@ -57,6 +57,9 @@ class ReportModel(object):
     def __hash__(self):
         return hash(self.uid)
 
+    def __eq__(self, other):
+        return self.uid == other.uid
+
     def __getitem__(self, key):
         value = self.get(key, self.__empty_marker)
         if value is not self.__empty_marker:
