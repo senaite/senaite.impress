@@ -43,15 +43,17 @@ class Publisher(object):
         """Link a CSS file
         """
         css_file = os.path.basename(css_file)
-        css = "{}/{}/{}".format(self.base_url, self.css_resources, css_file)
-        if css not in self.css:
-            self.css.append(css)
+        path = "{}/{}/{}".format(self.base_url, self.css_resources, css_file)
+        css = CSS(url=path, url_fetcher=self.url_fetcher,
+                  base_url=self.base_url)
+        self.css.append(css)
 
     def add_inline_css(self, css):
         """Add an inline CSS
         """
-        if css not in self.css:
-            self.css.append(css)
+        css = CSS(string=css, url_fetcher=self.url_fetcher,
+                  base_url=self.base_url)
+        self.css.append(css)
 
     @property
     def base_url(self):
@@ -101,9 +103,7 @@ class Publisher(object):
         # Lay out and paginate the document
         html = HTML(string=html, url_fetcher=self.url_fetcher,
                     base_url=self.base_url)
-        css = map(lambda css: CSS(css, url_fetcher=self.url_fetcher,
-                                  base_url=self.base_url), self.css)
-        document = html.render(stylesheets=css)
+        document = html.render(stylesheets=self.css)
         end = time.time()
         logger.info("Publisher::Layout step took {:.2f}s for {} pages"
                     .format(end-start, len(document.pages)))
