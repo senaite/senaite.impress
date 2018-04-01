@@ -290,6 +290,12 @@
     </div>
   </div>
 
+  <!--  REMARKS -->
+  <div class="row section-remarks" tal:condition="analysisrequest/Remarks">
+    <h1 i18n:translate="">Remarks</h1>
+    <p tal:content="structure analysisrequest/Remarks"></p>
+  </div>
+
   <div class="row section-signatures">
     <div class="col-sm-12">
     </div>
