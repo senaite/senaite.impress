@@ -316,6 +316,7 @@
   <div class="row section-attachments">
     <!-- AR Attachments -->
     <div class="col-sm-12">
+      <h1 i18n:translate="">Attachments</h1>
       <tal:ar_attachments define="ar_attachments analysisrequest/Attachment">
         <h4 i18n:translate="" tal:condition="ar_attachments">Analysis services attachments</h4>
         <div class="col-sm-12 attachment" tal:repeat="attachment python:view.sort_attachments(ar_attachments)">
