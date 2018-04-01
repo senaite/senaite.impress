@@ -70,6 +70,24 @@ class ReportView(object):
     def decimal_mark(self):
         return self.context.aq_parent.getDecimalMark()
 
+    @property
+    @returns_report_model
+    def departments(self):
+        return self.context.getDepartments()
+
+    @property
+    def resultsinterpretation(self):
+        ri_by_depts = self.context.ResultsInterpretationDepts
+
+        out = []
+        for ri in ri_by_depts:
+            dept = ri.get("uid", "")
+            title = getattr(dept, "title", "")
+            richtext = ri.get("richtext", "")
+            out.append({"title": title, "richtext": richtext})
+
+        return out
+
     def is_invalid(self):
         return self.context.isInvalid()
 

@@ -192,7 +192,7 @@
 
       <!-- Point of Capture -->
       <tal:analyses_by_poc tal:repeat="poc python:view.get_analyses_by_poc()">
-        <h2 tal:content="python:view.points_of_capture.get(poc)"></h2>
+        <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
 
         <!-- Analysis Category -->
         <tal:categories_in_poc tal:repeat="category python:view.get_categories_in_poc(poc)">
@@ -290,10 +290,22 @@
     </div>
   </div>
 
+  <!--  RESULTS INTERPRETATION -->
+  <div class="row section-resultsinterpretation"
+       tal:define="ris python:view.resultsinterpretation">
+    <h1 i18n:translate="">Results interpretation</h1>
+
+    <tal:ri repeat="ri ris">
+      <h4 tal:content="ri/title|nothing">Department</h4>
+      <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+    </tal:ri>
+
+  </div>
+
   <!--  REMARKS -->
   <div class="row section-remarks" tal:condition="analysisrequest/Remarks">
     <h1 i18n:translate="">Remarks</h1>
-    <p tal:content="structure analysisrequest/Remarks"></p>
+    <div class="text-info" tal:content="structure analysisrequest/Remarks"></div>
   </div>
 
   <div class="row section-signatures">

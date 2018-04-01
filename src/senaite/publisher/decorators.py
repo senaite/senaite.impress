@@ -48,9 +48,8 @@ def returns_json(func):
 def returns_report_model(func):
     """Wraps an object into a report model
     """
-    def decorator(*args, **kwargs):
-        obj = func(*args, **kwargs)
 
+    def to_report_model(obj):
         # avoid circular imports
         from senaite.publisher.reportmodel import ReportModel
 
@@ -71,4 +70,11 @@ def returns_report_model(func):
         if adapter is None:
             return ReportModel(uid)
         return adapter
+
+    def decorator(*args, **kwargs):
+        obj = func(*args, **kwargs)
+        if isinstance(obj, (list, tuple)):
+            return map(to_report_model, obj)
+        return to_report_model(obj)
+
     return decorator
