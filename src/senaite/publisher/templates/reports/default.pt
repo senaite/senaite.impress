@@ -198,70 +198,92 @@
         <tal:categories_in_poc tal:repeat="category python:view.get_categories_in_poc(poc)">
 
           <!-- Analysis in POC and Category -->
-            <table class="table table-sm">
-              <thead>
+          <table class="table table-sm">
+            <colgroup>
+              <!-- Category -->
+              <col style="width: 40%;">
+              <!-- Result -->
+              <col style="width: 30%">
+              <!-- Unit -->
+              <col style="width: 15%">
+              <!-- Range -->
+              <col style="width: 10%">
+              <!-- Out of Range -->
+              <col style="width: 5%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="analysis">
+                  <span tal:content="category/Title">Category</span>
+                </th>
+                <th class="text-right result">
+                  <span i18n:translate="">Result</span>
+                </th>
+                <th class="text-left unit">
+                  <span i18n:translate="">Unit</span>
+                </th>
+                <th class="specs">
+                  <span i18n:translate="">Range</span>
+                </th>
+                <th class="outofrange">
+                  <span i18n:translate=""></span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:analyses tal:repeat="analysis python:view.get_analyses(poc, category)">
                 <tr>
-                  <th class="analysis">
-                    <span tal:content="category/Title">Category</span>
-                  </th>
-                  <th class="filler"></th>
-                  <th class="text-right result">
-                    <span i18n:translate="">Result</span>
-                  </th>
-                  <th class="text-left unit">
-                    <span i18n:translate="">Unit</span>
-                  </th>
-                  <th class="outofrange">
-                    <span i18n:translate=""></span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tal:analyses tal:repeat="analysis python:view.get_analyses(poc, category)">
-                  <tr>
-                    <td class="analysis text-nowrap">
-                      <span class="text-success"
-                            style="font-family: sans;"
-                            tal:content="accredited_symbol"
-                            tal:condition="analysis/Accredited">
+                  <td class="analysis">
+                    <span class="text-success"
+                          style="font-family: sans;"
+                          tal:content="accredited_symbol"
+                          tal:condition="analysis/Accredited">
+                    </span>
+                    <span tal:condition="not:analysis/ScientificName"
+                          tal:content="analysis/title">
+                      Total 25-OHD
+                    </span>
+                    <span tal:condition="analysis/ScientificName">
+                      <span class="text-italic" tal:content="analysis/title"></span>
+                    </span>
+                  </td>
+                  <td class="text-right">
+                    <span class="result" tal:content="structure python:view.get_formatted_result(analysis)">23</span>
+                  </td>
+                  <td class="text-left text-muted font-italic">
+                    <span class="units" tal:content="structure python:view.get_formatted_unit(analysis)"></span>
+                  </td>
+                  <td class="specs">
+                    <span tal:condition="analysis/Uncertainty">
+                      <span tal:content="structure python:view.get_formatted_uncertainty(analysis)"></span>
+                      <span tal:content="python:'(RT)' if view.is_retested(analysis) else ''"></span>
+                      <span tal:content="python:view.get_formatted_specs(analysis)">50 - 60</span>
+                    </span>
+                  </td>
+                  <td class="text-center small align-middle">
+                    <span tal:condition="python:view.is_out_of_range(analysis)">
+                      <span class="outofrange text-danger"
+                            style="font-family:sans;"
+                            tal:content="outofrange_symbol">
                       </span>
-                      <span tal:condition="not:analysis/ScientificName"
-                            tal:content="analysis/title">
-                        Total 25-OHD
-                      </span>
-                      <span tal:condition="analysis/ScientificName">
-                        <em tal:content="analysis/title"></em>
-                      </span>
-                    </td>
-                    <td style="width:100%;"></td>
-                    <td class="text-right text-nowrap">
-                      <span class="result" tal:content="structure analysis/getFormattedResult">23</span>
-                    </td>
-                    <td class="text-left text-muted font-italic text-nowrap">
-                      <span class="units" tal:content="structure python: view.to_formatted_unit(analysis.Unit)"></span>
-                    </td>
-                    <td class="small">
-                      <span tal:condition="python:view.is_out_of_range(analysis)">
-                        <span class="outofrange align-middle text-danger"
-                              style="font-family:sans;"
-                              tal:content="outofrange_symbol">
-                        </span>
-                      </span>
-                    </td>
-                  </tr>
-                </tal:analyses>
-              </tbody>
-              <tfoot tal:define="category_comments python:category.Comments">
-                <tr tal:condition="category_comments">
-                  <td colspan="3">
-                    <div class="category_comments"
-                         tal:content="category_comments">
-                      Category Comments
-                    </div>
+                    </span>
                   </td>
                 </tr>
-              </tfoot>
-            </table>
+              </tal:analyses>
+            </tbody>
+
+            <tfoot tal:define="category_comments python:category.Comments">
+              <tr tal:condition="category_comments">
+                <td colspan="3">
+                  <div class="category_comments"
+                       tal:content="category_comments">
+                    Category Comments
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
 
         </tal:categories_in_poc>
       </tal:analyses_by_poc>

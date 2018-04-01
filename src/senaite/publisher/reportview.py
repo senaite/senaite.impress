@@ -14,6 +14,7 @@ from operator import itemgetter
 from bika.lims import POINTS_OF_CAPTURE
 from bika.lims.utils import format_supsub
 from bika.lims.utils import formatDecimalMark
+from bika.lims.utils.analysis import format_uncertainty
 from bika.lims.utils import to_utf8
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -61,6 +62,14 @@ class ReportView(object):
         user = api.get_current_user()
         return api.get_user_properties(user)
 
+    @property
+    def scientific_notation(self):
+        return int(self.setup.getScientificNotationReport())
+
+    @property
+    def decimal_mark(self):
+        return self.context.aq_parent.getDecimalMark()
+
     def is_invalid(self):
         return self.context.isInvalid()
 
@@ -76,9 +85,13 @@ class ReportView(object):
     def is_out_of_range(self, analysis):
         """Check if the analysis is out of range
         """
-        return True
         from bika.lims.api.analysis import is_out_of_range
         return is_out_of_range(analysis.instance)[0]
+
+    def is_retested(self, analysis):
+        """Check if the analysis is retested
+        """
+        return analysis.getRetested()
 
     @property
     def points_of_capture(self):
@@ -150,10 +163,39 @@ class ReportView(object):
 
         return sorted(items, cmp=_cmp, reverse=reverse)
 
-    def to_formatted_unit(self, unit):
+    def get_formatted_unit(self, analysis):
         """Return formatted Unit
         """
-        return format_supsub(to_utf8(unit))
+        return format_supsub(to_utf8(analysis.Unit))
+
+    def get_formatted_result(self, analysis):
+        """Return formatted result
+        """
+        return analysis.getFormattedResult(
+            specs=analysis.getResultsRange(),
+            sciformat=self.scientific_notation,
+            decimalmark=self.decimal_mark)
+
+    def get_formatted_uncertainty(self, analysis):
+        uncertainty = format_uncertainty(
+            analysis.instance,
+            analysis.getResult(),
+            decimalmark=self.decimal_mark,
+            sciformat=self.scientific_notation)
+        return "[&plusmn; {}]".format(uncertainty)
+
+    def get_formatted_specs(self, analysis):
+        specs = analysis.getResultsRange()
+        specs["min"] = 1
+        specs["max"] = 10
+        fs = ''
+        if specs.get('min', None) and specs.get('max', None):
+            fs = '%s - %s' % (specs['min'], specs['max'])
+        elif specs.get('min', None):
+            fs = '> %s' % specs['min']
+        elif specs.get('max', None):
+            fs = '< %s' % specs['max']
+        return formatDecimalMark(fs, self.decimal_mark)
 
     def to_localized_time(self, date, **kw):
         """Converts the given date to a localized time string
