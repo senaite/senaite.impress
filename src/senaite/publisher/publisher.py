@@ -50,7 +50,9 @@ class Publisher(object):
     def add_inline_css(self, css):
         """Add an inline CSS
         """
-        self.css.append(CSS(string=css, url_fetcher=self.url_fetcher))
+        css = CSS(string=css, url_fetcher=self.url_fetcher,
+                  base_url=self.base_url)
+        self.css.append(css)
 
     @property
     def base_url(self):
