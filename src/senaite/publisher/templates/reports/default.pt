@@ -1,23 +1,16 @@
 <tal:report define="analysisrequest view/context;
-                    states python: analysisrequest.getObjectWorkflowStates().values();
-                    invalid analysisrequest/isInvalid;
-                    valid_states python:['verified', 'published'];
-                    prepublish python:not invalid and not any(map(lambda s: s in valid_states, states));
-                    analyses analysisrequest/Analyses;
-                    an_by_poc python:view.group_items_by('PointOfCapture', analyses);
-                    an_by_cat python:view.group_items_by('getCategoryTitle', analyses);
+                    accredited_symbol string:★;
+                    outofrange_symbol string:⚠;
+                    portal python:view.portal;
+                    laboratory python:view.laboratory;
+                    reporter python:view.current_user;
                     sample analysisrequest/Sample;
                     batch analysisrequest/Batch;
                     client analysisrequest/Client;
                     specification analysisrequest/Specification;
                     publication_specification analysisrequest/PublicationSpecification;
                     specifications python:publication_specification or specification;
-                    contact analysisrequest/Contact;
-
-                    portal python:view.portal;
-                    laboratory python:view.laboratory;
-
-                    reporter python:None;">
+                    contact analysisrequest/Contact;">
 
   <div class="row section-header">
     <div class="col-sm-6 logo lab-logo pb-2">
@@ -99,7 +92,8 @@
 
   </div>
 
-  <div class="alert alert-danger" tal:condition="invalid">
+  <!-- ALERTS -->
+  <div class="alert alert-danger" tal:condition="view/is_invalid">
     <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
     <tal:invalidreport tal:define="child analysisrequest.ChildAnalysisRequest"
                        tal:condition="child">
@@ -109,10 +103,11 @@
     </tal:invalidreport>
   </div>
 
-  <div class="alert alert-danger" tal:condition="prepublish">
+  <div class="alert alert-danger" tal:condition="view/is_provisional">
     <div i18n:translate="">Provisional report</div>
   </div>
 
+  <!-- SUMMARY -->
   <div class="row section-summary">
     <div class="col col-sm-12">
       <h1 i18n:translate="">Summary</h1>
@@ -172,11 +167,10 @@
           <td class="label" i18n:translate="">Date Published</td>
           <td tal:content="python:view.to_localized_time(analysisrequest.DatePublished)">13.03.2018 13:35</td>
         </tr>
-
         <tr tal:condition="reporter">
           <td class="label" i18n:translate="">Published by</td>
           <td>
-            <tal:email tal:condition="reporter/email"
+            <tal:email tal:condition="reporter/email|nothing"
                        tal:define="email reporter/email">
               (<a tal:content="email"
                   tal:attributes="href string:mailto:${email}"></a>)
@@ -191,6 +185,7 @@
     </div>
   </div>
 
+  <!-- RESULTS -->
   <div class="row section-results">
     <div class="col col-sm-12">
       <h1 i18n:translate="">Results</h1>
@@ -209,22 +204,27 @@
                   <th class="analysis">
                     <span tal:content="category/Title">Category</span>
                   </th>
+                  <th class="filler"></th>
                   <th class="text-right result">
                     <span i18n:translate="">Result</span>
                   </th>
                   <th class="text-left unit">
                     <span i18n:translate="">Unit</span>
                   </th>
+                  <th class="outofrange">
+                    <span i18n:translate=""></span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tal:analyses tal:repeat="analysis python:view.get_analyses(poc, category)">
                   <tr>
-                    <td class="analysis">
-                      <img tal:attributes="src python:view.get_image_resource('accredited.png')"
-                           tal:condition="analysis/Accredited"
-                           alt="accredited"
-                           class="accredited-ico"/>
+                    <td class="analysis text-nowrap">
+                      <span class="text-success"
+                            style="font-family: sans;"
+                            tal:content="accredited_symbol"
+                            tal:condition="analysis/Accredited">
+                      </span>
                       <span tal:condition="not:analysis/ScientificName"
                             tal:content="analysis/title">
                         Total 25-OHD
@@ -233,11 +233,20 @@
                         <em tal:content="analysis/title"></em>
                       </span>
                     </td>
-                    <td class="text-right">
+                    <td style="width:100%;"></td>
+                    <td class="text-right text-nowrap">
                       <span class="result" tal:content="structure analysis/getFormattedResult">23</span>
                     </td>
-                    <td class="text-left text-muted font-italic">
+                    <td class="text-left text-muted font-italic text-nowrap">
                       <span class="units" tal:content="structure python: view.to_formatted_unit(analysis.Unit)"></span>
+                    </td>
+                    <td class="small">
+                      <span tal:condition="python:view.is_out_of_range(analysis)">
+                        <span class="outofrange align-middle text-danger"
+                              style="font-family:sans;"
+                              tal:content="outofrange_symbol">
+                        </span>
+                      </span>
                     </td>
                   </tr>
                 </tal:analyses>
@@ -266,9 +275,12 @@
 
   <div class="row section-discreeter">
     <div class="col-sm-12 text-muted font-weight-light small">
-      <div class="discreeter-outofrange"
-           i18n:translate="">
-        * Result out of client specified range.
+      <div class="discreeter-outofrange">
+        <span class="outofrange text-danger"
+              style="font-family:sans;"
+              tal:content="outofrange_symbol">
+        </span>
+        <span i18n:translate=""> Result out of client specified range.</span>
       </div>
       <div class="discreeter-not-invoiced"
            tal:condition="analysisrequest/InvoiceExclude"
@@ -276,12 +288,17 @@
         Not invoiced
       </div>
       <div class="discreeter-methods"
-           tal:condition="laboratory/LaboratoryAccredited"
-           i18n:translate="">
-        Methods included in the
-        <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
-        schedule of Accreditation for this Laboratory. Analysis remarks are not
-        accredited
+           tal:condition="laboratory/LaboratoryAccredited">
+        <span class="accredited-symbol text-success"
+              style="font-family:sans;"
+              tal:content="accredited_symbol">
+        </span>
+        <span class="" i18n:translate="">
+          Methods included in the
+          <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+          schedule of Accreditation for this Laboratory. Analysis remarks are not
+          accredited
+        </span>
       </div>
       <div class="discreeter-disclaimer"
            i18n:translate="">

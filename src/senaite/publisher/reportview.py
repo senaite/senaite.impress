@@ -57,6 +57,30 @@ class ReportView(object):
         return self.setup.laboratory
 
     @property
+    def current_user(self):
+        user = api.get_current_user()
+        return api.get_user_properties(user)
+
+    def is_invalid(self):
+        return self.context.isInvalid()
+
+    def is_provisional(self):
+        if self.is_invalid():
+            return True
+        valid_states = ['verified', 'published']
+        states = self.context.getObjectWorkflowStates().values()
+        if not any(map(lambda s: s in valid_states, states)):
+            return True
+        return False
+
+    def is_out_of_range(self, analysis):
+        """Check if the analysis is out of range
+        """
+        return True
+        from bika.lims.api.analysis import is_out_of_range
+        return is_out_of_range(analysis.instance)[0]
+
+    @property
     def points_of_capture(self):
         items = POINTS_OF_CAPTURE.items()
         return OrderedDict(items)
