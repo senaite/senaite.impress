@@ -182,7 +182,7 @@ class ReportView(object):
         """Default sort which mixes in the sort key
         """
         def sortable_title(obj):
-            sort_key = obj.get("SortKey", 0.0)
+            sort_key = obj.get("SortKey") or 0.0
             title = obj.title
             return u"{:010.3f}{}".format(sort_key, title)
 
