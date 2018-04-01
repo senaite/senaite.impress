@@ -12,6 +12,7 @@
                     specifications python:publication_specification or specification;
                     contact analysisrequest/Contact;">
 
+  <!-- HEADER -->
   <div class="row section-header">
     <div class="col-sm-6 logo lab-logo pb-2">
       <a tal:attributes="href portal/absolute_url">
@@ -32,9 +33,9 @@
         </div>
       </div>
     </div>
-
   </div>
 
+  <!-- INFO -->
   <div class="row section-info">
     <div class="col-sm-12 pt-2">
       <!-- Client Info -->
@@ -311,6 +312,40 @@
     </div>
   </div>
 
+  <!-- ATTACHMENTS -->
+  <div class="row section-attachments">
+    <!-- AR Attachments -->
+    <div class="col-sm-12">
+      <tal:ar_attachments define="ar_attachments analysisrequest/Attachment">
+        <h4 i18n:translate="" tal:condition="ar_attachments">Analysis services attachments</h4>
+        <div class="col-sm-12 attachment" tal:repeat="attachment python:view.sort_attachments(ar_attachments)">
+          <tal:render condition="python:attachment.ReportOption == 'r'">
+            <div class="pt-1 pb-1">
+              <img class="img-fluid"
+                   tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
+              <div class="text-secondary" tal:content="attachment/AttachmentKeys"/>
+            </div>
+          </tal:render>
+        </div>
+      </tal:ar_attachments>
+    </div>
+
+    <!-- Analysis Attachments -->
+    <div class="col-sm-12">
+      <tal:analyses repeat="analysis analysisrequest/Analyses">
+        <tal:attachments repeat="attachment python:view.sort_attachments(analysis.Attachment)">
+          <tal:render condition="python:attachment.ReportOption == 'r'">
+            <div class="pt-1 pb-1">
+              <img class="img-fluid"
+                   tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
+              <div class="text-secondary" tal:content="attachment/AttachmentKeys"/>
+            </div>
+          </tal:render>
+        </tal:attachments>
+      </tal:analyses>
+    </div>
+  </div>
+
   <!--  SIGNATURES -->
   <div class="row section-signatures">
     <div class="col-sm-12">
@@ -344,6 +379,7 @@
     </div>
   </div>
 
+  <!-- DISCREETER -->
   <div class="row section-discreeter">
     <div class="col-sm-12 text-muted font-weight-light small">
       <div class="discreeter-outofrange">

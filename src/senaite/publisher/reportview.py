@@ -250,3 +250,19 @@ class ReportView(object):
         if not prefix:
             return "{}/{}".format(portal_url, name)
         return "{}/++resource++{}/{}".format(portal_url, prefix, name)
+
+    def sort_attachments(self, attachments=[]):
+        """Attachment sorter
+        """
+        inf = float("inf")
+        view = self.context.restrictedTraverse("attachments_view")
+        order = view.get_attachments_order()
+
+        def att_cmp(att1, att2):
+            _n1 = att1.get('uid')
+            _n2 = att2.get('uid')
+            _i1 = _n1 in order and order.index(_n1) + 1 or inf
+            _i2 = _n2 in order and order.index(_n2) + 1 or inf
+            return cmp(_i1, _i2)
+
+        return sorted(attachments, cmp=att_cmp)
