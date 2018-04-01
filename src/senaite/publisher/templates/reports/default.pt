@@ -293,23 +293,50 @@
   <!--  RESULTS INTERPRETATION -->
   <div class="row section-resultsinterpretation"
        tal:define="ris python:view.resultsinterpretation">
-    <h1 i18n:translate="">Results interpretation</h1>
+    <div class="col-sm-12">
+      <h1 i18n:translate="">Results interpretation</h1>
 
-    <tal:ri repeat="ri ris">
-      <h4 tal:content="ri/title|nothing">Department</h4>
-      <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
-    </tal:ri>
-
+      <tal:ri repeat="ri ris">
+        <h4 tal:content="ri/title|nothing">Department</h4>
+        <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+      </tal:ri>
+    </div>
   </div>
 
   <!--  REMARKS -->
   <div class="row section-remarks" tal:condition="analysisrequest/Remarks">
-    <h1 i18n:translate="">Remarks</h1>
-    <div class="text-info" tal:content="structure analysisrequest/Remarks"></div>
+    <div class="col-sm-12">
+      <h1 i18n:translate="">Remarks</h1>
+      <div class="text-info" tal:content="structure analysisrequest/Remarks"></div>
+    </div>
   </div>
 
   <div class="row section-signatures">
     <div class="col-sm-12">
+      <h1 i18n:translate="">Responsibles</h1>
+      <tal:manager repeat="manager python:view.managers">
+        <address>
+          <div>
+            <img tal:condition="manager/Signature"
+                 tal:attributes="src string:${manager/absolute_url}/Signature" style="height:75px"/>
+          </div>
+          <div>
+            <span tal:content="manager/Salutation">Mr.</span>
+          </div>
+          <div>
+            <span tal:content="manager/Fullname">Joe Black</span>
+          </div>
+          <div>
+            <span tal:content="manager/JobTitle">Manager</span>
+          </div>
+          <div>
+            <span tal:content="manager/EmailAddress">jb@example.com</span>
+          </div>
+          <div>
+            <span tal:content="manager/BusinessPhone">012-345-678-9</span>
+          </div>
+        </address>
+      </tal:manager>
     </div>
   </div>
 

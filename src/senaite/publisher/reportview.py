@@ -76,6 +76,18 @@ class ReportView(object):
         return self.context.getDepartments()
 
     @property
+    def managers(self):
+        out = []
+        for dept in self.departments:
+            manager = dept.Manager
+            if not manager:
+                continue
+            if manager in out:
+                continue
+            out.append(manager)
+        return out
+
+    @property
     def resultsinterpretation(self):
         ri_by_depts = self.context.ResultsInterpretationDepts
 
