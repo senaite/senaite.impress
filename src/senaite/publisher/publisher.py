@@ -42,10 +42,12 @@ class Publisher(object):
     def link_css_file(self, css_file):
         """Link a CSS file
         """
-        css = os.path.basename(css_file)
-        path = "{}/{}/{}".format(self.base_url, self.css_resources, css)
+        css_file = os.path.basename(css_file)
+        path = "{}/{}/{}".format(self.base_url, self.css_resources, css_file)
         if path not in self.css:
-            self.css.append(path)
+            css = CSS(url=path, url_fetcher=self.url_fetcher,
+                      base_url=self.base_url)
+            self.css.append(css)
 
     def add_inline_css(self, css):
         """Add an inline CSS
