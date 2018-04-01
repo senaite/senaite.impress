@@ -311,11 +311,12 @@
     </div>
   </div>
 
+  <!--  SIGNATURES -->
   <div class="row section-signatures">
     <div class="col-sm-12">
       <h1 i18n:translate="">Responsibles</h1>
       <tal:manager repeat="manager python:view.managers">
-        <address>
+        <address class-col-sm-4>
           <div>
             <img tal:condition="manager/Signature"
                  tal:attributes="src string:${manager/absolute_url}/Signature" style="height:75px"/>
@@ -334,6 +335,9 @@
           </div>
           <div>
             <span tal:content="manager/BusinessPhone">012-345-678-9</span>
+          </div>
+          <div>
+            <span tal:content="manager/DefaultDepartment/title|nothing"></span>
           </div>
         </address>
       </tal:manager>
