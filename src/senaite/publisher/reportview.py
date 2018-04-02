@@ -183,7 +183,7 @@ class ReportView(object):
         """
         def sortable_title(obj):
             sort_key = obj.get("SortKey") or 0.0
-            title = obj.title
+            title = obj.title.lower()
             return u"{:010.3f}{}".format(sort_key, title)
 
         def _cmp(obj1, obj2):
