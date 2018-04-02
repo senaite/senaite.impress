@@ -278,12 +278,11 @@
                           tal:content="accredited_symbol"
                           tal:condition="analysis/Accredited">
                     </span>
-                    <span tal:condition="not:analysis/ScientificName"
-                          tal:content="analysis/title">
-                      Total 25-OHD
+                    <span tal:condition="not:analysis/ScientificName">
+                      <span class="font-weight-normal" tal:content="analysis/title"></span>
                     </span>
                     <span tal:condition="analysis/ScientificName">
-                      <span class="text-italic" tal:content="analysis/title"></span>
+                      <span class="font-italic" tal:content="analysis/title"></span>
                     </span>
                   </td>
                   <td class="text-right">
