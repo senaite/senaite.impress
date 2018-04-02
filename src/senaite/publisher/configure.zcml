@@ -1,8 +1,9 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="senaite">
 
   <five:registerPackage package="." initialize=".initialize"/>
@@ -42,6 +43,12 @@
       name="ajax_printview"
       class=".printview.ajaxPrintView"
       permission="zope.Public"
+      />
+
+  <!-- Report resource directory -->
+  <plone:static
+      directory="templates/reports"
+      type="senaite.publisher.reports"
       />
 
   <!-- Static resource directory -->

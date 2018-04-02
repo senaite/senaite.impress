@@ -46,9 +46,9 @@
             <input type="hidden" name="submitted" value="1" />
 
             <div class="jumbotron">
-              <p class="lead" i18n:translate="">
+              <div class="lead" i18n:translate="">
                 Print Report for
-              </p>
+              </div>
               <ul class="list-inline">
                 <li class="list-inline-item" tal:repeat="report view/reports">
                   <a href=""
@@ -57,14 +57,30 @@
                   </a>
                 </li>
               </ul>
+
+              <!-- Margin 4 on top and bottom -->
               <hr class="my-4">
+
               <div class="form-group">
+
                 <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" name="merge" title="Merge" />
+
+                  <!-- Merge Checkbox -->
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input type="checkbox" name="merge" title="Merge" />
+                    </div>
                   </div>
-                </div>
+
+                  <!-- Template -->
+                  <select class="custom-select" name="template">
+                    <tal:option tal:repeat="template python:view.get_templates()">
+                      <option tal:content="python:template[0]"
+                              tal:attributes="value python:template[1]"></option>
+                    </tal:option>
+                  </select>
+
+                  <!-- Paper Format -->
                   <select class="custom-select" name="format">
                     <tal:option tal:repeat="format python:view.get_paperformats().values()">
                       <option tal:content="string: ${format/name} (${format/page_width}mm x ${format/page_height}mm)"
@@ -72,13 +88,18 @@
                                               selected python:format['format'] == 'A4'"></option>
                     </tal:option>
                   </select>
+
+                  <!-- Orientation -->
                   <select class="custom-select" name="orientation">
                     <option value="portrait" selected>Portrait</option>
                     <option value="landscape">Landscape</option>
                   </select>
+
+                  <!-- Download Button -->
                   <div class="input-group-append">
                     <button id="download" class="btn btn-outline-secondary">Download</button>
                   </div>
+
                 </div>
               </div>
             </div>
