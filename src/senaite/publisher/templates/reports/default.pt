@@ -141,7 +141,7 @@
     </tal:invalidreport>
   </div>
 
-  <div class="alert alert-danger" tal:condition="view/is_provisional">
+  <div class="alert alert-info" tal:condition="view/is_provisional">
     <div i18n:translate="">Provisional report</div>
   </div>
 
