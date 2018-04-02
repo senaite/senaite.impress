@@ -133,19 +133,14 @@ class ReportView(object):
         """
         return self.group_items_by("getPointOfCapture", self.context.Analyses)
 
-    def get_analyses_in_poc(self, poc):
-        """Returns a sorted list of sorted Analyses in the given POC
-        """
-        return self.get_analyses_by_poc().get(poc)
-
     def get_categories_in_poc(self, poc):
         """Returns a list of sorted Categories in the given POC
         """
-        an_in_poc = self.get_analyses_in_poc(poc)
+        an_in_poc = self.get_analyses_by_poc().get(poc)
         categories = set(map(lambda an: an.Category, an_in_poc))
         return self.sort_items(categories)
 
-    def get_analyses(self, poc=None, cat=None):
+    def get_analyses(self, poc=None, cat=None, include_hidden=False):
         """Returns a sorted list of Analyses for the given POC which are in the
         given Category
         """
@@ -154,6 +149,8 @@ class ReportView(object):
             analyses = filter(lambda an: an.PointOfCapture == poc, analyses)
         if cat is not None:
             analyses = filter(lambda an: an.Category == cat, analyses)
+        if not include_hidden:
+            analyses = filter(lambda an: not an.Hidden, analyses)
         return self.sort_items(analyses)
 
     def group_items_by(self, key, items):
