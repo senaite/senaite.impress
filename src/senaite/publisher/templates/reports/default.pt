@@ -10,6 +10,7 @@
                     specification analysisrequest/Specification;
                     publication_specification analysisrequest/PublicationSpecification;
                     specifications python:publication_specification or specification;
+                    qcanalyses python: analysisrequest.getQCAnalyses(['verified', 'published']);
                     contact analysisrequest/Contact;">
 
   <!-- HEADER -->
@@ -337,6 +338,13 @@
         <h4 tal:content="ri/title|nothing">Department</h4>
         <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
       </tal:ri>
+    </div>
+  </div>
+
+  <!-- QC RESULTS -->
+  <div class="row section-results" tal:condition="qcanalyses">
+    <div class="col col-sm-12">
+      <h1 i18n:translate="">QC Results</h1>
     </div>
   </div>
 
