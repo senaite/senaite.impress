@@ -1,8 +1,10 @@
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      i18n:domain="senaite" >
+      i18n:domain="senaite" lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title i18n:translate="">Print Preview</title>
 
     <!-- CSS -->
