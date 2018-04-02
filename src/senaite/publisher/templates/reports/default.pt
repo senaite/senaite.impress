@@ -14,7 +14,8 @@
 
   <!-- HEADER -->
   <div class="row section-header">
-    <div class="col-sm-6 logo lab-logo pb-2">
+
+    <div class="col-sm-6 logo lab-logo">
       <a tal:attributes="href portal/absolute_url">
         <img style="max-width: 200px"
              tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
@@ -37,60 +38,96 @@
 
   <!-- INFO -->
   <div class="row section-info">
-    <div class="col-sm-12 pt-2">
+    <div class="col-sm-12">
       <!-- Client Info -->
-      <table class="table">
+      <table class="table table-sm">
+        <colgroup>
+          <!-- Client Address -->
+          <col style="width: 40%;">
+          <!-- Lab Address -->
+          <col style="width: 40%">
+          <!-- Accreditation Logo -->
+          <col style="width: 20%">
+        </colgroup>
         <tr>
           <td>
-            <address class="contact-address" tal:condition="contact">
-              <div class="client-fullname">
-                <div tal:replace="contact/Fullname|nothing"></div>
-              </div>
+            <address class="client-address">
               <div class="client-name font-weight-bold">
                 <div tal:replace="client/Name|nothing"></div>
               </div>
-              <div class="client-email">
+              <div class="contact-fullname">
+                <div tal:replace="contact/Fullname|nothing"></div>
+              </div>
+              <div class="client-street">
+                <div tal:replace="client/PostalAddress/address|nothing"></div>
+              </div>
+              <span class="client-zip">
+                <div tal:replace="client/PostalAddress/zip|nothing"></div>
+              </span>
+              <span class="client-city">
+                <div tal:replace="client/PostalAddress/city|nothing"></div>
+              </span>
+              <div class="client-country">
+                <div tal:replace="client/PostalAddress/country|nothing"></div>
+              </div>
+              <div class="contact-email">
                 <a tal:content="contact/EmailAddress|nothing"
                    tal:attributes="href string:mailto:${contact/EmailAddress}"></a>
               </div>
-              <div class="client-phone">
+              <div class="contact-phone">
                 <div tal:replace="contact/Phone|nothing"></div>
-                <div class="client-phone">
-                  <div tal:replace="contact/Fax|nothing"></div>
-                </div>
+              </div>
+              <div class="contact-fax">
+                <div tal:replace="contact/Fax|nothing"></div>
               </div>
             </address>
           </td>
           <td>
             <!-- Laboratory Info -->
-            <address class="laboratory-address" tal:condition="laboratory">
+            <address class="laboratory-address">
               <div class="lab-title font-weight-bold">
                 <div tal:replace="laboratory/title|nothing"/>
               </div>
+              <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
+                <span i18n:translate="">Supervisor</span>:
+                <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
+              </div>
               <div class="lab-address">
+                <div class="lab-street">
+                  <div tal:replace="laboratory/PostalAddress/address|nothing"></div>
+                </div>
+                <span class="lab-zip">
+                  <div tal:replace="laboratory/PostalAddress/zip|nothing"></div>
+                </span>
+                <span class="lab-city">
+                  <div tal:replace="laboratory/PostalAddress/city|nothing"></div>
+                </span>
+                <div class="lab-country">
+                  <div tal:replace="laboratory/PostalAddress/country|nothing"></div>
+                </div>
               </div>
               <div class="lab-url">
                 <a tal:attributes="href laboratory/LabURL"
                    tal:content="laboratory/LabURL"></a>
               </div>
-              <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
-                <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
-              </div>
             </address>
-
-            <div tal:define="accredited laboratory/LaboratoryAccredited;
+          </td>
+          <td>
+            <div class="accreditation-logo text-left"
+                 tal:define="accredited laboratory/LaboratoryAccredited;
                              accreditation_logo laboratory/AccreditationBodyLogo"
                  tal:condition="accredited">
-              <img tal:condition="accreditation_logo"
+              <img class="img-fluid"
+                   tal:condition="accreditation_logo"
                    tal:attributes="src accreditation_logo/absolute_url"/>
-              <img tal:condition="not:accreditation_logo"
+              <img class="img-fluid"
+                   tal:condition="not:accreditation_logo"
                    tal:attributes="src python:view.get_image_resource('AccreditationBodyLogo.png')"/>
             </div>
           </td>
         </tr>
       </table>
     </div>
-
   </div>
 
   <!-- ALERTS -->
@@ -319,7 +356,7 @@
       <h1 i18n:translate="">Attachments</h1>
       <tal:ar_attachments define="ar_attachments analysisrequest/Attachment">
         <h4 i18n:translate="" tal:condition="ar_attachments">Analysis services attachments</h4>
-        <div class="col-sm-12 attachment" tal:repeat="attachment python:view.sort_attachments(ar_attachments)">
+        <div class="attachment" tal:repeat="attachment python:view.sort_attachments(ar_attachments)">
           <tal:render condition="python:attachment.ReportOption == 'r'">
             <div class="pt-1 pb-1">
               <img class="img-fluid"
