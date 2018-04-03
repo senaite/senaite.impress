@@ -63,7 +63,8 @@ class ReportView(object):
         return {
             "id": self.context.getId(),
             "uid": self.context.UID(),
-            "user": json.dumps(self.current_user),
+            # XXX temporary piggypack solution to handle DateTime objects right
+            "user": json.dumps(self.context.stringify(self.current_user)),
             "api": {
                 "report": self.get_api_url(self.context),
                 "setup": self.get_api_url(self.setup),
