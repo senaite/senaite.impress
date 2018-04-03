@@ -82,7 +82,6 @@ class PrintView(BrowserView):
         super(BrowserView, self).__init__(context, request)
         self.context = context
         self.request = request
-        self.templateutil = TemplateUtility()
 
     def __call__(self):
         self.uids = filter(None, self.request.get("items", "").split(","))
@@ -96,6 +95,9 @@ class PrintView(BrowserView):
         request = self.request
         report = getMultiAdapter((context, request), IReportView,
                                  name="reportview")
+        template = self.request.get("template")
+        if template:
+            report.set_template(template)
         return report.render()
 
     @property
@@ -155,7 +157,8 @@ class PrintView(BrowserView):
     def get_templates(self, extensions=[".pt", ".html"]):
         """Returns a sorted list of template/path pairs
         """
-        templates = self.templateutil.get_templates(extensions=extensions)
+        finder = getUtility(ITemplateFinder)
+        templates = finder.get_templates(extensions=extensions)
         return sorted(templates, key=itemgetter(0))
 
 
@@ -262,6 +265,15 @@ class ajaxPrintView(PrintView):
         """
         return self.pick(self.get_paperformats(), *args)
 
+    def ajax_render_reports(self, *args):
+        """Renders all reports and returns the html
+        """
+        reports = []
+        uids = filter(None, self.request.get("items", "").split(","))
+        for uid in uids:
+            reports.append(self.render_report(uid))
+        return reports
+
     def ajax_load_preview(self):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
@@ -270,6 +282,7 @@ class ajaxPrintView(PrintView):
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
         html = self.request.form.get("html").decode("utf8")
+        return html
         css = self.css
 
         publisher = IPublisher(html)

@@ -4,13 +4,12 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-   "printview": path.resolve(__dirname, './src/printview.coffee'),
-   "barcodes": path.resolve(__dirname, './src/barcodes.coffee')
+   "printview": path.resolve(__dirname, './src/printview.coffee')
   },
 
   output: {
     filename: 'senaite.publisher.[name].js',
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, './dist')
   },
   module: {
     rules: [

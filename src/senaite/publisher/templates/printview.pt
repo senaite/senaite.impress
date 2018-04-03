@@ -23,9 +23,6 @@
     <tal:js define="portal context/@@plone_portal_state/portal;">
       <script type="text/javascript"
               src="senaite.publisher.printview.js"
-              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.barcodes.js"></script>
-      <script type="text/javascript"
-              src="senaite.publisher.printview.js"
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
     </tal:js>
   </head>
@@ -123,11 +120,9 @@
         <div class="col-sm-12">
           <!-- Processed report HTML from the selected template -->
           <div id="reports" style="display:none;">
-            <div tal:repeat="uid view/uids"
-                 tal:attributes="uid uid;
-                                 class string:${format/format} ${format/orientation} report">
+            <tal:reports repeat="uid view/uids">
               <div tal:replace="structure python:view.render_report(uid)"/>
-            </div>
+            </tal:reports>
           </div>
         </div>
       </div> <!-- row -->

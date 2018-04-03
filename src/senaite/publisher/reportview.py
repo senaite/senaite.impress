@@ -5,17 +5,19 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
-
+import json
+import os
 from collections import Iterable
 from collections import OrderedDict
 from collections import defaultdict
 from operator import itemgetter
+from string import Template
 
 from bika.lims import POINTS_OF_CAPTURE
 from bika.lims.utils import format_supsub
 from bika.lims.utils import formatDecimalMark
-from bika.lims.utils.analysis import format_uncertainty
 from bika.lims.utils import to_utf8
+from bika.lims.utils.analysis import format_uncertainty
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
@@ -23,6 +25,15 @@ from senaite.publisher import logger
 from senaite.publisher.decorators import returns_report_model
 from senaite.publisher.interfaces import IReportView
 from zope.interface import implements
+
+TEMPLATE = Template("""<!-- Report Template ${id} -->
+<div class="report" id="${id}" uid="${uid}">
+  <script type="text/javascript">
+    console.log("*** BEFORE TEMPLATE RENDER ${id} ***");
+  </script>
+  ${template}
+</div>
+""")
 
 
 class ReportView(object):
@@ -34,13 +45,55 @@ class ReportView(object):
         logger.info("ReportView::__init__:context={}".format(context.id))
         self.context = context
         self.request = request
+        self.template = self.default_template
 
     def render(self, **kw):
-        return self.template(self, **kw)
+        if self.is_page_template():
+            template = ViewPageTemplateFile(self.template)(self, **kw)
+        else:
+            with open(self.template, "r") as template:
+                template = template.read()
+
+        context = self.template_context
+        template = Template(template).safe_substitute(context)
+        return TEMPLATE.safe_substitute(context, template=template)
 
     @property
-    def template(self):
-        return ViewPageTemplateFile("templates/reports/default.pt")
+    def template_context(self):
+        return {
+            "id": self.context.getId(),
+            "uid": self.context.UID(),
+            "user": json.dumps(self.current_user),
+            "api": {
+                "report": self.get_api_url(self.context),
+                "setup": self.get_api_url(self.setup),
+                "laboratory": self.get_api_url(self.laboratory),
+            }
+        }
+
+    def get_api_url(self, reportmodel):
+        """Returns the API URL for the passed in object
+        """
+        info = {
+            "uid": reportmodel.UID(),
+            "endpoint": "ajax_printview",
+            "action": "get",
+            "base_url": self.portal.absolute_url(),
+        }
+        return "{base_url}/{endpoint}/{action}/{uid}".format(**info)
+
+    def is_page_template(self):
+        _, ext = os.path.splitext(self.template)
+        if ext in [".pt", ".zpt"]:
+            return True
+        return False
+
+    def set_template(self, template):
+        self.template = template
+
+    @property
+    def default_template(self):
+        return "templates/reports/default.pt"
 
     @property
     @returns_report_model

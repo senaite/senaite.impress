@@ -45,3 +45,9 @@ class TemplateFinder(object):
                 template_path = os.path.join(path, content)
                 templates.append((template, template_path))
         return templates
+
+    def get_template(self, name, default=None):
+        """Returns the template path by name
+        """
+        templates = self.get_templates()
+        return templates.get(name, default)
