@@ -6,11 +6,9 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import inspect
-import os
 from operator import itemgetter
 from string import Template
 
-from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
@@ -20,10 +18,13 @@ from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView
 from senaite.publisher.interfaces import IPublisher
 from senaite.publisher.interfaces import IReportView
+from senaite.publisher.interfaces import ITemplateFinder
 from senaite.publisher.reportmodel import ReportModel
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
+
 
 CSS = Template("""/** Paper size **/
 @page {
@@ -69,41 +70,6 @@ CSS = Template("""/** Paper size **/
   .report.${format}.landscape { width: ${page_height}mm; }
 }
 """)
-
-
-class TemplateUtility(object):
-    """
-    """
-    def __init__(self, type="senaite.publisher.reports"):
-        self.type = type
-
-    @property
-    def resources(self):
-        out = []
-        for resource in iterDirectoriesOfType(self.type):
-            out.append({
-                "name": resource.__name__,
-                "path": resource.directory,
-                "contents": resource.listDirectory(),
-            })
-        return out
-
-    def get_templates(self, extensions=[".pt", ".html"]):
-        templates = []
-        for resource in self.resources:
-            name = resource["name"]
-            path = resource["path"]
-            contents = resource["contents"] or []
-            for content in contents:
-                basename, ext = os.path.splitext(content)
-                if ext not in extensions:
-                    continue
-                template = content
-                if name:
-                    template = u"{}:{}".format(name, content)
-                template_path = os.path.join(path, content)
-                templates.append((template, template_path))
-        return templates
 
 
 class PrintView(BrowserView):

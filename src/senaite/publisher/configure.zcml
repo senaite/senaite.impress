@@ -11,13 +11,13 @@
   <!-- Publisher -->
   <adapter
       for="*"
-      factory=".publisher.Publisher"
+      factory="senaite.publisher.publisher.Publisher"
       />
 
   <!-- Report Model -->
   <adapter
       for="*"
-      factory=".reportmodel.ReportModel"
+      factory="senaite.publisher.reportmodel.ReportModel"
       />
 
   <!-- Report View -->
@@ -33,7 +33,7 @@
   <browser:page
       name="printview"
       for="*"
-      class=".printview.PrintView"
+      class="senaite.publisher.printview.PrintView"
       permission="zope2.View"
       />
 
@@ -41,9 +41,14 @@
   <browser:page
       for="*"
       name="ajax_printview"
-      class=".printview.ajaxPrintView"
+      class="senaite.publisher.printview.ajaxPrintView"
       permission="zope.Public"
       />
+
+  <!-- Template Finder Utility -->
+  <utility
+      provides="senaite.publisher.interfaces.ITemplateFinder"
+      factory="senaite.publisher.utilities.TemplateFinder" />
 
   <!-- Report resource directory -->
   <plone:static

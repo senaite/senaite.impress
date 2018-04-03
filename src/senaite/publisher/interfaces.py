@@ -26,3 +26,8 @@ class IPrintView(Interface):
 class IPublisher(Interface):
     """HTML -> PDF Publishing Engine
     """
+
+
+class ITemplateFinder(Interface):
+    """Utility to find template resources
+    """
