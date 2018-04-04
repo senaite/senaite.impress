@@ -22,12 +22,20 @@
 
   <!-- Report View -->
   <adapter
-      name="reportview"
-      for="senaite.publisher.interfaces.IReportModel
-           zope.publisher.interfaces.browser.IBrowserRequest"
+      for="senaite.publisher.interfaces.IPrintView"
       factory="senaite.publisher.reportview.ReportView"
+      provides="senaite.publisher.interfaces.IReportView"
       permission="zope2.View"
       />
+
+  <!-- Multi Report View -->
+  <adapter
+      for="senaite.publisher.interfaces.IPrintView"
+      factory="senaite.publisher.reportview.MultiReportView"
+      provides="senaite.publisher.interfaces.IMultiReportView"
+      permission="zope2.View"
+      />
+
 
   <!-- Report Controller View -->
   <browser:page

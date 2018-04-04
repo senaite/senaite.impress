@@ -6,7 +6,7 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import inspect
-from operator import itemgetter
+import os
 from string import Template
 
 from Products.Five import BrowserView
@@ -18,9 +18,10 @@ from senaite.publisher.decorators import returns_json
 from senaite.publisher.interfaces import IPrintView
 from senaite.publisher.interfaces import IPublisher
 from senaite.publisher.interfaces import IReportView
+from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import ITemplateFinder
 from senaite.publisher.reportmodel import ReportModel
-from zope.component import getMultiAdapter
+from zope.component import getAdapter
 from zope.component import getUtility
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -82,23 +83,58 @@ class PrintView(BrowserView):
         super(BrowserView, self).__init__(context, request)
         self.context = context
         self.request = request
+        self._uids = []
+        self._reports = []
 
     def __call__(self):
-        self.uids = filter(None, self.request.get("items", "").split(","))
-        self.reports = map(lambda uid: ReportModel(uid), self.uids)
         if self.request.form.get("submitted", False):
             return self.download()
         return self.template()
 
-    def render_report(self, uid):
-        context = ReportModel(uid)
-        request = self.request
-        report = getMultiAdapter((context, request), IReportView,
-                                 name="reportview")
-        template = self.request.get("template")
-        if template:
-            report.set_template(template)
-        return report.render()
+    @property
+    def uids(self):
+        """Parse the UIDs from the request `items` parameter
+        """
+        if not self._uids:
+            self._uids = filter(None, self.request.get("items", "").split(","))
+        return self._uids
+
+    @property
+    def reports(self):
+        """Wraps the UIDs from the request `items` parameter to ReportModels
+        """
+        if not self._reports:
+            self._reports = map(lambda uid: ReportModel(uid), self.uids)
+        return self._reports
+
+    def render_reports(self):
+        """Render Single/Multi Reports to HTML
+        """
+        htmls = []
+        reports = self.reports
+        template = self.get_report_template()
+        if self.is_multi_template(template):
+            # render multi report
+            html = self.render_multi_report(reports, template)
+            htmls.append(html)
+        else:
+            for report in reports:
+                # render single report
+                html = self.render_report(report, template)
+                htmls.append(html)
+        return "\n".join(htmls)
+
+    def render_report(self, report, template):
+        """Render a ReportModel to HTML
+        """
+        reportview = getAdapter(self, IReportView)
+        return reportview.render(report, template)
+
+    def render_multi_report(self, reports, template):
+        """Render multiple ReportModels to HTML
+        """
+        reportview = getAdapter(self, IMultiReportView)
+        return reportview.render(reports, template)
 
     @property
     def paperformat(self):
@@ -154,12 +190,30 @@ class PrintView(BrowserView):
         # Todo: Implement cascading lookup: client->registry->config
         return PAPERFORMATS
 
-    def get_templates(self, extensions=[".pt", ".html"]):
+    def get_report_templates(self, extensions=[".pt", ".html"]):
         """Returns a sorted list of template/path pairs
         """
         finder = getUtility(ITemplateFinder)
         templates = finder.get_templates(extensions=extensions)
-        return sorted(templates, key=itemgetter(0))
+        return sorted(map(lambda item: item[0], templates))
+
+    def get_report_template(self, template=None):
+        """Returns the path of report template
+        """
+        finder = getUtility(ITemplateFinder)
+        if template is None:
+            template = self.request.get("template")
+        template_path = finder.find_template(template)
+        if template_path is None:
+            return finder.default_template
+        return template_path
+
+    def is_multi_template(self, template):
+        filename = os.path.basename(template)
+        basename, ext = os.path.splitext(filename)
+        if basename.lower().startswith("multi"):
+            return True
+        return False
 
 
 class ajaxPrintView(PrintView):
@@ -268,11 +322,7 @@ class ajaxPrintView(PrintView):
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html
         """
-        reports = []
-        uids = filter(None, self.request.get("items", "").split(","))
-        for uid in uids:
-            reports.append(self.render_report(uid))
-        return reports
+        return self.render_reports()
 
     def ajax_load_preview(self):
         """Recalculate the HTML of one rendered report after all the embedded

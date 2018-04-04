@@ -112,8 +112,7 @@ class ReportView
       data: options
       context: @
     .done (data) ->
-      $.each data, (index, el) ->
-        container.append el
+      container.append data
       @render()
 
 # Document Ready handler

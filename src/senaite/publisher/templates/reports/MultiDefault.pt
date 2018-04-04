@@ -1,0 +1,10 @@
+<tal:report define="analysisrequests view/models;">
+  <div class="row">
+    <h1>Multi Report</h1>
+    <ul>
+      <li tal:repeat="analysisrequest analysisrequests">
+        <span tal:content="analysisrequest/id"/>
+      </li>
+      <ul>
+  </div>
+</tal:report>

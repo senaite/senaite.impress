@@ -1,4 +1,4 @@
-<tal:report define="analysisrequest view/context;
+<tal:report define="analysisrequest view/model;
                     accredited_symbol string:★;
                     outofrange_symbol string:⚠;
                     portal python:view.portal;

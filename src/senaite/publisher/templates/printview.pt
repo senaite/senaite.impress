@@ -9,10 +9,12 @@
 
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
+      <!-- bootstrap.css -->
       <link type="text/css"
             href="bootstrap.css"
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/bootstrap.min.css"/>
+      <!-- print.css -->
       <link type="text/css"
             href="print.css"
             rel="stylesheet"
@@ -21,6 +23,7 @@
 
     <!-- JavaScripts -->
     <tal:js define="portal context/@@plone_portal_state/portal;">
+      <!-- printview.js -->
       <script type="text/javascript"
               src="senaite.publisher.printview.js"
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
@@ -71,9 +74,9 @@
 
                   <!-- Template -->
                   <select class="custom-select" name="template">
-                    <tal:option tal:repeat="template python:view.get_templates()">
-                      <option tal:content="python:template[0]"
-                              tal:attributes="value python:template[1]"></option>
+                    <tal:option tal:repeat="template python:view.get_report_templates()">
+                      <option tal:content="template"
+                              tal:attributes="value template"></option>
                     </tal:option>
                   </select>
 
@@ -120,9 +123,7 @@
         <div class="col-sm-12">
           <!-- Processed report HTML from the selected template -->
           <div id="reports" style="display:none;">
-            <tal:reports repeat="uid view/uids">
-              <div tal:replace="structure python:view.render_report(uid)"/>
-            </tal:reports>
+            <tal:reports replace="structure python:view.render_reports()"/>
           </div>
         </div>
       </div> <!-- row -->

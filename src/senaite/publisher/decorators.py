@@ -14,7 +14,7 @@ from senaite.publisher import logger
 from senaite import api
 
 
-def synchronized(func, max_connections=1):
+def synchronized(func, max_connections=2):
     """Synchronize function call via semaphore
     """
     semaphore = threading.BoundedSemaphore(max_connections)

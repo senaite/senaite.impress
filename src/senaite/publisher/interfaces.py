@@ -14,7 +14,12 @@ class IReportModel(Interface):
 
 
 class IReportView(Interface):
-    """Report View
+    """Single Report View
+    """
+
+
+class IMultiReportView(Interface):
+    """Multi Report View
     """
 
 

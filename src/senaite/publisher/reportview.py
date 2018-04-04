@@ -23,6 +23,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_report_model
+from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IReportView
 from zope.interface import implements
 
@@ -41,32 +42,54 @@ class ReportView(object):
     """
     implements(IReportView)
 
-    def __init__(self, context, request):
-        logger.info("ReportView::__init__:context={}".format(context.id))
-        self.context = context
-        self.request = request
-        self.template = self.default_template
+    def __init__(self, parentview):
+        logger.info("ReportView::__init__:parentview={}"
+                    .format(parentview))
+        self.parentview = parentview
+        self.context = parentview.context
+        self.request = parentview.request
+        self._model = None
 
-    def render(self, **kw):
-        if self.is_page_template():
-            template = ViewPageTemplateFile(self.template)(self, **kw)
-        else:
-            with open(self.template, "r") as template:
-                template = template.read()
+    @property
+    def model(self):
+        return self._model
 
-        context = self.template_context
+    @model.setter
+    def model(self, model):
+        self._model = model
+
+    def render(self, model, template):
+        if not os.path.exists(template):
+            raise TypeError("Template not found")
+
+        self.model = model
+        template = self.read_template(template)
+        context = self.get_template_context(model)
         template = Template(template).safe_substitute(context)
         return TEMPLATE.safe_substitute(context, template=template)
 
-    @property
-    def template_context(self):
+    def read_template(self, template):
+        if self.is_page_template(template):
+            template = ViewPageTemplateFile(template)(self)
+        else:
+            with open(template, "r") as template:
+                template = template.read()
+        return template
+
+    def is_page_template(self, template):
+        _, ext = os.path.splitext(template)
+        if ext in [".pt", ".zpt"]:
+            return True
+        return False
+
+    def get_template_context(self, report):
         return {
-            "id": self.context.getId(),
-            "uid": self.context.UID(),
+            "id": report.getId(),
+            "uid": report.UID(),
             # XXX temporary piggypack solution to handle DateTime objects right
-            "user": json.dumps(self.context.stringify(self.current_user)),
+            "user": json.dumps(report.stringify(self.current_user)),
             "api": {
-                "report": self.get_api_url(self.context),
+                "report": self.get_api_url(report),
                 "setup": self.get_api_url(self.setup),
                 "laboratory": self.get_api_url(self.laboratory),
             }
@@ -82,19 +105,6 @@ class ReportView(object):
             "base_url": self.portal.absolute_url(),
         }
         return "{base_url}/{endpoint}/{action}/{uid}".format(**info)
-
-    def is_page_template(self):
-        _, ext = os.path.splitext(self.template)
-        if ext in [".pt", ".zpt"]:
-            return True
-        return False
-
-    def set_template(self, template):
-        self.template = template
-
-    @property
-    def default_template(self):
-        return "templates/reports/default.pt"
 
     @property
     @returns_report_model
@@ -122,12 +132,12 @@ class ReportView(object):
 
     @property
     def decimal_mark(self):
-        return self.context.aq_parent.getDecimalMark()
+        return self.model.aq_parent.getDecimalMark()
 
     @property
     @returns_report_model
     def departments(self):
-        return self.context.getDepartments()
+        return self.model.getDepartments()
 
     @property
     def managers(self):
@@ -143,7 +153,7 @@ class ReportView(object):
 
     @property
     def resultsinterpretation(self):
-        ri_by_depts = self.context.ResultsInterpretationDepts
+        ri_by_depts = self.model.ResultsInterpretationDepts
 
         out = []
         for ri in ri_by_depts:
@@ -155,13 +165,13 @@ class ReportView(object):
         return out
 
     def is_invalid(self):
-        return self.context.isInvalid()
+        return self.model.isInvalid()
 
     def is_provisional(self):
         if self.is_invalid():
             return True
         valid_states = ['verified', 'published']
-        states = self.context.getObjectWorkflowStates().values()
+        states = self.model.getObjectWorkflowStates().values()
         if not any(map(lambda s: s in valid_states, states)):
             return True
         return False
@@ -185,7 +195,7 @@ class ReportView(object):
     def get_analyses_by_poc(self):
         """Returns a dictionary of POC -> Analyses
         """
-        return self.group_items_by("getPointOfCapture", self.context.Analyses)
+        return self.group_items_by("getPointOfCapture", self.model.Analyses)
 
     def get_categories_in_poc(self, poc):
         """Returns a list of sorted Categories in the given POC
@@ -198,7 +208,7 @@ class ReportView(object):
         """Returns a sorted list of Analyses for the given POC which are in the
         given Category
         """
-        analyses = self.context.Analyses
+        analyses = self.model.Analyses
         if poc is not None:
             analyses = filter(lambda an: an.PointOfCapture == poc, analyses)
         if cat is not None:
@@ -306,7 +316,7 @@ class ReportView(object):
         """Attachment sorter
         """
         inf = float("inf")
-        view = self.context.restrictedTraverse("attachments_view")
+        view = self.model.restrictedTraverse("attachments_view")
         order = view.get_attachments_order()
 
         def att_cmp(att1, att2):
@@ -317,3 +327,39 @@ class ReportView(object):
             return cmp(_i1, _i2)
 
         return sorted(attachments, cmp=att_cmp)
+
+
+class MultiReportView(ReportView):
+    implements(IMultiReportView)
+
+    def __init__(self, parentview):
+        logger.info("MultiReportView::__init__:parentview={}"
+                    .format(parentview))
+        self.parentview = parentview
+        self.context = parentview.context
+        self.request = parentview.request
+        self._models = []
+
+    @property
+    def models(self):
+        return self._models
+
+    @models.setter
+    def models(self, models):
+        self._models = models
+
+    def render(self, models, template):
+        if not os.path.exists(template):
+            raise TypeError("Template not found")
+
+        self.models = models
+        template = self.read_template(template)
+        context = self.get_template_context(models)
+        template = Template(template).safe_substitute(context)
+        return TEMPLATE.safe_substitute(context, template=template)
+
+    def get_template_context(self, models):
+        return {
+            "id": "",
+            "uid": "",
+        }

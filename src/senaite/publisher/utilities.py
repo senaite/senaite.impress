@@ -7,8 +7,12 @@
 
 import os
 
+from pkg_resources import resource_filename
+
 from plone.resource.utils import iterDirectoriesOfType
 from senaite.publisher import logger
+
+DEFAULT_TEMPLATE = "Default.pt"
 
 
 class TemplateFinder(object):
@@ -29,6 +33,11 @@ class TemplateFinder(object):
             })
         return out
 
+    @property
+    def default_template(self):
+        path = os.path.join("templates", "reports", DEFAULT_TEMPLATE)
+        return resource_filename("senaite.publisher", path)
+
     def get_templates(self, extensions=[".pt", ".html"]):
         templates = []
         for resource in self.resources:
@@ -39,6 +48,8 @@ class TemplateFinder(object):
                 basename, ext = os.path.splitext(content)
                 if ext not in extensions:
                     continue
+                if basename.lower().startswith("example"):
+                    continue
                 template = content
                 if name:
                     template = u"{}:{}".format(name, content)
@@ -46,8 +57,8 @@ class TemplateFinder(object):
                 templates.append((template, template_path))
         return templates
 
-    def get_template(self, name, default=None):
+    def find_template(self, name):
         """Returns the template path by name
         """
-        templates = self.get_templates()
-        return templates.get(name, default)
+        templates = dict(self.get_templates())
+        return templates.get(name)
