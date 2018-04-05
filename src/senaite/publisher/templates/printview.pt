@@ -50,10 +50,10 @@
                 Print Report for
               </div>
               <ul class="list-inline">
-                <li class="list-inline-item" tal:repeat="report view/reports">
+                <li class="list-inline-item" tal:repeat="model view/collection">
                   <a href=""
-                     tal:attributes="href report/absolute_url">
-                     <span tal:content="report/title"/>
+                     tal:attributes="href model/absolute_url">
+                     <span tal:content="model/title"/>
                   </a>
                 </li>
               </ul>

@@ -20,22 +20,23 @@
       factory="senaite.publisher.reportmodel.ReportModel"
       />
 
-  <!-- Report View -->
+  <!-- Report View for AnalysisRequests -->
   <adapter
-      for="senaite.publisher.interfaces.IPrintView"
+      for="senaite.publisher.interfaces.IReportModel"
+      name="analysisrequest"
       factory="senaite.publisher.reportview.ReportView"
       provides="senaite.publisher.interfaces.IReportView"
       permission="zope2.View"
       />
 
-  <!-- Multi Report View -->
+  <!-- Multi Report View for AnalysisRequests -->
   <adapter
-      for="senaite.publisher.interfaces.IPrintView"
+      for="senaite.publisher.interfaces.IReportModelCollection"
+      name="analysisrequest"
       factory="senaite.publisher.reportview.MultiReportView"
       provides="senaite.publisher.interfaces.IMultiReportView"
       permission="zope2.View"
       />
-
 
   <!-- Report Controller View -->
   <browser:page

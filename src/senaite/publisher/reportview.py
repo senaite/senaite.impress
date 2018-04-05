@@ -25,7 +25,9 @@ from senaite.publisher import logger
 from senaite.publisher.decorators import returns_report_model
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IReportView
+from zope.globalrequest import getRequest
 from zope.interface import implements
+
 
 TEMPLATE = Template("""<!-- Report Template ${id} -->
 <div class="report" id="${id}" uid="${uid}">
@@ -42,29 +44,19 @@ class ReportView(object):
     """
     implements(IReportView)
 
-    def __init__(self, parentview):
-        logger.info("ReportView::__init__:parentview={}"
-                    .format(parentview))
-        self.parentview = parentview
-        self.context = parentview.context
-        self.request = parentview.request
-        self._model = None
+    def __init__(self, model):
+        logger.info("ReportView::__init__:model={}"
+                    .format(model))
+        self.model = model
+        self.context = model
+        self.request = getRequest()
 
-    @property
-    def model(self):
-        return self._model
-
-    @model.setter
-    def model(self, model):
-        self._model = model
-
-    def render(self, model, template):
+    def render(self, template):
         if not os.path.exists(template):
             raise TypeError("Template not found")
 
-        self.model = model
         template = self.read_template(template)
-        context = self.get_template_context(model)
+        context = self.get_template_context(self.model)
         template = Template(template).safe_substitute(context)
         return TEMPLATE.safe_substitute(context, template=template)
 
@@ -295,7 +287,7 @@ class ReportView(object):
         options = {
             "long_format": True,
             "time_only": False,
-            "context": self.context,
+            "context": self.model.instance,
             "request": self.request,
             "domain": "bika",
         }
@@ -332,33 +324,22 @@ class ReportView(object):
 class MultiReportView(ReportView):
     implements(IMultiReportView)
 
-    def __init__(self, parentview):
-        logger.info("MultiReportView::__init__:parentview={}"
-                    .format(parentview))
-        self.parentview = parentview
-        self.context = parentview.context
-        self.request = parentview.request
-        self._models = []
+    def __init__(self, collection):
+        logger.info("MultiReportView::__init__:collection={}"
+                    .format(collection))
+        self.collection = collection
+        self.context = collection
+        self.request = getRequest()
 
-    @property
-    def models(self):
-        return self._models
-
-    @models.setter
-    def models(self, models):
-        self._models = models
-
-    def render(self, models, template):
+    def render(self, template):
         if not os.path.exists(template):
             raise TypeError("Template not found")
-
-        self.models = models
         template = self.read_template(template)
-        context = self.get_template_context(models)
+        context = self.get_template_context(self.collection)
         template = Template(template).safe_substitute(context)
         return TEMPLATE.safe_substitute(context, template=template)
 
-    def get_template_context(self, models):
+    def get_template_context(self, collection):
         return {
             "id": "",
             "uid": "",

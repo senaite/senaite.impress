@@ -21,6 +21,7 @@ from senaite.publisher.interfaces import IReportView
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import ITemplateFinder
 from senaite.publisher.reportmodel import ReportModel
+from senaite.publisher.reportmodelcollection import ReportModelCollection
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.interface import implements
@@ -83,8 +84,8 @@ class PrintView(BrowserView):
         super(BrowserView, self).__init__(context, request)
         self.context = context
         self.request = request
-        self._uids = []
-        self._reports = []
+        self._uids = None
+        self._collection = None
 
     def __call__(self):
         if self.request.form.get("submitted", False):
@@ -95,46 +96,48 @@ class PrintView(BrowserView):
     def uids(self):
         """Parse the UIDs from the request `items` parameter
         """
-        if not self._uids:
+        if self._uids is None:
             self._uids = filter(None, self.request.get("items", "").split(","))
         return self._uids
 
     @property
-    def reports(self):
-        """Wraps the UIDs from the request `items` parameter to ReportModels
+    def collection(self):
+        """Wraps the UIDs from the request `items` parameter into a collection
+        of ReportModels
         """
-        if not self._reports:
-            self._reports = map(lambda uid: ReportModel(uid), self.uids)
-        return self._reports
+        if self._collection is None:
+            models = map(lambda uid: ReportModel(uid), self.uids)
+            self._collection = ReportModelCollection(models)
+        return self._collection
 
     def render_reports(self):
         """Render Single/Multi Reports to HTML
         """
         htmls = []
-        reports = self.reports
         template = self.get_report_template()
+
         if self.is_multi_template(template):
             # render multi report
-            html = self.render_multi_report(reports, template)
+            html = self.render_multi_report(self.collection, template)
             htmls.append(html)
         else:
-            for report in reports:
+            for model in self.collection:
                 # render single report
-                html = self.render_report(report, template)
+                html = self.render_report(model, template)
                 htmls.append(html)
         return "\n".join(htmls)
 
-    def render_report(self, report, template):
+    def render_report(self, model, template):
         """Render a ReportModel to HTML
         """
-        reportview = getAdapter(self, IReportView)
-        return reportview.render(report, template)
+        view = getAdapter(model, IReportView, name="analysisrequest")
+        return view.render(template)
 
-    def render_multi_report(self, reports, template):
+    def render_multi_report(self, collection, template):
         """Render multiple ReportModels to HTML
         """
-        reportview = getAdapter(self, IMultiReportView)
-        return reportview.render(reports, template)
+        view = getAdapter(collection, IMultiReportView, name="analysisrequest")
+        return view.render(template)
 
     @property
     def paperformat(self):
@@ -175,7 +178,7 @@ class PrintView(BrowserView):
         logger.info("PDF CSS: {}".format(css))
         pdf = publisher.write_pdf(merge=merge)
 
-        filename = "_".join(map(lambda r: r.id, self.reports))
+        filename = "_".join(map(lambda r: r.id, self.collection))
         self.request.response.setHeader(
             "Content-Disposition", "attachment; filename=%s.pdf" % filename)
         self.request.response.setHeader("Content-Type", "application/pdf")

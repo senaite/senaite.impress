@@ -9,7 +9,12 @@ from zope.interface import Interface
 
 
 class IReportModel(Interface):
-    """Report Model
+    """A Report Model wrapper
+    """
+
+
+class IReportModelCollection(Interface):
+    """A collection of Report Models
     """
 
 

@@ -1,4 +1,4 @@
-<tal:report define="analysisrequests view/models;">
+<tal:report define="analysisrequests view/collection;">
   <div class="row">
     <h1>Multi Report</h1>
     <ul>
