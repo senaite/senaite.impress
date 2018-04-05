@@ -130,13 +130,13 @@ class PrintView(BrowserView):
     def render_report(self, model, template):
         """Render a ReportModel to HTML
         """
-        view = getAdapter(model, IReportView, name="analysisrequest")
+        view = getAdapter(model, IReportView, name="AnalysisRequest")
         return view.render(template)
 
     def render_multi_report(self, collection, template):
         """Render multiple ReportModels to HTML
         """
-        view = getAdapter(collection, IMultiReportView, name="analysisrequest")
+        view = getAdapter(collection, IMultiReportView, name="AnalysisRequest")
         return view.render(template)
 
     @property

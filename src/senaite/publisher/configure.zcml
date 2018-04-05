@@ -20,19 +20,19 @@
       factory="senaite.publisher.reportmodel.ReportModel"
       />
 
-  <!-- Report View for AnalysisRequests -->
+  <!-- Report View for portal_type=AnalysisRequests -->
   <adapter
       for="senaite.publisher.interfaces.IReportModel"
-      name="analysisrequest"
+      name="AnalysisRequest"
       factory="senaite.publisher.reportview.ReportView"
       provides="senaite.publisher.interfaces.IReportView"
       permission="zope2.View"
       />
 
-  <!-- Multi Report View for AnalysisRequests -->
+  <!-- Multi Report View for portal_type=AnalysisRequest -->
   <adapter
       for="senaite.publisher.interfaces.IReportModelCollection"
-      name="analysisrequest"
+      name="AnalysisRequest"
       factory="senaite.publisher.reportview.MultiReportView"
       provides="senaite.publisher.interfaces.IMultiReportView"
       permission="zope2.View"
