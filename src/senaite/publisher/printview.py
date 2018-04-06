@@ -131,13 +131,13 @@ class PrintView(BrowserView):
         """Render a ReportModel to HTML
         """
         view = getAdapter(model, IReportView, name="AnalysisRequest")
-        return view.render(template)
+        return view.render(self.read_template(template, view))
 
     def render_multi_report(self, collection, template):
         """Render multiple ReportModels to HTML
         """
         view = getAdapter(collection, IMultiReportView, name="AnalysisRequest")
-        return view.render(template)
+        return view.render(self.read_template(template, view))
 
     @property
     def paperformat(self):
@@ -211,10 +211,24 @@ class PrintView(BrowserView):
             return finder.default_template
         return template_path
 
+    def read_template(self, template, instance):
+        if self.is_page_template(template):
+            template = ViewPageTemplateFile(template)(instance)
+        else:
+            with open(template, "r") as template:
+                template = template.read()
+        return template
+
     def is_multi_template(self, template):
         filename = os.path.basename(template)
         basename, ext = os.path.splitext(filename)
         if basename.lower().startswith("multi"):
+            return True
+        return False
+
+    def is_page_template(self, template):
+        _, ext = os.path.splitext(template)
+        if ext in [".pt", ".zpt"]:
             return True
         return False
 

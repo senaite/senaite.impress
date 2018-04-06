@@ -33,7 +33,7 @@
   <adapter
       for="senaite.publisher.interfaces.IReportModelCollection"
       name="AnalysisRequest"
-      factory="senaite.publisher.reportview.MultiReportView"
+      factory="senaite.publisher.multireportview.MultiReportView"
       provides="senaite.publisher.interfaces.IMultiReportView"
       permission="zope2.View"
       />
@@ -54,10 +54,10 @@
       permission="zope.Public"
       />
 
-  <!-- Template Finder Utility -->
+  <!-- Template Utils -->
   <utility
       provides="senaite.publisher.interfaces.ITemplateFinder"
-      factory="senaite.publisher.utilities.TemplateFinder" />
+      factory="senaite.publisher.template.TemplateFinder" />
 
   <!-- Report resource directory -->
   <plone:static

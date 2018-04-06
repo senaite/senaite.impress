@@ -6,7 +6,6 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import json
-import os
 from collections import Iterable
 from collections import OrderedDict
 from collections import defaultdict
@@ -19,7 +18,6 @@ from bika.lims.utils import formatDecimalMark
 from bika.lims.utils import to_utf8
 from bika.lims.utils.analysis import format_uncertainty
 from Products.CMFPlone.i18nl10n import ulocalized_time
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_report_model
@@ -52,27 +50,9 @@ class ReportView(object):
         self.request = getRequest()
 
     def render(self, template):
-        if not os.path.exists(template):
-            raise TypeError("Template not found")
-
-        template = self.read_template(template)
         context = self.get_template_context(self.model)
         template = Template(template).safe_substitute(context)
         return TEMPLATE.safe_substitute(context, template=template)
-
-    def read_template(self, template):
-        if self.is_page_template(template):
-            template = ViewPageTemplateFile(template)(self)
-        else:
-            with open(template, "r") as template:
-                template = template.read()
-        return template
-
-    def is_page_template(self, template):
-        _, ext = os.path.splitext(template)
-        if ext in [".pt", ".zpt"]:
-            return True
-        return False
 
     def get_template_context(self, report):
         return {
@@ -208,7 +188,9 @@ class ReportView(object):
         if not hidden:
             analyses = filter(lambda an: not an.Hidden, analyses)
         if not retracted:
-            analyses = filter(lambda an: an.review_state != "retracted", analyses)
+            def is_not_retracted(analysis):
+                return analysis.review_state != "retracted"
+            analyses = filter(is_not_retracted, analyses)
         return self.sort_items(analyses)
 
     def group_items_by(self, key, items):
@@ -321,28 +303,3 @@ class ReportView(object):
             return cmp(_i1, _i2)
 
         return sorted(attachments, cmp=att_cmp)
-
-
-class MultiReportView(ReportView):
-    implements(IMultiReportView)
-
-    def __init__(self, collection):
-        logger.info("MultiReportView::__init__:collection={}"
-                    .format(collection))
-        self.collection = collection
-        self.context = collection
-        self.request = getRequest()
-
-    def render(self, template):
-        if not os.path.exists(template):
-            raise TypeError("Template not found")
-        template = self.read_template(template)
-        context = self.get_template_context(self.collection)
-        template = Template(template).safe_substitute(context)
-        return TEMPLATE.safe_substitute(context, template=template)
-
-    def get_template_context(self, collection):
-        return {
-            "id": "",
-            "uid": "",
-        }
