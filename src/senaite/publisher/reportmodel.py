@@ -143,7 +143,7 @@ class ReportModel(object):
         """Process publication value
         """
         # UID -> ReportModel
-        if self.is_uid(value):
+        if api.is_uid(value):
             return self.to_report_model(value)
         # Content -> ReportModel
         elif api.is_object(value):
@@ -265,7 +265,7 @@ class ReportModel(object):
     def to_report_model(self, thing):
         """Wraps an object into a Report Model
         """
-        if self.is_uid(thing):
+        if api.is_uid(thing):
             return self.get_brain_by_uid(thing)
         if not api.is_object(thing):
             raise TypeError("Expected a portal object, got '{}'"
@@ -278,17 +278,6 @@ class ReportModel(object):
         try:
             self.brain
         except ValueError:
-            return False
-        return True
-
-    def is_uid(self, uid):
-        """Check valid UID format
-        """
-        if not isinstance(uid, basestring):
-            return False
-        if len(uid) != 32:
-            return False
-        if not uid.isalnum():
             return False
         return True
 
