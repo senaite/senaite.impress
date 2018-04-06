@@ -8,10 +8,14 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
-  <!-- Publish Controller View -->
+  <!-- Publish Controller View
+
+       TODO: Rename to `publish` for drop-in replacement as soon as this package
+             is ready for production
+  -->
   <browser:page
       for="*"
-      name="publish2"
+      name="printview"
       class="senaite.publisher.publishview.PublishView"
       permission="zope2.View"
       />

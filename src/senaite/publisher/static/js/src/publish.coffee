@@ -8,7 +8,7 @@ class PublishAPI
   constructor: ->
     console.debug "PublishAPI::constructor"
     @preview = $("#preview")
-    base_url = document.URL.split('publish2')[0]
+    base_url = document.URL.split('printview')[0]
     @url = "#{base_url}/ajax_publish"
     return @
 
