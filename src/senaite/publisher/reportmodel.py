@@ -107,29 +107,43 @@ class ReportModel(object):
     def get(self, name, default=None):
         # Internal lookup in the data dict
         value = self.data.get(name, self.__empty_marker)
+
+        # Return the value immediately
         if value is not self.__empty_marker:
             return self.data[name]
 
         # Field lookup on the instance
         field = self.get_field(name)
+
         if field is None:
-            # expose non-private members of the instance to have access to e.g.
-            # self.absolute_url()
+            # expose non-private members of the instance/brain to have access
+            # to e.g. self.absolute_url (function object) or self.review_state
             if not name.startswith("_") or not name.startswith("__"):
-                return getattr(self.instance, name, default)
+                # check if the instance contains this attribute
+                instance = self.instance
+                instance_value = getattr(instance, name, self.__empty_marker)
+                if instance_value is not self.__empty_marker:
+                    return instance_value
+
+                # check if the brain contains this attribute
+                brain = self.brain
+                brain_value = getattr(brain, name, self.__empty_marker)
+                if brain_value is not self.__empty_marker:
+                    return brain_value
+
             return default
+        else:
+            # Retrieve field value by accessor
+            accessor = field.getAccessor(self.instance)
+            accessor_name = accessor.__name__
 
-        # Retrieve field value by accessor
-        accessor = field.getAccessor(self.instance)
-        accessor_name = accessor.__name__
-
-        # Metadata lookup by accessor name
-        value = getattr(self.brain, accessor_name, self.__empty_marker)
-        if value is self.__empty_marker:
-            logger.debug("Add metadata column '{}' to the catalog '{}' "
-                         "to increase performance!"
-                         .format(accessor_name, self.catalog.__name__))
-            value = accessor()
+            # Metadata lookup by accessor name
+            value = getattr(self.brain, accessor_name, self.__empty_marker)
+            if value is self.__empty_marker:
+                logger.debug("Add metadata column '{}' to the catalog '{}' "
+                             "to increase performance!"
+                             .format(accessor_name, self.catalog.__name__))
+                value = accessor()
 
         # Process value for publication
         value = self.process_value(value)

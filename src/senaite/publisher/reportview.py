@@ -196,7 +196,7 @@ class ReportView(object):
         categories = set(map(lambda an: an.Category, an_in_poc))
         return self.sort_items(categories)
 
-    def get_analyses(self, poc=None, cat=None, include_hidden=False):
+    def get_analyses(self, poc=None, cat=None, hidden=False, retracted=False):
         """Returns a sorted list of Analyses for the given POC which are in the
         given Category
         """
@@ -205,8 +205,10 @@ class ReportView(object):
             analyses = filter(lambda an: an.PointOfCapture == poc, analyses)
         if cat is not None:
             analyses = filter(lambda an: an.Category == cat, analyses)
-        if not include_hidden:
+        if not hidden:
             analyses = filter(lambda an: not an.Hidden, analyses)
+        if not retracted:
+            analyses = filter(lambda an: an.review_state != "retracted", analyses)
         return self.sort_items(analyses)
 
     def group_items_by(self, key, items):
