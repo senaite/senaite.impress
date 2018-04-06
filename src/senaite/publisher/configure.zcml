@@ -8,16 +8,20 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
-  <!-- Publisher -->
-  <adapter
+  <!-- Publish Controller View -->
+  <browser:page
       for="*"
-      factory="senaite.publisher.publisher.Publisher"
+      name="publish2"
+      class="senaite.publisher.publishview.PublishView"
+      permission="zope2.View"
       />
 
-  <!-- Report Model -->
-  <adapter
+  <!-- Ajax Publish Controller View -->
+  <browser:page
       for="*"
-      factory="senaite.publisher.reportmodel.ReportModel"
+      name="ajax_publish"
+      class="senaite.publisher.ajax.AjaxPublishView"
+      permission="zope.Public"
       />
 
   <!-- Report View for portal_type=AnalysisRequests -->
@@ -38,23 +42,19 @@
       permission="zope2.View"
       />
 
-  <!-- Report Controller View -->
-  <browser:page
-      name="printview"
+  <!-- Report Model -->
+  <adapter
       for="*"
-      class="senaite.publisher.printview.PrintView"
-      permission="zope2.View"
+      factory="senaite.publisher.reportmodel.ReportModel"
       />
 
-  <!-- Ajax PrintView -->
-  <browser:page
+  <!-- HTML/PDB Publisher Adapter -->
+  <adapter
       for="*"
-      name="ajax_printview"
-      class="senaite.publisher.printview.ajaxPrintView"
-      permission="zope.Public"
+      factory="senaite.publisher.publisher.Publisher"
       />
 
-  <!-- Template Utils -->
+  <!-- Template Finder Utility -->
   <utility
       provides="senaite.publisher.interfaces.ITemplateFinder"
       factory="senaite.publisher.template.TemplateFinder" />

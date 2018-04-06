@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.LIMS
+# This file is part of SENAITE.PUBLISHER
 #
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE and CONTRIBUTING.
@@ -21,7 +21,6 @@ from Products.CMFPlone.i18nl10n import ulocalized_time
 from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_report_model
-from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IReportView
 from zope.globalrequest import getRequest
 from zope.interface import implements

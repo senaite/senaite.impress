@@ -4,7 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-   "printview": path.resolve(__dirname, './src/printview.coffee')
+   "publish": path.resolve(__dirname, './src/publish.coffee')
   },
 
   output: {

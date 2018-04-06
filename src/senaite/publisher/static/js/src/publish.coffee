@@ -3,13 +3,13 @@ import "../vendor/jquery-barcode-2.0.2.js"
 window.$ = $
 
 
-class ReportView
+class PublishAPI
 
   constructor: ->
-    console.debug "ReportView::constructor"
+    console.debug "PublishAPI::constructor"
     @preview = $("#preview")
-    base_url = document.URL.split('printview')[0]
-    @url = "#{base_url}/ajax_printview"
+    base_url = document.URL.split('publish2')[0]
+    @url = "#{base_url}/ajax_publish"
     return @
 
   render_barcodes: =>
@@ -78,7 +78,7 @@ class ReportView
     ###
      * Render all reports
     ###
-    console.debug "ReportView:render"
+    console.debug "PublishAPI:render"
     @render_barcodes()
 
     @preview.empty()
@@ -98,7 +98,7 @@ class ReportView
     ###
      * Reload the HTML from the server
     ###
-    console.debug "ReportView:reload"
+    console.debug "PublishAPI:reload"
 
     options ?= {}
     container = $("#reports")
@@ -117,33 +117,33 @@ class ReportView
 
 # Document Ready handler
 $(document).ready ($) ->
-  console.debug '*** SENAITE.PUBLISHER.PRINTVIEW Ready'
+  console.debug '*** SENAITE.PUBLISHER.PUBLISH Ready'
 
-  window.report_view = new ReportView()
-  window.report_view.render()
+  window.publish_api = new PublishAPI()
+  window.publish_api.render()
 
   $("#download").on "click", (event) =>
     event.preventDefault()
-    form = $("form[name='printform']")
-    report_view.set_css()
+    form = $("form[name='publishform']")
+    publish_api.set_css()
     html = $("#reports").html()
     $("input[name='html']").val html
     form.submit()
 
   $("select[name='orientation']").on "change", (event) =>
     console.log "Orientation changed"
-    report_view.render()
+    publish_api.render()
 
   $("select[name='format']").on "change", (event) =>
     console.log "Paperformat changed"
-    report_view.render()
+    publish_api.render()
 
   $("input[name='merge']").on "change", (event) =>
     console.log "Merge changed"
-    report_view.render()
+    publish_api.render()
 
   $("select[name='template']").on "change", (event) =>
     console.log "Template changed", event
 
-    report_view.reload
+    publish_api.reload
       template: event.currentTarget.value

@@ -1,4 +1,0 @@
-<layers>
-  <layer name="senaite.publisher"
-         interface="senaite.publisher.interfaces.IPublisher" />
-</layers>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.LIMS
+# This file is part of SENAITE.PUBLISHER
 #
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE and CONTRIBUTING.
@@ -8,13 +8,8 @@
 from zope.interface import Interface
 
 
-class IReportModel(Interface):
-    """A Report Model wrapper
-    """
-
-
-class IReportModelCollection(Interface):
-    """A collection of Report Models
+class IPublishView(Interface):
+    """Publish View
     """
 
 
@@ -28,8 +23,13 @@ class IMultiReportView(Interface):
     """
 
 
-class IPrintView(Interface):
-    """Print View
+class IReportModel(Interface):
+    """A Report Model wrapper
+    """
+
+
+class IReportModelCollection(Interface):
+    """A collection of Report Models
     """
 
 

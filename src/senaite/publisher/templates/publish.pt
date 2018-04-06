@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title i18n:translate="">Print Preview</title>
+    <title i18n:translate="">SENAITE Publisher</title>
 
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
@@ -23,10 +23,10 @@
 
     <!-- JavaScripts -->
     <tal:js define="portal context/@@plone_portal_state/portal;">
-      <!-- printview.js -->
+      <!-- publish.js -->
       <script type="text/javascript"
-              src="senaite.publisher.printview.js"
-              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.printview.js"></script>
+              src="senaite.publisher.publish.js"
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.publish.js"></script>
     </tal:js>
   </head>
 
@@ -38,8 +38,8 @@
       <!-- Control Panel -->
       <div class="row">
         <div class="col-sm-12">
-          <form id="printform"
-                name="printform"
+          <form id="publishform"
+                name="publishform"
                 method="post">
 
             <input type="hidden" name="html" value="" />
@@ -47,7 +47,7 @@
 
             <div class="jumbotron">
               <div class="lead" i18n:translate="">
-                Print Report for
+                Publish Report for
               </div>
               <ul class="list-inline">
                 <li class="list-inline-item" tal:repeat="model view/collection">
