@@ -4,9 +4,8 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-   "publish": path.resolve(__dirname, './src/publish.coffee')
+    publish: path.resolve(__dirname, './src/publish.coffee')
   },
-
   output: {
     filename: 'senaite.publisher.[name].js',
     path: path.resolve(__dirname, './dist')
