@@ -4,6 +4,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import Button from "./component/Button.js"
+import MergeToggle from "./component/MergeToggle.js"
 import PaperFormatSelection from "./component/PaperFormatSelection.js"
 import TemplateSelection from "./component/TemplateSelection.js"
 import OrientationSelection from "./component/OrientationSelection.js"
@@ -61,6 +62,11 @@ class PublishController extends React.Component
 
         <div className="form-group">
           <div className="input-group">
+            <div className="input-group-prepend">
+              <div className="input-group-text">
+                <MergeToggle api={@api} onChange={@handleChange} value={@state.merge} className="" name="merge" />
+              </div>
+            </div>
             <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
             <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
