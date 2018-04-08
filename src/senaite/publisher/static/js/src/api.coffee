@@ -10,10 +10,58 @@ class PublishAPI
 
   constructor: ->
     console.debug "PublishAPI::constructor"
-    @preview = $("#preview")
-    base_url = document.URL.split('printview')[0]
-    @url = "#{base_url}/ajax_publish"
     return @
+
+  get_api_url: (endpoint) =>
+    ###
+     * Get the Publish API URL
+    ###
+    api_endpoint = "ajax_publish"
+    segments = location.pathname.split "/"
+    current_view = segments[segments.length-1]
+    base_url = document.URL.split(current_view)[0]
+    return "#{base_url}#{api_endpoint}/#{endpoint}"
+
+  get_url_parameter: (name) ->
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
+    regex = new RegExp('[\\?&]' + name + '=([^&#]*)')
+    results = regex.exec(location.search)
+    if results == null then '' else decodeURIComponent(results[1].replace(/\+/g, ' '))
+
+  get_json: (endpoint, options) =>
+    options ?= {}
+
+    method = options.method or "POST"
+    data = JSON.stringify(options.data) or "{}"
+
+    url = @get_api_url endpoint
+    init =
+      method: method
+      headers:
+        "Content-Type": "application/json"
+      body: if method is "POST" then data else null
+      credentials: "include"
+    console.info "PublishAPI::fetch:endpoint=#{endpoint} init=",init
+    request = new Request(url, init)
+    return fetch(request).then (response) ->
+      return response.json()
+
+  render_reports: (data) =>
+    ###
+     * Render Reports HTML
+    ###
+    options =
+      data: data
+    return @get_json("render_reports", options).then (response) ->
+      el = document.getElementById("preview")
+      el.innerHTML = response
+
+  fetch_paperformats: =>
+    ###
+     * Fetch available paperformats
+    ###
+    return @get_json "paperformats",
+      method: "GET"
 
   render_barcodes: =>
     $('.barcode').each ->
