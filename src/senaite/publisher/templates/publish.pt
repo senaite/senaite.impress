@@ -37,6 +37,13 @@
 
       <!-- Control Panel -->
       <div class="row">
+
+        <!-- ReactJS Publish Controller -->
+        <div id="publish_controller" class="col-sm-12"></div>
+
+
+        <tal:comment condition="nothing">
+
         <div class="col-sm-12">
           <form id="publishform"
                 name="publishform"
@@ -106,6 +113,9 @@
 
           </form>
         </div> <!-- column -->
+        </tal:comment>
+
+
       </div> <!-- row -->
 
       <!-- Preview -->
