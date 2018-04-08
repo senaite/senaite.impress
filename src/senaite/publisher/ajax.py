@@ -6,6 +6,7 @@
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import inspect
+import json
 
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_json
@@ -60,6 +61,12 @@ class AjaxPublishView(PublishView):
             return self.fail("Wrong signature, please use '{}/{}'"
                              .format(func_arg, "/".join(required_args)), 400)
         return func(*args)
+
+    def get_json(self):
+        """Extracts the JSON from the request
+        """
+        body = self.request.get("BODY", {})
+        return json.loads(body)
 
     def fail(self, message, status=500, **kw):
         """Set a JSON error object and a status to the response
@@ -122,6 +129,9 @@ class AjaxPublishView(PublishView):
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html
         """
+        # update the request form with the parsed json data
+        body = self.get_json()
+        self.request.form.update(body)
         return self.render_reports()
 
     def ajax_load_preview(self):
