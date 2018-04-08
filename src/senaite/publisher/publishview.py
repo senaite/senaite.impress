@@ -170,7 +170,7 @@ class PublishView(BrowserView):
         publisher.link_css_file("bootstrap.min.css")
         # publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
-        merge = self.request.get("merge") in ["on", "true", "yes", "1"]
+        merge = self.request.get("merge") in ["on", "true", "yes", "1", True]
 
         logger.info("PDF CSS: {}".format(css))
         pdf = publisher.write_pdf(merge=merge)
