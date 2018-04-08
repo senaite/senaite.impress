@@ -5,6 +5,8 @@ import ReactDOM from "react-dom"
 
 import Button from "./component/Button.js"
 import PaperFormatSelection from "./component/PaperFormatSelection.js"
+import TemplateSelection from "./component/TemplateSelection.js"
+import OrientationSelection from "./component/OrientationSelection.js"
 
 
 
@@ -58,7 +60,11 @@ class PublishController extends React.Component
         <hr className="my-4"/>
 
         <div className="form-group">
-          <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
+          <div className="input-group">
+            <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
+            <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
+            <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
+          </div>
         </div>
 
       </form>

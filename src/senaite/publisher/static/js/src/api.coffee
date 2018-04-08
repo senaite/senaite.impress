@@ -56,6 +56,13 @@ class PublishAPI
       el = document.getElementById("preview")
       el.innerHTML = response
 
+  fetch_templates: =>
+    ###
+     * Fetch available templates
+    ###
+    return @get_json "templates",
+      method: "GET"
+
   fetch_paperformats: =>
     ###
      * Fetch available paperformats

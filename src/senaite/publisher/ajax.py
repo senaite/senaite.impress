@@ -126,6 +126,11 @@ class AjaxPublishView(PublishView):
         """
         return self.pick(self.get_paperformats(), *args)
 
+    def ajax_templates(self):
+        """Returns the available templates
+        """
+        return self.get_report_templates()
+
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html
         """
