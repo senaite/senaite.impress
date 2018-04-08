@@ -1,35 +1,70 @@
 import PublishAPI from './api.coffee'
 
+import React from "react"
+import ReactDOM from "react-dom"
 
-# Document Ready handler
-$(document).ready ($) ->
-  console.debug '*** SENAITE.PUBLISHER.PUBLISH Ready'
+import Button from "./component/Button.js"
+import PaperFormatSelection from "./component/PaperFormatSelection.js"
 
-  window.publish_api = new PublishAPI()
-  window.publish_api.render()
 
-  $("#download").on "click", (event) =>
+
+class PublishController extends React.Component
+  ###
+   * Publish Controller
+  ###
+
+  constructor: (props) ->
+    super(props)
+    console.log "PublishController::constructor:props=", props
+
+    @handleSubmit = @handleSubmit.bind(this)
+    @handleChange = @handleChange.bind(this)
+
+    @api = new PublishAPI()
+
+    @state =
+      items: @api.get_url_parameter("items").split(",")
+      merge: no
+      format: "A4"
+      orientation: "portrait"
+      template: "senaite.publisher:Default.pt"
+
+  componentDidMount: ->
+    console.debug "PublishController::componentDidMount"
+    @api.render_reports
+      items: @state.items.join(",")
+      merge: @state.merge
+      format: @state.format
+      orientation: @state.orientation
+      template: @state.template
+
+  handleSubmit: (event) ->
+    console.log "Form Submitted"
     event.preventDefault()
-    form = $("form[name='publishform']")
-    publish_api.set_css()
-    html = $("#reports").html()
-    $("input[name='html']").val html
-    form.submit()
 
-  $("select[name='orientation']").on "change", (event) =>
-    console.log "Orientation changed"
-    publish_api.render()
+  handleChange: (event) ->
+    target = event.target
+    value = if target.type is "checkbox" then target.checked else target.value
+    name = target.name
 
-  $("select[name='format']").on "change", (event) =>
-    console.log "Paperformat changed"
-    publish_api.render()
+    console.info("PublishController::handleChange: name=#{name} value=#{value}")
+    @setState
+      [name]: value
 
-  $("input[name='merge']").on "change", (event) =>
-    console.log "Merge changed"
-    publish_api.render()
+  render: ->
+    <div className="jumbotron">
+      <form onSubmit={this.handleSubmit}>
 
-  $("select[name='template']").on "change", (event) =>
-    console.log "Template changed", event
+        <hr className="my-4"/>
 
-    publish_api.reload
-      template: event.currentTarget.value
+        <div className="form-group">
+          <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
+        </div>
+
+      </form>
+    </div>
+
+
+document.addEventListener "DOMContentLoaded", ->
+  console.debug "*** SENAITE.PUBLISHER::DOMContentLoaded"
+  ReactDOM.render <PublishController />, document.getElementById "publish_controller"
