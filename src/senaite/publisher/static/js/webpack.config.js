@@ -13,21 +13,24 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx|coffee)$/,
         exclude: [/node_modules/],
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['react', 'env']
+            presets: ['react', 'es2015', 'env'],
+            plugins: ['transform-class-properties']
           }
         }
       }, {
         test: /\.coffee$/,
         exclude: [/node_modules/],
-        use: {
-          loader: 'coffee-loader',
-          options: {}
-        }
+        use: [
+          {
+            loader: 'coffee-loader',
+            options: {}
+          }
+        ]
       }, {
         test: /\.css$/,
         use: [
