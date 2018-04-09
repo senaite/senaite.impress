@@ -60,21 +60,21 @@ class PublishAPI
       credentials: "include"
     console.info "PublishAPI::fetch:endpoint=#{endpoint} init=",init
     request = new Request(url, init)
-    return fetch(request).then((response) ->
-      return response.json())
+    return fetch(request).then (response) ->
+      return response.json()
 
-  render_reports: (data) ->
+  fetch_reports: (data) ->
     ###
-     * Fetch the generated report HTML from the server
+     * Fetch the generated reports HTML from the server
      * @returns {Promise}
     ###
     options =
       data: data
     return @get_json("render_reports", options)
 
-  render_preview: (data) ->
+  fetch_previews: (data) ->
     ###
-     * Fetch the generated preview HTML (including PNGs) from the server
+     * Fetch the generated previews HTML (including PNGs) from the server
      * @returns {Promise}
     ###
     options =
