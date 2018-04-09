@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       i18n:domain="senaite" lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,125 +21,22 @@
             rel="stylesheet"
             tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/print.css"/>
     </tal:css>
+    <!-- /CSS -->
 
-    <!-- JavaScripts -->
+    <!-- JS -->
     <tal:js define="portal context/@@plone_portal_state/portal;">
       <!-- publish.js -->
       <script type="text/javascript"
               src="senaite.publisher.publish.js"
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.publish.js"></script>
     </tal:js>
+    <!-- /JS -->
+
   </head>
 
-  <body tal:define="format view/paperformat"
-        tal:attributes="class string:${format/format} ${format/orientation}">
-
-    <div class="container">
-
-      <!-- Control Panel -->
-      <div class="row">
-
-        <!-- ReactJS Publish Controller -->
-        <div id="publish_controller" class="col-sm-12"></div>
-
-
-        <tal:comment condition="nothing">
-
-        <div class="col-sm-12">
-          <form id="publishform"
-                name="publishform"
-                method="post">
-
-            <input type="hidden" name="html" value="" />
-            <input type="hidden" name="submitted" value="1" />
-
-            <div class="jumbotron">
-              <div class="lead" i18n:translate="">
-                Publish Report for
-              </div>
-              <ul class="list-inline">
-                <li class="list-inline-item" tal:repeat="model view/collection">
-                  <a href=""
-                     tal:attributes="href model/absolute_url">
-                     <span tal:content="model/title"/>
-                  </a>
-                </li>
-              </ul>
-
-              <!-- Margin 4 on top and bottom -->
-              <hr class="my-4">
-
-              <div class="form-group">
-
-                <div class="input-group">
-
-                  <!-- Merge Checkbox -->
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input type="checkbox" name="merge" title="Merge" />
-                    </div>
-                  </div>
-
-                  <!-- Template -->
-                  <select class="custom-select" name="template">
-                    <tal:option tal:repeat="template python:view.get_report_templates()">
-                      <option tal:content="template"
-                              tal:attributes="value template"></option>
-                    </tal:option>
-                  </select>
-
-                  <!-- Paper Format -->
-                  <select class="custom-select" name="format">
-                    <tal:option tal:repeat="format python:view.get_paperformats().values()">
-                      <option tal:content="string: ${format/name} (${format/page_width}mm x ${format/page_height}mm)"
-                              tal:attributes="value format/format;
-                                              selected python:format['format'] == 'A4'"></option>
-                    </tal:option>
-                  </select>
-
-                  <!-- Orientation -->
-                  <select class="custom-select" name="orientation">
-                    <option value="portrait" selected>Portrait</option>
-                    <option value="landscape">Landscape</option>
-                  </select>
-
-                  <!-- Download Button -->
-                  <div class="input-group-append">
-                    <button id="download" class="btn btn-outline-secondary">Download</button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-          </form>
-        </div> <!-- column -->
-        </tal:comment>
-
-
-      </div> <!-- row -->
-
-      <!-- Preview -->
-      <div class="row">
-        <div class="col-sm-12">
-          <!-- Report preview images are rendered here -->
-          <div id="preview" class="text-center" i18n:translate="">
-            Loading, please wait...
-          </div>
-        </div>
-      </div> <!-- /row -->
-
-      <!-- Report HTML -->
-      <div class="row">
-        <div class="col-sm-12">
-          <!-- Processed report HTML from the selected template -->
-          <div id="reports" style="display:none;">
-            <tal:reports replace="structure python:view.render_reports()"/>
-          </div>
-        </div>
-      </div> <!-- row -->
-
-    </div> <!-- /container -->
-
+  <body>
+    <!-- ReactJS controlled container -->
+    <div id="publish_controller"></div>
   </body>
+
 </html>
