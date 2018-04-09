@@ -44,6 +44,15 @@ class PublishAPI
     return items.split(",")
 
 
+  get_reports: (data) ->
+    ###
+     * Fetch the JSON data of all the reports
+    ###
+    options =
+      data: data
+    return @get_json("get_reports", options)
+
+
   get_json: (endpoint, options) ->
     ###
      * Fetch Ajax API resource from the server
@@ -69,7 +78,7 @@ class PublishAPI
       return response.json()
 
 
-  fetch_reports: (data) ->
+  render_reports: (data) ->
     ###
      * Fetch the generated reports HTML from the server
      * @returns {Promise}
@@ -79,7 +88,7 @@ class PublishAPI
     return @get_json("render_reports", options)
 
 
-  fetch_previews: (data) ->
+  load_preview: (data) ->
     ###
      * Fetch the generated previews HTML (including PNGs) from the server
      * @returns {Promise}

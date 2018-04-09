@@ -38,6 +38,7 @@ class PublishController extends React.Component
 
     @state =
       items: @api.get_items()
+      reports: @api.get_reports()
       html: ""
       preview: ""
       merge: no
@@ -97,7 +98,7 @@ class PublishController extends React.Component
       loadtext: "Loading Reports..."
 
     # fetch the rendered reports via the API asynchronously
-    promise = @api.fetch_reports @getRequestOptions()
+    promise = @api.render_reports @getRequestOptions()
 
     promise.then ((html) ->
       @setState
@@ -119,7 +120,7 @@ class PublishController extends React.Component
       loadtext: "Loading Preview..."
 
     # fetch the rendered previews via the API asynchronously
-    promise = @api.fetch_previews @getRequestOptions()
+    promise = @api.load_preview @getRequestOptions()
 
     promise.then ((preview) ->
       @setState

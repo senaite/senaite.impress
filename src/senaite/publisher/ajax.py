@@ -65,7 +65,7 @@ class AjaxPublishView(PublishView):
     def get_json(self):
         """Extracts the JSON from the request
         """
-        body = self.request.get("BODY", {})
+        body = self.request.get("BODY", "{}")
         return json.loads(body)
 
     def fail(self, message, status=500, **kw):
@@ -138,6 +138,13 @@ class AjaxPublishView(PublishView):
         data = self.get_json()
         items = data.get("items", [])
         return self.render_reports(uids=items)
+
+    def ajax_get_reports(self, *args):
+        """Returns a list of JSON mmodels
+        """
+        uids = self.get_json().get("items") or args
+        models = map(lambda uid: ReportModel(uid), uids)
+        return map(lambda model: model.to_dict(), models)
 
     def ajax_load_preview(self):
         """Recalculate the HTML of one rendered report after all the embedded
