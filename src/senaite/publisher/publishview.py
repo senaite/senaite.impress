@@ -152,10 +152,11 @@ class PublishView(BrowserView):
     @property
     def css(self):
         setup = api.get_portal().bika_setup
-        footer = setup.getResultFooter()
+        footer = setup.getResultFooter().decode("utf-8")
         context = self.paperformat
+
         context.update({
-            "footer": "{}".format(footer.replace("\r\n", "\A"))
+            "footer": u"{}".format(footer.replace("\r\n", "\A"))
         })
         return CSS.substitute(context)
 

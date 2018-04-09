@@ -146,20 +146,22 @@ class AjaxPublishView(PublishView):
         # This is the html after it was rendered by the client browser and
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
-        html = self.request.form.get("html").decode("utf8")
+        body = self.get_json()
+        self.request.form.update(body)
+        html = self.request.form.get("html")
         css = self.css
 
         publisher = IPublisher(html)
         publisher.link_css_file("bootstrap.min.css")
         publisher.link_css_file("print.css")
         publisher.add_inline_css(css)
-        merge = self.request.get("merge") in ["on", "true", "yes", "1"]
+        merge = self.request.get("merge") in ["on", "true", "yes", "1", True]
 
-        logger.info("Preview CSS: {}".format(css))
+        logger.info(u"Preview CSS: {}".format(css))
         images = publisher.write_png(merge=merge)
 
-        preview = ""
+        preview = u""
         for image in images:
             preview += publisher.png_to_img(*image)
-        preview += "<style type='text/css'>{}</style>".format(css)
+        preview += u"<style type='text/css'>{}</style>".format(css)
         return preview

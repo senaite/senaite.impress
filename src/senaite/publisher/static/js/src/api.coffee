@@ -12,9 +12,11 @@ class PublishAPI
     console.debug "PublishAPI::constructor"
     return @
 
-  get_api_url: (endpoint) =>
+  get_api_url: (endpoint) ->
     ###
-     * Get the Publish API URL
+     * Build API URL for the given endpoint
+     * @param {string} endpoint
+     * @returns {string}
     ###
     api_endpoint = "ajax_publish"
     segments = location.pathname.split "/"
@@ -23,12 +25,27 @@ class PublishAPI
     return "#{base_url}#{api_endpoint}/#{endpoint}"
 
   get_url_parameter: (name) ->
+    ###
+     * Parse a request parameter by name
+    ###
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
     regex = new RegExp('[\\?&]' + name + '=([^&#]*)')
     results = regex.exec(location.search)
     if results == null then '' else decodeURIComponent(results[1].replace(/\+/g, ' '))
 
-  get_json: (endpoint, options) =>
+  get_items: ->
+    ###
+     * Parse the `items` request parameter and returns the UIDs in an array
+    ###
+    return @get_url_parameter("items").split(",")
+
+  get_json: (endpoint, options) ->
+    ###
+     * Fetch Ajax API resource from the server
+     * @param {string} endpoint
+     * @param {object} options
+     * @returns {Promise}
+    ###
     options ?= {}
 
     method = options.method or "POST"
@@ -43,34 +60,47 @@ class PublishAPI
       credentials: "include"
     console.info "PublishAPI::fetch:endpoint=#{endpoint} init=",init
     request = new Request(url, init)
-    return fetch(request).then (response) ->
-      return response.json()
+    return fetch(request).then((response) ->
+      return response.json())
 
-  render_reports: (data) =>
+  render_reports: (data) ->
     ###
-     * Render Reports HTML
+     * Fetch the generated report HTML from the server
+     * @returns {Promise}
     ###
     options =
       data: data
-    return @get_json("render_reports", options).then (response) ->
-      el = document.getElementById("preview")
-      el.innerHTML = response
+    return @get_json("render_reports", options)
 
-  fetch_templates: =>
+  render_preview: (data) ->
+    ###
+     * Fetch the generated preview HTML (including PNGs) from the server
+     * @returns {Promise}
+    ###
+    options =
+      data: data
+    return @get_json("load_preview", options)
+
+  fetch_templates: ->
     ###
      * Fetch available templates
+     * @returns {Promise}
     ###
     return @get_json "templates",
       method: "GET"
 
-  fetch_paperformats: =>
+  fetch_paperformats: ->
     ###
-     * Fetch available paperformats
+     * Fetch paperformats from the server
+     * @returns {Promise}
     ###
     return @get_json "paperformats",
       method: "GET"
 
-  render_barcodes: =>
+  render_barcodes: ->
+    ###
+     * Render Barcodes
+    ###
     $('.barcode').each ->
       id = $(this).attr('data-id')
       console.debug "Render Barcode #{id}"
@@ -92,86 +122,5 @@ class PublishAPI
         $(this).find('.barcode-hri').remove()
         barcode_hri = '<div class=\'barcode-hri\'>' + id + '</div>'
         $(this).append barcode_hri
-
-  load: (options) =>
-    ###
-     * Return all report elements
-    ###
-
-    params = location.search.substring(1)
-
-    $.ajax
-      url: @url + "/load_preview?#{params}"
-      method: 'POST'
-      data: options
-      context: @
-    .done (data) ->
-      if data == ""
-        data = "No reports found"
-      me = @
-      @preview.fadeOut 500, ->
-        el = $(@)
-        el.empty()
-        el.append data
-        el.fadeIn()
-        me.set_css options
-
-  set_css: (options) =>
-    options ?= {}
-    options.orientation ?= $("[name='orientation']").val()
-    options.format ?= $("[name='format']").val()
-
-    size_cls = "#{options.format} #{options.orientation}"
-    report_cls = "report #{size_cls}"
-
-    reports = $(".report")
-    reports.removeClass()
-    reports.addClass report_cls
-
-    body = $("body")
-    body.removeClass()
-    body.addClass size_cls
-
-  render: (options) =>
-    ###
-     * Render all reports
-    ###
-    console.debug "PublishAPI:render"
-    @render_barcodes()
-
-    @preview.empty()
-
-    options ?= {}
-
-    options.orientation ?= $("[name='orientation']").val()
-    options.format ?= $("[name='format']").val()
-    options.merge ?= $("[name='merge']").prop("checked")
-
-    @set_css options
-    options.html = $("#reports").html()
-
-    return @load(options)
-
-  reload: (options) =>
-    ###
-     * Reload the HTML from the server
-    ###
-    console.debug "PublishAPI:reload"
-
-    options ?= {}
-    container = $("#reports")
-    container.empty()
-
-    params = location.search.substring(1)
-
-    $.ajax
-      url: @url + "/render_reports?#{params}"
-      method: 'POST'
-      data: options
-      context: @
-    .done (data) ->
-      container.append data
-      @render()
-
 
 export default PublishAPI
