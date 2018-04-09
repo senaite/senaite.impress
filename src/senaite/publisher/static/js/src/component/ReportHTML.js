@@ -1,8 +1,8 @@
 import React from 'react';
 
 
-class Reports extends React.Component {
-  /** Reports
+class ReportHTML extends React.Component {
+  /** Rendered Reports HTML
    */
 
   constructor(props) {
@@ -10,7 +10,7 @@ class Reports extends React.Component {
   }
 
   componentDidUpdate() {
-    console.info("Reports::componentDidUpdate:");
+    console.info("ReportHTML::componentDidUpdate:");
   }
 
   render() {
@@ -23,4 +23,4 @@ class Reports extends React.Component {
   }
 }
 
-export default Reports;
+export default ReportHTML;

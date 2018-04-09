@@ -8,7 +8,7 @@ import Button from "./component/Button.js"
 import MergeToggle from "./component/MergeToggle.js"
 import OrientationSelection from "./component/OrientationSelection.js"
 import PaperFormatSelection from "./component/PaperFormatSelection.js"
-import Reports from "./component/Reports.js"
+import ReportHTML from "./component/ReportHTML.js"
 import Preview from "./component/Preview.js"
 import PublishAPI from './api.coffee'
 import TemplateSelection from "./component/TemplateSelection.js"
@@ -222,7 +222,7 @@ class PublishController extends React.Component
 
       <div className="row">
         <div className="col-sm-12">
-          <Reports html={@state.html} id="reports" className="d-none" />
+          <ReportHTML html={@state.html} id="reports" className="d-none" />
         </div>
       </div>
 
