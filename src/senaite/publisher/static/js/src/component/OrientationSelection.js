@@ -16,7 +16,7 @@ class OrientationSelection extends React.Component {
               name={this.props.name}
               className={this.props.className}>
         <option key="portrait" value="portrait">Portrait</option>
-        <option key="horizontal" value="horizontal">Horizontal</option>
+        <option key="landscape" value="landscape">Landscape</option>
       </select>
     );
   }

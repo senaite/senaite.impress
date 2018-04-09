@@ -69,6 +69,7 @@ class PublishController extends React.Component
      * N.B. This step is necessary, so that JS can modify the DOM before
      *      generating the Preview/PDF from it
     ###
+    @setCSS()
     el = document.getElementById "reports"
     return el.innerHTML
 
@@ -101,6 +102,9 @@ class PublishController extends React.Component
     ).bind(this)
 
   loadPreview: ->
+    ###
+     * Send the processed HTML to the server to generate a preview
+    ###
 
     # Set the loader
     @setState
@@ -138,7 +142,7 @@ class PublishController extends React.Component
     # render the barcodes
     @api.render_barcodes()
 
-    # always update the CSS Classes
+    # set the CSS
     @setCSS()
 
   componentDidMount: ->
