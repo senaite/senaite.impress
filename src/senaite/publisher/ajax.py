@@ -10,7 +10,6 @@ import json
 
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_json
-from senaite.publisher.interfaces import IPublisher
 from senaite.publisher.publishview import PublishView
 from senaite.publisher.reportmodel import ReportModel
 from zope.interface import implements

@@ -89,7 +89,6 @@ class PublishView(BrowserView):
         """Parse the UIDs from the request `items` parameter
         """
         return filter(None, self.request.get("items", "").split(","))
-        return self._uids
 
     def get_collection(self, uids=None):
         """Wraps the given UIDs into a collection of ReportModels

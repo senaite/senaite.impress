@@ -5,14 +5,15 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import Button from "./component/Button.js"
+import Loader from "./component/Loader.js"
 import MergeToggle from "./component/MergeToggle.js"
 import OrientationSelection from "./component/OrientationSelection.js"
 import PaperFormatSelection from "./component/PaperFormatSelection.js"
-import ReportHTML from "./component/ReportHTML.js"
 import Preview from "./component/Preview.js"
 import PublishAPI from './api.coffee'
+import ReportHTML from "./component/ReportHTML.js"
+import ReportTable from "./component/ReportTable.js"
 import TemplateSelection from "./component/TemplateSelection.js"
-import Loader from "./component/Loader.js"
 
 
 # DOCUMENT READY ENTRY POINT
@@ -38,7 +39,6 @@ class PublishController extends React.Component
 
     @state =
       items: @api.get_items()
-      reports: @api.get_reports()
       html: ""
       preview: ""
       merge: no
@@ -188,7 +188,7 @@ class PublishController extends React.Component
           <div className="jumbotron">
 
             <form name="publishform" onSubmit={this.handleSubmit}>
-              <hr className="my-4"/>
+              <ReportTable api={@api} uids={@state.items} />
               <div className="form-group">
                 <div className="input-group">
                   <div className="input-group-prepend">

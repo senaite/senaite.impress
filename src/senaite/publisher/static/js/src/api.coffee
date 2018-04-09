@@ -44,12 +44,15 @@ class PublishAPI
     return items.split(",")
 
 
-  get_reports: (data) ->
+  get_reports: (uids) ->
     ###
      * Fetch the JSON data of all the reports
     ###
+    if not uids
+      uids = @get_items()
     options =
-      data: data
+      data:
+        items: uids
     return @get_json("get_reports", options)
 
 
