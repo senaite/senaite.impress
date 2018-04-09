@@ -7,20 +7,10 @@ class Button extends React.Component {
     this.props.clickHandler();
   }
 
-  componentDidMount() {
-    console.info("Button did mount");
-
-  }
-
-  componentWillUnmount() {
-    console.info("Button will unmount");
-
-  }
-
   render() {
     return (
-      <button onClick={this.handleClick} className={this.props.className}>
-        {this.props.name}
+      <button name={this.props.name} onClick={this.props.onClick} className={this.props.className}>
+        {this.props.title}
       </button>
     );
   }

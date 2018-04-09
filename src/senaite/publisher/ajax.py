@@ -135,9 +135,9 @@ class AjaxPublishView(PublishView):
         """Renders all reports and returns the html
         """
         # update the request form with the parsed json data
-        body = self.get_json()
-        self.request.form.update(body)
-        return self.render_reports()
+        data = self.get_json()
+        items = data.get("items", [])
+        return self.render_reports(uids=items)
 
     def ajax_load_preview(self):
         """Recalculate the HTML of one rendered report after all the embedded
@@ -146,22 +146,44 @@ class AjaxPublishView(PublishView):
         # This is the html after it was rendered by the client browser and
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
-        body = self.get_json()
-        self.request.form.update(body)
-        html = self.request.form.get("html")
-        css = self.css
+        data = self.get_json()
+        html = data.pop("html", None)
 
-        publisher = IPublisher(html)
-        publisher.link_css_file("bootstrap.min.css")
-        publisher.link_css_file("print.css")
-        publisher.add_inline_css(css)
-        merge = self.request.get("merge") in ["on", "true", "yes", "1", True]
-
-        logger.info(u"Preview CSS: {}".format(css))
+        publisher = self.get_publisher(html, **data)
+        merge = data.get("merge", False)
         images = publisher.write_png(merge=merge)
+
+        css = self.get_print_css(**data)
+        logger.info(u"Preview CSS: {}".format(css))
 
         preview = u""
         for image in images:
             preview += publisher.png_to_img(*image)
         preview += u"<style type='text/css'>{}</style>".format(css)
         return preview
+
+    def ajax_load_pdf(self):
+        """Generate PDFs from the given HTML
+        """
+        # This is the html after it was rendered by the client browser and
+        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
+        # N.B. It might also contain multiple reports!
+        data = self.get_json()
+        html = data.pop("html", None)
+
+        publisher = self.get_publisher(html, **data)
+        merge = data.get("merge", False)
+
+        pdf = publisher.write_pdf(merge=merge)
+
+        # XXX Make better filename
+        # collection = self.get_collection(data.get("items"))
+        # filename = "_".join(map(lambda r: r.id, collection))
+
+        # self.request.response.setHeader(
+        #     "Content-Disposition", "attachment; filename=%s.pdf" % filename)
+        # self.request.response.setHeader("Content-Type", "application/pdf")
+        # self.request.response.setHeader("Content-Length", len(pdf))
+        # self.request.response.setHeader("Cache-Control", "no-store")
+        # self.request.response.setHeader("Pragma", "no-cache")
+        # self.request.response.write(pdf)

@@ -12,6 +12,7 @@ class PublishAPI
     console.debug "PublishAPI::constructor"
     return @
 
+
   get_api_url: (endpoint) ->
     ###
      * Build API URL for the given endpoint
@@ -24,6 +25,7 @@ class PublishAPI
     base_url = document.URL.split(current_view)[0]
     return "#{base_url}#{api_endpoint}/#{endpoint}"
 
+
   get_url_parameter: (name) ->
     ###
      * Parse a request parameter by name
@@ -33,11 +35,14 @@ class PublishAPI
     results = regex.exec(location.search)
     if results == null then '' else decodeURIComponent(results[1].replace(/\+/g, ' '))
 
+
   get_items: ->
     ###
      * Parse the `items` request parameter and returns the UIDs in an array
     ###
-    return @get_url_parameter("items").split(",")
+    items = @get_url_parameter("items")
+    return items.split(",")
+
 
   get_json: (endpoint, options) ->
     ###
@@ -63,6 +68,7 @@ class PublishAPI
     return fetch(request).then (response) ->
       return response.json()
 
+
   fetch_reports: (data) ->
     ###
      * Fetch the generated reports HTML from the server
@@ -71,6 +77,7 @@ class PublishAPI
     options =
       data: data
     return @get_json("render_reports", options)
+
 
   fetch_previews: (data) ->
     ###
@@ -81,6 +88,7 @@ class PublishAPI
       data: data
     return @get_json("load_preview", options)
 
+
   fetch_templates: ->
     ###
      * Fetch available templates
@@ -89,6 +97,7 @@ class PublishAPI
     return @get_json "templates",
       method: "GET"
 
+
   fetch_paperformats: ->
     ###
      * Fetch paperformats from the server
@@ -96,6 +105,7 @@ class PublishAPI
     ###
     return @get_json "paperformats",
       method: "GET"
+
 
   render_barcodes: ->
     ###

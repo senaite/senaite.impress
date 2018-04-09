@@ -47,12 +47,13 @@ class PublishController extends React.Component
       loading: yes
       loadtext: ""
 
+
   getRequestOptions: ->
     ###
      * Options to be sent to the server
     ###
     options =
-      items: @state.items.join(",")
+      items: @state.items
       html: @getProcessedReportHTML()
       merge: @state.merge
       format: @state.format
@@ -62,6 +63,7 @@ class PublishController extends React.Component
     console.info("Request Options=", options)
 
     return options
+
 
   getProcessedReportHTML: ->
     ###
@@ -74,6 +76,7 @@ class PublishController extends React.Component
     @setCSS()
     el = document.getElementById "reports"
     return el.innerHTML
+
 
   loadReports: ->
     ###
@@ -103,6 +106,7 @@ class PublishController extends React.Component
       @loadPreview()
     ).bind(this)
 
+
   loadPreview: ->
     ###
      * Send the processed HTML to the server to generate a preview
@@ -123,6 +127,7 @@ class PublishController extends React.Component
         loading: no
     ).bind(this)
 
+
   setCSS: ->
     ###
      * Set the CSS Classes according to the paper format
@@ -138,6 +143,7 @@ class PublishController extends React.Component
     reports.forEach (report) ->
       report.className = "report #{cls}"
 
+
   componentDidUpdate: ->
     console.debug "PublishController::componentDidUpdate"
 
@@ -147,13 +153,15 @@ class PublishController extends React.Component
     # update the CSS of all rendered elements
     @setCSS()
 
+
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
     @loadReports()
 
+
   handleSubmit: (event) ->
-    console.log "Form Submitted"
     event.preventDefault()
+
 
   handleChange: (event) ->
     target = event.target
@@ -170,6 +178,7 @@ class PublishController extends React.Component
       # reload only the Preview
       return @loadPreview()
 
+
   render: ->
     <div className="container">
 
@@ -177,7 +186,7 @@ class PublishController extends React.Component
         <div className="col-sm-12">
           <div className="jumbotron">
 
-            <form onSubmit={this.handleSubmit}>
+            <form name="publishform" onSubmit={this.handleSubmit}>
               <hr className="my-4"/>
               <div className="form-group">
                 <div className="input-group">
@@ -189,6 +198,8 @@ class PublishController extends React.Component
                   <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
                   <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
                   <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
+                  <div className="input-group-append">
+                  </div>
                 </div>
               </div>
             </form>

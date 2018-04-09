@@ -11,7 +11,7 @@ from string import Template
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
-from senaite.publisher import logger
+# from senaite.publisher import logger
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IPublisher
@@ -81,44 +81,37 @@ class PublishView(BrowserView):
         super(BrowserView, self).__init__(context, request)
         self.context = context
         self.request = request
-        self._uids = None
-        self._collection = None
 
     def __call__(self):
-        if self.request.form.get("submitted", False):
-            return self.download()
         return self.template()
 
-    @property
-    def uids(self):
+    def get_uids(self):
         """Parse the UIDs from the request `items` parameter
         """
-        if self._uids is None:
-            self._uids = filter(None, self.request.get("items", "").split(","))
+        return filter(None, self.request.get("items", "").split(","))
         return self._uids
 
-    @property
-    def collection(self):
-        """Wraps the UIDs from the request `items` parameter into a collection
-        of ReportModels
+    def get_collection(self, uids=None):
+        """Wraps the given UIDs into a collection of ReportModels
         """
-        if self._collection is None:
-            models = map(lambda uid: ReportModel(uid), self.uids)
-            self._collection = ReportModelCollection(models)
-        return self._collection
+        if uids is None:
+            uids = self.get_uids()
+        models = map(lambda uid: ReportModel(uid), uids)
+        return ReportModelCollection(models)
 
-    def render_reports(self):
+    def render_reports(self, uids=None):
         """Render Single/Multi Reports to HTML
         """
         htmls = []
         template = self.get_report_template()
+        collection = self.get_collection(uids)
 
         if self.is_multi_template(template):
             # render multi report
-            html = self.render_multi_report(self.collection, template)
+            html = self.render_multi_report(collection, template)
             htmls.append(html)
         else:
-            for model in self.collection:
+            for model in collection:
                 # render single report
                 html = self.render_report(model, template)
                 htmls.append(html)
@@ -136,60 +129,55 @@ class PublishView(BrowserView):
         view = getAdapter(collection, IMultiReportView, name="AnalysisRequest")
         return view.render(self.read_template(template, view))
 
-    @property
-    def paperformat(self):
+    def get_publisher(self, html, **kw):
+        """Returns a configured IPublisher instance
+        """
+        publisher = IPublisher(html)
+
+        # generate print CSS
+        css = self.get_print_css(**kw)
+
+        # link CSS
+        publisher.link_css_file("bootstrap.min.css")
+        publisher.link_css_file("print.css")
+        publisher.add_inline_css(css)
+
+        return publisher
+
+    def get_print_css(self, **kw):
+        """Returns the generated print CSS for the given format/orientation
+        """
+        format = kw.get("format", "A4")
+        orientation = kw.get("orientation", "portrait")
+
+        context = self.get_paperformat(format, orientation)
+        context["footer"] = self.get_footer_text()
+        return CSS.safe_substitute(context)
+
+    def get_paperformat(self, format="A4", orientation="portrait"):
         paperformats = self.get_paperformats()
-        format = self.request.form.get("format")
         if format not in paperformats:
             format = "A4"
-        orientation = self.request.form.get("orientation", "portrait")
+        if orientation not in ["portrait", "landscape"]:
+            orientation = "portrait"
         paperformat = paperformats.get(format)
-        paperformat.update({
-            "orientation": orientation,
-        })
+        paperformat["orientation"] = orientation
         return paperformat
-
-    @property
-    def css(self):
-        setup = api.get_portal().bika_setup
-        footer = setup.getResultFooter().decode("utf-8")
-        context = self.paperformat
-
-        context.update({
-            "footer": u"{}".format(footer.replace("\r\n", "\A"))
-        })
-        return CSS.substitute(context)
-
-    def download(self):
-        # This is the html after it was rendered by the client browser and
-        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
-        # N.B. It might also contain multiple reports!
-        html = self.request.form.get("html").decode("utf8")
-        css = self.css
-
-        publisher = IPublisher(html)
-        publisher.link_css_file("bootstrap.min.css")
-        # publisher.link_css_file("print.css")
-        publisher.add_inline_css(css)
-        merge = self.request.get("merge") in ["on", "true", "yes", "1", True]
-
-        logger.info("PDF CSS: {}".format(css))
-        pdf = publisher.write_pdf(merge=merge)
-
-        filename = "_".join(map(lambda r: r.id, self.collection))
-        self.request.response.setHeader(
-            "Content-Disposition", "attachment; filename=%s.pdf" % filename)
-        self.request.response.setHeader("Content-Type", "application/pdf")
-        self.request.response.setHeader("Content-Length", len(pdf))
-        self.request.response.setHeader("Cache-Control", "no-store")
-        self.request.response.setHeader("Pragma", "no-cache")
-        self.request.response.write(pdf)
 
     def get_paperformats(self):
         """Returns a mapping of available paper formats
         """
         # Todo: Implement cascading lookup: client->registry->config
         return PAPERFORMATS
+
+    def get_footer_text(self, escape=True):
+        """Returns the footer text from the setup
+        """
+        setup = api.get_portal().bika_setup
+        footer = setup.getResultFooter().decode("utf-8")
+        if escape:
+            return footer.replace("\r\n", "\A")
+        return footer
 
     def get_report_templates(self, extensions=[".pt", ".html"]):
         """Returns a sorted list of template/path pairs
