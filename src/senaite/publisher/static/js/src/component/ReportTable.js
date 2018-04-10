@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import ReportRow from "./ReportRow.js";
+import CCContacts from "./CCContacts.js";
 
 
 class ReportTable extends React.Component {
@@ -14,16 +15,22 @@ class ReportTable extends React.Component {
         {
           name: "title",
           title: "Title",
-          formatter: this.formatTitleColumn
+          formatter: this.formatTitleColumn.bind(this)
         },
         {
           name: "ContactFullName",
-          title: "Contact"
+          title: "Contact",
+          formatter: this.formatContactColumn.bind(this)
         },
         {
-          name: "ContactEmail",
-          title: "Email",
-          formatter: this.formatEmailColumn
+          name: "CCContact",
+          title: "CC Contacts",
+          formatter: this.formatCCContactColumn.bind(this)
+        },
+        {
+          name: "CCEmails",
+          title: "CC Emails",
+          formatter: this.formatEmailColumn.bind(this)
         },
         {
           name: "ClientTitle",
@@ -32,20 +39,34 @@ class ReportTable extends React.Component {
         {
           name: "DateReceived",
           title: "Date Received",
-          formatter: this.formatDateColumn
+          formatter: this.formatDateColumn.bind(this)
         }
       ]
     };
   }
 
-  formatEmailColumn(column, model) {
+  formatContactColumn(column, model) {
     let value = model[column.name];
-    return `<a href="mailto:${value}">${value}</a>`;
+    let email = model.ContactEmail;
+    let el = value;
+    if (email) {
+      el = <a href="mailto:{email}">{value}</a>;
+    }
+    return el;
+  }
+
+  formatCCContactColumn(column, model) {
+    return <CCContacts api={this.api} model={model} />;
   }
 
   formatDateColumn(column, model) {
     let value = model[column.name];
     return moment(value).startOf('day').fromNow();
+  }
+
+  formatEmailColumn(column, model) {
+    let value = model[column.name];
+    return <a href="mailto:{value}">{value}</a>;
   }
 
   formatTitleColumn(column, model) {

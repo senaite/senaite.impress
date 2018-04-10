@@ -36,9 +36,12 @@ class ReportRow extends React.Component {
       } else {
         value = model[column.name];
       }
-      columns.push(
-        <td key={column.name} dangerouslySetInnerHTML={{__html: value}}></td>
-      );
+      if (React.isValidElement(value)) {
+        value = <td key={column.name}>{value}</td>;
+      } else {
+        value = <td key={column.name} dangerouslySetInnerHTML={{__html: value}}></td>;
+      }
+      columns.push(value);
     }
     return columns;
   }

@@ -331,6 +331,7 @@ class ReportModel(object):
         for k, v in self.iteritems():
             out[k] = converter(v)
         # add some special fields
+        out["UID"] = self.UID()
         out["absolute_url"] = self.absolute_url()
         out["portal_url"] = api.get_portal().absolute_url()
         return out
