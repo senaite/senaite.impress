@@ -107,15 +107,15 @@ class AjaxPublishView(PublishView):
         logger.info("ajaxPrintView::ajax_get_uid:UID={} args={}"
                     .format(uid, args))
 
-        wrapped = ReportModel(uid)
-        if not wrapped.is_valid():
+        model = ReportModel(uid)
+        if not model.is_valid():
             return self.fail("No object found for UID '{}'"
                              .format(uid), status=404)
 
         def converter(value):
-            return wrapped.stringify(value)
+            return model.stringify(value)
 
-        return self.pick(wrapped, converter=converter, *args)
+        return self.pick(model.to_dict(), converter=converter, *args)
 
     def ajax_paperformats(self, *args):
         """Returns the paperformats

@@ -50,7 +50,7 @@ class ReportTable extends React.Component {
 
   formatTitleColumn(column, model) {
     let value = model[column.name];
-    let url = model["absolute_url"];
+    let url = model.absolute_url;
     return `<a href="${url}">${value}</a>`;
   }
 
