@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 
 class ReportRow extends React.Component {
@@ -27,20 +26,27 @@ class ReportRow extends React.Component {
 
   buildColumns() {
     let columns = [];
-    let fields = this.props.fields;
-    for (let field of fields) {
-      let value = this.state.model[field.field];
-      if (field.field.startsWith("Date")) {
-        value = moment(value).startOf('day').fromNow();
+    for (let column of this.props.columns) {
+      // extract the value from the model
+      let model = this.state.model;
+      let value = "";
+
+      if (column.formatter) {
+        value = column.formatter(column, model);
+      } else {
+        value = model[column.name];
       }
       columns.push(
-        <td key={field.field}>{value}</td>
+        <td key={column.name} dangerouslySetInnerHTML={{__html: value}}></td>
       );
     }
     return columns;
   }
 
   render() {
+    if (!this.state.model.title) {
+      return null;
+    }
     return (
       <tr>
         {this.buildColumns()}

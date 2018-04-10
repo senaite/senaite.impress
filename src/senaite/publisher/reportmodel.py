@@ -330,6 +330,9 @@ class ReportModel(object):
         out = dict()
         for k, v in self.iteritems():
             out[k] = converter(v)
+        # add some special fields
+        out["absolute_url"] = self.absolute_url()
+        out["portal_url"] = api.get_portal().absolute_url()
         return out
 
     def to_json(self):

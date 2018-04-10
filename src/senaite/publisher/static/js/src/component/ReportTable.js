@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import ReportRow from "./ReportRow.js";
 
 
@@ -7,39 +8,59 @@ class ReportTable extends React.Component {
   constructor(props) {
     super(props);
     this.api = props.api;
+
     this.state = {
-      fields: [
+      columns: [
         {
-          field: "title",
-          title: "Title"
+          name: "title",
+          title: "Title",
+          formatter: this.formatTitleColumn
         },
         {
-          field: "ContactFullName",
+          name: "ContactFullName",
           title: "Contact"
         },
         {
-          field: "ContactEmail",
-          title: "Email"
+          name: "ContactEmail",
+          title: "Email",
+          formatter: this.formatEmailColumn
         },
         {
-          field: "ClientTitle",
+          name: "ClientTitle",
           title: "Client"
         },
         {
-          field: "DateReceived",
-          title: "Date Received"
+          name: "DateReceived",
+          title: "Date Received",
+          formatter: this.formatDateColumn
         }
       ]
     };
   }
 
+  formatEmailColumn(column, model) {
+    let value = model[column.name];
+    return `<a href="mailto:${value}">${value}</a>`;
+  }
+
+  formatDateColumn(column, model) {
+    let value = model[column.name];
+    return moment(value).startOf('day').fromNow();
+  }
+
+  formatTitleColumn(column, model) {
+    let value = model[column.name];
+    let url = model["absolute_url"];
+    return `<a href="${url}">${value}</a>`;
+  }
+
   buildHeader() {
     let header = [];
-    let fields = this.state.fields;
-    fields.map(
-      field =>
+    let columns = this.state.columns;
+    columns.map(
+      column =>
         header.push(
-          <th key={field.field}>{field.title}</th>
+          <th key={column.name}>{column.title}</th>
         ));
     return header;
   }
@@ -50,7 +71,7 @@ class ReportTable extends React.Component {
     uids.map(
       uid =>
         rows.push(
-          <ReportRow uid={uid} fields={this.state.fields} api={this.api} key={uid} />
+          <ReportRow uid={uid} columns={this.state.columns} api={this.api} key={uid} />
         ));
     return rows;
   }
