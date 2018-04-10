@@ -170,13 +170,14 @@ class PublishAPI
       body: formData
       credentials: "include"
 
+    filename = options.name or "Report"
     request = new Request(url, init)
 
     return fetch(request).then (response) ->
       return response.blob()
     .then (blob) ->
       console.debug "Downloading BLOB", blob
-      download(blob, "Report.pdf", "application/json")
+      download(blob, "#{filename}.pdf", "application/json")
 
 
 export default PublishAPI

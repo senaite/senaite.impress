@@ -170,7 +170,6 @@ class PublishController extends React.Component
   downloadPDF: (event) ->
     event.preventDefault()
 
-
     # Set the loader
     @setState
       loading: yes
@@ -179,9 +178,15 @@ class PublishController extends React.Component
     options = @getRequestOptions()
 
     target = event.target
+
     uid = target.getAttribute "uid"
     if uid
       options.uid = uid
+
+    name = target.getAttribute "name"
+    if name
+      options.name = name
+
     promise = @api.download_pdf options
 
     promise.then ( ->
@@ -232,7 +237,7 @@ class PublishController extends React.Component
 
                       <div class="input-group-append">
                         <Button onClick={@loadReports} name="reload" title="↺" className="btn btn-outline-success"/>
-                        <Button name="download" title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
+                        <Button title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
                       </div>
 
                     </div>
