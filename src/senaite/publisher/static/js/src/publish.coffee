@@ -38,7 +38,7 @@ class PublishController extends React.Component
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
     @loadReports = @loadReports.bind(this)
-    @getProcessedReportHTML = @getProcessedReportHTML.bind(this)
+    @downloadPDF = @downloadPDF.bind(this)
 
     @state =
       items: @api.get_items()
@@ -167,6 +167,19 @@ class PublishController extends React.Component
   handleSubmit: (event) ->
     event.preventDefault()
 
+  downloadPDF: (event) ->
+    event.preventDefault()
+
+    form = event.target.form
+
+    for key, value of @getRequestOptions()
+      el = document.createElement "input"
+      el.type = "hidden"
+      el.name = key
+      el.value = value
+      form.appendChild el
+
+    form.submit()
 
   handleChange: (event) ->
     target = event.target
@@ -216,7 +229,7 @@ class PublishController extends React.Component
 
             <div className="row">
               <div className="col-sm-12">
-                <DownloadButton html={@getProcessedReportHTML} context={@state} name="download" title="Get PDF" formClass="pl-2 float-right" className="btn btn-outline-secondary"/>
+                <DownloadButton onClick={@downloadPDF} name="download" title="Get PDF" formClass="pl-2 float-right" className="btn btn-outline-secondary"/>
                 <Button onClick={@loadReports} name="reload" title="Reload" className="float-right btn btn-success"/>
               </div>
             </div>

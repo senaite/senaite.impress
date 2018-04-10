@@ -96,9 +96,8 @@ class PublishView(BrowserView):
         # N.B. It might also contain multiple reports!
 
         form = self.request.form
-
         html = form.get("html", "")
-        items = form.get("items", "").split(",")
+        items = form.get("items", [])
 
         context = {
             "format": form.get("format"),

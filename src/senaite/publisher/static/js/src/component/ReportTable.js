@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import ReportRow from "./ReportRow.js";
 import CCContacts from "./CCContacts.js";
+import DownloadButton from "./DownloadButton.js";
 
 
 class ReportTable extends React.Component {
@@ -40,9 +41,18 @@ class ReportTable extends React.Component {
           name: "DateReceived",
           title: "Date Received",
           formatter: this.formatDateColumn.bind(this)
+        },
+        {
+          name: "",
+          title: "",
+          formatter: this.formatDownloadButton.bind(this)
         }
       ]
     };
+  }
+
+  formatDownloadButton(column, model) {
+    return <button className="btn btn-default">Download</button>;
   }
 
   formatContactColumn(column, model) {
