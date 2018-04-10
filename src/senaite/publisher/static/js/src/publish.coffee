@@ -235,7 +235,7 @@ class PublishController extends React.Component
                       <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
                       <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
 
-                      <div class="input-group-append">
+                      <div className="input-group-append">
                         <Button onClick={@loadReports} name="reload" title="↺" className="btn btn-outline-success"/>
                         <Button title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
                       </div>
