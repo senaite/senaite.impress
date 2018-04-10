@@ -135,11 +135,11 @@ class PublishView(BrowserView):
         models = map(lambda uid: ReportModel(uid), uids)
         return ReportModelCollection(models)
 
-    def render_reports(self, uids=None):
+    def render_reports(self, uids=None, template=None):
         """Render Single/Multi Reports to HTML
         """
         htmls = []
-        template = self.get_report_template()
+        template = self.get_report_template(template)
         collection = self.get_collection(uids)
 
         if self.is_multi_template(template):

@@ -136,7 +136,8 @@ class AjaxPublishView(PublishView):
         # update the request form with the parsed json data
         data = self.get_json()
         items = data.get("items", [])
-        return self.render_reports(uids=items)
+        template = data.get("template")
+        return self.render_reports(uids=items, template=template)
 
     def ajax_get_reports(self, *args):
         """Returns a list of JSON mmodels
@@ -167,29 +168,3 @@ class AjaxPublishView(PublishView):
             preview += publisher.png_to_img(*image)
         preview += u"<style type='text/css'>{}</style>".format(css)
         return preview
-
-    def ajax_load_pdf(self):
-        """Generate PDFs from the given HTML
-        """
-        # This is the html after it was rendered by the client browser and
-        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
-        # N.B. It might also contain multiple reports!
-        data = self.get_json()
-        html = data.pop("html", None)
-
-        publisher = self.get_publisher(html, **data)
-        merge = data.get("merge", False)
-
-        pdf = publisher.write_pdf(merge=merge)
-
-        # XXX Make better filename
-        # collection = self.get_collection(data.get("items"))
-        # filename = "_".join(map(lambda r: r.id, collection))
-
-        # self.request.response.setHeader(
-        #     "Content-Disposition", "attachment; filename=%s.pdf" % filename)
-        # self.request.response.setHeader("Content-Type", "application/pdf")
-        # self.request.response.setHeader("Content-Length", len(pdf))
-        # self.request.response.setHeader("Cache-Control", "no-store")
-        # self.request.response.setHeader("Pragma", "no-cache")
-        # self.request.response.write(pdf)
