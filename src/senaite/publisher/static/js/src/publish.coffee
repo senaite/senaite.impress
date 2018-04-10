@@ -38,6 +38,7 @@ class PublishController extends React.Component
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
     @loadReports = @loadReports.bind(this)
+    @getProcessedReportHTML = @getProcessedReportHTML.bind(this)
 
     @state =
       items: @api.get_items()
@@ -78,6 +79,7 @@ class PublishController extends React.Component
     # ensure that the rendered HTML has the right format/orientation CSS classes
     @setCSS()
     el = document.getElementById "reports"
+    return "" unless el
     return el.innerHTML
 
 
@@ -214,7 +216,7 @@ class PublishController extends React.Component
 
             <div className="row">
               <div className="col-sm-12">
-                <DownloadButton context={@state} name="download" title="Get PDF" formClass="pl-2 float-right" className="btn btn-outline-secondary"/>
+                <DownloadButton html={@getProcessedReportHTML} context={@state} name="download" title="Get PDF" formClass="pl-2 float-right" className="btn btn-outline-secondary"/>
                 <Button onClick={@loadReports} name="reload" title="Reload" className="float-right btn btn-success"/>
               </div>
             </div>
