@@ -5,9 +5,10 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE and CONTRIBUTING.
 
-import os
 import json
+import os
 from string import Template
+from datetime import datetime
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -84,7 +85,7 @@ class PublishView(BrowserView):
         self.request = request
 
     def __call__(self):
-        if self.request.form.get("submitted", False):
+        if self.request.form.get("download", False):
             return self.download()
         return self.template()
 
@@ -97,8 +98,6 @@ class PublishView(BrowserView):
 
         form = self.request.form
         html = form.get("html", "")
-        items = form.get("items", [])
-
         context = {
             "format": form.get("format"),
             "orientation": form.get("orientation"),
@@ -107,12 +106,9 @@ class PublishView(BrowserView):
 
         publisher = self.get_publisher(html, **context)
         merge = json.loads(form.get("merge", "false"))
+        pdf = publisher.write_pdf(merge=merge, uid=form.get("uid"))
 
-        pdf = publisher.write_pdf(merge=merge)
-
-        collection = self.get_collection(items)
-        filename = "_".join(map(lambda r: r.id, collection))
-
+        filename = "report_%s" % datetime.now().isoformat()
         self.request.response.setHeader(
             "Content-Disposition", "attachment; filename=%s.pdf" % filename)
         self.request.response.setHeader("Content-Type", "application/pdf")

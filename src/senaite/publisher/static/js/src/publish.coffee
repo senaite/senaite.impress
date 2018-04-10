@@ -5,7 +5,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import Button from "./component/Button.js"
-import DownloadButton from "./component/DownloadButton.js"
 import Loader from "./component/Loader.js"
 import MergeToggle from "./component/MergeToggle.js"
 import OrientationSelection from "./component/OrientationSelection.js"
@@ -167,19 +166,29 @@ class PublishController extends React.Component
   handleSubmit: (event) ->
     event.preventDefault()
 
+
   downloadPDF: (event) ->
     event.preventDefault()
 
-    form = event.target.form
 
-    for key, value of @getRequestOptions()
-      el = document.createElement "input"
-      el.type = "hidden"
-      el.name = key
-      el.value = value
-      form.appendChild el
+    # Set the loader
+    @setState
+      loading: yes
+      loadtext: "Loading PDF..."
 
-    form.submit()
+    options = @getRequestOptions()
+
+    target = event.target
+    uid = target.getAttribute "uid"
+    if uid
+      options.uid = uid
+    promise = @api.download_pdf options
+
+    promise.then ( ->
+      @setState
+        loading: no
+    ).bind(this)
+
 
   handleChange: (event) ->
     target = event.target
@@ -207,7 +216,7 @@ class PublishController extends React.Component
             <div className="row">
               <div className="col-sm-12">
                 <form name="publishform" onSubmit={this.handleSubmit}>
-                  <ReportTable api={@api} uids={@state.items} />
+                  <ReportTable api={@api} uids={@state.items} onClick={@downloadPDF} />
                   <div className="form-group">
                     <div className="input-group">
 
@@ -221,16 +230,14 @@ class PublishController extends React.Component
                       <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
                       <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
 
+                      <div class="input-group-append">
+                        <Button onClick={@loadReports} name="reload" title="↺" className="btn btn-outline-success"/>
+                        <Button name="download" title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
+                      </div>
+
                     </div>
                   </div>
                 </form>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-sm-12">
-                <DownloadButton onClick={@downloadPDF} name="download" title="Get PDF" formClass="pl-2 float-right" className="btn btn-outline-secondary"/>
-                <Button onClick={@loadReports} name="reload" title="Reload" className="float-right btn btn-success"/>
               </div>
             </div>
 

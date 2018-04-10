@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import ReportRow from "./ReportRow.js";
 import CCContacts from "./CCContacts.js";
-import DownloadButton from "./DownloadButton.js";
+import Button from "./Button.js";
 
 
 class ReportTable extends React.Component {
@@ -52,7 +52,7 @@ class ReportTable extends React.Component {
   }
 
   formatDownloadButton(column, model) {
-    return <button className="btn btn-default">Download</button>;
+    return <Button uid={model.UID} name={model.title} onClick={this.props.onClick} className="btn btn-link" title="PDF" />;
   }
 
   formatContactColumn(column, model) {

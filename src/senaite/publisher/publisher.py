@@ -66,11 +66,11 @@ class Publisher(object):
         """
         return BeautifulSoup(html, parser)
 
-    def get_reports(self):
+    def get_reports(self, attrs={}):
         """Returns a list of parsed reports
         """
         parser = self.get_parser(self.html)
-        reports = parser.find_all("div", class_=self.css_class_report)
+        reports = parser.find_all("div", class_=self.css_class_report, attrs=attrs)
         return map(lambda report: report.prettify(), reports)
 
     def parse_report_sections(self, report_html):
@@ -183,10 +183,15 @@ class Publisher(object):
                   </div>""".format(width, height, data_url)
         return img
 
-    def write_pdf(self, merge=False):
+    def write_pdf(self, merge=False, uid=None):
         """Write PDFs from the given HTML
         """
-        reports = self.get_reports()
+
+        attrs = {}
+        if uid is not None:
+            attrs["uid"] = uid
+        reports = self.get_reports(attrs=attrs)
+
         if merge:
             reports = ["".join(reports)]
 

@@ -4,6 +4,7 @@
 
 import $ from 'jquery'
 import "./lib/jquery-barcode-2.0.2.js"
+import download from "./lib/download.js"
 
 
 class PublishAPI
@@ -11,6 +12,13 @@ class PublishAPI
   constructor: ->
     console.debug "PublishAPI::constructor"
     return @
+
+
+  get_base_url: ->
+    ###
+     * Calculate the current base url
+    ###
+    return document.URL.split("?")[0]
 
 
   get_api_url: (endpoint) ->
@@ -22,8 +30,8 @@ class PublishAPI
     api_endpoint = "ajax_publish"
     segments = location.pathname.split "/"
     current_view = segments[segments.length-1]
-    base_url = document.URL.split(current_view)[0]
-    return "#{base_url}#{api_endpoint}/#{endpoint}"
+    url = @get_base_url().split(current_view)[0]
+    return "#{url}#{api_endpoint}/#{endpoint}"
 
 
   get_url_parameter: (name) ->
@@ -144,5 +152,31 @@ class PublishAPI
         $(this).find('.barcode-hri').remove()
         barcode_hri = '<div class=\'barcode-hri\'>' + id + '</div>'
         $(this).append barcode_hri
+
+
+  download_pdf: (options) ->
+    ###
+     * Send an async request to the server and download the file
+    ###
+    formData = new FormData()
+    formData.set("download", "1")
+    for key, value of options
+      formData.set(key, value)
+
+    url = @get_base_url()
+
+    init =
+      method: "POST"
+      body: formData
+      credentials: "include"
+
+    request = new Request(url, init)
+
+    return fetch(request).then (response) ->
+      return response.blob()
+    .then (blob) ->
+      console.debug "Downloading BLOB", blob
+      download(blob, "Report.pdf", "application/json")
+
 
 export default PublishAPI
