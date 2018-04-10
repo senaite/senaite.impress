@@ -5,6 +5,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import Button from "./component/Button.js"
+import DownloadButton from "./component/DownloadButton.js"
 import Loader from "./component/Loader.js"
 import MergeToggle from "./component/MergeToggle.js"
 import OrientationSelection from "./component/OrientationSelection.js"
@@ -36,6 +37,7 @@ class PublishController extends React.Component
     # Bind `this` in methods
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
+    @loadReports = @loadReports.bind(this)
 
     @state =
       items: @api.get_items()
@@ -187,23 +189,35 @@ class PublishController extends React.Component
         <div className="col-sm-12">
           <div className="jumbotron">
 
-            <form name="publishform" onSubmit={this.handleSubmit}>
-              <ReportTable api={@api} uids={@state.items} />
-              <div className="form-group">
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                    <div className="input-group-text">
-                      <MergeToggle api={@api} onChange={@handleChange} value={@state.merge} className="" name="merge" />
+            <div className="row">
+              <div className="col-sm-12">
+                <form name="publishform" onSubmit={this.handleSubmit}>
+                  <ReportTable api={@api} uids={@state.items} />
+                  <div className="form-group">
+                    <div className="input-group">
+
+                      <div className="input-group-prepend">
+                        <div className="input-group-text">
+                          <MergeToggle api={@api} onChange={@handleChange} value={@state.merge} className="" name="merge" />
+                        </div>
+                      </div>
+
+                      <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
+                      <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
+                      <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
+
                     </div>
                   </div>
-                  <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
-                  <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
-                  <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
-                  <div className="input-group-append">
-                  </div>
-                </div>
+                </form>
               </div>
-            </form>
+            </div>
+
+            <div className="row">
+              <div className="col-sm-12">
+                <DownloadButton context={@state} name="download" title="Get PDF" formClass="pl-2 float-right" className="btn btn-outline-secondary"/>
+                <Button onClick={@loadReports} name="reload" title="Reload" className="float-right btn btn-success"/>
+              </div>
+            </div>
 
           </div>
         </div>
