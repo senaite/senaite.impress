@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-04-11 16:09+0000\n"
+"POT-Creation-Date: 2018-04-11 16:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,14 +75,6 @@ msgstr ""
 #: senaite/publisher/templates/reports/Default.pt:204
 #: senaite/publisher/templates/reports/MultiDefault.pt:216
 msgid "Date Received"
-msgstr ""
-
-#: senaite/publisher/config.py:13
-msgid "European A4"
-msgstr ""
-
-#: senaite/publisher/config.py:29
-msgid "European A5"
 msgstr ""
 
 #: senaite/publisher/templates/publish.pt:40
@@ -214,10 +206,6 @@ msgstr ""
 #: senaite/publisher/templates/reports/Default.pt:464
 #: senaite/publisher/templates/reports/MultiDefault.pt:493
 msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
-msgstr ""
-
-#: senaite/publisher/config.py:44
-msgid "US Letter"
 msgstr ""
 
 #: senaite/publisher/templates/reports/Default.pt:264
