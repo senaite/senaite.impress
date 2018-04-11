@@ -3,7 +3,6 @@
 # This file is part of SENAITE.PUBLISHER
 #
 # Copyright 2018 by it's authors.
-# Some rights reserved. See LICENSE and CONTRIBUTING.
 
 import json
 from collections import Iterable
