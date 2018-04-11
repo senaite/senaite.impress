@@ -8,7 +8,7 @@
 # https://developer.mozilla.org/en-US/docs/Web/CSS/@page/size
 PAPERFORMATS = {
     "A4": {
-        "name": "A4",
+        "name": "DIN A4",
         "format": "A4",
         "dpi": 96,
         "margin_top": 20.0,
@@ -24,7 +24,7 @@ PAPERFORMATS = {
     },
 
     "A5": {
-        "name": "A5",
+        "name": "DIN A5",
         "format": "A5",
         "dpi": 96,
         "margin_top": 15.0,
@@ -39,7 +39,7 @@ PAPERFORMATS = {
     },
 
     "letter": {
-        "name": "Letter",
+        "name": "US Letter",
         "format": "letter",
         "dpi": 96,
         "margin_top": 20.0,
