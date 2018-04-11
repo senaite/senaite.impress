@@ -1,9 +1,15 @@
-<tal:report define="analysisrequests view/collection;">
+<tal:report define="collection view/collection;
+                    ">
+
+  <!-- HEADER -->
+  <div class="row section-header">
+  </div>
+
   <div class="row">
     <h1>Multi Report</h1>
     <ul>
-      <li tal:repeat="analysisrequest analysisrequests">
-        <span tal:content="analysisrequest/id"/>
+      <li tal:repeat="model collection">
+        <span tal:content="model/id"/>
       </li>
       <ul>
   </div>

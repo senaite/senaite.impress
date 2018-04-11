@@ -51,9 +51,10 @@ class PublishController extends React.Component
       merge: no
       format: "A4"
       orientation: "portrait"
-      template: "senaite.publisher:Default.pt"
+      template: "senaite.publisher:MultiDefault.pt"
       loading: yes
       loadtext: ""
+      group_by_client: yes
 
 
   getRequestOptions: ->
@@ -67,8 +68,9 @@ class PublishController extends React.Component
       format: @state.format
       orientation: @state.orientation
       template: @state.template
+      group_by_client: @state.group_by_client
 
-    console.info("Request Options=", options)
+    console.debug("Request Options=", options)
 
     return options
 

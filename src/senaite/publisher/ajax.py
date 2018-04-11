@@ -132,9 +132,8 @@ class AjaxPublishView(PublishView):
         """
         # update the request form with the parsed json data
         data = self.get_json()
-        items = data.get("items", [])
-        template = data.get("template")
-        return self.render_reports(uids=items, template=template)
+        items = data.pop("items", [])
+        return self.render_reports(uids=items, **data)
 
     def ajax_get_reports(self, *args):
         """Returns a list of JSON mmodels

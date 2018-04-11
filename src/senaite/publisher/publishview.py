@@ -7,8 +7,9 @@
 
 import json
 import os
-from string import Template
+from collections import defaultdict
 from datetime import datetime
+from string import Template
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -130,22 +131,37 @@ class PublishView(BrowserView):
         models = map(lambda uid: ReportModel(uid), uids)
         return ReportModelCollection(models)
 
-    def render_reports(self, uids=None, template=None):
+    def render_reports(self, uids=None, **kw):
         """Render Single/Multi Reports to HTML
         """
         htmls = []
-        template = self.get_report_template(template)
+        template = self.get_report_template(kw.get("template"))
         collection = self.get_collection(uids)
 
         if self.is_multi_template(template):
-            # render multi report
-            html = self.render_multi_report(collection, template)
-            htmls.append(html)
+            group = kw.get("group_by_client", True)
+
+            # group the models by client
+            if group:
+                by_client = defaultdict(ReportModelCollection)
+
+                for model in collection:
+                    by_client[model.Client.getId()].append(model)
+
+                for client, collection in by_client.items():
+                    # render multi report
+                    html = self.render_multi_report(collection, template)
+                    htmls.append(html)
+            else:
+                # render multi report
+                html = self.render_multi_report(collection, template)
+                htmls.append(html)
         else:
             for model in collection:
                 # render single report
                 html = self.render_report(model, template)
                 htmls.append(html)
+
         return "\n".join(htmls)
 
     def render_report(self, model, template):
