@@ -5,14 +5,6 @@ class ReportHTML extends React.Component {
   /** Rendered Reports HTML
    */
 
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidUpdate() {
-    console.info("ReportHTML::componentDidUpdate:");
-  }
-
   render() {
     return (
       <div id={this.props.id}

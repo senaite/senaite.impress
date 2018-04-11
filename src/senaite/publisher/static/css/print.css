@@ -13,7 +13,12 @@ body { margin: 0 }
 }
 /** For screen preview **/
 @media screen {
-  body { background: #e0e0e0 }
+  body {
+    background: #e0e0e0;
+  }
+  .container {
+    min-width: 1200px!important;
+  }
   .report {
     background: white;
     box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);

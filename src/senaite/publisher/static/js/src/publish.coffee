@@ -4,22 +4,27 @@
 import React from "react"
 import ReactDOM from "react-dom"
 
-import Button from "./component/Button.js"
-import Loader from "./component/Loader.js"
-import MergeToggle from "./component/MergeToggle.js"
-import OrientationSelection from "./component/OrientationSelection.js"
-import PaperFormatSelection from "./component/PaperFormatSelection.js"
-import Preview from "./component/Preview.js"
 import PublishAPI from './api.coffee'
-import ReportHTML from "./component/ReportHTML.js"
-import ReportTable from "./component/ReportTable.js"
-import TemplateSelection from "./component/TemplateSelection.js"
+
+import Button from "./components/Button.js"
+import Loader from "./components/Loader.js"
+import MergeToggle from "./components/MergeToggle.js"
+import OrientationSelection from "./components/OrientationSelection.js"
+import PaperFormatSelection from "./components/PaperFormatSelection.js"
+import Preview from "./components/Preview.js"
+import ReportHTML from "./components/ReportHTML.js"
+import TemplateSelection from "./components/TemplateSelection.js"
 
 
 # DOCUMENT READY ENTRY POINT
 document.addEventListener "DOMContentLoaded", ->
   console.debug "*** SENAITE.PUBLISHER::DOMContentLoaded"
-  ReactDOM.render <PublishController />, document.getElementById "publish_controller"
+  controller = ReactDOM.render <PublishController />, document.getElementById "publish_controller"
+
+  # Bind the event listener on the download buttons
+  buttons = document.querySelectorAll ".download-pdf-button"
+  buttons.forEach (button) ->
+    button.addEventListener "click", controller.downloadPDF
 
 
 class PublishController extends React.Component
@@ -212,60 +217,39 @@ class PublishController extends React.Component
 
 
   render: ->
-    <div className="container">
-
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="jumbotron">
-
-            <div className="row">
-              <div className="col-sm-12">
-                <form name="publishform" onSubmit={this.handleSubmit}>
-                  <ReportTable api={@api} uids={@state.items} onClick={@downloadPDF} />
-                  <div className="form-group">
-                    <div className="input-group">
-
-                      <div className="input-group-prepend">
-                        <div className="input-group-text">
-                          <MergeToggle api={@api} onChange={@handleChange} value={@state.merge} className="" name="merge" />
-                        </div>
-                      </div>
-
-                      <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
-                      <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
-                      <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
-
-                      <div className="input-group-append">
-                        <Button onClick={@loadReports} name="reload" title="↺" className="btn btn-outline-success"/>
-                        <Button title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
-                      </div>
-
-                    </div>
-                  </div>
-                </form>
+    <div className="col-sm-12">
+      <form name="publishform" onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <div className="input-group-text">
+                <MergeToggle api={@api} onChange={@handleChange} value={@state.merge} className="" name="merge" />
               </div>
             </div>
-
+            <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
+            <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
+            <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
+            <div className="input-group-append">
+              <Button onClick={@loadReports} name="reload" title="↺" className="btn btn-outline-success"/>
+              <Button title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
+            </div>
           </div>
         </div>
-      </div>
-
+      </form>
+      <hr className="my-2"/>
       <div className="row">
         <div className="col-sm-12">
           <Loader loadtext={@state.loadtext} loading={@state.loading} />
         </div>
       </div>
-
       <div className="row">
         <div className="col-sm-12">
-          <Preview preview={@state.preview} id="preview" className="text-center" />
+          <Preview preview={@state.preview} id="preview" className="row" />
         </div>
       </div>
-
       <div className="row">
         <div className="col-sm-12">
           <ReportHTML html={@state.html} id="reports" className="d-none" />
         </div>
       </div>
-
     </div>

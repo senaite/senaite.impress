@@ -2,12 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       i18n:domain="senaite" lang="en">
-
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title i18n:translate="">SENAITE Publisher</title>
-
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
       <!-- bootstrap.css -->
@@ -31,12 +29,99 @@
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.publisher.static/js/dist/senaite.publisher.publish.js"></script>
     </tal:js>
     <!-- /JS -->
-
   </head>
-
   <body>
-    <!-- ReactJS controlled container -->
-    <div id="publish_controller"></div>
-  </body>
+    <div class="container">
+      <div class="card row my-4 p-4">
+        <!-- Report Info -->
+        <table class="table table-condensed my-4">
+          <thead>
+            <tr>
+              <th i18n:translate="">ID</th>
+              <th i18n:translate="">Received</th>
+              <th i18n:translate="">Client</th>
+              <th i18n:translate="">Contact</th>
+              <th i18n:translate="">CC Contacts</th>
+              <th i18n:translate="">CC Emails</th>
+              <th i18n:translate="">PDF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="report-row"
+                tal:repeat="model view/get_collection"
+                tal:attributes="uid model/UID;">
+              <!-- ID -->
+              <td>
+                <a href="#"
+                   tal:attributes="href string:${model/absolute_url}">
+                  <span tal:content="model/getId"/>
+                </a>
+              </td>
+              <!-- Date Received -->
+              <td>
+                <span tal:content="python:here.toLocalizedTime(model.DateReceived)"/>
+              </td>
+              <!-- Client -->
+              <td>
+                <a href="#"
+                   tal:attributes="href string:${model/Client/absolute_url}">
+                  <span tal:content="model/Client/Name"/>
+                </a>
+              </td>
+              <!-- Contact Fullname/Email -->
+              <td>
+                <tal:contact define="contact model/Contact"
+                             condition="contact">
+                  <tal:email condition="contact/EmailAddress">
+                    <a href="#"
+                       tal:attributes="href string:mailto:${contact/EmailAddress}">
+                      <span tal:content="contact/Fullname|nothing" />
+                    </a>
+                  </tal:email>
+                  <tal:noemail condition="not: contact/EmailAddress">
+                    <span tal:content="contact/Fullname|nothing" />
+                  </tal:noemail>
+                </tal:contact>
+              </td>
+              <!-- CC Contacts Fullname/Email -->
+              <td>
+                <tal:cccontact repeat="cccontact model/CCContact">
+                  <tal:email condition="cccontact/EmailAddress">
+                    <a href="#"
+                       tal:attributes="href string:mailto:${cccontact/EmailAddress}">
+                      <div tal:content="cccontact/Fullname|nothing" />
+                    </a>
+                  </tal:email>
+                  <tal:noemail condition="not: cccontact/EmailAddress">
+                    <div tal:content="cccontact/Fullname|nothing" />
+                  </tal:noemail>
+                </tal:cccontact>
+              </td>
+              <!-- CC Emails -->
+              <td>
+                <tal:ccemails repeat="ccemail python:model.CCEmails.split(',')">
+                    <a href="#"
+                       tal:attributes="href string:mailto:${ccemail}">
+                      <div tal:content="ccemail" />
+                    </a>
+                </tal:ccemails>
+              </td>
+              <!-- PDF -->
+              <td>
+                <button class="download-pdf-button btn btn-sm btn-outline-secondary"
+                        tal:attributes="uid model/UID;
+                                        name model/getId;">
+                  PDF
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
+        <!-- ReactJS controlled component -->
+        <div class="row" id="publish_controller"></div>
+
+      </div> <!-- /card -->
+    </div> <!-- /container -->
+  </body>
 </html>

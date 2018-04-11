@@ -120,7 +120,7 @@ class AjaxPublishView(PublishView):
         Any additional positional parameter in *args will pick only these keys
         from the returned dictionary.
         """
-        return self.pick(self.get_paperformats(), *args)
+        return self.get_paperformats()
 
     def ajax_templates(self):
         """Returns the available templates
