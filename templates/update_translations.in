@@ -1,8 +1,10 @@
 #!/bin/bash
 
 BASE=${buildout:directory}
+SRC=$BASE/src/senaite/publisher
 I18N=$BASE/bin/i18ndude
-LOCALES=$BASE/src/senaite/publisher/locales
+LOCALES=$SRC/locales
+EXCLUDE="build node_modules"
 
 function die() {
     echo "ERROR: $1"
@@ -25,7 +27,7 @@ echo "Processing Domain $DOMAIN"
 # If we don't do this, new $DOMAIN-manual.pot translations won't be synced.
 echo -n "" > $LOCALES/en/LC_MESSAGES/$DOMAIN.po
 # Re-scan the source code for new strings and create a temporary $DOMAIN-tmp.pot
-$I18N rebuild-pot --pot $LOCALES/$DOMAIN-tmp.pot --exclude "build" --create $DOMAIN bika
+$I18N rebuild-pot --pot $LOCALES/$DOMAIN-tmp.pot --exclude "$EXCLUDE" --create $DOMAIN $SRC
 # Merge the manual translations of $DOMAIN-manual.pot into the temporary $DOMAIN-tmp.pot
 $I18N merge --pot $LOCALES/$DOMAIN-tmp.pot --merge $LOCALES/$DOMAIN-manual.pot
 # Overwrite the existing $DOMAIN.pot

@@ -1,4 +1,6 @@
-<tal:report define="collection view/collection;">
+<tal:report
+  i18n:domain="senaite.publisher"
+  define="collection view/collection;">
 
   <!-- Iterate over all models of the collection -->
   <tal:models repeat="model collection">

@@ -1,0 +1,234 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2018-04-11 15:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: senaite/publisher/templates/reports/Default.pt:457
+#: senaite/publisher/templates/reports/MultiDefault.pt:486
+msgid "Analysis results relate only to the samples tested."
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:367
+#: senaite/publisher/templates/reports/MultiDefault.pt:391
+msgid "Analysis services attachments"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:365
+#: senaite/publisher/templates/reports/MultiDefault.pt:389
+msgid "Attachments"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:173
+#: senaite/publisher/templates/reports/MultiDefault.pt:185
+msgid "Batch ID"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:222
+#: senaite/publisher/templates/reports/MultiDefault.pt:234
+msgid "Batch Labels"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:44
+msgid "CC Contacts"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:45
+msgid "CC Emails"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:42
+#: senaite/publisher/templates/reports/Default.pt:185
+#: senaite/publisher/templates/reports/MultiDefault.pt:197
+msgid "Client"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:181
+#: senaite/publisher/templates/reports/MultiDefault.pt:193
+msgid "Client Batch ID"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:192
+#: senaite/publisher/templates/reports/MultiDefault.pt:204
+msgid "Client SID"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:43
+msgid "Contact"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:208
+#: senaite/publisher/templates/reports/MultiDefault.pt:220
+msgid "Date Published"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:204
+#: senaite/publisher/templates/reports/MultiDefault.pt:216
+msgid "Date Received"
+msgstr ""
+
+#: senaite/publisher/config.py:13
+msgid "European A4"
+msgstr "Europäisches A4"
+
+#: senaite/publisher/config.py:29
+msgid "European A5"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:40
+msgid "ID"
+msgstr ""
+
+msgid "Loading Preview..."
+msgstr "Lade Vorschau..."
+
+# JavaScript Message Strings located in the static directory
+#. Default: "Lade Berichte..."
+msgid "Loading Reports..."
+msgstr "Lade Berichte..."
+
+#: senaite/publisher/templates/reports/Default.pt:452
+#: senaite/publisher/templates/reports/MultiDefault.pt:481
+msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:470
+#: senaite/publisher/templates/reports/MultiDefault.pt:499
+msgid "Methods of analysis available by clicking on the 'Request' link"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:439
+#: senaite/publisher/templates/reports/MultiDefault.pt:468
+msgid "Not invoiced"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:46
+msgid "PDF"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:148
+#: senaite/publisher/templates/reports/MultiDefault.pt:138
+msgid "Provisional report"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:212
+#: senaite/publisher/templates/reports/MultiDefault.pt:224
+msgid "Published by"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:349
+#: senaite/publisher/templates/reports/MultiDefault.pt:369
+msgid "QC Results"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:267
+#: senaite/publisher/templates/reports/MultiDefault.pt:282
+msgid "Range"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:41
+msgid "Received"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:356
+#: senaite/publisher/templates/reports/MultiDefault.pt:378
+msgid "Remarks"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:157
+#: senaite/publisher/templates/reports/MultiDefault.pt:169
+msgid "Request ID"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:399
+#: senaite/publisher/templates/reports/MultiDefault.pt:424
+msgid "Responsibles"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:261
+#: senaite/publisher/templates/reports/MultiDefault.pt:276
+msgid "Result"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:437
+#: senaite/publisher/templates/reports/MultiDefault.pt:466
+msgid "Result out of client specified range."
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:232
+#: senaite/publisher/templates/reports/MultiDefault.pt:247
+msgid "Results"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:337
+#: senaite/publisher/templates/reports/MultiDefault.pt:354
+msgid "Results interpretation"
+msgstr ""
+
+#: senaite/publisher/templates/publish.pt:8
+msgid "SENAITE Publisher"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:165
+#: senaite/publisher/templates/reports/MultiDefault.pt:177
+msgid "Sample ID"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:196
+#: senaite/publisher/templates/reports/MultiDefault.pt:208
+msgid "Sample Type"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:200
+#: senaite/publisher/templates/reports/MultiDefault.pt:212
+msgid "Specification"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:154
+#: senaite/publisher/templates/reports/MultiDefault.pt:165
+msgid "Summary"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:95
+#: senaite/publisher/templates/reports/MultiDefault.pt:81
+msgid "Supervisor"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:468
+#: senaite/publisher/templates/reports/MultiDefault.pt:497
+msgid "Test results are at a ${lab_confidence}% confidence level"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:138
+#: senaite/publisher/templates/reports/MultiDefault.pt:127
+msgid "This Analysis Request has been invalidated due to erroneously published results"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:141
+#: senaite/publisher/templates/reports/MultiDefault.pt:130
+msgid "This Analysis request has been replaced by"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:464
+#: senaite/publisher/templates/reports/MultiDefault.pt:493
+msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
+msgstr ""
+
+#: senaite/publisher/config.py:44
+msgid "US Letter"
+msgstr ""
+
+#: senaite/publisher/templates/reports/Default.pt:264
+#: senaite/publisher/templates/reports/MultiDefault.pt:279
+msgid "Unit"
+msgstr ""

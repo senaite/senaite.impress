@@ -8,6 +8,9 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
+  <!-- Register Translations -->
+  <i18n:registerTranslations directory="locales"/>
+
   <!-- Publish Controller View
 
        TODO: Rename to `publish` for drop-in replacement as soon as this package

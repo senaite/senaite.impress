@@ -37,6 +37,7 @@ class PublishController extends React.Component
     console.log "PublishController::constructor:props=", props
 
     @api = new PublishAPI()
+    @T = window.jarn.i18n.MessageFactory("senaite.publisher")
 
     # Bind `this` in methods
     @handleSubmit = @handleSubmit.bind(this)
@@ -104,7 +105,7 @@ class PublishController extends React.Component
       html: ""
       preview: ""
       loading: yes
-      loadtext: "Loading Reports..."
+      loadtext: @T("Loading Reports...")
 
     # fetch the rendered reports via the API asynchronously
     promise = @api.render_reports @getRequestOptions()
@@ -126,7 +127,7 @@ class PublishController extends React.Component
     @setState
       loading: yes
       preview: ""
-      loadtext: "Loading Preview..."
+      loadtext: @T("Loading Preview...")
 
     # fetch the rendered previews via the API asynchronously
     promise = @api.load_preview @getRequestOptions()

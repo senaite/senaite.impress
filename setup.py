@@ -36,6 +36,7 @@ setup(
         'senaite.api',
         'senaite.core',
         'beautifulsoup4',
+        'jarn.jsi18n',
     ],
     extras_require={
         'test': [

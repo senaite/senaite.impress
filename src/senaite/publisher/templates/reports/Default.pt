@@ -1,17 +1,19 @@
-<tal:report define="analysisrequest view/model;
-                    accredited_symbol string:★;
-                    outofrange_symbol string:⚠;
-                    portal python:view.portal;
-                    laboratory python:view.laboratory;
-                    reporter python:view.current_user;
-                    sample analysisrequest/Sample;
-                    batch analysisrequest/Batch;
-                    client analysisrequest/Client;
-                    specification analysisrequest/Specification;
-                    publication_specification analysisrequest/PublicationSpecification;
-                    specifications python:publication_specification or specification;
-                    qcanalyses python: analysisrequest.getQCAnalyses(['verified', 'published']);
-                    contact analysisrequest/Contact;">
+<tal:report
+  i18n:domain="senaite.publisher"
+  define="analysisrequest view/model;
+          accredited_symbol string:★;
+          outofrange_symbol string:⚠;
+          portal python:view.portal;
+          laboratory python:view.laboratory;
+          reporter python:view.current_user;
+          sample analysisrequest/Sample;
+          batch analysisrequest/Batch;
+          client analysisrequest/Client;
+          specification analysisrequest/Specification;
+          publication_specification analysisrequest/PublicationSpecification;
+          specifications python:publication_specification or specification;
+          qcanalyses python: analysisrequest.getQCAnalyses(['verified', 'published']);
+          contact analysisrequest/Contact;">
 
   <!-- HEADER -->
   <div class="row section-header">
