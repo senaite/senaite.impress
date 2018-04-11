@@ -71,7 +71,6 @@ class PublishController extends React.Component
       group_by_client: @state.group_by_client
 
     console.debug("Request Options=", options)
-
     return options
 
 
@@ -164,6 +163,18 @@ class PublishController extends React.Component
     # update the CSS of all rendered elements
     @setCSS()
 
+    # Toggle PDF download buttons
+    if @isMultiReport()
+      @toggleDownloadButtons yes
+    else
+      @toggleDownloadButtons no
+
+
+  toggleDownloadButtons: (toggle) ->
+    buttons = document.querySelectorAll ".download-pdf-button"
+    buttons.forEach (button) ->
+        button.disabled = toggle
+
 
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
@@ -216,6 +227,10 @@ class PublishController extends React.Component
         return @loadReports()
       # reload only the Preview
       return @loadPreview()
+
+
+  isMultiReport: ->
+    return @state.template.search("Multi") > -1
 
 
   render: ->

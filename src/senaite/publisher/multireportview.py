@@ -14,7 +14,7 @@ from zope.interface import implements
 
 
 TEMPLATE = Template("""<!-- Multi Report Template ${id} -->
-<div class="report" id="${id}" uid="${uid}">
+<div class="report multi-report">
   <script type="text/javascript">
     console.log("*** BEFORE TEMPLATE RENDER ${id} ***");
   </script>
@@ -39,8 +39,4 @@ class MultiReportView(object):
         return TEMPLATE.safe_substitute(context, template=template)
 
     def get_template_context(self, collection):
-        uids = map(lambda model: model.UID(), collection)
-        return {
-            "id": "multireport",
-            "uid": ",".join(uids),
-        }
+        return {}
