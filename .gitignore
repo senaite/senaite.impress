@@ -103,3 +103,7 @@ node_modules
 package-lock.json
 yarn.lock
 yarn-error.log
+.mr.developer.cfg
+bin
+src/senaite.core
+src/senaite.api
