@@ -297,6 +297,9 @@ class ReportModel(object):
 
     def stringify(self, value):
         """Convert value to string
+
+        This method is used to generate a simple JSON representation of the
+        object (without dereferencing objects etc.)
         """
         # ReportModel -> UID
         if IReportModel.providedBy(value):
@@ -313,6 +316,11 @@ class ReportModel(object):
         # List -> convert_value_to_string
         if isinstance(value, (list, tuple, LazyMap)):
             return map(self.stringify, value)
+        # Callables
+        elif safe_callable(value):
+            return self.stringify(value())
+        elif isinstance(value, unicode):
+            value = value.encode("utf8")
         try:
             return str(value)
         except (AttributeError, TypeError, ValueError):
@@ -330,10 +338,6 @@ class ReportModel(object):
         out = dict()
         for k, v in self.iteritems():
             out[k] = converter(v)
-        # add some special fields
-        out["UID"] = self.UID()
-        out["absolute_url"] = self.absolute_url()
-        out["portal_url"] = api.get_portal().absolute_url()
         return out
 
     def to_json(self):

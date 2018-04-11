@@ -75,28 +75,26 @@ class AjaxPublishView(PublishView):
         result.update(kw)
         return result
 
-    def pick(self, dct, *keys, **kw):
-        """Returns a copy of the dictionary filtered to only have values for the
-        whitelisted keys (or list of valid keys)
+    def pick(self, model, *keys):
+        """Returns a dictionary filtered to only have model values for the
+           whitelisted keys (or list of valid keys)
 
-        >>> pick({"name": "moe", "age": 50, "userid": "moe1"}, "name", "age")
-        {'age': 50, 'name': 'moe'}
+        >>> data = pick(model, "absolute_url", "UID")
+        >>> len(data) == 2
+        True
+        >>> data["absolute_url"] == model.absolute_url()
+        True
+        >>> data["UID"] == model.UID()
+        True
         """
-        copy = dict()
-        keys = keys and keys or dct.keys()
-        converter = kw.get("converter")
+        data = dict()
+        marker = object()
 
         for key in keys:
-            if key in dct.keys():
-                copy[key] = self.convert(dct[key], converter)
-        return copy
-
-    def convert(self, value, converter):
-        """Converts a value with a given converter function.
-        """
-        if not callable(converter):
-            return value
-        return converter(value)
+            value = getattr(model, key, marker)
+            if value is not marker:
+                data[key] = model.stringify(value)
+        return data
 
     def ajax_get(self, uid, *args, **kwargs):
         """Return the JSONified
@@ -112,10 +110,9 @@ class AjaxPublishView(PublishView):
             return self.fail("No object found for UID '{}'"
                              .format(uid), status=404)
 
-        def converter(value):
-            return model.stringify(value)
-
-        return self.pick(model.to_dict(), converter=converter, *args)
+        if args:
+            return self.pick(model, *args)
+        return model.to_dict()
 
     def ajax_paperformats(self, *args):
         """Returns the paperformats
