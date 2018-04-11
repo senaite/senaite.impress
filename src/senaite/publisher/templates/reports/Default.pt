@@ -331,7 +331,7 @@
   <!--  RESULTS INTERPRETATION -->
   <div class="row section-resultsinterpretation"
        tal:define="ris python:view.resultsinterpretation">
-    <div class="col-sm-12">
+    <div class="col-sm-12" tal:condition="ris">
       <h1 i18n:translate="">Results interpretation</h1>
 
       <tal:ri repeat="ri ris">

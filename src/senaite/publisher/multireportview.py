@@ -11,12 +11,14 @@ from senaite.publisher import logger
 from senaite.publisher.interfaces import IMultiReportView
 from zope.globalrequest import getRequest
 from zope.interface import implements
+from zope.component import getAdapter
+from senaite.publisher.interfaces import IReportView
 
 
-TEMPLATE = Template("""<!-- Multi Report Template ${id} -->
-<div class="report multi-report">
+TEMPLATE = Template("""<!-- Multi Report Template -->
+<div class="report">
   <script type="text/javascript">
-    console.log("*** BEFORE TEMPLATE RENDER ${id} ***");
+    console.log("*** BEFORE MULTI TEMPLATE RENDER ***");
   </script>
   ${template}
 </div>
@@ -40,3 +42,7 @@ class MultiReportView(object):
 
     def get_template_context(self, collection):
         return {}
+
+    def get_reportview_for(self, model):
+        view = getAdapter(model, IReportView, name="AnalysisRequest")
+        return view

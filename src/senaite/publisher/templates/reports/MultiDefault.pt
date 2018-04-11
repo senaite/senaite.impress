@@ -1,16 +1,508 @@
-<tal:report define="collection view/collection;
-                    ">
+<tal:report define="collection view/collection;">
 
-  <!-- HEADER -->
-  <div class="row section-header">
-  </div>
+  <!-- Iterate over all models of the collection -->
+  <tal:models repeat="model collection">
 
-  <div class="row">
-    <h1>Multi Report</h1>
-    <ul>
-      <li tal:repeat="model collection">
-        <span tal:content="model/id"/>
-      </li>
-      <ul>
-  </div>
+    <tal:model define="reportview python:view.get_reportview_for(model);
+                       accredited_symbol string:★;
+                       outofrange_symbol string:⚠;">
+
+      <!-- HEADER -->
+      <tal:render condition="repeat/model/start">
+        <div class="row section-header">
+          <div class="col-sm-12 logo lab-logo">
+            <a tal:attributes="href reportview/portal/absolute_url">
+              <img style="max-width: 200px"
+                   tal:attributes="src python:reportview.get_image_resource('logo_print.png', prefix='')"/>
+            </a>
+          </div>
+        </div>
+      </tal:render>
+
+      <!-- INFO -->
+      <tal:render condition="repeat/model/start"
+                  define="client model/Client;
+                          contact model/Contact;
+                          laboratory python:reportview.laboratory;">
+        <div class="row section-info">
+          <div class="col-sm-12">
+            <!-- Client Info -->
+            <table class="table table-sm">
+              <colgroup>
+                <!-- Client Address -->
+                <col style="width: 40%;">
+                <!-- Lab Address -->
+                <col style="width: 40%">
+                <!-- Accreditation Logo -->
+                <col style="width: 20%">
+              </colgroup>
+              <tr>
+                <td>
+                  <address class="client-address">
+                    <div class="client-name font-weight-bold">
+                      <div tal:replace="client/Name|nothing"></div>
+                    </div>
+                    <div class="contact-fullname">
+                      <div tal:replace="contact/Fullname|nothing"></div>
+                    </div>
+                    <div class="client-street">
+                      <div tal:replace="client/PostalAddress/address|nothing"></div>
+                    </div>
+                    <span class="client-zip">
+                      <div tal:replace="client/PostalAddress/zip|nothing"></div>
+                    </span>
+                    <span class="client-city">
+                      <div tal:replace="client/PostalAddress/city|nothing"></div>
+                    </span>
+                    <div class="client-country">
+                      <div tal:replace="client/PostalAddress/country|nothing"></div>
+                    </div>
+                    <div class="contact-email">
+                      <a tal:content="contact/EmailAddress|nothing"
+                         tal:attributes="href string:mailto:${contact/EmailAddress}"></a>
+                    </div>
+                    <div class="contact-phone">
+                      <div tal:replace="contact/Phone|nothing"></div>
+                    </div>
+                    <div class="contact-fax">
+                      <div tal:replace="contact/Fax|nothing"></div>
+                    </div>
+                  </address>
+                </td>
+                <td>
+                  <!-- Laboratory Info -->
+                  <address class="laboratory-address">
+                    <div class="lab-title font-weight-bold">
+                      <div tal:replace="laboratory/title|nothing"/>
+                    </div>
+                    <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
+                      <span i18n:translate="">Supervisor</span>:
+                      <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
+                    </div>
+                    <div class="lab-address">
+                      <div class="lab-street">
+                        <div tal:replace="laboratory/PostalAddress/address|nothing"></div>
+                      </div>
+                      <span class="lab-zip">
+                        <div tal:replace="laboratory/PostalAddress/zip|nothing"></div>
+                      </span>
+                      <span class="lab-city">
+                        <div tal:replace="laboratory/PostalAddress/city|nothing"></div>
+                      </span>
+                      <div class="lab-country">
+                        <div tal:replace="laboratory/PostalAddress/country|nothing"></div>
+                      </div>
+                    </div>
+                    <div class="lab-url">
+                      <a tal:attributes="href laboratory/LabURL"
+                         tal:content="laboratory/LabURL"></a>
+                    </div>
+                  </address>
+                </td>
+                <td>
+                  <div class="accreditation-logo text-left"
+                       tal:define="accredited laboratory/LaboratoryAccredited;
+                              accreditation_logo laboratory/AccreditationBodyLogo"
+                       tal:condition="accredited">
+                    <img class="img-fluid"
+                         tal:condition="accreditation_logo"
+                         tal:attributes="src accreditation_logo/absolute_url"/>
+                    <img class="img-fluid"
+                         tal:condition="not:accreditation_logo"
+                         tal:attributes="src python:reportview.get_image_resource('AccreditationBodyLogo.png')"/>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </tal:render>
+
+      <!-- ALERTS -->
+      <tal:render condition="python:True">
+        <div class="alert alert-danger" tal:condition="reportview/is_invalid">
+          <h4 class="alert-heading"><span tal:replace="model/getId"/></h4>
+          <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
+          <tal:invalidreport tal:define="child model/ChildAnalysisRequest"
+                             tal:condition="child">
+            <span i18n:translate="">This Analysis request has been replaced by</span>
+            <a tal:attributes="href child/absolute_url"
+               tal:content="child/getId"></a>
+          </tal:invalidreport>
+        </div>
+
+        <div class="alert alert-info" tal:condition="reportview/is_provisional">
+          <h4 class="alert-heading"><span tal:replace="model/getId"/></h4>
+          <div i18n:translate="">Provisional report</div>
+        </div>
+      </tal:render>
+
+      <!-- SUMMARY -->
+      <tal:render condition="python:True"
+                  define="sample model/Sample;
+                          batch model/Batch;
+                          client model/Client;
+                          reporter python:reportview.current_user;
+                          specification model/Specification;
+                          publication_specification model/PublicationSpecification;
+                          specifications python:publication_specification or specification;">
+        <div class="row section-summary">
+          <div class="col col-sm-12">
+
+            <!-- Barcode -->
+            <div class="text-center float-right barcode-container">
+              <div class="barcode"
+                   data-code="code128"
+                   data-showHRI="true"
+                   data-barHeight="15"
+                   data-addQuietZone="true"
+                   tal:attributes="data-id model/id">
+              </div>
+            </div>
+
+            <h1 i18n:translate="">Summary</h1>
+
+            <table class="table table-sm">
+              <tr>
+                <td style="width:20%" class="label" i18n:translate="">Request ID</td>
+                <td>
+                  <a tal:content="model/id"
+                     tal:attributes="href model/absolute_url;">
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Sample ID</td>
+                <td>
+                  <a tal:content="sample/id"
+                     tal:attributes="href sample/absolute_url">
+                  </a>
+                </td>
+              </tr>
+              <tr tal:condition="batch">
+                <td class="label" i18n:translate="">Batch ID</td>
+                <td>
+                  <a tal:content="batch/id"
+                     tal:attributes="href batch/absolute_url">
+                  </a>
+                </td>
+              </tr>
+              <tr tal:condition="batch">
+                <td class="label" i18n:translate="">Client Batch ID</td>
+                <td tal:content="batch/ClientBatchID"></td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Client</td>
+                <td>
+                  <a tal:attributes="href client/absolute_url"
+                     tal:content="client/Name"></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Client SID</td>
+                <td tal:content="model/ClientSampleID"></td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Sample Type</td>
+                <td tal:content="sample/SampleType/title|nothing"></td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Specification</td>
+                <td tal:content="specifications/Title|nothing"></td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Date Received</td>
+                <td tal:content="python:reportview.to_localized_time(model.DateReceived)">09.03.2018 09:54</td>
+              </tr>
+              <tr>
+                <td class="label" i18n:translate="">Date Published</td>
+                <td tal:content="python:reportview.to_localized_time(model.DatePublished)">13.03.2018 13:35</td>
+              </tr>
+              <tr tal:condition="reporter">
+                <td class="label" i18n:translate="">Published by</td>
+                <td>
+                  <tal:email tal:condition="reporter/email|nothing"
+                             tal:define="email reporter/email">
+                    (<a tal:content="email"
+                        tal:attributes="href string:mailto:${email}"></a>)
+                  </tal:email>
+                </td>
+              </tr>
+              <tr tal:condition="python: batch and batch.BatchLabels">
+                <td class="label" i18n:translate="">Batch Labels</td>
+                <td tal:content="structure python:', '.join(batch.BatchLabels)"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </tal:render>
+
+
+      <!-- RESULTS -->
+      <tal:render condition="python:True">
+        <div class="row section-results">
+          <div class="col col-sm-12">
+            <h1 i18n:translate="">Results</h1>
+
+            <!-- Point of Capture -->
+            <tal:analyses_by_poc tal:repeat="poc python:reportview.get_analyses_by_poc()">
+              <h4 tal:content="python:reportview.points_of_capture.get(poc)"></h4>
+
+              <!-- Analysis Category -->
+              <tal:categories_in_poc tal:repeat="category python:reportview.get_categories_in_poc(poc)">
+
+                <!-- Analysis in POC and Category -->
+                <table class="table table-sm">
+                  <colgroup>
+                    <!-- Category -->
+                    <col style="width: 40%;">
+                    <!-- Result -->
+                    <col style="width: 30%">
+                    <!-- Unit -->
+                    <col style="width: 15%">
+                    <!-- Range -->
+                    <col style="width: 10%">
+                    <!-- Out of Range -->
+                    <col style="width: 5%">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th class="analysis">
+                        <span tal:content="category/Title">Category</span>
+                      </th>
+                      <th class="text-right result">
+                        <span i18n:translate="">Result</span>
+                      </th>
+                      <th class="text-left unit">
+                        <span i18n:translate="">Unit</span>
+                      </th>
+                      <th class="specs">
+                        <span i18n:translate="">Range</span>
+                      </th>
+                      <th class="outofrange">
+                        <span i18n:translate=""></span>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tal:analyses tal:repeat="analysis python:reportview.get_analyses(poc, category)">
+                      <tr>
+                        <td class="analysis">
+                          <span class="text-success"
+                                style="font-family: sans;"
+                                tal:content="accredited_symbol"
+                                tal:condition="analysis/Accredited">
+                          </span>
+                          <span tal:condition="not:analysis/ScientificName">
+                            <span class="font-weight-normal" tal:content="analysis/title"></span>
+                          </span>
+                          <span tal:condition="analysis/ScientificName">
+                            <span class="font-italic" tal:content="analysis/title"></span>
+                          </span>
+                        </td>
+                        <td class="text-right">
+                          <span class="result" tal:content="structure python:reportview.get_formatted_result(analysis)">23</span>
+                        </td>
+                        <td class="text-left text-muted font-italic">
+                          <span class="units" tal:content="structure python:reportview.get_formatted_unit(analysis)"></span>
+                        </td>
+                        <td class="specs">
+                          <span tal:condition="analysis/Uncertainty">
+                            <span tal:content="structure python:reportview.get_formatted_uncertainty(analysis)"></span>
+                            <span tal:content="python:'(RT)' if reportview.is_retested(analysis) else ''"></span>
+                            <span tal:content="python:reportview.get_formatted_specs(analysis)">50 - 60</span>
+                          </span>
+                        </td>
+                        <td class="text-center small align-middle">
+                          <span tal:condition="python:reportview.is_out_of_range(analysis)">
+                            <span class="outofrange text-danger"
+                                  style="font-family:sans;"
+                                  tal:content="outofrange_symbol">
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tal:analyses>
+                  </tbody>
+
+                  <tfoot tal:define="category_comments python:category.Comments">
+                    <tr tal:condition="category_comments">
+                      <td colspan="3">
+                        <div class="category_comments"
+                             tal:content="category_comments">
+                          Category Comments
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+              </tal:categories_in_poc>
+            </tal:analyses_by_poc>
+          </div>
+        </div>
+      </tal:render>
+
+      <!--  RESULTS INTERPRETATION -->
+      <tal:render condition="python:True">
+        <div class="row section-resultsinterpretation"
+             tal:define="ris python:reportview.resultsinterpretation">
+          <div class="col-sm-12" tal:condition="ris">
+            <h1 i18n:translate="">Results interpretation</h1>
+
+            <tal:ri repeat="ri ris">
+              <h4 tal:content="ri/title|nothing">Department</h4>
+              <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+            </tal:ri>
+          </div>
+        </div>
+      </tal:render>
+
+      <!-- QC RESULTS -->
+      <tal:render condition="python:True"
+                  define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
+        <div class="row section-results" tal:condition="qcanalyses">
+          <div class="col col-sm-12">
+            <h1 i18n:translate="">QC Results</h1>
+          </div>
+        </div>
+      </tal:render>
+
+      <!--  REMARKS -->
+      <tal:render condition="python:True">
+        <div class="row section-remarks" tal:condition="model/Remarks">
+          <div class="col-sm-12">
+            <h1 i18n:translate="">Remarks</h1>
+            <div class="text-info" tal:content="structure model/Remarks"></div>
+          </div>
+        </div>
+      </tal:render>
+
+      <!-- ATTACHMENTS -->
+      <tal:render condition="python:True">
+        <div class="row section-attachments">
+          <!-- AR Attachments -->
+          <div class="col-sm-12" tal:condition="model/Attachment">
+            <h1 i18n:translate="">Attachments</h1>
+            <tal:ar_attachments define="ar_attachments model/Attachment">
+              <h4 i18n:translate="" tal:condition="ar_attachments">Analysis services attachments</h4>
+              <div class="attachment" tal:repeat="attachment python:reportview.sort_attachments(ar_attachments)">
+                <tal:render condition="python:attachment.ReportOption == 'r'">
+                  <div class="pt-1 pb-1">
+                    <img class="img-fluid"
+                         tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
+                    <div class="text-secondary" tal:content="attachment/AttachmentKeys"/>
+                  </div>
+                </tal:render>
+              </div>
+            </tal:ar_attachments>
+          </div>
+          <!-- Analysis Attachments -->
+          <div class="col-sm-12">
+            <tal:analyses repeat="analysis model/Analyses">
+              <tal:attachments repeat="attachment python:reportview.sort_attachments(analysis.Attachment)">
+                <tal:render condition="python:attachment.ReportOption == 'r'">
+                  <div class="pt-1 pb-1">
+                    <img class="img-fluid"
+                         tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
+                    <div class="text-secondary" tal:content="attachment/AttachmentKeys"/>
+                  </div>
+                </tal:render>
+              </tal:attachments>
+            </tal:analyses>
+          </div>
+        </div>
+      </tal:render>
+
+      <!--  SIGNATURES -->
+      <tal:render condition="python:True">
+        <div class="row section-signatures">
+          <div class="col-sm-12">
+            <h1 i18n:translate="">Responsibles</h1>
+            <tal:manager repeat="manager python:reportview.managers">
+              <address class-col-sm-4>
+                <div>
+                  <img tal:condition="manager/Signature"
+                       tal:attributes="src string:${manager/absolute_url}/Signature" style="height:75px"/>
+                </div>
+                <div>
+                  <span tal:content="manager/Salutation">Mr.</span>
+                </div>
+                <div>
+                  <span tal:content="manager/Fullname">Joe Black</span>
+                </div>
+                <div>
+                  <span tal:content="manager/JobTitle">Manager</span>
+                </div>
+                <div>
+                  <span tal:content="manager/EmailAddress">jb@example.com</span>
+                </div>
+                <div>
+                  <span tal:content="manager/BusinessPhone">012-345-678-9</span>
+                </div>
+                <div>
+                  <span tal:content="manager/DefaultDepartment/title|nothing"></span>
+                </div>
+              </address>
+            </tal:manager>
+          </div>
+        </div>
+      </tal:render>
+
+      <!-- DISCREETER -->
+      <tal:render condition="repeat/model/end"
+                  define="contact model/Contact;
+                         laboratory python:reportview.laboratory;">
+        <div class="row section-discreeter">
+          <div class="col-sm-12 text-muted font-weight-light small">
+            <div class="discreeter-outofrange">
+              <span class="outofrange text-danger"
+                    style="font-family:sans;"
+                    tal:content="outofrange_symbol">
+              </span>
+              <span i18n:translate=""> Result out of client specified range.</span>
+            </div>
+            <div class="discreeter-not-invoiced"
+                 tal:condition="model/InvoiceExclude"
+                 i18n:translate="">
+              Not invoiced
+            </div>
+            <div class="discreeter-methods"
+                 tal:condition="laboratory/LaboratoryAccredited">
+              <span class="accredited-symbol text-success"
+                    style="font-family:sans;"
+                    tal:content="accredited_symbol">
+              </span>
+              <span class="" i18n:translate="">
+                Methods included in the
+                <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+                schedule of Accreditation for this Laboratory. Analysis remarks are not
+                accredited
+              </span>
+            </div>
+            <div class="discreeter-disclaimer"
+                 i18n:translate="">
+              Analysis results relate only to the samples tested.
+            </div>
+            <div class="discreeter-copyright"
+                 i18n:translate="">
+              This document shall not be reproduced except in full, without the written approval of
+              <tal:block replace="laboratory/title" i18n:name="name_lab"/>
+            </div>
+            <div tal:define="confidence_level laboratory/Confidence"
+                 tal:condition="confidence_level" i18n:translate="">
+              Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
+            </div>
+            <div class="discreeter-linkage"
+                 tal:condition="python:contact and contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
+              Methods of analysis available by clicking on the 'Request' link
+            </div>
+          </div>
+        </div>
+      </tal:render>
+
+    </tal:model>
+
+  </tal:models>
 </tal:report>
