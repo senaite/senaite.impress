@@ -102,8 +102,8 @@ class AjaxPublishView(PublishView):
         Any additional positional parameter in *args will pick only these keys
         from the returned dictionary.
         """
-        logger.info("ajaxPrintView::ajax_get_uid:UID={} args={}"
-                    .format(uid, args))
+        logger.info("ajaxPrintView::ajax_get: {}{}"
+                    .format(uid, "/".join(args)))
 
         model = ReportModel(uid)
         if not model.is_valid():
