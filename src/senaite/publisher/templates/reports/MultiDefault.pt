@@ -6,6 +6,7 @@
   <tal:models repeat="model collection">
 
     <tal:model define="reportview python:view.get_reportview_for(model);
+                       attachments_per_row python: 2;
                        accredited_symbol string:★;
                        outofrange_symbol string:⚠;">
 
