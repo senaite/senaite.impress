@@ -34,7 +34,7 @@
     <div class="container">
       <div class="card row my-4 p-4">
         <!-- Report Info -->
-        <table class="table table-condensed my-4">
+        <table class="table table-condensed my-4 noprint">
           <thead>
             <tr>
               <th i18n:translate="">ID</th>

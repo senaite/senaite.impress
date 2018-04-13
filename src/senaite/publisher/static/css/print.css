@@ -7,9 +7,10 @@ body { margin: 0 }
   page-break-after: always;
 }
 @media print {
-  #printform {
+  .noprint {
     display: none;
   }
+  div.row {page-break-inside: avoid;}
 }
 /** For screen preview **/
 @media screen {
