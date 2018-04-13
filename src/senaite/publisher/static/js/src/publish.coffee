@@ -51,7 +51,7 @@ class PublishController extends React.Component
       merge: no
       format: "A4"
       orientation: "portrait"
-      template: "senaite.publisher:MultiDefault.pt"
+      template: "LISCON:MultiBericht.pt"
       loading: yes
       loadtext: ""
       group_by_client: yes
