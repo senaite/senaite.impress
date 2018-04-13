@@ -51,8 +51,8 @@ class PublishController extends React.Component
       merge: no
       format: "A4"
       orientation: "portrait"
-      template: "senaite.publisher:Default.pt"
-      loading: yes
+      template: ""
+      loading: no
       loadtext: ""
       group_by_client: yes
 
@@ -178,7 +178,13 @@ class PublishController extends React.Component
 
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
-    @loadReports()
+
+    @api.fetch_default_template().then (
+      (default_template) ->
+        @setState
+          template: default_template
+        , @loadReports
+      ).bind(this)
 
 
   handleSubmit: (event) ->

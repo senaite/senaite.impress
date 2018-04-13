@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="senaite">
@@ -20,16 +21,21 @@
       for="*"
       name="printview"
       class="senaite.publisher.publishview.PublishView"
-      permission="zope2.View"
-      />
+      permission="zope2.View"/>
 
   <!-- Ajax Publish Controller View -->
   <browser:page
       for="*"
       name="ajax_publish"
       class="senaite.publisher.ajax.AjaxPublishView"
-      permission="zope.Public"
-      />
+      permission="zope.Public"/>
+
+  <!-- Publisher Controlpanel -->
+  <browser:page
+      name="publisher-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.PublisherControlPanelView"
+      permission="cmf.ManagePortal"/>
 
   <!-- Report View for portal_type=AnalysisRequests -->
   <adapter
@@ -37,8 +43,7 @@
       name="AnalysisRequest"
       factory="senaite.publisher.reportview.ReportView"
       provides="senaite.publisher.interfaces.IReportView"
-      permission="zope2.View"
-      />
+      permission="zope2.View"/>
 
   <!-- Multi Report View for portal_type=AnalysisRequest -->
   <adapter
@@ -46,36 +51,44 @@
       name="AnalysisRequest"
       factory="senaite.publisher.multireportview.MultiReportView"
       provides="senaite.publisher.interfaces.IMultiReportView"
-      permission="zope2.View"
-      />
+      permission="zope2.View"/>
 
   <!-- Report Model -->
   <adapter
       for="*"
-      factory="senaite.publisher.reportmodel.ReportModel"
-      />
+      factory="senaite.publisher.reportmodel.ReportModel"/>
 
   <!-- HTML/PDB Publisher Adapter -->
   <adapter
       for="*"
-      factory="senaite.publisher.publisher.Publisher"
-      />
+      factory="senaite.publisher.publisher.Publisher"/>
 
   <!-- Template Finder Utility -->
   <utility
       provides="senaite.publisher.interfaces.ITemplateFinder"
-      factory="senaite.publisher.template.TemplateFinder" />
+      factory="senaite.publisher.template.TemplateFinder"/>
+
+  <!-- Template Vocabulary Utility -->
+  <utility
+      name="senaite.publisher.vocabularies.Templates"
+      component="senaite.publisher.vocabularies.TemplatesVocabularyFactory"/>
 
   <!-- Report resource directory -->
   <plone:static
       directory="templates/reports"
-      type="senaite.publisher.reports"
-      />
+      type="senaite.publisher.reports"/>
 
   <!-- Static resource directory -->
   <browser:resourceDirectory
       name="senaite.publisher.static"
-      directory="static"
-      />
+      directory="static"/>
+
+  <!-- Generic Setup Profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="SENAITE PUBLISHER"
+      directory="profiles/default"
+      description=""
+      provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
 </configure>

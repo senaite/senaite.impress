@@ -232,6 +232,11 @@ class PublishView(BrowserView):
         templates = finder.get_templates(extensions=extensions)
         return sorted(map(lambda item: item[0], templates))
 
+    def get_default_template(self):
+        """Returns the configured default template from the registry
+        """
+        return api.get_registry_record("senaite.publisher.default_template")
+
     def get_report_template(self, template=None):
         """Returns the path of report template
         """

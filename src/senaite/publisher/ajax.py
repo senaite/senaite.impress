@@ -126,6 +126,11 @@ class AjaxPublishView(PublishView):
         """
         return self.get_report_templates()
 
+    def ajax_default_template(self):
+        """Returns the default template
+        """
+        return self.get_default_template()
+
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html
         """

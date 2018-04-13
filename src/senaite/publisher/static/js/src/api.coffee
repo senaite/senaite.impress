@@ -118,6 +118,15 @@ class PublishAPI
       method: "GET"
 
 
+  fetch_default_template: ->
+    ###
+     * Fetch default template
+     * @returns {Promise}
+    ###
+    return @get_json "default_template",
+      method: "GET"
+
+
   fetch_paperformats: ->
     ###
      * Fetch paperformats from the server

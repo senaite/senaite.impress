@@ -21,6 +21,9 @@ class TemplateFinder(object):
         logger.info("TemplateFinder::init:type={}".format(type))
         self.type = type
 
+    def __call__(self):
+        return self.get_templates()
+
     @property
     def resources(self):
         out = []
