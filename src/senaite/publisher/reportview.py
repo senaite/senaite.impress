@@ -204,6 +204,13 @@ class ReportView(object):
             results[group_key].append(item)
         return results
 
+    def group_into_chunks(self, items, chunk_size=1):
+        """Group items into chunks of the given sizesize
+        """
+        if chunk_size > len(items):
+            chunk_size = len(items)
+        return zip(*[iter(items)] * chunk_size)
+
     def sort_items_by(self, key, items, reverse=False):
         """Sort the items (mappings with dict interface) by the given key
         """
@@ -286,6 +293,26 @@ class ReportView(object):
             return "{}/{}".format(portal_url, name)
         return "{}/++resource++{}/{}".format(portal_url, prefix, name)
 
+    def get_sorted_ar_attachments(self, option="r"):
+        """Return the sorted AR Attchments with the given Report Option set
+        """
+        # AR attachments in the correct order
+        attachments = self.sort_attachments(self.model.Attachment)
+        # Return filtered list by report option
+        return filter(lambda a: a.getReportOption() == option, attachments)
+
+    def get_sorted_an_attachments(self, option="r"):
+        """Return the sorted AN Attchments with the given Report Option set
+        """
+        attachments = []
+        for analysis in self.model.Analyses:
+            for attachment in self.sort_attachments(analysis.Attachment):
+                if attachment.getReportOption() != option:
+                    continue
+                # Append a tuples of analysis, attachment
+                attachments.append((analysis, attachment))
+        return attachments
+
     def sort_attachments(self, attachments=[]):
         """Attachment sorter
         """
@@ -294,8 +321,8 @@ class ReportView(object):
         order = view.get_attachments_order()
 
         def att_cmp(att1, att2):
-            _n1 = att1.get('uid')
-            _n2 = att2.get('uid')
+            _n1 = att1.UID()
+            _n2 = att2.UID()
             _i1 = _n1 in order and order.index(_n1) + 1 or inf
             _i2 = _n2 in order and order.index(_n2) + 1 or inf
             return cmp(_i1, _i2)

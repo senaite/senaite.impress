@@ -3,6 +3,7 @@
   define="analysisrequest view/model;
           accredited_symbol string:★;
           outofrange_symbol string:⚠;
+          attachments_per_row python:2;
           portal python:view.portal;
           laboratory python:view.laboratory;
           reporter python:view.current_user;
@@ -359,39 +360,60 @@
   </div>
 
   <!-- ATTACHMENTS -->
-  <div class="row section-attachments">
-    <!-- AR Attachments -->
-    <div class="col-sm-12">
-      <h1 i18n:translate="">Attachments</h1>
-      <tal:ar_attachments define="ar_attachments analysisrequest/Attachment">
-        <h4 i18n:translate="" tal:condition="ar_attachments">Analysis services attachments</h4>
-        <div class="attachment" tal:repeat="attachment python:view.sort_attachments(ar_attachments)">
-          <tal:render condition="python:attachment.ReportOption == 'r'">
-            <div class="pt-1 pb-1">
+  <tal:render condition="python:True"
+              define="ar_attachments python:view.get_sorted_ar_attachments('r');
+                      an_attachments python:view.get_sorted_an_attachments('r')">
+
+    <h1 i18n:translate=""
+        tal:condition="python:ar_attachments or an_attachments">
+      Attachments
+    </h1>
+
+    <!-- AR ATTACHMENTS -->
+    <div class="row section-an-attachments" tal:condition="ar_attachments">
+      <div class="col-sm-12">
+        <table class="table">
+          <colgroup>
+            <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+          </colgroup>
+          <tr tal:repeat="chunk python:view.group_into_chunks(ar_attachments, attachments_per_row)">
+            <td class="align-bottom"
+                style="border:none;padding-left:0;"
+                tal:repeat="attachment chunk">
               <img class="img-fluid"
                    tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
-              <div class="text-secondary" tal:content="attachment/AttachmentKeys"/>
-            </div>
-          </tal:render>
-        </div>
-      </tal:ar_attachments>
+              <div class="text-secondary">
+                <span tal:content="attachment/AttachmentKeys"/>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
-    <!-- Analysis Attachments -->
-    <div class="col-sm-12">
-      <tal:analyses repeat="analysis analysisrequest/Analyses">
-        <tal:attachments repeat="attachment python:view.sort_attachments(analysis.Attachment)">
-          <tal:render condition="python:attachment.ReportOption == 'r'">
-            <div class="pt-1 pb-1">
+    <!-- AN ATTACHMENTS -->
+    <div class="row section-an-attachments" tal:condition="an_attachments">
+      <div class="col-sm-12">
+        <table class="table">
+          <colgroup>
+            <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+          </colgroup>
+          <tr tal:repeat="chunk python:view.group_into_chunks(an_attachments, attachments_per_row)">
+            <td class="align-bottom"
+                style="border:none;padding-left:0;"
+                tal:repeat="attachment chunk">
               <img class="img-fluid"
-                   tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
-              <div class="text-secondary" tal:content="attachment/AttachmentKeys"/>
-            </div>
-          </tal:render>
-        </tal:attachments>
-      </tal:analyses>
+                   tal:attributes="src python:attachment[1].absolute_url() + '/AttachmentFile'"/>
+              <div class="text-secondary">
+                <span tal:content="python:attachment[1].title"/>:
+                <span tal:content="python:attachment[1].AttachmentKeys"/>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
-  </div>
+  </tal:render>
 
   <!--  SIGNATURES -->
   <div class="row section-signatures">
