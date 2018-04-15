@@ -223,46 +223,6 @@ class ReportModel(object):
             self._catalog = catalogs[0]
         return self._catalog
 
-    @property
-    def workflows(self):
-        """Return a list of assigned workflows
-        """
-        wf_ids = api.get_workflows_for(self.instance)
-        return map(self.get_workflow_info_for, wf_ids)
-
-    def get_workflow_info_for(self, wf_id):
-        """Return a workflow info object
-        """
-        wf_tool = api.get_tool("portal_workflow")
-        # `DCWorkflowDefinition` instance
-        workflow = wf_tool.getWorkflowById(wf_id)
-        # the state variable, e.g. review_state
-        state_var = workflow.state_var
-        # tuple of possible transitions
-        transitions = wf_tool.getTransitionsFor(self.instance)
-        # review history tuple, e.g. ({'action': 'publish', ...}, )
-        history = wf_tool.getHistoryOf(wf_id, self.instance)
-        # reverse the history
-        review_history = history[::-1]
-        # the most current history info
-        current_state = review_history[0]
-        # extracted status id
-        status = current_state[state_var]
-        # `StateDefinition` instance
-        state_definition = workflow.states[status]
-        # status title, e.g. "Published"
-        status_title = state_definition.title
-
-        # return selected workflow information for the wrapped instance
-        return {
-            "id": wf_id,
-            "status": status,
-            "status_title": status_title,
-            "state_var": state_var,
-            "transitions": transitions,
-            "review_history": review_history,
-        }
-
     def get_brain_by_uid(self, uid):
         """Lookup brain in the UID catalog
         """

@@ -97,6 +97,10 @@ class ReportView(object):
         return api.get_user_properties(user)
 
     @property
+    def wf_tool(self):
+        return api.get_tool("portal_workflow")
+
+    @property
     def scientific_notation(self):
         return int(self.setup.getScientificNotationReport())
 
@@ -328,3 +332,67 @@ class ReportView(object):
             return cmp(_i1, _i2)
 
         return sorted(attachments, cmp=att_cmp)
+
+    def get_workflow_by_id(self, wfid):
+        """Returns a workflow by ID
+
+        :returns: DCWorkflowDefinition instance
+        """
+        return self.wf_tool.getWorkflowById(wfid)
+
+    def get_workflows(self):
+        """Return a list of assigned workflows
+        """
+        workflows = self.wf_tool.getChainFor(self.model)
+        return map(self.get_workflow_by_id, workflows)
+
+    def get_transitions(self):
+        """Return possible transitions
+        """
+        return self.wf_tool.getTransitionsFor(self.model)
+
+    def get_workflow_history(self, wfid, reverse=True):
+        """Return the (reversed) review history
+        """
+        wf_tool = api.get_tool("portal_workflow")
+        history = wf_tool.getHistoryOf(wfid, self.model)
+        if reverse:
+            return history[::-1]
+        return history
+
+    def get_workflow_info_for(self, wfid):
+        """Return a workflow info object
+        """
+        workflow = self.get_workflow_by_id(wfid)
+        # the state variable, e.g. review_state
+        state_var = workflow.state_var
+        # tuple of possible transitions
+        transitions = self.get_transitions()
+        # review history tuple, e.g. ({'action': 'publish', ...}, )
+        history = self.get_workflow_history(wfid)
+        # the most current history info
+        current_state = history[0]
+        # extracted status id
+        status = current_state[state_var]
+        # `StateDefinition` instance
+        state_definition = workflow.states[status]
+        # status title, e.g. "Published"
+        status_title = state_definition.title
+        # return selected workflow information for the wrapped instance
+        return {
+            "id": wfid,
+            "status": status,
+            "status_title": status_title,
+            "state_var": state_var,
+            "transitions": transitions,
+            "review_history": history,
+        }
+
+    def get_transition_date(self, wfid, state):
+        """Return the date when the transition was made
+        """
+        wf = self.get_workflow_info_for(wfid)
+        for rh in wf.get("review_history"):
+            if rh.get("review_state") == state:
+                return rh.get("time")
+        return None
