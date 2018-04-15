@@ -5,12 +5,12 @@ body { margin: 0 }
   position: relative;
   box-sizing: border-box;
   page-break-after: always;
+  h1, h2, h3 { page-break-after: avoid; }
 }
 @media print {
   .noprint {
     display: none;
   }
-  div.row {page-break-inside: avoid;}
 }
 /** For screen preview **/
 @media screen {
