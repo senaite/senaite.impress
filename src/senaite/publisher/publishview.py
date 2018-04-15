@@ -38,7 +38,7 @@ CSS = Template("""/** Paper size **/
   padding-bottom: ${margin_bottom}mm;
   padding-left: 0;
 
-  /* Paging */
+  /* Bottom right */
   @bottom-right {
     content: counter(page) "/" counter(pages);
     margin-top: -${margin_top}mm;
@@ -46,11 +46,17 @@ CSS = Template("""/** Paper size **/
     font-size: 9pt;
   }
 
-  /* Footer */
+  /* Bottom left */
   @bottom-left {
     content: "${footer}";
     margin-top: -${margin_top}mm;
     margin-left: ${margin_left}mm;
+    font-size: 9pt;
+  }
+
+  /* Bottom center */
+  @bottom-center {
+    margin-top: -${margin_top}mm;
     font-size: 9pt;
   }
 }
@@ -163,17 +169,17 @@ class PublishView(BrowserView):
 
         return "\n".join(htmls)
 
-    def render_report(self, model, template):
+    def render_report(self, model, template, **kw):
         """Render a ReportModel to HTML
         """
         view = getAdapter(model, IReportView, name="AnalysisRequest")
-        return view.render(self.read_template(template, view))
+        return view.render(self.read_template(template, view, **kw))
 
-    def render_multi_report(self, collection, template):
+    def render_multi_report(self, collection, template, **kw):
         """Render multiple ReportModels to HTML
         """
         view = getAdapter(collection, IMultiReportView, name="AnalysisRequest")
-        return view.render(self.read_template(template, view))
+        return view.render(self.read_template(template, view, **kw))
 
     def get_publisher(self, html, **kw):
         """Returns a configured IPublisher instance
@@ -248,9 +254,9 @@ class PublishView(BrowserView):
             return finder.default_template
         return template_path
 
-    def read_template(self, template, instance):
+    def read_template(self, template, instance, **kw):
         if self.is_page_template(template):
-            template = ViewPageTemplateFile(template)(instance)
+            template = ViewPageTemplateFile(template, **kw)(instance)
         else:
             with open(template, "r") as template:
                 template = template.read()
