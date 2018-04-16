@@ -16,6 +16,24 @@
           qcanalyses python: analysisrequest.getQCAnalyses(['verified', 'published']);
           contact analysisrequest/Contact;">
 
+  <style type="text/css">
+   @page {
+     @bottom-left {
+       font-size: 9pt;
+       content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+     }
+     @bottom-center {
+       font-size: 9pt;
+       content: '<span tal:omit-tag="" tal:content="python:view.get_footer_text()"></span>';
+     }
+     @bottom-right {
+       font-size: 9pt;
+       content: '<span tal:omit-tag="" i18n:translate="">Page</span> ' counter(page)
+                ' <span tal:omit-tag="" i18n:translate="">of</span> '  counter(pages);
+     }
+   }
+  </style>
+
   <!-- HEADER -->
   <div class="row section-header">
 

@@ -71,7 +71,17 @@
   <!-- Template Vocabulary Utility -->
   <utility
       name="senaite.publisher.vocabularies.Templates"
-      component="senaite.publisher.vocabularies.TemplatesVocabularyFactory"/>
+      component="senaite.publisher.vocabularies.TemplateVocabularyFactory"/>
+
+  <!-- Paper Format Vocabulary Utility -->
+  <utility
+      name="senaite.publisher.vocabularies.Paperformats"
+      component="senaite.publisher.vocabularies.PaperformatVocabularyFactory"/>
+
+  <!-- Orientation Vocabulary Utility -->
+  <utility
+      name="senaite.publisher.vocabularies.Orientations"
+      component="senaite.publisher.vocabularies.OrientationVocabularyFactory"/>
 
   <!-- Report resource directory -->
   <plone:static

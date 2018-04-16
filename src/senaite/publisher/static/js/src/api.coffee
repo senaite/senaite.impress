@@ -118,12 +118,12 @@ class PublishAPI
       method: "GET"
 
 
-  fetch_default_template: ->
+  fetch_config: ->
     ###
-     * Fetch default template
+     * Fetch default config
      * @returns {Promise}
     ###
-    return @get_json "default_template",
+    return @get_json "config",
       method: "GET"
 
 

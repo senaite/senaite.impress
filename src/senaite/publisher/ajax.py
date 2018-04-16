@@ -126,10 +126,15 @@ class AjaxPublishView(PublishView):
         """
         return self.get_report_templates()
 
-    def ajax_default_template(self):
-        """Returns the default template
+    def ajax_config(self):
+        """Returns the default publisher config
         """
-        return self.get_default_template()
+        return {
+            "format": self.get_default_paperformat(),
+            "orientation": self.get_default_orientation(),
+            "template": self.get_default_template(),
+            "merge": True,
+        }
 
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html

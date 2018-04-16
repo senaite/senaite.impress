@@ -14,11 +14,24 @@ from zope.interface import Interface
 
 class IPublisherControlPanel(Interface):
 
-    # directives.widget(default_template=RadioFieldWidget)
     default_template = schema.Choice(
         title=_(u"Default Template"),
         vocabulary="senaite.publisher.vocabularies.Templates",
         default="senaite.publisher:MultiDefault.pt",
+        required=True,
+    )
+
+    default_paperformat = schema.Choice(
+        title=_(u"Default Paper Format"),
+        vocabulary="senaite.publisher.vocabularies.Paperformats",
+        default="A4",
+        required=True,
+    )
+
+    default_orientation = schema.Choice(
+        title=_(u"Default Orientation"),
+        vocabulary="senaite.publisher.vocabularies.Orientations",
+        default="portrait",
         required=True,
     )
 

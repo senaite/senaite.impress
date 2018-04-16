@@ -2,6 +2,33 @@
   i18n:domain="senaite.publisher"
   define="collection view/collection;">
 
+  <style type="text/css">
+   html, body { font-size: 1em; }
+   h1 { font-size: 160%; }
+   h2 { font-size: 120%; }
+   font-family { sans; }
+   .colon-after:after { content: ":"; }
+   table.noborder td { border: none; }
+   table.nopadding td { padding: 0; }
+   table td.label { padding-right: 0.3rem; }
+   table td.label { white-space: nowrap; }
+   @page {
+     @bottom-left {
+       font-size: 9pt;
+       content: "LISCON GmbH";
+     }
+     @bottom-center {
+       font-size: 9pt;
+       content: '<span tal:omit-tag=""><span tal:replace="python:', '.join(map(lambda m: m.getId(), collection))"/></span>';
+     }
+     @bottom-right {
+       font-size: 9pt;
+       content: '<span tal:omit-tag="" i18n:translate="">Page</span> ' counter(page)
+       ' <span tal:omit-tag="" i18n:translate="">of</span> '  counter(pages);
+     }
+   }
+  </style>
+
   <!-- Iterate over all models of the collection -->
   <tal:models repeat="model collection">
 

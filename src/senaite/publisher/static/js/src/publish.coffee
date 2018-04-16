@@ -82,7 +82,6 @@ class PublishController extends React.Component
     ###
 
     # ensure that the rendered HTML has the right format/orientation CSS classes
-    @setCSS()
     el = document.getElementById "reports"
     return "" unless el
     return el.innerHTML
@@ -138,30 +137,11 @@ class PublishController extends React.Component
     ).bind(this)
 
 
-  setCSS: ->
-    ###
-     * Set the CSS Classes according to the paper format
-    ###
-    cls = "#{@state.format} #{@state.orientation}"
-
-    # set the CSS Class on the <body>
-    body = document.querySelector "body"
-    body.className = cls
-
-    # set the CSS Class on all reports
-    reports = document.querySelectorAll ".report"
-    reports.forEach (report) ->
-      report.className = "report #{cls}"
-
-
   componentDidUpdate: ->
     console.debug "PublishController::componentDidUpdate"
 
     # render the barcodes
     @api.render_barcodes()
-
-    # update the CSS of all rendered elements
-    @setCSS()
 
     # Toggle PDF download buttons
     if @isMultiReport()
@@ -179,11 +159,9 @@ class PublishController extends React.Component
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
 
-    @api.fetch_default_template().then (
-      (default_template) ->
-        @setState
-          template: default_template
-        , @loadReports
+    @api.fetch_config().then (
+      (config) ->
+        @setState config, @loadReports
       ).bind(this)
 
 
@@ -265,14 +243,6 @@ class PublishController extends React.Component
           <Loader loadtext={@state.loadtext} loading={@state.loading} />
         </div>
       </div>
-      <div className="row">
-        <div className="col-sm-12">
-          <Preview preview={@state.preview} id="preview" className="row" />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-12">
-          <ReportHTML html={@state.html} id="reports" className="d-none" />
-        </div>
-      </div>
+      <Preview preview={@state.preview} id="preview" className="row" />
+      <ReportHTML html={@state.html} id="reports" className="d-none" />
     </div>

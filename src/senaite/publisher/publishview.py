@@ -234,6 +234,16 @@ class PublishView(BrowserView):
         """
         return api.get_registry_record("senaite.publisher.default_template")
 
+    def get_default_paperformat(self):
+        """Returns the configured default paperformat from the registry
+        """
+        return api.get_registry_record("senaite.publisher.default_paperformat")
+
+    def get_default_orientation(self):
+        """Returns the configured default orientation from the registry
+        """
+        return api.get_registry_record("senaite.publisher.default_orientation")
+
     def get_report_template(self, template=None):
         """Returns the path of report template
         """
