@@ -1,24 +1,20 @@
-body { margin: 0 }
 .report {
-  margin: 0;
-  /* overflow: hidden; */
+  overflow: hidden;
   position: relative;
+  /* Includes padding and border in the element's total width and height */
   box-sizing: border-box;
-  page-break-after: always;
+}
+
+@media print {
+  .noprint { display: none; }
+  .report { page-break-after: always; }
   h1, h2, h3, h4, h5 { page-break-after: avoid; }
 }
-@media print {
-  .noprint {
-    display: none;
-  }
-}
+
 /** For screen preview **/
 @media screen {
   body {
     background: #e0e0e0;
-  }
-  .container {
-    min-width: 1200px!important;
   }
   .report {
     background: white;
