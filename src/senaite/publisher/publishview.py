@@ -27,55 +27,37 @@ from zope.component import getUtility
 from zope.interface import implements
 
 
-CSS = Template("""/** Paper size **/
+CSS = Template("""/** Paper Format CSS **/
+
 @page {
-  size: ${format} ${orientation};
-  margin: 0;
+  /* width/height according to the format */
+  size: ${page_width}mm ${page_height}mm;
 
-  /* needed on every page */
-  padding-top: ${margin_top}mm;
-  padding-right: 0;
-  padding-bottom: ${margin_bottom}mm;
-  padding-left: 0;
+  /* margins on every page */
+  margin-top: ${margin_top}mm;
+  margin-right: ${margin_right}mm;
+  margin-bottom: ${margin_bottom}mm;
+  margin-left: ${margin_left}mm;
+}
 
-  /* Bottom right */
-  @bottom-right {
-    content: counter(page) "/" counter(pages);
-    margin-top: -${margin_top}mm;
-    margin-right: ${margin_right}mm;
-    font-size: 9pt;
-  }
-
-  /* Bottom left */
-  @bottom-left {
-    content: "${footer}";
-    margin-top: -${margin_top}mm;
-    margin-left: ${margin_left}mm;
-    font-size: 9pt;
-  }
-
-  /* Bottom center */
-  @bottom-center {
-    margin-top: -${margin_top}mm;
-    font-size: 9pt;
-  }
-}
-.report.${format} {
-  padding-left: ${margin_left}mm;
-  padding-right: ${margin_right}mm;
-}
-.report.${format} {
-  width: ${page_width}mm;
-  height: ${page_height}mm;
-}
-.report.${format}.landscape {
-  width: ${page_height}mm;
-  height: ${page_width}mm;
-}
 @media print {
-  .report.${format} { width: ${page_width}mm; }
-  .report.${format}.landscape { width: ${page_height}mm; }
+  .report {
+    /* width/height with subtracted margins */
+    width: ${content_width}mm;
+    height: ${content_height}mm;
+  }
 }
+
+@media screen {
+  .report {
+    /* full width/height in preview only */
+    width: ${page_width}mm;
+    height: ${page_height}mm;
+  }
+  /* Bootstrap container fixture to display the full paper */
+  .container { min-width: ${page_width}mm!important; }
+}
+
 """)
 
 
@@ -200,20 +182,38 @@ class PublishView(BrowserView):
         """Returns the generated print CSS for the given format/orientation
         """
         format = kw.get("format", "A4")
+        paperformat = self.get_paperformat(format)
+
+        margin_top = paperformat["margin_top"]
+        margin_right = paperformat["margin_right"]
+        margin_bottom = paperformat["margin_bottom"]
+        margin_left = paperformat["margin_left"]
+
+        page_width = paperformat["page_width"]
+        page_height = paperformat["page_height"]
+
+        # calculate content width/height accordding to the margins
+        content_height = page_height - margin_top - margin_bottom
+        content_width = page_width - margin_left - margin_right
+
+        paperformat["content_width"] = content_width
+        paperformat["content_height"] = content_height
+
+        # Flip sizes in landscape
         orientation = kw.get("orientation", "portrait")
+        if orientation == "landscape":
+            paperformat["page_width"] = page_height
+            paperformat["page_height"] = page_width
+            paperformat["content_width"] = content_height
+            paperformat["content_height"] = content_width
 
-        context = self.get_paperformat(format, orientation)
-        context["footer"] = self.get_footer_text()
-        return CSS.safe_substitute(context)
+        return CSS.safe_substitute(paperformat)
 
-    def get_paperformat(self, format="A4", orientation="portrait"):
+    def get_paperformat(self, format):
         paperformats = self.get_paperformats()
         if format not in paperformats:
-            format = "A4"
-        if orientation not in ["portrait", "landscape"]:
-            orientation = "portrait"
-        paperformat = paperformats.get(format)
-        paperformat["orientation"] = orientation
+            raise KeyError("Unknown Paper Format '{}'".format(format))
+        paperformat = paperformats[format].copy()
         return paperformat
 
     def get_paperformats(self):
