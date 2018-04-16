@@ -343,19 +343,19 @@ class ReportView(object):
     def get_workflows(self):
         """Return a list of assigned workflows
         """
-        workflows = self.wf_tool.getChainFor(self.model)
+        workflows = self.wf_tool.getChainFor(self.model.instance)
         return map(self.get_workflow_by_id, workflows)
 
     def get_transitions(self):
         """Return possible transitions
         """
-        return self.wf_tool.getTransitionsFor(self.model)
+        return self.wf_tool.getTransitionsFor(self.model.instance)
 
     def get_workflow_history(self, wfid, reverse=True):
         """Return the (reversed) review history
         """
         wf_tool = api.get_tool("portal_workflow")
-        history = wf_tool.getHistoryOf(wfid, self.model)
+        history = wf_tool.getHistoryOf(wfid, self.model.instance)
         if reverse:
             return history[::-1]
         return history
@@ -392,6 +392,7 @@ class ReportView(object):
         """Return the date when the transition was made
         """
         wf = self.get_workflow_info_for(wfid)
+
         for rh in wf.get("review_history"):
             if rh.get("review_state") == state:
                 return rh.get("time")
