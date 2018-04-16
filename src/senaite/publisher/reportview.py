@@ -396,3 +396,12 @@ class ReportView(object):
             if rh.get("review_state") == state:
                 return rh.get("time")
         return None
+
+    def get_footer_text(self, escape=True):
+        """Returns the footer text from the setup
+        """
+        setup = self.setup
+        footer = setup.getResultFooter().decode("utf-8")
+        if escape:
+            return footer.replace("\r\n", "\A")
+        return footer

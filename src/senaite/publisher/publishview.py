@@ -222,15 +222,6 @@ class PublishView(BrowserView):
         # Todo: Implement cascading lookup: client->registry->config
         return PAPERFORMATS
 
-    def get_footer_text(self, escape=True):
-        """Returns the footer text from the setup
-        """
-        setup = api.get_portal().bika_setup
-        footer = setup.getResultFooter().decode("utf-8")
-        if escape:
-            return footer.replace("\r\n", "\A")
-        return footer
-
     def get_report_templates(self, extensions=[".pt", ".html"]):
         """Returns a sorted list of template/path pairs
         """
