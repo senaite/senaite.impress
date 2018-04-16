@@ -16,23 +16,33 @@
           qcanalyses python: analysisrequest.getQCAnalyses(['verified', 'published']);
           contact analysisrequest/Contact;">
 
-  <style type="text/css">
-   @page {
-     @bottom-left {
-       font-size: 9pt;
-       content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+  <tal:css define="laboratory view/laboratory;">
+    <style type="text/css">
+     html, body { font-size: 1em; }
+     h1 { font-size: 160%; }
+     h2 { font-size: 120%; }
+     font-family { sans; }
+     .colon-after:after { content: ":"; }
+     table.noborder td { border: none; }
+     table.nopadding td { padding: 0; }
+     table td.label { padding-right: 0.3rem; }
+     table td.label { white-space: nowrap; }
+     @page {
+       @bottom-left {
+         font-size: 9pt;
+         content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+       }
+       @bottom-center {
+         font-size: 9pt;
+         content: '<span tal:omit-tag="" tal:content="python:view.get_footer_text()"/>';
+       }
+       @bottom-right {
+         font-size: 9pt;
+         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+       }
      }
-     @bottom-center {
-       font-size: 9pt;
-       content: '<span tal:omit-tag="" tal:content="python:view.get_footer_text()"></span>';
-     }
-     @bottom-right {
-       font-size: 9pt;
-       content: '<span tal:omit-tag="" i18n:translate="">Page</span> ' counter(page)
-                ' <span tal:omit-tag="" i18n:translate="">of</span> '  counter(pages);
-     }
-   }
-  </style>
+    </style>
+  </tal:css>
 
   <!-- HEADER -->
   <div class="row section-header">
