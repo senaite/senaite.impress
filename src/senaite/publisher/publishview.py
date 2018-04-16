@@ -280,6 +280,8 @@ class PublishView(BrowserView):
         basename, ext = os.path.splitext(filename)
         if basename.lower().startswith("multi"):
             return True
+        if basename.lower().endsswith("multi"):
+            return True
         return False
 
     def is_page_template(self, template):
