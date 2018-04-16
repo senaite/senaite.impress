@@ -33,8 +33,10 @@ class MultiReportView(object):
         logger.info("MultiReportView::__init__:collection={}"
                     .format(collection))
         self.collection = collection
-        self.context = collection
         self.request = getRequest()
+
+        # needed for template rendering
+        self.context = self.portal
 
     def render(self, template):
         context = self.get_template_context(self.collection)

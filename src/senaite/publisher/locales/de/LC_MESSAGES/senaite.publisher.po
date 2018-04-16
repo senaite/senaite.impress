@@ -1,8 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-04-11 16:19+0000\n"
+"POT-Creation-Date: 2018-04-16 11:29+0000\n"
 "PO-Revision-Date: 2018-04-12 16:46+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,33 +13,26 @@ msgstr ""
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "Language: de_DE\n"
 "X-Generator: Poedit 1.8.9\n"
 
-#: senaite/publisher/templates/reports/Default.pt:457
-#: senaite/publisher/templates/reports/MultiDefault.pt:486
+#: senaite/publisher/templates/reports/Default.pt:497
+#: senaite/publisher/templates/reports/MultiDefault.pt:534
 msgid "Analysis results relate only to the samples tested."
 msgstr "Die Analysenergebnisse beziehen sich ausschließlich auf die Prüfgegenstände."
 
-#: senaite/publisher/templates/reports/Default.pt:367
-#: senaite/publisher/templates/reports/MultiDefault.pt:391
-msgid "Analysis services attachments"
-msgstr "Analysen-Anlagen"
-
-#: senaite/publisher/templates/reports/Default.pt:365
-#: senaite/publisher/templates/reports/MultiDefault.pt:389
+#: senaite/publisher/templates/reports/Default.pt:385
+#: senaite/publisher/templates/reports/MultiDefault.pt:417
 msgid "Attachments"
 msgstr "Anlagen"
 
-#: senaite/publisher/templates/reports/Default.pt:173
-#: senaite/publisher/templates/reports/MultiDefault.pt:185
+#: senaite/publisher/templates/reports/Default.pt:192
+#: senaite/publisher/templates/reports/MultiDefault.pt:213
 msgid "Batch ID"
-msgstr ""
+msgstr "Batch ID"
 
-#: senaite/publisher/templates/reports/Default.pt:222
-#: senaite/publisher/templates/reports/MultiDefault.pt:234
+#: senaite/publisher/templates/reports/Default.pt:241
+#: senaite/publisher/templates/reports/MultiDefault.pt:262
 msgid "Batch Labels"
 msgstr ""
 
@@ -50,18 +45,18 @@ msgid "CC Emails"
 msgstr "CC E-Mails"
 
 #: senaite/publisher/templates/publish.pt:42
-#: senaite/publisher/templates/reports/Default.pt:185
-#: senaite/publisher/templates/reports/MultiDefault.pt:197
+#: senaite/publisher/templates/reports/Default.pt:204
+#: senaite/publisher/templates/reports/MultiDefault.pt:225
 msgid "Client"
 msgstr "Kunde"
 
-#: senaite/publisher/templates/reports/Default.pt:181
-#: senaite/publisher/templates/reports/MultiDefault.pt:193
+#: senaite/publisher/templates/reports/Default.pt:200
+#: senaite/publisher/templates/reports/MultiDefault.pt:221
 msgid "Client Batch ID"
 msgstr "Kunden Projekt ID"
 
-#: senaite/publisher/templates/reports/Default.pt:192
-#: senaite/publisher/templates/reports/MultiDefault.pt:204
+#: senaite/publisher/templates/reports/Default.pt:211
+#: senaite/publisher/templates/reports/MultiDefault.pt:232
 msgid "Client SID"
 msgstr "Kundenprobe"
 
@@ -69,56 +64,73 @@ msgstr "Kundenprobe"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: senaite/publisher/templates/reports/Default.pt:208
-#: senaite/publisher/templates/reports/MultiDefault.pt:220
+#: senaite/publisher/templates/reports/Default.pt:227
+#: senaite/publisher/templates/reports/MultiDefault.pt:248
 msgid "Date Published"
 msgstr "Publikationsdatum"
 
-#: senaite/publisher/templates/reports/Default.pt:204
-#: senaite/publisher/templates/reports/MultiDefault.pt:216
+#: senaite/publisher/templates/reports/Default.pt:223
+#: senaite/publisher/templates/reports/MultiDefault.pt:244
 msgid "Date Received"
 msgstr "Eingangsdatum"
 
+#: senaite/publisher/controlpanel.py:32
+msgid "Default Orientation"
+msgstr "Standard Ausrichtung"
+
+#: senaite/publisher/controlpanel.py:25
+msgid "Default Paper Format"
+msgstr "Standard Papierformat"
+
+#: senaite/publisher/controlpanel.py:18
+msgid "Default Template"
+msgstr "Standard Vorlage"
+
 #: senaite/publisher/templates/publish.pt:40
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
-#: senaite/publisher/templates/reports/Default.pt:452
-#: senaite/publisher/templates/reports/MultiDefault.pt:481
+#: senaite/publisher/templates/reports/Default.pt:492
+#: senaite/publisher/templates/reports/MultiDefault.pt:529
 msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
 msgstr "Methoden, die in der Akkreditierungsurkunde der ${accreditation_body} für dieses Labor aufgeführt sind. Hinweise zu Analysen sind nicht akkreditiert."
 
-#: senaite/publisher/templates/reports/Default.pt:470
-#: senaite/publisher/templates/reports/MultiDefault.pt:499
+#: senaite/publisher/templates/reports/Default.pt:510
+#: senaite/publisher/templates/reports/MultiDefault.pt:547
 msgid "Methods of analysis available by clicking on the 'Request' link"
 msgstr "Methoden verfügbar durch Klick auf den Analysenauftrags-Link"
 
-#: senaite/publisher/templates/reports/Default.pt:439
-#: senaite/publisher/templates/reports/MultiDefault.pt:468
+#: senaite/publisher/templates/reports/Default.pt:479
+#: senaite/publisher/templates/reports/MultiDefault.pt:516
 msgid "Not invoiced"
 msgstr "Nicht berechnet"
 
 #: senaite/publisher/templates/publish.pt:46
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
-#: senaite/publisher/templates/reports/Default.pt:148
-#: senaite/publisher/templates/reports/MultiDefault.pt:138
+#: senaite/publisher/templates/reports/Default.pt:167
+#: senaite/publisher/templates/reports/MultiDefault.pt:166
 msgid "Provisional report"
 msgstr "Vorläufiger Bericht"
 
-#: senaite/publisher/templates/reports/Default.pt:212
-#: senaite/publisher/templates/reports/MultiDefault.pt:224
+#: senaite/publisher/templates/reports/Default.pt:231
+#: senaite/publisher/templates/reports/MultiDefault.pt:252
 msgid "Published by"
 msgstr "Publiziert durch"
 
-#: senaite/publisher/templates/reports/Default.pt:349
-#: senaite/publisher/templates/reports/MultiDefault.pt:369
+#: senaite/publisher/profiles/default/actionicons.xml
+#: senaite/publisher/profiles/default/controlpanel.xml
+msgid "Publisher Settings"
+msgstr "Publisher Einstellungen"
+
+#: senaite/publisher/templates/reports/Default.pt:368
+#: senaite/publisher/templates/reports/MultiDefault.pt:397
 msgid "QC Results"
 msgstr "QC Ergebnisse"
 
-#: senaite/publisher/templates/reports/Default.pt:267
-#: senaite/publisher/templates/reports/MultiDefault.pt:282
+#: senaite/publisher/templates/reports/Default.pt:286
+#: senaite/publisher/templates/reports/MultiDefault.pt:310
 msgid "Range"
 msgstr "Bereich"
 
@@ -126,38 +138,38 @@ msgstr "Bereich"
 msgid "Received"
 msgstr "Eingegangen"
 
-#: senaite/publisher/templates/reports/Default.pt:356
-#: senaite/publisher/templates/reports/MultiDefault.pt:378
+#: senaite/publisher/templates/reports/Default.pt:375
+#: senaite/publisher/templates/reports/MultiDefault.pt:406
 msgid "Remarks"
 msgstr "Hinweise"
 
-#: senaite/publisher/templates/reports/Default.pt:157
-#: senaite/publisher/templates/reports/MultiDefault.pt:169
+#: senaite/publisher/templates/reports/Default.pt:176
+#: senaite/publisher/templates/reports/MultiDefault.pt:197
 msgid "Request ID"
 msgstr "Auftrags-ID"
 
-#: senaite/publisher/templates/reports/Default.pt:399
-#: senaite/publisher/templates/reports/MultiDefault.pt:424
+#: senaite/publisher/templates/reports/Default.pt:439
+#: senaite/publisher/templates/reports/MultiDefault.pt:472
 msgid "Responsibles"
 msgstr "Verantwortlich"
 
-#: senaite/publisher/templates/reports/Default.pt:261
-#: senaite/publisher/templates/reports/MultiDefault.pt:276
+#: senaite/publisher/templates/reports/Default.pt:280
+#: senaite/publisher/templates/reports/MultiDefault.pt:304
 msgid "Result"
 msgstr "Ergebnis"
 
-#: senaite/publisher/templates/reports/Default.pt:437
-#: senaite/publisher/templates/reports/MultiDefault.pt:466
+#: senaite/publisher/templates/reports/Default.pt:477
+#: senaite/publisher/templates/reports/MultiDefault.pt:514
 msgid "Result out of client specified range."
 msgstr "Ergebnisse außerhalb der Kundenspezifikation"
 
-#: senaite/publisher/templates/reports/Default.pt:232
-#: senaite/publisher/templates/reports/MultiDefault.pt:247
+#: senaite/publisher/templates/reports/Default.pt:251
+#: senaite/publisher/templates/reports/MultiDefault.pt:275
 msgid "Results"
 msgstr "Ergebnisse"
 
-#: senaite/publisher/templates/reports/Default.pt:337
-#: senaite/publisher/templates/reports/MultiDefault.pt:354
+#: senaite/publisher/templates/reports/Default.pt:356
+#: senaite/publisher/templates/reports/MultiDefault.pt:382
 msgid "Results interpretation"
 msgstr "Ergebnisbewertung"
 
@@ -165,52 +177,56 @@ msgstr "Ergebnisbewertung"
 msgid "SENAITE Publisher"
 msgstr ""
 
-#: senaite/publisher/templates/reports/Default.pt:165
-#: senaite/publisher/templates/reports/MultiDefault.pt:177
+#: senaite/publisher/controlpanel.py:42
+msgid "SENAITE Publisher Settings"
+msgstr "SENAITE Publisher Einstellungen"
+
+#: senaite/publisher/templates/reports/Default.pt:184
+#: senaite/publisher/templates/reports/MultiDefault.pt:205
 msgid "Sample ID"
 msgstr "Proben-ID"
 
-#: senaite/publisher/templates/reports/Default.pt:196
-#: senaite/publisher/templates/reports/MultiDefault.pt:208
+#: senaite/publisher/templates/reports/Default.pt:215
+#: senaite/publisher/templates/reports/MultiDefault.pt:236
 msgid "Sample Type"
 msgstr "Probenart"
 
-#: senaite/publisher/templates/reports/Default.pt:200
-#: senaite/publisher/templates/reports/MultiDefault.pt:212
+#: senaite/publisher/templates/reports/Default.pt:219
+#: senaite/publisher/templates/reports/MultiDefault.pt:240
 msgid "Specification"
 msgstr "Spezifikation"
 
-#: senaite/publisher/templates/reports/Default.pt:154
-#: senaite/publisher/templates/reports/MultiDefault.pt:165
+#: senaite/publisher/templates/reports/Default.pt:173
+#: senaite/publisher/templates/reports/MultiDefault.pt:193
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: senaite/publisher/templates/reports/Default.pt:95
-#: senaite/publisher/templates/reports/MultiDefault.pt:81
+#: senaite/publisher/templates/reports/Default.pt:114
+#: senaite/publisher/templates/reports/MultiDefault.pt:109
 msgid "Supervisor"
 msgstr "Laborleiter"
 
-#: senaite/publisher/templates/reports/Default.pt:468
-#: senaite/publisher/templates/reports/MultiDefault.pt:497
+#: senaite/publisher/templates/reports/Default.pt:508
+#: senaite/publisher/templates/reports/MultiDefault.pt:545
 msgid "Test results are at a ${lab_confidence}% confidence level"
 msgstr "Das Vertrauensniveau von Ergebnissen beträgt ${lab_confidence}%"
 
-#: senaite/publisher/templates/reports/Default.pt:138
-#: senaite/publisher/templates/reports/MultiDefault.pt:127
+#: senaite/publisher/templates/reports/Default.pt:157
+#: senaite/publisher/templates/reports/MultiDefault.pt:155
 msgid "This Analysis Request has been invalidated due to erroneously published results"
 msgstr "Dieser Analysenauftrag wurde annulliert aufgrund fehlerhaft publizierter Ergebnisse"
 
-#: senaite/publisher/templates/reports/Default.pt:141
-#: senaite/publisher/templates/reports/MultiDefault.pt:130
+#: senaite/publisher/templates/reports/Default.pt:160
+#: senaite/publisher/templates/reports/MultiDefault.pt:158
 msgid "This Analysis request has been replaced by"
 msgstr "Dieser Analysenauftrag wurde ersetzt durch"
 
-#: senaite/publisher/templates/reports/Default.pt:464
-#: senaite/publisher/templates/reports/MultiDefault.pt:493
+#: senaite/publisher/templates/reports/Default.pt:504
+#: senaite/publisher/templates/reports/MultiDefault.pt:541
 msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
 msgstr "Dieses Dokument darf ohne schriftliche Genehmigung der${name_lab} nicht auszugsweise vervielfältigt werden"
 
-#: senaite/publisher/templates/reports/Default.pt:264
-#: senaite/publisher/templates/reports/MultiDefault.pt:279
+#: senaite/publisher/templates/reports/Default.pt:283
+#: senaite/publisher/templates/reports/MultiDefault.pt:307
 msgid "Unit"
 msgstr "Einheit"
