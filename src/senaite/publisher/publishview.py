@@ -280,7 +280,7 @@ class PublishView(BrowserView):
         basename, ext = os.path.splitext(filename)
         if basename.lower().startswith("multi"):
             return True
-        if basename.lower().endsswith("multi"):
+        if basename.lower().endswith("multi"):
             return True
         return False
 
