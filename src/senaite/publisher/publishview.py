@@ -229,20 +229,32 @@ class PublishView(BrowserView):
         templates = finder.get_templates(extensions=extensions)
         return sorted(map(lambda item: item[0], templates))
 
-    def get_default_template(self):
+    def get_default_template(self, default="senaite.lims:Default.pt"):
         """Returns the configured default template from the registry
         """
-        return api.get_registry_record("senaite.publisher.default_template")
+        template = api.get_registry_record(
+            "senaite.publisher.default_template")
+        if template is None:
+            return default
+        return template
 
-    def get_default_paperformat(self):
+    def get_default_paperformat(self, default="A4"):
         """Returns the configured default paperformat from the registry
         """
-        return api.get_registry_record("senaite.publisher.default_paperformat")
+        paperformat = api.get_registry_record(
+            "senaite.publisher.default_paperformat")
+        if paperformat is None:
+            return default
+        return paperformat
 
-    def get_default_orientation(self):
+    def get_default_orientation(self, default="portrait"):
         """Returns the configured default orientation from the registry
         """
-        return api.get_registry_record("senaite.publisher.default_orientation")
+        orientation = api.get_registry_record(
+            "senaite.publisher.default_orientation")
+        if orientation is None:
+            return default
+        return orientation
 
     def get_report_template(self, template=None):
         """Returns the path of report template
