@@ -397,26 +397,26 @@
       <h1 i18n:translate="">Responsibles</h1>
       
       <!-- Laboratory Supervisor -->
-      <address class-col-sm4>
-          <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
-              <div>
-                  <img tal:condition="laboratory/Supervisor/Signature"
-                  tal:attributes="src string:${laboratory/Supervisor/absolute_url}/Signature" style="height:75px"/>
-              </div>
-              <div>
-                  <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
-              </div>
-              <div>
-                  <div tal:replace="laboratory/Supervisor/JobTitle|nothing"/>
-              </div>
-              <div>
-                  <span i18n:translate="">Laboratory Supervisor</span>
-              </div>
+      <address class="col-sm-4">
+        <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
+          <div>
+            <img tal:condition="laboratory/Supervisor/Signature"
+                 tal:attributes="src string:${laboratory/Supervisor/absolute_url}/Signature" style="height:75px"/>
           </div>
+          <div>
+            <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
+          </div>
+          <div>
+            <div tal:replace="laboratory/Supervisor/JobTitle|nothing"/>
+          </div>
+          <div>
+            <span i18n:translate="">Laboratory Supervisor</span>
+          </div>
+        </div>
       </address>
             
       <tal:manager repeat="manager python:view.managers">
-        <address class-col-sm-4>
+        <address class="col-sm-4">
           <div>
             <img tal:condition="manager/Signature"
                  tal:attributes="src string:${manager/absolute_url}/Signature" style="height:75px"/>
