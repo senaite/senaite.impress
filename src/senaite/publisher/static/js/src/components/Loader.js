@@ -11,10 +11,6 @@ class Loader extends React.Component {
     super(props);
   }
 
-  componentDidUpdate() {
-    console.info("Loader::componentDidUpdate:");
-  }
-
   render() {
     if (!this.props.loading) {
       return null;
