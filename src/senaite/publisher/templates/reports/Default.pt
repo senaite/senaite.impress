@@ -12,7 +12,7 @@
           client analysisrequest/Client;
           specification analysisrequest/Specification;
           publication_specification analysisrequest/PublicationSpecification;
-          specifications python:publication_specification or specification;
+          spec python:publication_specification or specification;
           qcanalyses python: analysisrequest.getQCAnalyses(['verified', 'published']);
           contact analysisrequest/Contact;">
 
@@ -21,7 +21,6 @@
      html, body { font-size: 1em; }
      h1 { font-size: 160%; }
      h2 { font-size: 120%; }
-     font-family { sans; }
      .colon-after:after { content: ":"; }
      table.noborder td { border: none; }
      table.nopadding td { padding: 0; }
@@ -227,7 +226,7 @@
         </tr>
         <tr>
           <td class="label" i18n:translate="">Specification</td>
-          <td tal:content="specifications/Title|nothing"></td>
+          <td tal:content="spec/contextual_title|nothing"></td>
         </tr>
         <tr>
           <td class="label" i18n:translate="">Date Received</td>
@@ -306,7 +305,6 @@
                 <tr>
                   <td class="analysis">
                     <span class="text-success"
-                          style="font-family: sans;"
                           tal:content="accredited_symbol"
                           tal:condition="analysis/Accredited">
                     </span>
@@ -329,10 +327,11 @@
                     <span tal:content="python:'(RT)' if view.is_retested(analysis) else ''"></span>
                     <span tal:content="python:view.get_formatted_specs(analysis)">50 - 60</span>
                   </td>
-                  <td class="text-center small align-middle">
-                    <span tal:condition="python:view.is_out_of_range(analysis)">
+                  <td class="text-center align-middle">
+                    <span tal:condition="python:view.is_out_of_range(analysis)"
+                          class="font-weight-light">
                       <span class="outofrange text-danger"
-                            style="font-family:sans;"
+                            style="font-family:Lucida Console, Courier, monospace;"
                             tal:content="outofrange_symbol">
                       </span>
                     </span>
@@ -500,10 +499,10 @@
     <div class="col-sm-12 text-muted font-weight-light small">
       <div class="discreeter-outofrange">
         <span class="outofrange text-danger"
-              style="font-family:sans;"
+              style="font-family:Lucida Console, Courier, monospace;"
               tal:content="outofrange_symbol">
         </span>
-        <span i18n:translate=""> Result out of client specified range.</span>
+        <span i18n:translate="">Result out of client specified range.</span>
       </div>
       <div class="discreeter-not-invoiced"
            tal:condition="analysisrequest/InvoiceExclude"
@@ -513,7 +512,7 @@
       <div class="discreeter-methods"
            tal:condition="laboratory/LaboratoryAccredited">
         <span class="accredited-symbol text-success"
-              style="font-family:sans;"
+              style="font-family: Lucida Console, Courier, monospace;"
               tal:content="accredited_symbol">
         </span>
         <span class="" i18n:translate="">
