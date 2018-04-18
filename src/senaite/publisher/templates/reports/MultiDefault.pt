@@ -45,11 +45,13 @@
       <!-- HEADER -->
       <tal:render condition="repeat/model/start">
         <div class="row section-header">
-          <div class="col-sm-12 logo lab-logo">
-            <a tal:attributes="href reportview/portal/absolute_url">
-              <img style="max-width: 200px"
-                   tal:attributes="src python:reportview.get_image_resource('logo_print.png', prefix='')"/>
-            </a>
+          <div class="col-sm-12">
+            <div class="text-left">
+              <a tal:attributes="href reportview/portal/absolute_url">
+                <img style="max-height: 100px"
+                     tal:attributes="src python:reportview.get_image_resource('logo_print.png', prefix='')"/>
+              </a>
+            </div>
           </div>
         </div>
       </tal:render>

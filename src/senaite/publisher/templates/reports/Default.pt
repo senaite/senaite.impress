@@ -46,11 +46,13 @@
   <!-- HEADER -->
   <div class="row section-header">
 
-    <div class="col-sm-6 logo lab-logo">
-      <a tal:attributes="href portal/absolute_url">
-        <img style="max-width: 200px"
-             tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
-      </a>
+    <div class="col-sm-6">
+      <div class="text-left">
+        <a tal:attributes="href view/portal/absolute_url">
+          <img style="max-height: 100px"
+               tal:attributes="src python:view.get_image_resource('logo_print.png', prefix='')"/>
+        </a>
+      </div>
     </div>
 
     <div class="col-sm-6 pt-2">
