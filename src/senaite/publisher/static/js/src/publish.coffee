@@ -7,6 +7,7 @@ import ReactDOM from "react-dom"
 import PublishAPI from './api.coffee'
 
 import Button from "./components/Button.js"
+import ErrorBox from "./components/ErrorBox.js"
 import Loader from "./components/Loader.js"
 import MergeToggle from "./components/MergeToggle.js"
 import OrientationSelection from "./components/OrientationSelection.js"
@@ -55,6 +56,7 @@ class PublishController extends React.Component
       loading: no
       loadtext: ""
       group_by_client: yes
+      error: ""
 
 
   getRequestOptions: ->
@@ -102,19 +104,23 @@ class PublishController extends React.Component
     @setState
       html: ""
       preview: ""
+      error: ""
       loading: yes
       loadtext: "Loading Reports..."
 
     # fetch the rendered reports via the API asynchronously
     promise = @api.render_reports @getRequestOptions()
 
-    promise.then ((html) ->
-      @setState
+    me = this
+    promise.then (html) ->
+      me.setState
         html: html
-      # load the preview
-      @loadPreview()
-    ).bind(this)
-
+      me.loadPreview()
+    .catch (error) ->
+      me.setState
+        html: ""
+        loading: no
+        error: error.toString()
 
   loadPreview: ->
     ###
@@ -241,6 +247,9 @@ class PublishController extends React.Component
       <div className="row">
         <div className="col-sm-12">
           <Loader loadtext={@state.loadtext} loading={@state.loading} />
+        </div>
+        <div className="col-sm-12">
+          <ErrorBox error={@state.error}  />
         </div>
       </div>
       <Preview preview={@state.preview} id="preview" className="row" />
