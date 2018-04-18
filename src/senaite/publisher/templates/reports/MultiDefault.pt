@@ -24,7 +24,7 @@
            content: '<tal:content replace="python:collection[0].getId()"/>';
          </tal:single>
          <tal:multi tal:condition="python:len(collection) > 1">
-           content: '<tal:content replace="python:collection[0].getId() + '-' + collection[-1].getId()"/>';
+           content: '<tal:content replace="python:', '.join(map(lambda m: m.getId(), collection))"/>';
          </tal:multi>
        }
        @bottom-right {

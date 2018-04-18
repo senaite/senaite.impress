@@ -262,8 +262,6 @@ class ReportView(object):
 
     def get_formatted_specs(self, analysis):
         specs = analysis.getResultsRange()
-        specs["min"] = 1
-        specs["max"] = 10
         fs = ''
         if specs.get('min', None) and specs.get('max', None):
             fs = '%s - %s' % (specs['min'], specs['max'])
