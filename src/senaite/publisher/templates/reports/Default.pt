@@ -325,17 +325,16 @@
                   </td>
                   <td class="specs">
                     <span tal:condition="analysis/Uncertainty"
-		          tal:content="structure python:view.get_formatted_uncertainty(analysis)"></span>
+                          tal:content="structure python:view.get_formatted_uncertainty(analysis)"></span>
                     <span tal:content="python:'(RT)' if view.is_retested(analysis) else ''"></span>
                     <span tal:content="python:view.get_formatted_specs(analysis)">50 - 60</span>
                   </td>
                   <td class="text-center small align-middle">
                     <span tal:condition="python:view.is_out_of_range(analysis)">
-			<span class="outofrange text-danger"
-			      style="font-family:sans;"
-			      tal:content="outofrange_symbol">
-			</span>
-		      </span>
+                      <span class="outofrange text-danger"
+                            style="font-family:sans;"
+                            tal:content="outofrange_symbol">
+                      </span>
                     </span>
                   </td>
                 </tr>
@@ -447,7 +446,7 @@
   <div class="row section-signatures">
     <div class="col-sm-12">
       <h1 i18n:translate="">Responsibles</h1>
-      
+
       <!-- Laboratory Supervisor -->
       <address class="col-sm-4">
         <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
@@ -466,7 +465,7 @@
           </div>
         </div>
       </address>
-            
+
       <tal:manager repeat="manager python:view.managers">
         <address class="col-sm-4">
           <div>
