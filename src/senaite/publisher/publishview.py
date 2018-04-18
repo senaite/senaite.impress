@@ -77,6 +77,12 @@ class PublishView(BrowserView):
             return self.download()
         return self.template()
 
+    @property
+    def portal(self):
+        """Return the portal object
+        """
+        return api.get_portal()
+
     def download(self):
         """Generate PDF and send it fot download
         """

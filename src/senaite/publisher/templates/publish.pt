@@ -8,6 +8,11 @@
     <title i18n:translate="">SENAITE Publisher</title>
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
+      <!-- fontawesome.css -->
+      <link type="text/css"
+            href="bootstrap.css"
+            rel="stylesheet"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.publisher.static/css/fontawesome-all.min.css"/>
       <!-- bootstrap.css -->
       <link type="text/css"
             href="bootstrap.css"
@@ -33,6 +38,18 @@
   <body>
     <div class="container">
       <div class="card row my-4 p-4">
+
+        <div class="text-right">
+          <!-- Link to publisher control panel -->
+          <a href="#"
+             class="btn btn-outline-dark btn-sm"
+             tal:attributes="href string:${view/portal/absolute_url}/publisher-controlpanel"
+             target="_blank"
+             title="Publisher Controlpanel" i18n:attributes="title">
+            <i class="fas fa-cogs"></i>
+          </a>
+        </div>
+
         <!-- Report Info -->
         <table class="table table-condensed my-4 noprint">
           <thead>
