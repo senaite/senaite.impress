@@ -8,6 +8,7 @@ from string import Template
 
 from senaite import api
 from senaite.publisher import logger
+from senaite.publisher.reportview import ReportView
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IReportTool
 from senaite.publisher.interfaces import IReportView
@@ -28,7 +29,7 @@ WRAPPER_TEMPLATE = Template("""<!-- Multi Report Template -->
 """)
 
 
-class MultiReportView(object):
+class MultiReportView(ReportView):
     implements(IMultiReportView)
 
     def __init__(self, collection):
@@ -46,6 +47,9 @@ class MultiReportView(object):
         context = {}  # additional context before rendering
         template = Template(template).safe_substitute(context)
         return WRAPPER_TEMPLATE.safe_substitute(context, template=template)
+
+    def get_template_context(self, collection):
+        return {}
 
     def get_reportview_for(self, model):
         """Returns the report view for the given model

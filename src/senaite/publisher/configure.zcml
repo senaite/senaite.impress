@@ -41,7 +41,7 @@
   <adapter
       for="senaite.publisher.interfaces.IReportModel"
       name="AnalysisRequest"
-      factory="senaite.publisher.reportview.ReportView"
+      factory="senaite.publisher.reportview.ARReportView"
       provides="senaite.publisher.interfaces.IReportView"
       permission="zope2.View"/>
 

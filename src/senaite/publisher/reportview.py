@@ -52,24 +52,24 @@ class ReportView(object):
         template = Template(template).safe_substitute(context)
         return TEMPLATE.safe_substitute(context, template=template)
 
-    def get_template_context(self, report):
+    def get_template_context(self, model):
         return {
-            "id": report.getId(),
-            "uid": report.UID(),
+            "id": model.getId(),
+            "uid": model.UID(),
             # XXX temporary piggypack solution to handle DateTime objects right
-            "user": json.dumps(report.stringify(self.current_user)),
+            "user": json.dumps(model.stringify(self.current_user)),
             "api": {
-                "report": self.get_api_url(report),
+                "report": self.get_api_url(model),
                 "setup": self.get_api_url(self.setup),
                 "laboratory": self.get_api_url(self.laboratory),
             }
         }
 
-    def get_api_url(self, reportmodel):
+    def get_api_url(self, model):
         """Returns the API URL for the passed in object
         """
         info = {
-            "uid": reportmodel.UID(),
+            "uid": model.UID(),
             "endpoint": "ajax_printview",
             "action": "get",
             "base_url": self.portal.absolute_url(),
@@ -103,6 +103,11 @@ class ReportView(object):
     @property
     def wf_tool(self):
         return api.get_tool("portal_workflow")
+
+
+class ARReportView(ReportView):
+    """AR specific Report View
+    """
 
     @property
     def scientific_notation(self):

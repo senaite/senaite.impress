@@ -3,8 +3,41 @@
   define="collection python:view.collection;
           tool python:view.get_report_tool('AnalysisRequest')">
 
+  <tal:css define="laboratory view/laboratory;">
+    <style type="text/css">
+     html, body { font-size: 1em; }
+     h1 { font-size: 160%; }
+     h2 { font-size: 120%; }
+     .colon-after:after { content: ":"; }
+     table.noborder td { border: none; }
+     table.nopadding td { padding: 0; }
+     table td.label { padding-right: 0.3rem; }
+     table td.label { white-space: nowrap; }
+     @page {
+       @bottom-left {
+         font-size: 9pt;
+         content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+       }
+       @bottom-center {
+         font-size: 9pt;
+         <tal:single tal:condition="python:len(collection) == 1">
+           content: '<tal:content replace="python:collection[0].getId()"/>';
+         </tal:single>
+         <tal:multi tal:condition="python:len(collection) > 1">
+           content: '<tal:content replace="python:', '.join(map(lambda m: m.getId(), collection))"/>';
+         </tal:multi>
+       }
+       @bottom-right {
+         font-size: 9pt;
+         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+       }
+     }
+    </style>
+  </tal:css>
+
   <!-- Iterate over all models of the collection -->
   <tal:models repeat="model collection">
+    <!-- get the reportview of each model -->
     <tal:model define="reportview python:view.get_reportview_for(model);">
 
       <!-- HEADER -->
