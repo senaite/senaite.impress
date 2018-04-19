@@ -37,7 +37,7 @@
       class=".controlpanel.PublisherControlPanelView"
       permission="cmf.ManagePortal"/>
 
-  <!-- Report View for portal_type=AnalysisRequests -->
+  <!-- Report View for Analysis Requests -->
   <adapter
       for="senaite.publisher.interfaces.IReportModel"
       name="AnalysisRequest"
@@ -45,15 +45,15 @@
       provides="senaite.publisher.interfaces.IReportView"
       permission="zope2.View"/>
 
-  <!-- Multi Report View for portal_type=AnalysisRequest -->
+  <!-- Multi Report View for Analysis Requests -->
   <adapter
-      for="senaite.publisher.interfaces.IReportModelCollection"
+      for="*"
       name="AnalysisRequest"
       factory="senaite.publisher.multireportview.MultiReportView"
       provides="senaite.publisher.interfaces.IMultiReportView"
       permission="zope2.View"/>
 
-  <!-- Report Model -->
+  <!-- Generic Report Model -->
   <adapter
       for="*"
       factory="senaite.publisher.reportmodel.ReportModel"/>

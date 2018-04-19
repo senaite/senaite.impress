@@ -51,16 +51,21 @@ class MultiReportView(ReportView):
     def get_template_context(self, collection):
         return {}
 
-    def get_reportview_for(self, model):
-        """Returns the report view for the given model
 
-        :returns: IReportView
-        """
-        return getAdapter(model, IReportView, name="AnalysisRequest")
+class ARMultiReportView(MultiReportView):
+    """AR specific Multi Report View
+    """
 
     def get_report_tool(self, name):
         """Returns the report tool
 
         :returns: IReportTool
         """
-        return getUtility(IReportTool, name=name)
+        return getUtility(IReportTool, name="AnalysisRequest")
+
+    def get_reportview_for(self, model):
+        """Returns the report view for the given model
+
+        :returns: IReportView
+        """
+        return getAdapter(model, IReportView, name="AnalysisRequest")
