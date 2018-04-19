@@ -35,174 +35,296 @@
     </style>
   </tal:css>
 
-  <!-- Iterate over all models of the collection -->
-  <tal:models repeat="model collection">
-    <!-- get the reportview of each model -->
-    <tal:model define="reportview python:view.get_reportview_for(model);">
+  <!-- HEADER -->
+  <tal:render condition="python:True">
+    <div class="row section-header">
+      <div class="col-sm-12">
+        <div class="text-right">
+          <a tal:attributes="href view/portal_url">
+            <img style="max-height: 100px"
+                 tal:attributes="src python:view.get_resource_url('logo_print.png')"/>
+          </a>
+        </div>
+      </div>
+    </div>
+  </tal:render>
 
-      <!-- HEADER -->
-      <tal:render condition="repeat/model/start">
-        <div class="row section-header">
-          <div class="col-sm-12">
-            <div class="text-right">
-              <a tal:attributes="href reportview/portal_url">
-                <img style="max-height: 100px"
-                     tal:attributes="src python:reportview.get_image_resource('logo_print.png', prefix='')"/>
-              </a>
-            </div>
+  <!-- INFO -->
+  <tal:render condition="python:True">
+    <div class="row section-info">
+      <div class="col-sm-12 py-4 small">
+        <!-- Client Info -->
+        <table class="col">
+          <colgroup>
+            <col style="width:50%"/>
+            <col style="width:50%"/>
+          </colgroup>
+          <tr>
+            <td class="align-top">
+              <!-- Left Table -->
+              <table class="table table-sm mr-1">
+                <!-- Client Name(s) -->
+                <tr>
+                  <td class="label" i18n:translate="">Client</td>
+                  <td class="field">
+                    <tal:by_client repeat="client python:tool.group_items_by('Client', collection)">
+                      <div tal:content="client/Name"/>
+                    </tal:by_client>
+                  </td>
+                </tr>
+                <!-- Contact Name(s) -->
+                <tr>
+                  <td class="label" i18n:translate="">Contact</td>
+                  <td class="field">
+                    <tal:by_contact repeat="contact python:tool.group_items_by('Contact', collection)">
+                      <div tal:content="contact/Fullname"/>
+                    </tal:by_contact>
+                  </td>
+                </tr>
+                <!-- Client Reference(s) -->
+                <tr>
+                  <td class="label" i18n:translate="">Client Reference</td>
+                  <td class="field">
+                    <tal:by_client_ref repeat="client_ref python:tool.group_items_by('ClientReference', collection)">
+                      <div tal:content="client_ref"/>
+                    </tal:by_client_ref>
+                  </td>
+                </tr>
+                <!-- Client Order(s) -->
+                <tr>
+                  <td class="label" i18n:translate="">Client Order</td>
+                  <td class="field">
+                    <tal:by_client_order_num repeat="client_order_num python:tool.group_items_by('ClientOrderNumber', collection)">
+                      <div tal:content="client_order_num"/>
+                    </tal:by_client_order_num>
+                  </td>
+                </tr>
+                <!-- Client Sample ID(s) -->
+                <tr>
+                  <td class="label" i18n:translate="">Client Sample ID</td>
+                  <td class="field">
+                    <tal:by_client_sid repeat="client_sid python:tool.group_items_by('ClientSampleID', collection)">
+                      <div tal:content="client_sid"/>
+                    </tal:by_client_sid>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td class="align-top">
+              <!-- Right Table -->
+              <table class="table table-sm ml-1"
+                     tal:define="samples python:map(lambda m: m.Sample, collection)">
+                <!-- Sample Type -->
+                <tr>
+                  <td class="label" i18n:translate="">Sample Type</td>
+                  <td class="field">
+                    <tal:sampletype define="sampletypes python:map(lambda m: m.SampleTypeTitle, samples)"
+                                    repeat="sampletype python:set(sampletypes)">
+                      <div tal:content="sampletype"/>
+                    </tal:sampletype>
+                  </td>
+                </tr>
+                <!-- Sample Point -->
+                <tr>
+                  <td class="label" i18n:translate="">Sample Point</td>
+                  <td class="field">
+                    <tal:samplepoint define="samplepoints python:map(lambda m: m.SamplePointTitle, samples)"
+                                     repeat="samplepoint python:set(samplepoints)">
+                      <div tal:content="samplepoint"/>
+                    </tal:samplepoint>
+                  </td>
+                </tr>
+                <!-- Sample Remarks -->
+                <tr>
+                  <td class="label" i18n:translate="">Sample Remarks</td>
+                  <td class="field">
+                    <tal:model repeat="model collection">
+                      <div tal:content="model/SamplingDeviationTitle|nothing"/>
+                    </tal:model>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </tal:render>
+
+  <!-- ALERTS -->
+  <tal:render condition="python:True">
+    <tal:model repeat="model collection">
+      <div class="alert alert-danger" tal:condition="model/is_invalid">
+        <h4 class="alert-heading"><span tal:replace="model/getId"/></h4>
+        <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
+        <tal:invalidreport tal:define="child model/ChildAnalysisRequest"
+                           tal:condition="child">
+          <span i18n:translate="">This Analysis request has been replaced by</span>
+          <a tal:attributes="href child/absolute_url"
+             tal:content="child/getId"></a>
+        </tal:invalidreport>
+      </div>
+
+      <div class="alert alert-info" tal:condition="model/is_provisional">
+        <h4 class="alert-heading"><span tal:replace="model/getId"/></h4>
+        <div i18n:translate="">Provisional report</div>
+      </div>
+    </tal:model>
+  </tal:render>
+
+  <!-- RESULTS -->
+  <tal:render condition="python:True"
+              define="analyses_by_poc python:tool.get_analyses_by_poc(collection);
+                      categories_by_poc python:tool.get_categories_by_poc(collection)">
+    <div class="row section-results">
+      <div class="col col-sm-12">
+        <h1 i18n:translate="">Results</h1>
+
+        <!-- Point of Captures -->
+        <tal:poc tal:repeat="poc analyses_by_poc">
+          <h4 tal:content="poc"></h4>
+
+          <!-- Results table per PoC -->
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="font-weight-normal small text-center"
+                    tal:repeat="model collection">
+                  <div class="text-primary" tal:content="model/getId"/>
+                  <div class="text-secondary" tal:content="model/Sample/SampleTypeTitle|nothing"/>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Categories in PoC -->
+              <tal:categories_in_poc tal:repeat="category categories_by_poc">
+                <tr>
+                  <td class="font-weight-bold table-warning"
+                      tal:attributes="colspan python:len(collection) + 1"
+                      tal:content="category/Title"/>
+                </tr>
+                <tr tal:define="analyses python:tool.get_analyses_by(collection, poc=poc, category=category);
+                                analyses_by_title python:tool.group_items_by('Title', analyses)"
+                    tal:repeat="analysis_title python:analyses_by_title">
+                  <td tal:content="analysis_title"/>
+                  <td tal:repeat="model collection">
+                    <tal:analysis tal:repeat="analysis python:tool.get_analyses_by(model, title=analysis_title);">
+                      <span class="font-weight-light small" tal:content="python:model.get_formatted_result(analysis)"/>
+                      <span class="font-italic small text-secondary" tal:content="python:model.get_formatted_unit(analysis)"/>
+                    </tal:analysis>
+                  </td>
+                </tr>
+              </tal:categories_in_poc>
+            </tbody>
+          </table>
+        </tal:poc>
+      </div>
+    </div>
+  </tal:render>
+
+  <!--  RESULTS INTERPRETATIONS -->
+  <tal:render condition="python:True">
+    <tal:model repeat="model collection">
+      <div class="row section-resultsinterpretation"
+           tal:define="ris python:model.get_resultsinterpretation()"
+           tal:condition="ris">
+        <h2 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h2>
+        <div class="col-sm-12" tal:condition="ris">
+          <tal:ri repeat="ri ris">
+            <h4 tal:content="ri/title|nothing">Department</h4>
+            <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+          </tal:ri>
+        </div>
+      </div>
+    </tal:model>
+  </tal:render>
+
+  <!-- QC RESULTS -->
+  <tal:render condition="python:True">
+    <tal:model repeat="model collection">
+      <tal:qc define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
+        <div class="row section-results" tal:condition="qcanalyses">
+          <h2 i18n:translate>QC Results for <span tal:replace="model/getId"/></h2>
+          <div class="col col-sm-12">
+            <h1 i18n:translate="">QC Results</h1>
           </div>
         </div>
-      </tal:render>
+      </tal:qc>
+    </tal:model>
+  </tal:render>
 
-      <!-- INFO -->
-      <tal:render condition="repeat/model/start"
-                  define="client model/Client;
-                          sample model/Sample;">
+  <!--  REMARKS -->
+  <tal:render condition="python:True">
+    <tal:model repeat="model collection">
+      <div class="row section-remarks" tal:condition="model/Remarks">
+        <div class="col-sm-12">
+          <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
+          <div class="text-info" tal:content="structure model/Remarks"></div>
+        </div>
+      </div>
+    </tal:model>
+  </tal:render>
 
-        <div class="row section-info">
-          <div class="col-sm-12 py-4 small">
-            <!-- Client Info -->
-            <table class="col">
+  <!-- ATTACHMENTS -->
+  <tal:render condition="python:True"
+              define="attachments_per_row python:2">
+    <tal:model repeat="model collection">
+      <tal:attachment tal:define="ar_attachments python:model.get_sorted_ar_attachments('r');
+                                  an_attachments python:model.get_sorted_an_attachments('r')"
+                      tal:condition="python: ar_attachments or an_attachments">
+
+        <h4 i18n:translate="">
+          <h2 i18n:translate>Attachments for <span tal:replace="model/getId"/></h2>
+        </h4>
+
+        <!-- AR ATTACHMENTS -->
+        <div class="row section-an-attachments" tal:condition="ar_attachments">
+          <div class="col-sm-12">
+            <table class="table">
               <colgroup>
-                <col style="width:50%"/>
-                <col style="width:50%"/>
+                <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
               </colgroup>
-              <tr>
-                <td class="align-top">
-                  <!-- Left Table -->
-                  <table class="table table-sm mr-1">
-                    <!-- Client Name -->
-                    <tr>
-                      <td class="label" i18n:translate="">Client</td>
-                      <td class="field" tal:content="model/Client/Name"></td>
-                    </tr>
-                    <!-- Client Reference -->
-                    <tr>
-                      <td class="label" i18n:translate="">Client Reference</td>
-                      <td class="field" tal:content="model/ClientReference"></td>
-                    </tr>
-                    <!-- Client Order -->
-                    <tr>
-                      <td class="label" i18n:translate="">Client Order</td>
-                      <td class="field" tal:content="model/ClientOrderNumber|nothing"></td>
-                    </tr>
-                    <!-- Client Sample ID -->
-                    <tr>
-                      <td class="label" i18n:translate="">Client Sample ID</td>
-                      <td class="field" tal:content="model/ClientSampleID"></td>
-                    </tr>
-                  </table>
-                </td>
-                <td class="align-top">
-                  <!-- Right Table -->
-                  <table class="table table-sm ml-1">
-                    <!-- Sample Type -->
-                    <tr>
-                      <td class="label" i18n:translate="">Sample Type</td>
-                      <td class="field" tal:content="sample/SampleType/title|nothing"></td>
-                    </tr>
-                    <!-- Sample Point -->
-                    <tr>
-                      <td class="label" i18n:translate="">Sample Point</td>
-                      <td class="field" tal:content="sample/SamplePoint/Title|nothing"></td>
-                    </tr>
-                    <!-- Sample Remarks -->
-                    <tr>
-                      <td class="label" i18n:translate="">Sample Remarks</td>
-                      <td tal:content="model/getSamplingDeviationTitle"></td>
-                    </tr>
-                    <!-- Date Sampled -->
-                    <tr>
-                      <td class="label" i18n:translate="">Date Sampled</td>
-                      <td class="field" tal:content="python:reportview.to_localized_time(model.DateSampled)"></td>
-                    </tr>
-                    <!-- Date Received -->
-                    <tr>
-                      <td class="label" i18n:translate="">Date Received</td>
-                      <td class="field"
-                          tal:define="date_received python:model.DateReceived"
-                          tal:content="python:reportview.to_localized_time(date_received)"></td>
-                    </tr>
-                    <!-- Date Analyzed -->
-                    <tr>
-                      <td class="label" i18n:translate="">Date Analyzed</td>
-                      <td class="field"
-                          tal:define="date_analyzed python:model.get_transition_date('bika_ar_workflow', 'to_be_verified')"
-                          tal:content="python:reportview.to_localized_time(date_analyzed)"></td>
-                    </tr>
-                    <!-- Date Verified -->
-                    <tr>
-                      <td class="label" i18n:translate="">Date Verified</td>
-                      <td class="field"
-                          tal:define="date_verified python:model.get_transition_date('bika_ar_workflow', 'verify')"
-                          tal:content="python:reportview.to_localized_time(date_verified)"></td>
-                    </tr>
-                    <!-- Date Published -->
-                    <tr>
-                      <td class="label" i18n:translate="">Date Published</td>
-                      <td class="field"
-                          tal:define="date_published python:model.DatePublished"
-                          tal:content="python:reportview.to_localized_time(date_published)"></td>
-                    </tr>
-                  </table>
+              <tr tal:repeat="chunk python:tool.group_into_chunks(ar_attachments, attachments_per_row)">
+                <td class="align-bottom"
+                    style="border:none;padding-left:0;"
+                    tal:repeat="attachment chunk">
+                  <img class="img-fluid"
+                       tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
+                  <div class="text-secondary">
+                    <span tal:content="attachment/AttachmentKeys"/>
+                  </div>
                 </td>
               </tr>
             </table>
           </div>
         </div>
-      </tal:render>
 
-
-      <!-- RESULTS -->
-      <tal:render condition="repeat/model/start"
-                  define="analyses_by_poc python:tool.get_analyses_by_poc(collection);
-                          categories_by_poc python:tool.get_categories_by_poc(collection)">
-        <div class="row section-results">
-          <div class="col col-sm-12">
-            <h1 i18n:translate="">Results</h1>
-
-            <!-- Point of Captures -->
-            <tal:poc tal:repeat="poc analyses_by_poc">
-              <h4 tal:content="python:reportview.points_of_capture.get(poc)"></h4>
-
-              <!-- Results table per PoC -->
-              <table class="table table-sm">
-                <thead>
-                  <tr>
-                    <th i18n:translate="">Category</th>
-                    <th tal:repeat="model collection">
-                      <span tal:content="model/getId"/>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                <!-- Categories in PoC -->
-                <tal:categories_in_poc tal:repeat="category categories_by_poc">
-                  <tr>
-                    <td class="font-weight-bold table-warning"
-                        tal:attributes="colspan python:len(collection) + 1"
-                        tal:content="category/Title"/>
-                  </tr>
-                  <tr tal:define="analyses python:tool.get_analyses_by(collection, poc=poc, category=category);
-                                  analyses_by_title python:tool.group_items_by('Title', analyses)"
-                      tal:repeat="analysis_title python:analyses_by_title">
-                    <td tal:content="analysis_title"/>
-                    <td tal:repeat="model collection">
-                      <tal:analysis tal:repeat="analysis python:tool.get_analyses_by(model, title=analysis_title);">
-                        <span tal:content="analysis/Result"/>
-                      </tal:analysis>
-                    </td>
-                  </tr>
-                </tal:categories_in_poc>
-                </tbody>
-              </table>
-
-            </tal:poc>
-
+        <!-- AN ATTACHMENTS -->
+        <div class="row section-an-attachments" tal:condition="an_attachments">
+          <div class="col-sm-12">
+            <table class="table">
+              <colgroup>
+                <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+              </colgroup>
+              <tr tal:repeat="chunk python:model.group_into_chunks(an_attachments, attachments_per_row)">
+                <td class="align-bottom"
+                    style="border:none;padding-left:0;"
+                    tal:repeat="attachment chunk">
+                  <img class="img-fluid"
+                       tal:attributes="src python:attachment[1].absolute_url() + '/AttachmentFile'"/>
+                  <div class="text-secondary">
+                    <span tal:content="python:attachment[1].title"/>:
+                    <span tal:content="python:attachment[1].AttachmentKeys"/>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
-      </tal:render>
-
+      </tal:attachment>
     </tal:model>
-  </tal:models>
+  </tal:render>
+
+
 </tal:report>

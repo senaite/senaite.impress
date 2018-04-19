@@ -76,6 +76,16 @@ class ReportView(object):
         }
         return "{base_url}/{endpoint}/{action}/{uid}".format(**info)
 
+    def get_resource_url(self, name, prefix=""):
+        """Return the full resouce URL
+        """
+        portal = api.get_portal()
+        portal_url = portal.absolute_url()
+
+        if not prefix:
+            return "{}/{}".format(portal_url, name)
+        return "{}/++resource++{}/{}".format(portal_url, prefix, name)
+
     @property
     @returns_report_model
     def portal(self):

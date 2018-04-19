@@ -313,6 +313,29 @@ class ARReportModel(ReportModel):
     """AR base Report Model
     """
 
+    def is_invalid(self):
+        return self.isInvalid()
+
+    def is_provisional(self):
+        if self.is_invalid():
+            return True
+        valid_states = ['verified', 'published']
+        states = self.getObjectWorkflowStates().values()
+        if not any(map(lambda s: s in valid_states, states)):
+            return True
+        return False
+
+    def is_out_of_range(self, analysis):
+        """Check if the analysis is out of range
+        """
+        from bika.lims.api.analysis import is_out_of_range
+        return is_out_of_range(analysis.instance)[0]
+
+    def is_retested(self, analysis):
+        """Check if the analysis is retested
+        """
+        return analysis.getRetested()
+
     def get_workflow_by_id(self, wfid):
         """Returns a workflow by ID
 
@@ -374,6 +397,15 @@ class ARReportModel(ReportModel):
                 return rh.get("time")
         return None
 
+    @property
+    def scientific_notation(self):
+        setup = api.get_setup()
+        return int(setup.getScientificNotationReport())
+
+    @property
+    def decimal_mark(self):
+        return self.aq_parent.getDecimalMark()
+
     def get_formatted_unit(self, analysis):
         """Return formatted Unit
         """
@@ -405,3 +437,68 @@ class ARReportModel(ReportModel):
         elif specs.get('max', None):
             fs = '< %s' % specs['max']
         return formatDecimalMark(fs, self.decimal_mark)
+
+    def get_resultsinterpretation(self):
+        ri_by_depts = self.ResultsInterpretationDepts
+
+        out = []
+        for ri in ri_by_depts:
+            dept = ri.get("uid", "")
+            title = getattr(dept, "title", "")
+            richtext = ri.get("richtext", "")
+            out.append({"title": title, "richtext": richtext})
+
+        return out
+
+    def get_sorted_ar_attachments(self, option="r"):
+        """Return the sorted AR Attchments with the given Report Option set
+        """
+        # AR attachments in the correct order
+        attachments = self.sort_attachments(self.Attachment)
+        # Return filtered list by report option
+        return filter(lambda a: a.getReportOption() == option, attachments)
+
+    def get_sorted_an_attachments(self, option="r"):
+        """Return the sorted AN Attchments with the given Report Option set
+        """
+        attachments = []
+        for analysis in self.Analyses:
+            for attachment in self.sort_attachments(analysis.Attachment):
+                if attachment.getReportOption() != option:
+                    continue
+                # Append a tuples of analysis, attachment
+                attachments.append((analysis, attachment))
+        return attachments
+
+    def sort_attachments(self, attachments=[]):
+        """Attachment sorter
+        """
+        inf = float("inf")
+        view = self.restrictedTraverse("attachments_view")
+        order = view.get_attachments_order()
+
+        def att_cmp(att1, att2):
+            _n1 = att1.UID()
+            _n2 = att2.UID()
+            _i1 = _n1 in order and order.index(_n1) + 1 or inf
+            _i2 = _n2 in order and order.index(_n2) + 1 or inf
+            return cmp(_i1, _i2)
+
+        return sorted(attachments, cmp=att_cmp)
+
+    @property
+    @returns_report_model
+    def departments(self):
+        return self.getDepartments()
+
+    @property
+    def managers(self):
+        out = []
+        for dept in self.departments:
+            manager = dept.Manager
+            if not manager:
+                continue
+            if manager in out:
+                continue
+            out.append(manager)
+        return out
