@@ -60,6 +60,7 @@
               <th i18n:translate="">Contact</th>
               <th i18n:translate="">CC Contacts</th>
               <th i18n:translate="">CC Emails</th>
+              <th i18n:translate="">State</th>
               <th i18n:translate="">PDF</th>
             </tr>
           </thead>
@@ -117,11 +118,18 @@
               <!-- CC Emails -->
               <td>
                 <tal:ccemails repeat="ccemail python:model.CCEmails.split(',')">
-                    <a href="#"
-                       tal:attributes="href string:mailto:${ccemail}">
-                      <div tal:content="ccemail" />
-                    </a>
+                  <a href="#"
+                     tal:attributes="href string:mailto:${ccemail}">
+                    <div tal:content="ccemail" />
+                  </a>
                 </tal:ccemails>
+              </td>
+              <!-- State -->
+              <td tal:define="state model/review_state|nothing">
+                <span tal:condition="state"
+                      i18n:translate=""
+                      i18n:domain="bika"
+                      tal:content="python:state.capitalize()"/>
               </td>
               <!-- PDF -->
               <td>
