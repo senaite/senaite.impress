@@ -303,3 +303,69 @@ class ReportModel(object):
         """Returns a JSON representation of the current object
         """
         return json.dumps(self.to_dict())
+
+
+class ARReportModel(ReportModel):
+    """AR base Report Model
+    """
+
+    def get_workflow_by_id(self, wfid):
+        """Returns a workflow by ID
+
+        :returns: DCWorkflowDefinition instance
+        """
+        wf_tool = api.get_tool("portal_workflow")
+        return wf_tool.getWorkflowById(wfid)
+
+    def get_transitions(self):
+        """Return possible transitions
+        """
+        wf_tool = api.get_tool("portal_workflow")
+        return wf_tool.getTransitionsFor(self.instance)
+
+    def get_workflow_history(self, wfid, reverse=True):
+        """Return the (reversed) review history
+        """
+        wf_tool = api.get_tool("portal_workflow")
+        history = wf_tool.getHistoryOf(wfid, self.instance)
+        if reverse:
+            return history[::-1]
+        return history
+
+    def get_workflow_info_for(self, wfid):
+        """Return a workflow info object
+        """
+        workflow = self.get_workflow_by_id(wfid)
+        # the state variable, e.g. review_state
+        state_var = workflow.state_var
+        # tuple of possible transitions
+        transitions = self.get_transitions()
+        # review history tuple, e.g. ({'action': 'publish', ...}, )
+        history = self.get_workflow_history(wfid)
+        # the most current history info
+        current_state = history[0]
+        # extracted status id
+        status = current_state[state_var]
+        # `StateDefinition` instance
+        state_definition = workflow.states[status]
+        # status title, e.g. "Published"
+        status_title = state_definition.title
+        # return selected workflow information for the wrapped instance
+        return {
+            "id": wfid,
+            "status": status,
+            "status_title": status_title,
+            "state_var": state_var,
+            "transitions": transitions,
+            "review_history": history,
+        }
+
+    def get_transition_date(self, wfid, state):
+        """Return the date when the transition was made
+        """
+        wf = self.get_workflow_info_for(wfid)
+
+        for rh in wf.get("review_history"):
+            if rh.get("review_state") == state:
+                return rh.get("time")
+        return None
