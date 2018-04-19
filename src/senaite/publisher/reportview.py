@@ -111,8 +111,6 @@ class ReportView(object):
         properties = {
             "username": user.getId()
         }
-
-        import pdb; pdb.set_trace()
         properties.update(api.get_user_properties(user))
         return properties
 
