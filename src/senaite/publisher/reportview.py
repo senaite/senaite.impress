@@ -82,6 +82,10 @@ class ReportView(object):
         return api.get_portal()
 
     @property
+    def portal_url(self):
+        return api.get_portal().absolute_url()
+
+    @property
     @returns_report_model
     def setup(self):
         return self.portal.bika_setup
