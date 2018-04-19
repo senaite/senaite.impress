@@ -58,6 +58,18 @@
       for="*"
       factory="senaite.publisher.reportmodel.ReportModel"/>
 
+  <!-- AR Report Model -->
+  <adapter
+      for="*"
+      name="AnalysisRequest"
+      factory="senaite.publisher.reportmodel.ARReportModel"/>
+
+  <!-- AR Report Tool -->
+  <utility
+      name="AnalysisRequest"
+      provides="senaite.publisher.interfaces.IReportTool"
+      factory="senaite.publisher.reporttool.ARReportTool"/>
+
   <!-- HTML/PDB Publisher Adapter -->
   <adapter
       for="*"

@@ -32,6 +32,11 @@ class IReportModelCollection(Interface):
     """
 
 
+class IReportTool(Interface):
+    """Utility to sort and slice report models/collections
+    """
+
+
 class IPublisher(Interface):
     """HTML -> PDF Publishing Engine
     """
