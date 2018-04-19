@@ -8,15 +8,17 @@ from string import Template
 
 from senaite import api
 from senaite.publisher import logger
-from senaite.publisher.decorators import returns_report_model
 from senaite.publisher.interfaces import IMultiReportView
+from senaite.publisher.interfaces import IReportTool
 from senaite.publisher.interfaces import IReportView
 from zope.component import getAdapter
+from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.interface import implements
 
 
-TEMPLATE = Template("""<!-- Multi Report Template -->
+# Wrapper template to pass in additional data, e.g. for HTML based templates
+WRAPPER_TEMPLATE = Template("""<!-- Multi Report Template -->
 <div class="report">
   <script type="text/javascript">
     console.log("*** BEFORE MULTI TEMPLATE RENDER ***");
@@ -36,36 +38,25 @@ class MultiReportView(object):
         self.request = getRequest()
 
         # needed for template rendering
-        self.context = self.portal
+        self.context = api.get_portal()
 
     def render(self, template):
-        context = self.get_template_context(self.collection)
+        """Wrap the template and render
+        """
+        context = {}  # additional context before rendering
         template = Template(template).safe_substitute(context)
-        return TEMPLATE.safe_substitute(context, template=template)
-
-    def get_template_context(self, collection):
-        return {}
+        return WRAPPER_TEMPLATE.safe_substitute(context, template=template)
 
     def get_reportview_for(self, model):
-        view = getAdapter(model, IReportView, name="AnalysisRequest")
-        return view
+        """Returns the report view for the given model
 
-    @property
-    @returns_report_model
-    def portal(self):
-        return api.get_portal()
+        :returns: IReportView
+        """
+        return getAdapter(model, IReportView, name="AnalysisRequest")
 
-    @property
-    @returns_report_model
-    def setup(self):
-        return self.portal.bika_setup
+    def get_report_tool(self, name):
+        """Returns the report tool
 
-    @property
-    @returns_report_model
-    def laboratory(self):
-        return self.setup.laboratory
-
-    @property
-    def current_user(self):
-        user = api.get_current_user()
-        return api.get_user_properties(user)
+        :returns: IReportTool
+        """
+        return getUtility(IReportTool, name=name)
