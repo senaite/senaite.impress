@@ -103,7 +103,10 @@ class ReportView(object):
     def current_user(self):
         user = api.get_current_user()
         properties = {
-            "username": user.getId()
+            "userid": user.getId(),
+            "username": user.getUserName(),
+            "roles": user.getRoles(),
+            "email": user.getProperty("email"),
         }
         properties.update(api.get_user_properties(user))
         return properties
@@ -119,8 +122,8 @@ class ReportView(object):
         options = {
             "long_format": True,
             "time_only": False,
-            "context": self.model.instance,
-            "request": self.request,
+            "context": api.get_portal(),
+            "request": api.get_request(),
             "domain": "bika",
         }
         options.update(kw)

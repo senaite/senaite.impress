@@ -241,7 +241,7 @@
       <div class="row section-resultsinterpretation"
            tal:define="ris python:model.get_resultsinterpretation()"
            tal:condition="ris">
-        <h2 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h2>
+        <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
         <div class="col-sm-12" tal:condition="ris">
           <tal:ri repeat="ri ris">
             <h4 tal:content="ri/title|nothing">Department</h4>

@@ -266,20 +266,20 @@
   </tal:render>
 
   <!-- RESULTS -->
-  <tal:render condition="python:True"
-              define="analyses_by_poc python:tool.get_analyses_by_poc(model);
-                      categories_by_poc python:tool.get_categories_by_poc(model)">
-
+  <tal:render condition="python:True">
     <div class="row section-results">
       <div class="col col-sm-12">
         <h1 i18n:translate="">Results</h1>
 
         <!-- Point of Capture -->
-        <tal:poc tal:repeat="poc analyses_by_poc">
+        <tal:poc define="analyses_by_poc python:tool.get_analyses_by_poc(model);"
+                 repeat="poc analyses_by_poc">
+
           <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
 
           <!-- Analysis Category -->
-          <tal:categories_in_poc tal:repeat="category python:tool.sort_items(categories_by_poc.get(poc))">
+          <tal:categories_in_poc define="categories_by_poc python:tool.get_categories_by_poc(model)"
+                                 repeat="category python:tool.sort_items(categories_by_poc.get(poc))">
 
             <!-- Analysis in POC and Category -->
             <table class="table table-sm">
