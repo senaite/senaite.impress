@@ -1,7 +1,7 @@
 <tal:report
   i18n:domain="senaite.publisher"
   define="collection python:view.collection;
-          tool python:view.get_report_tool('AnalysisRequest');
+          tool python:view.get_report_tool();
           accredited_symbol string:★;
           outofrange_symbol string:⚠;">
 
@@ -200,7 +200,7 @@
             </thead>
             <tbody>
               <!-- Categories in PoC -->
-              <tal:categories_in_poc tal:repeat="category python:tool.sort_items(categories_by_poc)">
+              <tal:categories_in_poc tal:repeat="category python:tool.sort_items(categories_by_poc.get(poc))">
                 <tr>
                   <td class="font-weight-bold table-warning"
                       tal:attributes="colspan python:len(collection) + 1">
