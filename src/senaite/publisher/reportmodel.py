@@ -6,6 +6,10 @@
 
 import json
 
+from bika.lims.utils import format_supsub
+from bika.lims.utils import formatDecimalMark
+from bika.lims.utils import to_utf8
+from bika.lims.utils.analysis import format_uncertainty
 from DateTime import DateTime
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_hasattr
@@ -369,3 +373,35 @@ class ARReportModel(ReportModel):
             if rh.get("review_state") == state:
                 return rh.get("time")
         return None
+
+    def get_formatted_unit(self, analysis):
+        """Return formatted Unit
+        """
+        return format_supsub(to_utf8(analysis.Unit))
+
+    def get_formatted_result(self, analysis):
+        """Return formatted result
+        """
+        return analysis.getFormattedResult(
+            specs=analysis.getResultsRange(),
+            sciformat=self.scientific_notation,
+            decimalmark=self.decimal_mark)
+
+    def get_formatted_uncertainty(self, analysis):
+        uncertainty = format_uncertainty(
+            analysis.instance,
+            analysis.getResult(),
+            decimalmark=self.decimal_mark,
+            sciformat=self.scientific_notation)
+        return "[&plusmn; {}]".format(uncertainty)
+
+    def get_formatted_specs(self, analysis):
+        specs = analysis.getResultsRange()
+        fs = ''
+        if specs.get('min', None) and specs.get('max', None):
+            fs = '%s - %s' % (specs['min'], specs['max'])
+        elif specs.get('min', None):
+            fs = '> %s' % specs['min']
+        elif specs.get('max', None):
+            fs = '< %s' % specs['max']
+        return formatDecimalMark(fs, self.decimal_mark)
