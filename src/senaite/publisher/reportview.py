@@ -108,7 +108,13 @@ class ReportView(object):
     @property
     def current_user(self):
         user = api.get_current_user()
-        return api.get_user_properties(user)
+        properties = {
+            "username": user.getId()
+        }
+
+        import pdb; pdb.set_trace()
+        properties.update(api.get_user_properties(user))
+        return properties
 
     @property
     def wf_tool(self):
