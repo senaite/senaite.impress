@@ -20,7 +20,7 @@ from senaite.publisher.interfaces import IPublisher
 from senaite.publisher.interfaces import IPublishView
 from senaite.publisher.interfaces import IReportView
 from senaite.publisher.interfaces import ITemplateFinder
-from senaite.publisher.reportmodel import ReportModel
+from senaite.publisher.interfaces import IReportModel
 from senaite.publisher.reportmodelcollection import ReportModelCollection
 from zope.component import getAdapter
 from zope.component import getUtility
@@ -121,7 +121,9 @@ class PublishView(BrowserView):
         """
         if uids is None:
             uids = self.get_uids()
-        models = map(lambda uid: ReportModel(uid), uids)
+
+        models = map(lambda uid: getAdapter(
+            uid, IReportModel, name="AnalysisRequest"), uids)
         return ReportModelCollection(models)
 
     def render_reports(self, uids=None, **kw):
