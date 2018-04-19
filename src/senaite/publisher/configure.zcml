@@ -49,7 +49,7 @@
   <adapter
       for="*"
       name="AnalysisRequest"
-      factory="senaite.publisher.multireportview.MultiReportView"
+      factory="senaite.publisher.multireportview.ARMultiReportView"
       provides="senaite.publisher.interfaces.IMultiReportView"
       permission="zope2.View"/>
 
