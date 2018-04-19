@@ -4,14 +4,16 @@
 #
 # Copyright 2018 by it's authors.
 
+from collections import OrderedDict
 from string import Template
 
+from bika.lims import POINTS_OF_CAPTURE
 from senaite import api
 from senaite.publisher import logger
-from senaite.publisher.reportview import ReportView
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IReportTool
 from senaite.publisher.interfaces import IReportView
+from senaite.publisher.reportview import ReportView
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.globalrequest import getRequest
@@ -69,3 +71,8 @@ class ARMultiReportView(MultiReportView):
         :returns: IReportView
         """
         return getAdapter(model, IReportView, name="AnalysisRequest")
+
+    @property
+    def points_of_capture(self):
+        items = POINTS_OF_CAPTURE.items()
+        return OrderedDict(items)

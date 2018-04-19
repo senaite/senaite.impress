@@ -1,7 +1,9 @@
 <tal:report
   i18n:domain="senaite.publisher"
   define="collection python:view.collection;
-          tool python:view.get_report_tool('AnalysisRequest')">
+          tool python:view.get_report_tool('AnalysisRequest');
+          accredited_symbol string:★;
+          outofrange_symbol string:⚠;">
 
   <tal:css define="laboratory view/laboratory;">
     <style type="text/css">
@@ -24,7 +26,7 @@
            content: '<tal:content replace="python:collection[0].getId()"/>';
          </tal:single>
          <tal:multi tal:condition="python:len(collection) > 1">
-           content: '<tal:content replace="python:', '.join(map(lambda m: m.getId(), collection))"/>';
+           content: '<tal:content replace="python:' • '.join(map(lambda m: m.getId(), collection))"/>';
          </tal:multi>
        }
        @bottom-right {
@@ -182,7 +184,7 @@
 
         <!-- Point of Captures -->
         <tal:poc tal:repeat="poc analyses_by_poc">
-          <h4 tal:content="poc"></h4>
+          <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
 
           <!-- Results table per PoC -->
           <table class="table table-sm">
@@ -198,20 +200,30 @@
             </thead>
             <tbody>
               <!-- Categories in PoC -->
-              <tal:categories_in_poc tal:repeat="category categories_by_poc">
+              <tal:categories_in_poc tal:repeat="category python:tool.sort_items(categories_by_poc)">
                 <tr>
                   <td class="font-weight-bold table-warning"
-                      tal:attributes="colspan python:len(collection) + 1"
-                      tal:content="category/Title"/>
+                      tal:attributes="colspan python:len(collection) + 1">
+                    <span tal:content="category/Title"/>
+                  <td/>
                 </tr>
                 <tr tal:define="analyses python:tool.get_analyses_by(collection, poc=poc, category=category);
-                                analyses_by_title python:tool.group_items_by('Title', analyses)"
+                                analyses_by_title python:set(map(lambda a: a.Title(), analyses))"
                     tal:repeat="analysis_title python:analyses_by_title">
-                  <td tal:content="analysis_title"/>
+                  <td class="text-secondary">
+                    <span tal:content="analysis_title"/>
+                  </td>
                   <td tal:repeat="model collection">
                     <tal:analysis tal:repeat="analysis python:tool.get_analyses_by(model, title=analysis_title);">
                       <span class="font-weight-light small" tal:content="python:model.get_formatted_result(analysis)"/>
-                      <span class="font-italic small text-secondary" tal:content="python:model.get_formatted_unit(analysis)"/>
+                      <span class="font-italic small font-weight-light text-secondary" tal:content="python:model.get_formatted_unit(analysis)"/>
+                      <span tal:condition="python:model.is_out_of_range(analysis)"
+                            class="font-weight-light">
+                        <span class="outofrange text-danger"
+                              style="font-family:Lucida Console, Courier, monospace;"
+                              tal:content="outofrange_symbol">
+                        </span>
+                      </span>
                     </tal:analysis>
                   </td>
                 </tr>
@@ -326,5 +338,52 @@
     </tal:model>
   </tal:render>
 
+
+  <!-- DISCREETER -->
+  <tal:render condition="python:True"
+              define="laboratory python:view.laboratory;">
+    <div class="row section-discreeter">
+      <div class="col-sm-12 text-muted font-weight-light small">
+        <div class="discreeter-outofrange">
+          <span class="outofrange text-danger"
+                style="font-family:Lucida Console, Courier, monospace;"
+                tal:content="outofrange_symbol">
+          </span>
+          <span i18n:translate="">Result out of client specified range.</span>
+        </div>
+        <div class="discreeter-not-invoiced"
+             tal:condition="python:all(map(lambda m: m.InvoiceExclude, collection))"
+             i18n:translate="">
+          Not invoiced
+        </div>
+        <div class="discreeter-methods"
+             tal:condition="laboratory/LaboratoryAccredited">
+          <span class="accredited-symbol text-success"
+                style="font-family:Lucida Console, Courier, monospace;"
+                tal:content="accredited_symbol">
+          </span>
+          <span class="" i18n:translate="">
+            Methods included in the
+            <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+            schedule of Accreditation for this Laboratory. Analysis remarks are not
+            accredited
+          </span>
+        </div>
+        <div class="discreeter-disclaimer"
+             i18n:translate="">
+          Analysis results relate only to the samples tested.
+        </div>
+        <div class="discreeter-copyright"
+             i18n:translate="">
+          This document shall not be reproduced except in full, without the written approval of
+          <tal:block replace="laboratory/title" i18n:name="name_lab"/>
+        </div>
+        <div tal:define="confidence_level laboratory/Confidence"
+             tal:condition="confidence_level" i18n:translate="">
+          Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
+        </div>
+      </div>
+    </div>
+  </tal:render>
 
 </tal:report>
