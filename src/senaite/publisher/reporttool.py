@@ -104,7 +104,7 @@ class ARReportTool(ReportTool):
         """Groups the Categoris of the Analyses by their POC
         """
         categories_by_poc = dict()
-        analyses_by_poc = self.get_analyses_by_category(model_or_collection)
+        analyses_by_poc = self.get_analyses_by_poc(model_or_collection)
         for k, v in analyses_by_poc.items():
             categories_by_poc[k] = self.group_items_by("Category", v)
         return categories_by_poc

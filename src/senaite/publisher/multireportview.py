@@ -58,7 +58,7 @@ class ARMultiReportView(MultiReportView):
     """AR specific Multi Report View
     """
 
-    def get_report_tool(self, name):
+    def get_report_tool(self):
         """Returns the report tool
 
         :returns: IReportTool
