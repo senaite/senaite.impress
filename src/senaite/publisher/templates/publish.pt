@@ -51,7 +51,7 @@
         </div>
 
         <!-- Report Info -->
-        <table class="table table-condensed my-4 noprint">
+        <table class="table table-condensed my-4">
           <thead>
             <tr>
               <th i18n:translate="">ID</th>

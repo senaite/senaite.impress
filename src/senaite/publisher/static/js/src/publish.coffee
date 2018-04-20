@@ -225,7 +225,7 @@ class PublishController extends React.Component
 
   render: ->
     <div className="col-sm-12">
-      <form name="publishform" className="noprint" onSubmit={this.handleSubmit}>
+      <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
           <div className="input-group">
             <div className="input-group-prepend">
@@ -243,7 +243,7 @@ class PublishController extends React.Component
           </div>
         </div>
       </form>
-      <hr className="my-2 noprint"/>
+      <hr className="my-2"/>
       <div className="row">
         <div className="col-sm-12">
           <Loader loadtext={@state.loadtext} loading={@state.loading} />

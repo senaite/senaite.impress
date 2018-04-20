@@ -18,10 +18,8 @@ from Products.CMFPlone.i18nl10n import ulocalized_time
 from senaite import api
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_report_model
-from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IReportModel
 from senaite.publisher.reportview import ReportView as Base
-from zope.interface import implements
 
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
@@ -266,7 +264,6 @@ class SingleReportView(ReportView):
 class MultiReportView(ReportView):
     """View for Multi Reports
     """
-    implements(IMultiReportView)
 
     def __init__(self, collection):
         logger.info("MultiReportView::__init__:collection={}"
