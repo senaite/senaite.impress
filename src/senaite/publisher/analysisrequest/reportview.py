@@ -8,6 +8,7 @@
 import json
 from collections import Iterable
 from collections import OrderedDict
+from collections import Sequence
 from collections import defaultdict
 from itertools import chain
 from operator import itemgetter
@@ -214,7 +215,7 @@ class ReportView(Base):
     def to_list(self, model_or_collection):
         if IReportModel.providedBy(model_or_collection):
             return [model_or_collection]
-        if isinstance(model_or_collection, list):
+        if isinstance(model_or_collection, Sequence):
             return model_or_collection
         raise TypeError("Need a model or collection")
 
