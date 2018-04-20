@@ -15,9 +15,9 @@ class ReportView(object):
     """
     implements(IReportView)
 
-    def __init__(self, model):
+    def __init__(self, model=None, collection=None):
         self.model = model
-        self.context = model.instance
+        self.collection = collection
 
     def render(self, template):
         raise NotImplemented("Must be implemented by subclass")

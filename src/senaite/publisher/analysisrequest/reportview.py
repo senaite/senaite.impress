@@ -227,7 +227,7 @@ class SingleReportView(ReportView):
     def __init__(self, model):
         logger.info("SingleReportView::__init__:model={}"
                     .format(model))
-        super(SingleReportView, self).__init__(model)
+        super(SingleReportView, self).__init__(model=model)
         self.model = model
         self.context = model.instance
         self.request = api.get_request()
@@ -269,7 +269,7 @@ class MultiReportView(ReportView):
     def __init__(self, collection):
         logger.info("MultiReportView::__init__:collection={}"
                     .format(collection))
-        super(MultiReportView, self).__init__(collection)
+        super(MultiReportView, self).__init__(collection=collection)
         self.collection = collection
         self.request = api.get_request()
 
