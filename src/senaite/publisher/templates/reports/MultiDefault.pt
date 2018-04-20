@@ -1,7 +1,6 @@
 <tal:report
   i18n:domain="senaite.publisher"
   define="collection view/collection;
-          tool python:view.get_report_tool();
           accredited_symbol string:★;
           outofrange_symbol string:⚠;">
 
@@ -289,14 +288,14 @@
           <h1 i18n:translate>Results for <span tal:replace="model/getId"/></h1>
 
           <!-- Point of Capture -->
-          <tal:poc define="analyses_by_poc python:tool.get_analyses_by_poc(model);"
+          <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
                    tal:repeat="poc analyses_by_poc">
 
             <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
 
             <!-- Analysis Category -->
-            <tal:categories_in_poc define="categories_by_poc python:tool.get_categories_by_poc(model)"
-                                   repeat="category python:tool.sort_items(categories_by_poc.get(poc))">
+            <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
+                                   repeat="category python:view.sort_items(categories_by_poc.get(poc))">
 
               <!-- Analysis in POC and Category -->
               <table class="table table-sm">
@@ -333,7 +332,7 @@
                 </thead>
 
                 <tbody>
-                  <tal:analyses tal:repeat="analysis python:tool.get_analyses_by(model, poc=poc , category=category)">
+                  <tal:analyses tal:repeat="analysis python:view.get_analyses_by(model, poc=poc , category=category)">
                     <tr>
                       <td class="analysis">
                         <span class="text-success"
@@ -454,7 +453,7 @@
               <colgroup>
                 <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
               </colgroup>
-              <tr tal:repeat="chunk python:tool.group_into_chunks(ar_attachments, attachments_per_row)">
+              <tr tal:repeat="chunk python:view.group_into_chunks(ar_attachments, attachments_per_row)">
                 <td class="align-bottom"
                     style="border:none;padding-left:0;"
                     tal:repeat="attachment chunk">

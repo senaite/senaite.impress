@@ -12,6 +12,9 @@
   <!-- Register Translations -->
   <i18n:registerTranslations directory="locales"/>
 
+  <!-- AR specific Reports -->
+  <include package=".analysisrequest"/>
+
   <!-- Publish Controller View
 
        TODO: Rename to `publish` for drop-in replacement as soon as this package
@@ -37,38 +40,10 @@
       class=".controlpanel.PublisherControlPanelView"
       permission="cmf.ManagePortal"/>
 
-  <!-- Report View for Analysis Requests -->
-  <adapter
-      for="senaite.publisher.interfaces.IReportModel"
-      name="AnalysisRequest"
-      factory="senaite.publisher.reportview.ARReportView"
-      provides="senaite.publisher.interfaces.IReportView"
-      permission="zope2.View"/>
-
-  <!-- Multi Report View for Analysis Requests -->
-  <adapter
-      for="*"
-      name="AnalysisRequest"
-      factory="senaite.publisher.multireportview.ARMultiReportView"
-      provides="senaite.publisher.interfaces.IMultiReportView"
-      permission="zope2.View"/>
-
   <!-- Generic Report Model -->
   <adapter
       for="*"
       factory="senaite.publisher.reportmodel.ReportModel"/>
-
-  <!-- AR Report Model -->
-  <adapter
-      for="*"
-      name="AnalysisRequest"
-      factory="senaite.publisher.reportmodel.ARReportModel"/>
-
-  <!-- AR Report Tool -->
-  <utility
-      name="AnalysisRequest"
-      provides="senaite.publisher.interfaces.IReportTool"
-      factory="senaite.publisher.reporttool.ARReportTool"/>
 
   <!-- HTML/PDB Publisher Adapter -->
   <adapter
@@ -80,17 +55,17 @@
       provides="senaite.publisher.interfaces.ITemplateFinder"
       factory="senaite.publisher.template.TemplateFinder"/>
 
-  <!-- Template Vocabulary Utility -->
+  <!-- Template Vocabulary -->
   <utility
       name="senaite.publisher.vocabularies.Templates"
       component="senaite.publisher.vocabularies.TemplateVocabularyFactory"/>
 
-  <!-- Paper Format Vocabulary Utility -->
+  <!-- Paper Format Vocabulary -->
   <utility
       name="senaite.publisher.vocabularies.Paperformats"
       component="senaite.publisher.vocabularies.PaperformatVocabularyFactory"/>
 
-  <!-- Orientation Vocabulary Utility -->
+  <!-- Orientation Vocabulary -->
   <utility
       name="senaite.publisher.vocabularies.Orientations"
       component="senaite.publisher.vocabularies.OrientationVocabularyFactory"/>

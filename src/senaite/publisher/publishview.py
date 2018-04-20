@@ -13,22 +13,22 @@ from string import Template
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
+from senaite.publisher import logger
 # from senaite.publisher import logger
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IPublisher
 from senaite.publisher.interfaces import IPublishView
+from senaite.publisher.interfaces import IReportModel
 from senaite.publisher.interfaces import IReportView
 from senaite.publisher.interfaces import ITemplateFinder
-from senaite.publisher.interfaces import IReportModel
-from senaite.publisher.reportmodelcollection import ReportModelCollection
+from zope.component import ComponentLookupError
 from zope.component import getAdapter
 from zope.component import getUtility
 from zope.interface import implements
 
 
 CSS = Template("""/** Paper Format CSS **/
-
 @page {
   /* width/height according to the format */
   size: ${page_width}mm ${page_height}mm;
@@ -39,7 +39,6 @@ CSS = Template("""/** Paper Format CSS **/
   margin-bottom: ${margin_bottom}mm;
   margin-left: ${margin_left}mm;
 }
-
 @media print {
   .report {
     /* width/height with subtracted margins */
@@ -47,7 +46,6 @@ CSS = Template("""/** Paper Format CSS **/
     height: ${content_height}mm;
   }
 }
-
 @media screen {
   .report {
     /* full width/height in preview only */
@@ -57,7 +55,6 @@ CSS = Template("""/** Paper Format CSS **/
   /* Bootstrap container fixture to display the full paper */
   .container { min-width: ${page_width}mm!important; }
 }
-
 """)
 
 
@@ -121,10 +118,28 @@ class PublishView(BrowserView):
         """
         if uids is None:
             uids = self.get_uids()
+        return map(self.to_model, uids)
 
-        models = map(lambda uid: getAdapter(
-            uid, IReportModel, name="AnalysisRequest"), uids)
-        return ReportModelCollection(models)
+    def to_model(self, uid):
+        """Returns a report Model for the given UID
+        """
+        # Fetch the report (portal-) type for component lookups
+        _type = self.get_report_type()
+        try:
+            return getAdapter(uid, IReportModel, name=_type)
+        except ComponentLookupError:
+            logger.error("Lookup Error: No Report Model registered for name={}"
+                         .format(_type))
+            return getAdapter(uid, IReportModel)
+
+    def get_report_type(self):
+        """Returns the (portal-) for the report
+        """
+        # We fall back to AnalysisRequest here, because this is the primary
+        # report object we need at the moment.
+        # However, we can later easy provide with this mechanism reports for
+        # any other content type as well.
+        return self.request.form.get("type", "AnalysisRequest")
 
     def render_reports(self, uids=None, **kw):
         """Render Single/Multi Reports to HTML
@@ -138,7 +153,7 @@ class PublishView(BrowserView):
 
             # group the models by client
             if group:
-                by_client = defaultdict(ReportModelCollection)
+                by_client = defaultdict(list)
 
                 for model in collection:
                     by_client[model.Client.getId()].append(model)
@@ -162,13 +177,15 @@ class PublishView(BrowserView):
     def render_report(self, model, template, **kw):
         """Render a ReportModel to HTML
         """
-        view = getAdapter(model, IReportView, name="AnalysisRequest")
+        _type = self.get_report_type()
+        view = getAdapter(model, IReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
     def render_multi_report(self, collection, template, **kw):
         """Render multiple ReportModels to HTML
         """
-        view = getAdapter(collection, IMultiReportView, name="AnalysisRequest")
+        _type = self.get_report_type()
+        view = getAdapter(collection, IMultiReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
     def get_publisher(self, html, **kw):
