@@ -223,7 +223,7 @@ reports.
 
 ### senaite.publisher:Default.pt
 
-This page template is renders single reports (one AR per report)
+This page template is renders single reports (one AR per report).
 
 <img src="static/7_default_template.png" alt="senaite.publisher:Default.pt" />
 
@@ -237,3 +237,12 @@ section/remarks/attachments etc. sections will be repeated for all models in the
 collection.
 
 <img src="static/8_multi_default_template.png" alt="senaite.publisher:MultiDefault.pt" />
+
+
+### senaite.publisher:MultiDefaultByColumn.pt
+
+This page template behaves like the `senaite.publisher:MultiDefault.pt`, except
+that the results of all models (Analysis Requests) will be rendered in columns
+side by side.
+
+<img src="static/9_multi_default_by_column_template.png" alt="senaite.publisher:MultiDefaultByColumn.pt" />
