@@ -213,3 +213,16 @@ In your new package `configure.zcml` you have to specify the folder where your r
 ```
 
 This will integrate the `reports` directory within your package into the search path of `senaite.publisher`.
+
+
+## Further Reading
+
+`senaite.publisher` comes with some default templates included. It is
+recommended to read the code of these templates or use them as the base for new
+reports.
+
+### senaite.publisher:Default.pt
+
+This page template is renders single reports (one AR per report)
+
+<img src="static/7_default_template.png" alt="senaite.publisher:Default.pt" />

@@ -319,6 +319,7 @@
                     <td class="analysis">
                       <span class="text-success"
                             tal:content="accredited_symbol"
+                            style="font-family:Lucida Console, Courier, monospace;"
                             tal:condition="analysis/Accredited">
                       </span>
                       <span tal:condition="not:analysis/ScientificName">
