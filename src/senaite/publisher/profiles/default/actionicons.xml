@@ -8,6 +8,6 @@
       i18n:attributes="title"
       priority="0"
       icon_expr="++resource++senaite.publisher.static/img/icon.png"
-      permission="BIKA: Manage Bika"/>
+      />
 
 </action-icons>
