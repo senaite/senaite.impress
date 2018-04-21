@@ -118,19 +118,30 @@ class PublishView(BrowserView):
         """
         if uids is None:
             uids = self.get_uids()
-        return map(self.to_model, uids)
+        collection = []
+        for model in map(self.to_model, uids):
+            if model.is_valid():
+                collection.append(model)
+            else:
+                logger.error("Could not fetch report model for UID={}"
+                             .format(model.uid))
+        return collection
 
     def to_model(self, uid):
         """Returns a report Model for the given UID
         """
+        model = None
         # Fetch the report (portal-) type for component lookups
         _type = self.get_report_type()
         try:
-            return getAdapter(uid, IReportModel, name=_type)
+            model = getAdapter(uid, IReportModel, name=_type)
         except ComponentLookupError:
             logger.error("Lookup Error: No Report Model registered for name={}"
                          .format(_type))
-            return getAdapter(uid, IReportModel)
+            model = getAdapter(uid, IReportModel)
+
+        logger.info("Created Model for UID={}->{}".format(uid, model))
+        return model
 
     def get_report_type(self):
         """Returns the (portal-) for the report
