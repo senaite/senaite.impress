@@ -12,6 +12,9 @@
   <!-- Register Translations -->
   <i18n:registerTranslations directory="locales"/>
 
+  <!-- Needed for bika.lims.ManageBika permission -->
+  <include package="bika.lims" file="permissions.zcml" />
+
   <!-- AR specific Reports -->
   <include package=".analysisrequest"/>
 
@@ -38,7 +41,7 @@
       name="publisher-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".controlpanel.PublisherControlPanelView"
-      permission="cmf.ManagePortal"/>
+      permission="bika.lims.ManageBika"/>
 
   <!-- Generic Report Model -->
   <adapter
