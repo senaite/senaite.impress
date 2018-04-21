@@ -103,7 +103,12 @@ To access this field in a report, you simply traverse it by name:
 ```html
 <tal:report define="model python:view.model;">
   <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
-  <h2 tal:content="model/SampleTypeTitle">This will be replaced with the Sample Type Title</h2>
+  <h2>
+    Sample Type:
+    <span tal:content="model/SampleTypeTitle">
+      This will be replaced with the Sample Type Title
+    </span>
+  </h2>
 </tal:report>
 ```
 
