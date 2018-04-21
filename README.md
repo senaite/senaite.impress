@@ -117,7 +117,7 @@ Now it should render the title of the sample type below the ID of the Analysis R
 <img src="static/4_report_model.png" alt="Report Model" />
 
 
-## Designing Reports
+## Bootstap
 
 `senaite.publisher` uses [Bootstrap 4](https://getbootstrap.com) as the main front-end component library.
 Each report will therefore follow these style guidelines and can be easily extended.
@@ -143,3 +143,45 @@ as the top level element inside a report to maintain the borders of the selected
 ```
 
 <img src="static/5_bootstrap.png" alt="Bootstrap" />
+
+
+## Customizing the report desingn
+
+To customize the style of your report, it is recommended to add the CSS style inline.
+
+```html
+<tal:report define="model python:view.model;">
+
+  <tal:css define="laboratory view/laboratory;">
+    <style type="text/css">
+     html, body { font-size: 1em; }
+     h1 { font-size: 160%; }
+     h2 { font-size: 120%; }
+     @page {
+       font-size: 9pt;
+       @top-left {
+         content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+       }
+       @top-right {
+         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+       }
+     }
+    </style>
+  </tal:css>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
+      <h2>
+        Sample Type:
+        <span class="text-secondary"
+              tal:content="model/SampleTypeTitle">
+          This will be replaced with the Sample Type Title
+        </span>
+      </h2>
+    </div>
+  </div>
+</tal:report>
+```
+
+<img src="static/6_custom_css.png" alt="Custom CSS" />
