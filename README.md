@@ -72,3 +72,17 @@ It renders the IDs of the model (in this case the Analysis Requests
 
 Change between the templates `HelloWorld.pt` and `MultiHelloWorld.pt` to see how
 the two selected Analysis Requests render either on two pages or on one page.
+
+## Zope Page Templates
+
+[Zope Page Templates](http://zope.readthedocs.io/en/latest/zope2book/ZPT.html)
+is the main web page generation tool in SENAITE.
+
+Page Templates are recommended way to generate reports in `senaite.publisher`.
+We have already seen a small example how to use the Template Attribute Language
+(TAL). TAL consists of special tag attributes. For example, we used a dynamic
+page headline in the previous reports:
+
+```html
+<h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
+```
