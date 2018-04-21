@@ -86,3 +86,27 @@ page headline in the previous reports:
 ```html
 <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
 ```
+
+## Report Model
+
+The Report Model is a special wrapper object for database objects in SENAITE.
+The advantage of Report Models is that they provide transparent access to all
+content schema fields in a preformance optimized way.
+
+For example the content type
+[Analysis Request](https://github.com/senaite/senaite.core/blob/master/bika/lims/content/analysisrequest.py)
+in SENAITE defines a computed field `SampleTypeTitle`:
+https://github.com/senaite/senaite.core/blob/master/bika/lims/content/analysisrequest.py#L1548
+
+To access this field in a report, you simply traverse it by name:
+
+```html
+<tal:report define="model python:view.model;">
+  <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
+  <h2 tal:content="model/SampleTypeTitle">This will be replaced with the Sample Type Title</h2>
+</tal:report>
+```
+
+Now it should render the title of the sample type below the ID of the Analysis Request:
+
+<img src="static/4_report_model.png" alt="Report Model" />
