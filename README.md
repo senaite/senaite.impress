@@ -226,3 +226,14 @@ reports.
 This page template is renders single reports (one AR per report)
 
 <img src="static/7_default_template.png" alt="senaite.publisher:Default.pt" />
+
+
+### senaite.publisher:MultiDefault.pt
+
+This page template is renders multiple reports on one report. The header and
+footer will be rendered only once. The meta data of the first model (Analysis
+Request) will be used for these sections and the results
+section/remarks/attachments etc. sections will be repeated for all models in the
+collection.
+
+<img src="static/8_multi_default_template.png" alt="senaite.publisher:MultiDefault.pt" />
