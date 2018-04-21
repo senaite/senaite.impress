@@ -129,7 +129,7 @@
                 <span tal:condition="state"
                       i18n:translate=""
                       i18n:domain="bika"
-                      tal:content="python:state.capitalize()"/>
+                      tal:content="python:state.capitalize().replace('_', ' ')"/>
               </td>
               <!-- PDF -->
               <td>
