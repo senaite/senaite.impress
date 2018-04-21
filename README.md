@@ -145,7 +145,7 @@ as the top level element inside a report to maintain the borders of the selected
 <img src="static/5_bootstrap.png" alt="Bootstrap" />
 
 
-## Customizing the report desingn
+## Customizing the report design
 
 To customize the style of your report, it is recommended to add the CSS style inline.
 
@@ -185,3 +185,31 @@ To customize the style of your report, it is recommended to add the CSS style in
 ```
 
 <img src="static/6_custom_css.png" alt="Custom CSS" />
+
+
+## Reports in external packages
+
+Until now we created all reports on the file system within this package, which
+is **not** the recommended way, because with future updates of
+`senaite.publisher` these changes will be lost.
+
+Therefore it is recommended to create a new
+[SENAITE Add-On Package](https://docs.plone.org/4/en/develop/addons/schema-driven-forms/creating-a-simple-form/creating-a-package.html)
+and put the custom reports in there.
+
+In your new package `configure.zcml` you have to specify the folder where your reports live:
+
+```xml
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+  <!-- Report resource directory -->
+  <plone:static
+      directory="reports"
+      type="senaite.publisher.reports"/>
+
+</configure>
+```
+
+This will integrate the `reports` directory within your package into the search path of `senaite.publisher`.
