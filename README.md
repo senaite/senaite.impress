@@ -115,3 +115,31 @@ To access this field in a report, you simply traverse it by name:
 Now it should render the title of the sample type below the ID of the Analysis Request:
 
 <img src="static/4_report_model.png" alt="Report Model" />
+
+
+## Designing Reports
+
+`senaite.publisher` uses [Bootstrap 4](https://getbootstrap.com) as the main front-end component library.
+Each report will therefore follow these style guidelines and can be easily extended.
+
+Please note, that you should start with [Rows](https://getbootstrap.com/docs/4.0/layout/grid/#how-it-works)
+as the top level element inside a report to maintain the borders of the selected paper format.
+
+```html
+<tal:report define="model python:view.model;">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
+      <h2>
+        Sample Type:
+        <span class="text-secondary"
+              tal:content="model/SampleTypeTitle">
+          This will be replaced with the Sample Type Title
+        </span>
+      </h2>
+    </div>
+  </div>
+</tal:report>
+```
+
+<img src="static/5_bootstrap.png" alt="Bootstrap" />
