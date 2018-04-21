@@ -147,7 +147,7 @@
                    tal:attributes="src accreditation_logo/absolute_url"/>
               <img class="img-fluid"
                    tal:condition="not:accreditation_logo"
-                   tal:attributes="src python:view.get_image_resource('AccreditationBodyLogo.png')"/>
+                   tal:attributes="src python:view.get_resource_url('AccreditationBodyLogo.png', prefix='bika.lims.images')"/>
             </div>
           </td>
         </tr>
