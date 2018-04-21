@@ -51,4 +51,24 @@ The most basic single report looks like this:
 
 It renders the ID of the model (in this case the Analysis Request `H2O-0001-R01`) on the report.
 
-<img src="static/2_single_report.png" alt="Hello World" />
+<img src="static/2_single_report.png" alt="Single Report" />
+
+To render a multi report, we need to copy the previous template to `MultiHelloWorld.pt`.
+
+The most basic multi report looks like this:
+
+```html
+<tal:report define="collection python:view.collection;">
+  <tal:model tal:repeat="model collection">
+    <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
+  </tal:model>
+</tal:report>
+```
+
+It renders the IDs of the model (in this case the Analysis Requests
+`H2O-0001-R01` and `H2O-0002-R01`) on the same report.
+
+<img src="static/3_multi_report.png" alt="Multi Report" />
+
+Change between the templates `HelloWorld.pt` and `MultiHelloWorld.pt` to see how
+the two selected Analysis Requests render either on two pages or on one page.
