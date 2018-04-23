@@ -9,8 +9,8 @@
 
 ## Hello World
 
-The easiest way to get started with `senaite.publisher` is to copy a template in
-the `templates/reports` folder within this package.
+The easiest way to get started with `senaite.publisher` is to copy one of the
+existing templates in the `templates/reports` folder within this package.
 
 
 The smallest report example looks like this:
@@ -35,11 +35,11 @@ report objects.
 
 `senaite.publisher` uses the report name to distinguish between a single- and
 multi report. A report starting or ending with the workd `Multi`, e.g.
-`MultiReport.pt` or `MultiReport.html` will be considered as a multi report and
-it will receive all selected objects in a collection.
+`MultiReport.pt` or `PublicationReportMulti.pt` will be considered as a multi
+report and it will receive all selected objects in a `collection`.
 
 All other reports, e.g. `Default.pt`, `HelloWorld.pt`, `SingleReport.pt` will be
-considered as single reports.
+considered as single reports and it will receive the single report as its `model`.
 
 The most basic single report looks like this:
 
@@ -117,13 +117,15 @@ Now it should render the title of the sample type below the ID of the Analysis R
 <img src="static/4_report_model.png" alt="Report Model" />
 
 
-## Bootstap
+## Bootstrap
 
 `senaite.publisher` uses [Bootstrap 4](https://getbootstrap.com) as the main front-end component library.
 Each report will therefore follow these style guidelines and can be easily extended.
 
-Please note, that you should start with [Rows](https://getbootstrap.com/docs/4.0/layout/grid/#how-it-works)
-as the top level element inside a report to maintain the borders of the selected paper format.
+Please note, that you should start with
+[Rows](https://getbootstrap.com/docs/4.0/layout/grid/#how-it-works) as the top
+level HTML element inside a report to maintain the borders of the selected paper
+format.
 
 ```html
 <tal:report define="model python:view.model;">
@@ -184,14 +186,75 @@ To customize the style of your report, it is recommended to add the CSS style in
 </tal:report>
 ```
 
+Please also see the [Paged media](https://developer.mozilla.org/en-US/docs/Web/CSS/Paged_Media)
+CSS properties to learn how to control the presentation of content for print or
+any other media that splits content into discrete pages.
+
 <img src="static/6_custom_css.png" alt="Custom CSS" />
+
+
+## Report View
+
+The Report View acts as a controller for the multi- and single reports. It
+provides code logic to group, sort and extract the data of the report model/collection.
+
+Methods (functions) of the Report view are referenced by the keyword `view` in the template
+and provide the business controller logic between the plain data object and SENAITE LIMS/HEALTH.
+
+Report views can be customized per report for any specific report behavior.
+
+However, because [Python](https://python.org) code know-how is needed, it is
+recommend that a [Professional SENAITE Service Provider](http://www.senaite.com/#providers)
+is consulted for commercial support.
+
+```html
+<tal:report define="model python:view.model;">
+
+  <tal:css define="laboratory view/laboratory;">
+    <style type="text/css">
+     html, body { font-size: 1em; }
+     h1 { font-size: 160%; }
+     h2 { font-size: 120%; }
+     @page {
+       font-size: 9pt;
+       @top-left {
+         content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+       }
+       @top-right {
+         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+       }
+     }
+    </style>
+  </tal:css>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
+      <h2>
+        Sample Type:
+        <span class="text-secondary"
+              tal:content="model/SampleTypeTitle">
+          This will be replaced with the Sample Type Title
+        </span>
+      </h2>
+      <hr class="py-1"/>
+      <div class="text-muted font-italic">
+        Published <span tal:content="python:view.to_localized_time(model.DatePublished)"/>
+        by <span tal:content="python:view.current_user.get('fullname')"/>
+      </div>
+    </div>
+  </div>
+</tal:report>
+```
+
+<img src="static/7_report_view.png" alt="Report View" />
 
 
 ## Reports in external packages
 
 Until now we created all reports on the file system within this package, which
 is **not** the recommended way, because with future updates of
-`senaite.publisher` these changes will be lost.
+`senaite.publisher`, these changes will be lost.
 
 Therefore it is recommended to create a new
 [SENAITE Add-On Package](https://docs.plone.org/4/en/develop/addons/schema-driven-forms/creating-a-simple-form/creating-a-package.html)
@@ -225,18 +288,18 @@ reports.
 
 This page template is renders single reports (one AR per report).
 
-<img src="static/7_default_template.png" alt="senaite.publisher:Default.pt" />
+<img src="static/8_default_template.png" alt="senaite.publisher:Default.pt" />
 
 
 ### senaite.publisher:MultiDefault.pt
 
 This page template is renders multiple reports on one report. The header and
-footer will be rendered only once. The meta data of the first model (Analysis
-Request) will be used for these sections and the results
-section/remarks/attachments etc. sections will be repeated for all models in the
-collection.
+footer will be rendered only once. The metadata of the first model (here the
+Analysis Request `H20-0001-R01`) will be used for these sections and the
+results/remarks/attachments sections will be repeated for all models in the
+collection (`H20-0001-R01` and `H20-0002-R01`).
 
-<img src="static/8_multi_default_template.png" alt="senaite.publisher:MultiDefault.pt" />
+<img src="static/9_multi_default_template.png" alt="senaite.publisher:MultiDefault.pt" />
 
 
 ### senaite.publisher:MultiDefaultByColumn.pt
@@ -245,4 +308,4 @@ This page template behaves like the `senaite.publisher:MultiDefault.pt`, except
 that the results of all models (Analysis Requests) will be rendered in columns
 side by side.
 
-<img src="static/9_multi_default_by_column_template.png" alt="senaite.publisher:MultiDefaultByColumn.pt" />
+<img src="static/10_multi_default_by_column_template.png" alt="senaite.publisher:MultiDefaultByColumn.pt" />
