@@ -201,9 +201,12 @@ provides code logic to group, sort and extract the data of the report model/coll
 Methods (functions) of the Report view are referenced by the keyword `view` in the template
 and provide the business controller logic between the plain data object and SENAITE LIMS/HEALTH.
 
-Report views can be customized per report for any specific report behavior.
+Report views can be customized per report for any specific report behavior and model.
 
-However, because [Python](https://python.org) code know-how is needed, it is
+The standard report view for models of the type Analysis Request is located here:
+https://github.com/senaite/senaite.publisher/blob/master/src/senaite/publisher/analysisrequest/reportview.py
+
+However, as [Python](https://python.org) code know-how is needed to change report views, it is
 recommend that a [Professional SENAITE Service Provider](http://www.senaite.com/#providers)
 is consulted for commercial support.
 
