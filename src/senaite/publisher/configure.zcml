@@ -57,6 +57,13 @@
       class=".emailview.EmailView"
       permission="bika.lims.ManageAnalysisRequests"/>
 
+  <!-- Download View for AR Reports (PDFs) -->
+  <browser:page
+      for="*"
+      name="download_pdf"
+      class=".downloadview.DownloadView"
+      permission="bika.lims.ManageAnalysisRequests" />
+
   <!-- Generic Report Model -->
   <adapter
       for="*"

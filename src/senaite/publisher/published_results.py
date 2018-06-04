@@ -111,7 +111,7 @@ class PublishedResults(BikaListingView):
         )
         filesize = self.get_filesize(pdf)
         if filesize > 0:
-            anchor = "<a href='{}/download'>{}</a>".format(
+            anchor = "<a href='{}/download_pdf' target='_blank'>{}</a>".format(
                 obj.absolute_url(), "PDF")
             item["replace"]["PDF"] = anchor
         item["State"] = _(status_title)
