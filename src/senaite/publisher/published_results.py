@@ -134,6 +134,11 @@ class PublishedResults(BikaListingView):
             if email:
                 value = u"<a href='mailto:{}'>{}</a>".format(email, fullname)
                 recipients.append(value)
+            else:
+                message = _("No email address set for this contact")
+                value = u"<span title='{}' class='text text-danger'>" \
+                        u"⚠ {}</span>".format(message, fullname)
+                recipients.append(value)
 
         item["replace"]["Recipients"] = ", ".join(recipients)
 
@@ -159,8 +164,6 @@ class PublishedResults(BikaListingView):
             if not contact:
                 return None
             email = contact.getEmailAddress()
-            if not is_email(email):
-                return None
             return {
                 "UID": api.get_uid(contact),
                 "Username": contact.getUsername(),
