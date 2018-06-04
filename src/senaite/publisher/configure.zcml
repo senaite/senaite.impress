@@ -43,6 +43,13 @@
       class=".controlpanel.PublisherControlPanelView"
       permission="bika.lims.ManageBika"/>
 
+  <!-- Published Results View -->
+  <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="published_results"
+      class=".published_results.PublishedResults"
+      permission="bika.lims.ManageAnalysisRequests"/>
+
   <!-- Generic Report Model -->
   <adapter
       for="*"
