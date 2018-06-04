@@ -47,8 +47,8 @@ class PublishedResults(BikaListingView):
 
         send_email_transition = {
             "id": "send_email",
-            "title": _("Send Email"),
-            "url": "send_email"
+            "title": _("Email"),
+            "url": "email"
         }
 
         self.columns = {

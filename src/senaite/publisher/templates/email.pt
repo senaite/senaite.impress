@@ -1,0 +1,232 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="senaite.publisher">
+  <head>
+    <metal:block fill-slot="javascript_head_slot"
+                 tal:define="portal context/@@plone_portal_state/portal;">
+    </metal:block>
+
+    <metal:block fill-slot="style_slot"
+                 tal:define="portal context/@@plone_portal_state/portal;">
+      <style type="text/css">
+       #emailview .email_wrapper {
+         position: relative;
+         /* Includes padding and border in the element's total width and height */
+         box-sizing: border-box;
+         background: white;
+         box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+         margin: 3em auto 1em;
+         padding: 2em;
+         border-radius: 4px;
+       }
+       #emailview label {
+         display: inline-block;
+         max-width: 100%;
+         margin-bottom: 5px;
+         font-weight: 700;
+       }
+       #emailview .form-control {
+         display: block;
+         width: 100%;
+         height: 20px;
+         padding: 6px 12px;
+         color: #555!important;
+         background-color: #fff;
+         border: 1px solid #ccc;
+         border-radius: 4px;
+         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+         font-family: inherit;
+         font-size: inherit;
+       }
+       #emailview textarea.form-control {
+         height: auto;
+       }
+       #emailview .recipient {
+         display: inline;
+         padding: .5em;
+         font-size: 100%;
+         font-weight: 700;
+         line-height: 1;
+         margin-right: 0.5em;
+         color: #fff;
+         text-align: center;
+         white-space: nowrap;
+         border-radius: .25em;
+         vertical-align: middle;
+       }
+       #emailview .recipient input {
+         vertical-align: middle;
+         margin: 0;
+       }
+       #emailview .recipient.valid {
+         background-color: #5bc0de;
+       }
+       #emailview .recipient.valid.inactive {
+         background-color: #777;
+       }
+       #emailview .recipient.invalid {
+         background-color: #f0ad4e;
+       }
+       #emailview .attachments {
+         margin-top: 1em;
+         min-height: 20px;
+         padding: 19px;
+         margin-bottom: 20px;
+         background-color: #f5f5f5;
+         border: 1px solid #e3e3e3;
+         border-radius: 4px;
+         box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+       }
+       #emailview .attachment {
+         display: inline-block;
+         padding: 0 1em 1em 0;
+       }
+       #emailview .attachment a {
+         color: #5bc0de;
+         font-size: 80%;
+       }
+       #emailview .attachment img {
+         vertical-align: middle;
+       }
+       code {
+         padding: 2px 4px;
+         font-size: 90%;
+         color: #c7254e;
+         background-color: #f9f2f4;
+         border-radius: 4px;
+       }
+      </style>
+      <!-- Latest compiled and minified CSS -->
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+    </metal:block>
+  </head>
+  <body>
+
+    <metal:title fill-slot="content-title">
+      <h1 i18n:translate="">
+        Send Analysis Reports via Email
+      </h1>
+    </metal:title>
+    <metal:description fill-slot="content-description">
+      <p i18n:translate="">
+        &larr; Back to the
+        <a tal:attributes="href view/exit_url"
+           i18n:name="back_link"
+           i18n:translate="">published results overview</a>
+      </p>
+    </metal:description>
+
+    <div id="emailview"
+         metal:fill-slot="content-core"
+         tal:define="portal context/@@plone_portal_state/portal;">
+
+      <form id="send_email_form"
+            name="send_email_form"
+            method="POST">
+
+        <input type="hidden" name="submitted" value="1"/>
+        <input tal:replace="structure context/@@authenticator/authenticator"/>
+
+        <!-- Email wrapper -->
+        <div class="email_wrapper">
+          <div class="form-group">
+            <label i18n:translate="" for="to">From</label>
+            <span class="recipient valid"
+                  tal:define="from_address view/email_from_address;
+                              from_name view/email_from_name">
+              <input type="checkbox"
+                     checked="checked"
+                     disabled="disabled"
+                     value="from_address" />
+              <span tal:attributes="title from_address"
+                    tal:content="from_name"/>
+            </span>
+          </div>
+          <div class="form-group">
+            <label i18n:translate="" for="to">To</label>
+            <tal:emails repeat="recipient view/recipients">
+              <span tal:define="name recipient/name;
+                                email recipient/email;
+                                active recipient/active;
+                                valid recipient/valid;
+                                active_cls python:active and 'active' or 'inactive';
+                                valid_cls python:valid and 'valid' or 'invalid';"
+                    tal:attributes="class string:recipient ${valid_cls} ${active_cls}">
+                <input type="checkbox"
+                       tal:attributes="value string:${name},${email};
+                                       checked python:valid and active and 'checked';"
+                       name="recipients:list"/>
+
+                <span
+                  tal:attributes="title email;"
+                  tal:content="name|email" />
+              </span>
+            </tal:emails>
+          </div>
+
+          <div class="form-group">
+            <label i18n:translate="" for="subject">Subject</label>
+            <input type="text" name="subject" value="" class="form-control"
+                   tal:attributes="value view/email_subject" />
+          </div>
+
+          <div class="form-group">
+            <label i18n:translate="" for="body">Text</label>
+            <textarea name="body" class="form-control" rows="10"
+                      tal:content="view/email_body">
+            </textarea>
+            <p i18n:translate="" class="help-block discreet">
+              The variable <code i18n:name="recipients">$recipients</code> will
+              be automatically replaced with the names and emails of the final
+              selected recipients.
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label i18n:translate="" for="attachments">Attachments</label>
+            <div class="total_size discreet" i18n:translate="">
+              <span i18n:name="amount" tal:replace="python:len(view.reports)"/>
+              attachments with a total size of
+              <span i18n:name="total_size" tal:replace="python:'%.2f Kb' % view.total_size"/>
+            </div>
+            <div class="attachments well">
+              <tal:reports repeat="report view/reports">
+                <input type="hidden" name="uids:list" tal:attributes="value report/uid"/>
+                <div class="attachment">
+                  <a href="#"
+                     target="_blank"
+                     tal:attributes="href string:${report/obj/absolute_url}/download">
+                    <img tal:attributes="alt report/filename;
+                                         title string:${report/filename}(${report/filesize})"
+                         src="++resource++senaite.publisher.static/img/pdf.png" width="32" />
+                    <span tal:content="report/filename"/>
+                  </a>
+                </div>
+              </tal:reports>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- /Email wrapper -->
+
+        <!-- Email Form Controls -->
+        <input class="btn btn-success btn-sm"
+               type="submit"
+               name="send"
+               i18n:attributes="value"
+               tal:attributes="disabled python:not view.allow_send and 'disabled'"
+               value="Send"/>
+        <input class="btn btn-danger btn-sm"
+               type="submit"
+               name="abort"
+               i18n:attributes="value"
+               value="Abort"/>
+        <!-- /Email Form Controls -->
+
+      </form>
+    </div>
+  </body>
+</html>

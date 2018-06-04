@@ -5,7 +5,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="senaite">
+    i18n_domain="senaite.publisher">
 
   <five:registerPackage package="." initialize=".initialize"/>
 
@@ -48,6 +48,13 @@
       for="bika.lims.interfaces.IClient"
       name="published_results"
       class=".published_results.PublishedResults"
+      permission="bika.lims.ManageAnalysisRequests"/>
+
+  <!-- Email View -->
+  <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="email"
+      class=".emailview.EmailView"
       permission="bika.lims.ManageAnalysisRequests"/>
 
   <!-- Generic Report Model -->
