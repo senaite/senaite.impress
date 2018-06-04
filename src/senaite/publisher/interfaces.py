@@ -5,6 +5,12 @@
 # Copyright 2018 by it's authors.
 
 from zope.interface import Interface
+from bika.lims.interfaces import IBikaLIMS
+
+
+class ILayer(IBikaLIMS):
+    """Layer Interface
+    """
 
 
 class IPublishView(Interface):

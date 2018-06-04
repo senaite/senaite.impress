@@ -27,7 +27,17 @@
       for="*"
       name="printview"
       class="senaite.publisher.publishview.PublishView"
-      permission="zope2.View"/>
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.publisher.interfaces.ILayer"
+      />
+
+  <browser:page
+      for="bika.lims.interfaces.IAnalysisRequestsFolder"
+      name="publish"
+      class="senaite.publisher.publishview.PublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.publisher.interfaces.ILayer"
+      />
 
   <!-- Ajax Publish Controller View -->
   <browser:page
