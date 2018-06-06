@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-06 17:18+0000\n"
+"POT-Creation-Date: 2018-06-06 17:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Ramon Bartl <rb@ridingbytes.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -158,6 +158,10 @@ msgstr ""
 msgid "ID"
 msgstr "ID"
 
+#: senaite/impress/profiles/default/controlpanel.xml
+msgid "Impress Settings"
+msgstr ""
+
 #: senaite/impress/emailview.py:107
 msgid "Message sent to {}, "
 msgstr ""
@@ -230,6 +234,7 @@ msgstr ""
 msgid "Published by"
 msgstr "Publiziert durch"
 
+#: senaite/impress/profiles/default/types/Client.xml
 #: senaite/impress/published_results.py:35
 msgid "Published results"
 msgstr ""
@@ -239,7 +244,6 @@ msgid "Publisher Controlpanel"
 msgstr ""
 
 #: senaite/impress/profiles/default/actionicons.xml
-#: senaite/impress/profiles/default/controlpanel.xml
 msgid "Publisher Settings"
 msgstr "Publisher Einstellungen"
 
@@ -302,7 +306,7 @@ msgid "Review State"
 msgstr ""
 
 #: senaite/impress/configure.zcml:123
-msgid "SENAITE PUBLISHER"
+msgid "SENAITE IMPRESS"
 msgstr ""
 
 #: senaite/impress/templates/publish.pt:8
