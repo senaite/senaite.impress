@@ -8,7 +8,7 @@ version = '1.0.0'
 setup(
     name='senaite.impress',
     version=version,
-    description="SENAITE PUBLISHER",
+    description="SENAITE IMPRESS",
     long_description=open("docs/About.rst").read() +
                      "\n\n" +
                      "Changelog\n" +

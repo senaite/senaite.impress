@@ -117,7 +117,7 @@
   <!-- Generic Setup Profile -->
   <genericsetup:registerProfile
       name="default"
-      title="SENAITE PUBLISHER"
+      title="SENAITE IMPRESS"
       directory="profiles/default"
       description=""
       provides="Products.GenericSetup.interfaces.EXTENSION"/>
