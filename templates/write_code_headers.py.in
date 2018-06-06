@@ -12,7 +12,7 @@ SRC_DIR = '${buildout:directory}/src/senaite/publisher'
 YEAR_FROM = '2018'
 TEMPLATE = """# -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.PUBLISHER
+# This file is part of SENAITE.IMPRESS
 #
 # Copyright {copy_years} by it's authors.
 

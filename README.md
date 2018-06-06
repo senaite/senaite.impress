@@ -1,7 +1,7 @@
 <div align="center">
 
-  <a href="https://github.com/senaite/senaite.publisher">
-    <img src="static/logo.png" alt="SENAITE PUBLISHER" height="64" />
+  <a href="https://github.com/senaite/senaite.impress">
+    <img src="static/logo.png" alt="SENAITE IMPRESS" height="64" />
   </a>
   <p>Publication of HTML/PDF Reports in SENAITE</p>
 
@@ -9,7 +9,7 @@
 
 ## Hello World
 
-The easiest way to get started with `senaite.publisher` is to copy one of the
+The easiest way to get started with `senaite.impress` is to copy one of the
 existing templates in the `templates/reports` folder within this package.
 
 
@@ -23,7 +23,7 @@ It renders a heading saying “Hello, world!” on the report.
 
 <img src="static/1_hello_world.png" alt="Hello World" />
 
-The next few sections will gradually introduce you to using `senaite.publisher`.
+The next few sections will gradually introduce you to using `senaite.impress`.
 We will examine single- and multi reports, Zope page templates and the report model.
 Once you master them, you can create complex reports for SENAITE.
 
@@ -33,7 +33,7 @@ The difference between single- and multi reports is that a single reports
 receive a single report object, while multi reports receive a collection of
 report objects.
 
-`senaite.publisher` uses the report name to distinguish between a single- and
+`senaite.impress` uses the report name to distinguish between a single- and
 multi report. A report starting or ending with the workd `Multi`, e.g.
 `MultiReport.pt` or `PublicationReportMulti.pt` will be considered as a multi
 report and it will receive all selected objects in a `collection`.
@@ -78,7 +78,7 @@ the two selected Analysis Requests render either on two pages or on one page.
 [Zope Page Templates](http://zope.readthedocs.io/en/latest/zope2book/ZPT.html)
 is the main web page generation tool in SENAITE.
 
-Page Templates are recommended way to generate reports in `senaite.publisher`.
+Page Templates are recommended way to generate reports in `senaite.impress`.
 We have already seen a small example how to use the Template Attribute Language
 (TAL). TAL consists of special tag attributes. For example, we used a dynamic
 page headline in the previous reports:
@@ -119,7 +119,7 @@ Now it should render the title of the sample type below the ID of the Analysis R
 
 ## Bootstrap
 
-`senaite.publisher` uses [Bootstrap 4](https://getbootstrap.com) as the main front-end component library.
+`senaite.impress` uses [Bootstrap 4](https://getbootstrap.com) as the main front-end component library.
 Each report will therefore follow these style guidelines and can be easily extended.
 
 Please note, that you should start with
@@ -204,7 +204,7 @@ and provide the business controller logic between the plain data object and SENA
 Report views can be customized per report for any specific report behavior and model.
 
 The standard report view for models of the type Analysis Request is located here:
-https://github.com/senaite/senaite.publisher/blob/master/src/senaite/publisher/analysisrequest/reportview.py
+https://github.com/senaite/senaite.impress/blob/master/src/senaite/impress/analysisrequest/reportview.py
 
 However, as [Python](https://python.org) code know-how is needed to change report views, it is
 recommend that a [Professional SENAITE Service Provider](http://www.senaite.com/#providers)
@@ -257,7 +257,7 @@ is consulted for commercial support.
 
 Until now we created all reports on the file system within this package, which
 is **not** the recommended way, because with future updates of
-`senaite.publisher`, these changes will be lost.
+`senaite.impress`, these changes will be lost.
 
 Therefore it is recommended to create a new
 [SENAITE Add-On Package](https://docs.plone.org/4/en/develop/addons/schema-driven-forms/creating-a-simple-form/creating-a-package.html)
@@ -273,28 +273,28 @@ In your new package `configure.zcml` you have to specify the folder where your r
   <!-- Report resource directory -->
   <plone:static
       directory="reports"
-      type="senaite.publisher.reports"/>
+      type="senaite.impress.reports"/>
 
 </configure>
 ```
 
-This will integrate the `reports` directory within your package into the search path of `senaite.publisher`.
+This will integrate the `reports` directory within your package into the search path of `senaite.impress`.
 
 
 ## Further Reading
 
-`senaite.publisher` comes with some default templates included. It is
+`senaite.impress` comes with some default templates included. It is
 recommended to read the code of these templates or use them as the base for new
 reports.
 
-### senaite.publisher:Default.pt
+### senaite.impress:Default.pt
 
 This page template is renders single reports (one AR per report).
 
-<img src="static/8_default_template.png" alt="senaite.publisher:Default.pt" />
+<img src="static/8_default_template.png" alt="senaite.impress:Default.pt" />
 
 
-### senaite.publisher:MultiDefault.pt
+### senaite.impress:MultiDefault.pt
 
 This page template is renders multiple reports on one report. The header and
 footer will be rendered only once. The metadata of the first model (here the
@@ -302,13 +302,13 @@ Analysis Request `H20-0001-R01`) will be used for these sections and the
 results/remarks/attachments sections will be repeated for all models in the
 collection (`H20-0001-R01` and `H20-0002-R01`).
 
-<img src="static/9_multi_default_template.png" alt="senaite.publisher:MultiDefault.pt" />
+<img src="static/9_multi_default_template.png" alt="senaite.impress:MultiDefault.pt" />
 
 
-### senaite.publisher:MultiDefaultByColumn.pt
+### senaite.impress:MultiDefaultByColumn.pt
 
-This page template behaves like the `senaite.publisher:MultiDefault.pt`, except
+This page template behaves like the `senaite.impress:MultiDefault.pt`, except
 that the results of all models (Analysis Requests) will be rendered in columns
 side by side.
 
-<img src="static/10_multi_default_by_column_template.png" alt="senaite.publisher:MultiDefaultByColumn.pt" />
+<img src="static/10_multi_default_by_column_template.png" alt="senaite.impress:MultiDefaultByColumn.pt" />

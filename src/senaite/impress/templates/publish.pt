@@ -1,0 +1,143 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      i18n:domain="senaite.impress" lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title i18n:translate="">SENAITE Publisher</title>
+    <!-- CSS -->
+    <tal:css define="portal context/@@plone_portal_state/portal;">
+      <!-- fontawesome.css -->
+      <link type="text/css"
+            href="bootstrap.css"
+            rel="stylesheet"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.impress.static/css/fontawesome-all.min.css"/>
+      <!-- bootstrap.css -->
+      <link type="text/css"
+            href="bootstrap.css"
+            rel="stylesheet"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.impress.static/css/bootstrap.min.css"/>
+      <!-- print.css -->
+      <link type="text/css"
+            href="print.css"
+            rel="stylesheet"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.impress.static/css/print.css"/>
+    </tal:css>
+    <!-- /CSS -->
+
+    <!-- JS -->
+    <tal:js define="portal context/@@plone_portal_state/portal;">
+      <!-- publish.js -->
+      <script type="text/javascript"
+              src="senaite.impress.publish.js"
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/dist/senaite.impress.publish.js"></script>
+    </tal:js>
+    <!-- /JS -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="card row my-4 p-4">
+
+        <div class="text-right" tal:condition="python:view.is_manager()">
+          <!-- Link to publisher control panel -->
+          <a href="#"
+             class="btn btn-outline-dark btn-sm"
+             tal:attributes="href string:${view/portal/absolute_url}/publisher-controlpanel"
+             target="_blank"
+             title="Publisher Controlpanel" i18n:attributes="title">
+            <i class="fas fa-cogs"></i>
+          </a>
+        </div>
+
+        <!-- Report Info -->
+        <table class="table table-condensed my-4">
+          <thead>
+            <tr>
+              <th i18n:translate="">ID</th>
+              <th i18n:translate="">Received</th>
+              <th i18n:translate="">Client</th>
+              <th i18n:translate="">Contact</th>
+              <th i18n:translate="">CC Contacts</th>
+              <th i18n:translate="">CC Emails</th>
+              <th i18n:translate="">State</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="report-row"
+                tal:repeat="model view/get_collection"
+                tal:attributes="uid model/UID;">
+              <!-- ID -->
+              <td>
+                <a href="#"
+                   tal:attributes="href string:${model/absolute_url}">
+                  <span tal:content="model/getId"/>
+                </a>
+              </td>
+              <!-- Date Received -->
+              <td>
+                <span tal:content="python:here.toLocalizedTime(model.DateReceived)"/>
+              </td>
+              <!-- Client -->
+              <td>
+                <a href="#"
+                   tal:attributes="href string:${model/Client/absolute_url}">
+                  <span tal:content="model/Client/Name"/>
+                </a>
+              </td>
+              <!-- Contact Fullname/Email -->
+              <td>
+                <tal:contact define="contact model/Contact"
+                             condition="contact">
+                  <tal:email condition="contact/EmailAddress">
+                    <a href="#"
+                       tal:attributes="href string:mailto:${contact/EmailAddress}">
+                      <span tal:content="contact/Fullname|nothing" />
+                    </a>
+                  </tal:email>
+                  <tal:noemail condition="not: contact/EmailAddress">
+                    <span tal:content="contact/Fullname|nothing" />
+                  </tal:noemail>
+                </tal:contact>
+              </td>
+              <!-- CC Contacts Fullname/Email -->
+              <td>
+                <tal:cccontact repeat="cccontact model/CCContact">
+                  <tal:email condition="cccontact/EmailAddress">
+                    <a href="#"
+                       tal:attributes="href string:mailto:${cccontact/EmailAddress}">
+                      <div tal:content="cccontact/Fullname|nothing" />
+                    </a>
+                  </tal:email>
+                  <tal:noemail condition="not: cccontact/EmailAddress">
+                    <div tal:content="cccontact/Fullname|nothing" />
+                  </tal:noemail>
+                </tal:cccontact>
+              </td>
+              <!-- CC Emails -->
+              <td>
+                <tal:ccemails repeat="ccemail python:model.CCEmails.split(',')">
+                  <a href="#"
+                     tal:attributes="href string:mailto:${ccemail}">
+                    <div tal:content="ccemail" />
+                  </a>
+                </tal:ccemails>
+              </td>
+              <!-- State -->
+              <td tal:define="state model/review_state|nothing">
+                <span tal:condition="state"
+                      i18n:translate=""
+                      i18n:domain="bika"
+                      tal:content="python:state.capitalize().replace('_', ' ')"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ReactJS controlled component -->
+        <div class="row" id="publish_controller"></div>
+
+      </div> <!-- /card -->
+    </div> <!-- /container -->
+  </body>
+</html>
