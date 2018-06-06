@@ -3,7 +3,7 @@
     i18n:domain="senaite.impress">
 
   <records
-      interface="senaite.impress.controlpanel.IPublisherControlPanel"
+      interface="senaite.impress.controlpanel.IImpressControlPanel"
       prefix="senaite.impress" />
 
 </registry>
