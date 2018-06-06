@@ -204,7 +204,7 @@
                   <td class="font-weight-bold table-warning"
                       tal:attributes="colspan python:len(collection) + 1">
                     <span tal:content="category/Title"/>
-                  <td/>
+                  </td>
                 </tr>
                 <tr tal:define="analyses python:view.get_analyses_by(collection, poc=poc, category=category);
                                 analyses_by_title python:set(map(lambda a: a.Title(), analyses))"
@@ -286,7 +286,7 @@
                       tal:condition="python: ar_attachments or an_attachments">
 
         <h4 i18n:translate="">
-          <h2 i18n:translate>Attachments for <span tal:replace="model/getId"/></h2>
+          Attachments for <span tal:replace="model/getId"/>
         </h4>
 
         <!-- AR ATTACHMENTS -->

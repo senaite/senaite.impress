@@ -443,7 +443,7 @@
                       tal:condition="python: ar_attachments or an_attachments">
 
         <h4 i18n:translate="">
-          <h2 i18n:translate>Attachments for <span tal:replace="model/getId"/></h2>
+          Attachments for <span tal:replace="model/getId"/>
         </h4>
 
         <!-- AR ATTACHMENTS -->
