@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE=${buildout:directory}
-SRC=$BASE/src/senaite/publisher
+SRC=$BASE/src/senaite/impress
 I18N=$BASE/bin/i18ndude
 LOCALES=$SRC/locales
 EXCLUDE="build node_modules"
@@ -17,11 +17,48 @@ if test ! -x $I18N; then
     die "i18ndude not installed"
 fi
 
+# Check Transifex Installed
+function has_tx() {
+    TX=$(which tx)
+    if test ! -x $TX || test -z $TX; then
+        return -1
+    else
+        return 0
+    fi
+}
+
+# Transifex Pull Function
+function tx_pull() {
+    if has_tx; then
+        cd $LOCALES
+        echo "Transifex Pull"
+        tx pull -a -f
+    else
+        die "Please install the Transifex Client first: $ pip install transifex-client"
+    fi
+    cd $BASE
+}
+
+# Transifex Push Function
+function tx_push() {
+    if has_tx; then
+        cd $LOCALES
+        echo "Transifex Push"
+        tx push -s -t --skip
+    else
+        die "Please install the Transifex Client first: $ pip install transifex-client"
+    fi
+    cd $BASE
+}
+
 # Clean all generated .mo files
 find $LOCALES -name "*.mo" -delete
 
+# Pull Transifex
+tx_pull
+
 # Generate the Domain
-DOMAIN=senaite.publisher
+DOMAIN=senaite.impress
 echo "Processing Domain $DOMAIN"
 # Flush the english po files
 # If we don't do this, new $DOMAIN-manual.pot translations won't be synced.
@@ -35,3 +72,6 @@ mv $LOCALES/$DOMAIN-tmp.pot $LOCALES/$DOMAIN.pot
 # Synchronize all .po files with the new $DOMAIN.pot
 $I18N sync --pot $LOCALES/$DOMAIN.pot $LOCALES/*/LC_MESSAGES/$DOMAIN.po
 echo "Domain $DOMAIN [DONE]"
+
+# Push Transifex
+tx_push

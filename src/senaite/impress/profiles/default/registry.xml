@@ -1,0 +1,9 @@
+<registry
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="senaite.impress">
+
+  <records
+      interface="senaite.impress.controlpanel.IImpressControlPanel"
+      prefix="senaite.impress" />
+
+</registry>

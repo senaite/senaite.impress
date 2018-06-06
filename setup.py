@@ -6,9 +6,9 @@ version = '1.0.0'
 
 
 setup(
-    name='senaite.publisher',
+    name='senaite.impress',
     version=version,
-    description="SENAITE PUBLISHER",
+    description="SENAITE IMPRESS",
     long_description=open("docs/About.rst").read() +
                      "\n\n" +
                      "Changelog\n" +
@@ -24,7 +24,7 @@ setup(
     keywords='',
     author='SENAITE Foundation',
     author_email='hello@senaite.com',
-    url='https://github.com/senaite/senaite.publisher',
+    url='https://github.com/senaite/senaite.impress',
     license='GPLv2',
     packages=find_packages('src', exclude=['ez_setup']),
     package_dir={'': 'src'},

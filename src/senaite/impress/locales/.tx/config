@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[senaite-impress.senaite]
+file_filter = <lang>/LC_MESSAGES/senaite.impress.po
+host = https://www.transifex.com
+source_file = senaite.impress.pot
+source_lang = en
+type = PO

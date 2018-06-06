@@ -1,0 +1,31 @@
+{
+  "name": "senaite.impress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "printview.js",
+  "scripts": {
+    "build": "webpack -p",
+    "watch": "webpack -d --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "SENAITE Foundation",
+  "license": "GPLv2",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.2.3",
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "npm": "^5.8.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}

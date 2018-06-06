@@ -1,0 +1,125 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="senaite.impress">
+
+  <five:registerPackage package="." initialize=".initialize"/>
+
+  <!-- Register Translations -->
+  <i18n:registerTranslations directory="locales"/>
+
+  <!-- Needed for bika.lims.ManageBika permission -->
+  <include package="bika.lims" file="permissions.zcml" />
+
+  <!-- AR specific Reports -->
+  <include package=".analysisrequest"/>
+
+  <!-- Publish Controller View
+
+       TODO: Rename to `publish` for drop-in replacement as soon as this package
+             is ready for production
+  -->
+  <browser:page
+      for="*"
+      name="printview"
+      class="senaite.impress.publishview.PublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+  <browser:page
+      for="bika.lims.interfaces.IAnalysisRequestsFolder"
+      name="publish"
+      class="senaite.impress.publishview.PublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+  <!-- Ajax Publish Controller View -->
+  <browser:page
+      for="*"
+      name="ajax_publish"
+      class="senaite.impress.ajax.AjaxPublishView"
+      permission="zope.Public"/>
+
+  <!-- Publisher Controlpanel -->
+  <browser:page
+      name="impress-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.ImpressControlPanelView"
+      permission="bika.lims.ManageBika"/>
+
+  <!-- Published Results View -->
+  <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="published_results"
+      class=".published_results.PublishedResults"
+      permission="bika.lims.ManageAnalysisRequests"/>
+
+  <!-- Email View -->
+  <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="email"
+      class=".emailview.EmailView"
+      permission="bika.lims.ManageAnalysisRequests"/>
+
+  <!-- Download View for AR Reports (PDFs) -->
+  <browser:page
+      for="*"
+      name="download_pdf"
+      class=".downloadview.DownloadView"
+      permission="bika.lims.ManageAnalysisRequests" />
+
+  <!-- Generic Report Model -->
+  <adapter
+      for="*"
+      factory="senaite.impress.reportmodel.ReportModel"/>
+
+  <!-- HTML/PDF Publisher Utility -->
+  <utility
+      provides="senaite.impress.interfaces.IPublisher"
+      factory="senaite.impress.publisher.Publisher"/>
+
+  <!-- Template Finder Utility -->
+  <utility
+      provides="senaite.impress.interfaces.ITemplateFinder"
+      factory="senaite.impress.template.TemplateFinder"/>
+
+  <!-- Template Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.Templates"
+      component="senaite.impress.vocabularies.TemplateVocabularyFactory"/>
+
+  <!-- Paper Format Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.Paperformats"
+      component="senaite.impress.vocabularies.PaperformatVocabularyFactory"/>
+
+  <!-- Orientation Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.Orientations"
+      component="senaite.impress.vocabularies.OrientationVocabularyFactory"/>
+
+  <!-- Report resource directory -->
+  <plone:static
+      directory="templates/reports"
+      type="senaite.impress.reports"/>
+
+  <!-- Static resource directory -->
+  <browser:resourceDirectory
+      name="senaite.impress.static"
+      directory="static"/>
+
+  <!-- Generic Setup Profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="SENAITE IMPRESS"
+      directory="profiles/default"
+      description=""
+      provides="Products.GenericSetup.interfaces.EXTENSION"/>
+
+</configure>

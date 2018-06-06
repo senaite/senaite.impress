@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="senaite.impress">
+
+  <!-- View for Single Reports -->
+  <adapter
+      for="*"
+      name="AnalysisRequest"
+      factory=".reportview.SingleReportView"
+      provides="senaite.impress.interfaces.IReportView"
+      permission="zope2.View"/>
+
+  <!-- View for Multi Reports -->
+  <adapter
+      for="*"
+      name="AnalysisRequest"
+      factory=".reportview.MultiReportView"
+      provides="senaite.impress.interfaces.IMultiReportView"
+      permission="zope2.View"/>
+
+  <!-- Report Model -->
+  <adapter
+      for="*"
+      name="AnalysisRequest"
+      factory=".reportmodel.ReportModel"/>
+
+</configure>
