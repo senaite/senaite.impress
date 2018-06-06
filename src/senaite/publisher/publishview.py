@@ -4,17 +4,14 @@
 #
 # Copyright 2018 by it's authors.
 
-import json
 import os
 from collections import defaultdict
-from datetime import datetime
 from string import Template
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
 from senaite.publisher import logger
-# from senaite.publisher import logger
 from senaite.publisher.config import PAPERFORMATS
 from senaite.publisher.interfaces import IMultiReportView
 from senaite.publisher.interfaces import IPublisher
@@ -70,8 +67,6 @@ class PublishView(BrowserView):
         self.request = request
 
     def __call__(self):
-        if self.request.form.get("download", False):
-            return self.download()
         return self.template()
 
     @property
@@ -97,34 +92,6 @@ class PublishView(BrowserView):
         from bika.lims.permissions import Publish
         roles = api.get_roles_for_permission(Publish, self.context)
         return self.user.has_role(roles)
-
-    def download(self):
-        """Generate PDF and send it fot download
-        """
-        # This is the html after it was rendered by the client browser and
-        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
-        # N.B. It might also contain multiple reports!
-
-        form = self.request.form
-        html = form.get("html", "")
-        context = {
-            "format": form.get("format"),
-            "orientation": form.get("orientation"),
-            "template": form.get("template"),
-        }
-
-        publisher = self.get_publisher(html, **context)
-        merge = json.loads(form.get("merge", "false"))
-        pdf = publisher.write_pdf(merge=merge, uid=form.get("uid"))
-
-        filename = "report_%s" % datetime.now().isoformat()
-        self.request.response.setHeader(
-            "Content-Disposition", "attachment; filename=%s.pdf" % filename)
-        self.request.response.setHeader("Content-Type", "application/pdf")
-        self.request.response.setHeader("Content-Length", len(pdf))
-        self.request.response.setHeader("Cache-Control", "no-store")
-        self.request.response.setHeader("Pragma", "no-cache")
-        self.request.response.write(pdf)
 
     def get_uids(self):
         """Parse the UIDs from the request `items` parameter

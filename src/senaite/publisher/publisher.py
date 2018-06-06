@@ -69,8 +69,15 @@ class Publisher(object):
         """Returns a list of parsed reports
         """
         parser = self.get_parser(self.html)
-        reports = parser.find_all("div", class_=self.css_class_report, attrs=attrs)
+        reports = parser.find_all(
+            "div", class_=self.css_class_report, attrs=attrs)
         return map(lambda report: report.prettify(), reports)
+
+    def get_report_by_uid(self, uid):
+        """Return the HTML of the report identified by the given UID
+        """
+        html = self.get_reports({"uid": uid})
+        return "".join(html)
 
     def parse_report_sections(self, report_html):
         """Returns a dictionary of {header, report, footer}
@@ -107,6 +114,21 @@ class Publisher(object):
         logger.info("Publisher::Layout step took {:.2f}s for {} pages"
                     .format(end-start, len(document.pages)))
         return document
+
+    def _render_reports(self, merge=False, uid=None):
+        """Render the reports to WeasyPrint documents
+        """
+        reports = []
+        if uid is not None:
+            reports = [self.get_report_by_uid(uid)]
+        else:
+            reports = self.get_reports()
+
+        # merge all reports to one PDF
+        if merge:
+            reports = ["".join(reports)]
+
+        return map(self._layout_and_paginate, reports)
 
     @synchronized
     def url_fetcher(self, url):
@@ -152,20 +174,16 @@ class Publisher(object):
             "redirected_url": redirected_url,
         }
 
-    def write_png(self, merge=False):
+    def write_png(self, merge=False, uid=None):
         """Write PNGs from the given HTML
         """
         pages = []
-        reports = self.get_reports()
-        if merge:
-            reports = ["".join(reports)]
-
+        reports = self._render_reports(merge=merge, uid=uid)
         for report in reports:
-            document = self._layout_and_paginate(report)
-            for i, page in enumerate(document.pages):
+            for i, page in enumerate(report.pages):
                 # Render page to PNG
                 # What is the default DPI of the browser print dialog?
-                png_bytes, width, height = document.copy([page]).write_png(
+                png_bytes, width, height = report.copy([page]).write_png(
                     resolution=96)
                 # Append tuple of (png_bytes, width, height)
                 pages.append((png_bytes, width, height))
@@ -185,23 +203,5 @@ class Publisher(object):
     def write_pdf(self, merge=False, uid=None):
         """Write PDFs from the given HTML
         """
-
-        attrs = {}
-        if uid is not None:
-            attrs["uid"] = uid
-        reports = self.get_reports(attrs=attrs)
-
-        if merge:
-            reports = ["".join(reports)]
-
-        pages = []
-        main_document = None
-        for n, report in enumerate(reports):
-            document = self._layout_and_paginate(report)
-            if n == 0:
-                main_document = document
-            pages.extend(document.pages)
-
-        # Render page to PDF
-        pdf = main_document.copy(pages).write_pdf()
-        return pdf
+        reports = self._render_reports(merge=merge, uid=uid)
+        return map(lambda doc: doc.write_pdf(), reports)

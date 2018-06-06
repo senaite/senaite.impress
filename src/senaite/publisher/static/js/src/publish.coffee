@@ -19,13 +19,9 @@ import TemplateSelection from "./components/TemplateSelection.js"
 
 # DOCUMENT READY ENTRY POINT
 document.addEventListener "DOMContentLoaded", ->
-  console.debug "*** SENAITE.PUBLISHER::DOMContentLoaded"
+  console.debug "*** SENAITE.PUBLISHER::DOMContentLoaded: --> Loading ReactJS Controller"
+  # gather the <div> container from publish.pt and load the component
   controller = ReactDOM.render <PublishController />, document.getElementById "publish_controller"
-
-  # Bind the event listener on the download buttons
-  buttons = document.querySelectorAll ".download-pdf-button"
-  buttons.forEach (button) ->
-    button.addEventListener "click", controller.downloadPDF
 
 
 class PublishController extends React.Component
@@ -43,7 +39,7 @@ class PublishController extends React.Component
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
     @loadReports = @loadReports.bind(this)
-    @downloadPDF = @downloadPDF.bind(this)
+    @saveReports = @saveReports.bind(this)
 
     @state =
       items: @api.get_items()
@@ -55,7 +51,6 @@ class PublishController extends React.Component
       template: ""
       loading: no
       loadtext: ""
-      group_by_client: yes
       error: ""
 
 
@@ -70,7 +65,6 @@ class PublishController extends React.Component
       format: @state.format
       orientation: @state.orientation
       template: @state.template
-      group_by_client: @state.group_by_client
 
     console.debug("Request Options=", options)
     return options
@@ -143,23 +137,39 @@ class PublishController extends React.Component
     ).bind(this)
 
 
+  saveReports: (event) ->
+    ###
+     * Save all PDFs to the Server
+    ###
+    event.preventDefault()
+
+    # Set the loader
+    @setState
+      loading: yes
+      loadtext: "Generating PDFs..."
+
+    # generate the reports via the API asynchronously
+    promise = @api.save_reports @getRequestOptions()
+
+    promise.then ((redirect_url) ->
+      # toggle the loader off
+      @setState
+        loading: no
+      window.location.href = redirect_url
+    ).bind(this)
+
+
   componentDidUpdate: ->
+    ###
+     * ReactJS event handler when the component did update
+     *
+     * That looks like the right place to process the "raw" HTML from the server
+     * with JavaScript, like barcode rendering etc.
+    ###
     console.debug "PublishController::componentDidUpdate"
 
     # render the barcodes
     @api.render_barcodes()
-
-    # Toggle PDF download buttons
-    if @isMultiReport()
-      @toggleDownloadButtons yes
-    else
-      @toggleDownloadButtons no
-
-
-  toggleDownloadButtons: (toggle) ->
-    buttons = document.querySelectorAll ".download-pdf-button"
-    buttons.forEach (button) ->
-        button.disabled = toggle
 
 
   componentDidMount: ->
@@ -173,34 +183,6 @@ class PublishController extends React.Component
 
   handleSubmit: (event) ->
     event.preventDefault()
-
-
-  downloadPDF: (event) ->
-    event.preventDefault()
-
-    # Set the loader
-    @setState
-      loading: yes
-      loadtext: "Loading PDF..."
-
-    options = @getRequestOptions()
-
-    target = event.target
-
-    uid = target.getAttribute "uid"
-    if uid
-      options.uid = uid
-
-    name = target.getAttribute "name"
-    if name
-      options.name = name
-
-    promise = @api.download_pdf options
-
-    promise.then ( ->
-      @setState
-        loading: no
-    ).bind(this)
 
 
   handleChange: (event) ->
@@ -224,6 +206,9 @@ class PublishController extends React.Component
 
 
   render: ->
+    ###
+     * Publication UI
+    ###
     <div className="col-sm-12">
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
@@ -237,8 +222,8 @@ class PublishController extends React.Component
             <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
             <div className="input-group-append">
-              <Button onClick={@loadReports} name="reload" title="↺" className="btn btn-outline-success"/>
-              <Button title="PDF" onClick={@downloadPDF} className="btn btn-outline-secondary" />
+              <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
+              <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />
             </div>
           </div>
         </div>

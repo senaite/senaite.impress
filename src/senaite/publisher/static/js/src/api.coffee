@@ -4,7 +4,6 @@
 
 import $ from 'jquery'
 import "./lib/jquery-barcode-2.0.2.js"
-import download from "./lib/download.js"
 
 
 class PublishAPI
@@ -99,6 +98,16 @@ class PublishAPI
     return @get_json("render_reports", options)
 
 
+  save_reports: (data) ->
+    ###
+     * @returns {Promise}
+    ###
+
+    options =
+      data: data
+    return @get_json("save_reports", options)
+
+
   load_preview: (data) ->
     ###
      * Fetch the generated previews HTML (including PNGs) from the server
@@ -161,32 +170,6 @@ class PublishAPI
         $(this).find('.barcode-hri').remove()
         barcode_hri = '<div class=\'barcode-hri\'>' + id + '</div>'
         $(this).append barcode_hri
-
-
-  download_pdf: (options) ->
-    ###
-     * Send an async request to the server and download the file
-    ###
-    formData = new FormData()
-    formData.set("download", "1")
-    for key, value of options
-      formData.set(key, value)
-
-    url = @get_base_url()
-
-    init =
-      method: "POST"
-      body: formData
-      credentials: "include"
-
-    filename = options.name or "Report"
-    request = new Request(url, init)
-
-    return fetch(request).then (response) ->
-      return response.blob()
-    .then (blob) ->
-      console.debug "Downloading BLOB", blob
-      download(blob, "#{filename}.pdf", "application/json")
 
 
 export default PublishAPI

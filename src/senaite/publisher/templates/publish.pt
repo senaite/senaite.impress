@@ -61,7 +61,6 @@
               <th i18n:translate="">CC Contacts</th>
               <th i18n:translate="">CC Emails</th>
               <th i18n:translate="">State</th>
-              <th i18n:translate="">PDF</th>
             </tr>
           </thead>
           <tbody>
@@ -130,14 +129,6 @@
                       i18n:translate=""
                       i18n:domain="bika"
                       tal:content="python:state.capitalize().replace('_', ' ')"/>
-              </td>
-              <!-- PDF -->
-              <td>
-                <button class="download-pdf-button btn btn-sm btn-outline-secondary"
-                        tal:attributes="uid model/UID;
-                                        name model/getId;">
-                  PDF
-                </button>
               </td>
             </tr>
           </tbody>

@@ -7,6 +7,7 @@
 import inspect
 import json
 
+from bika.lims import api
 from senaite.publisher import logger
 from senaite.publisher.decorators import returns_json
 from senaite.publisher.publishview import PublishView
@@ -16,7 +17,7 @@ from zope.publisher.interfaces import IPublishTraverse
 
 
 class AjaxPublishView(PublishView):
-    """Print View with Ajax exposed methods
+    """Publish View with Ajax exposed methods
     """
     implements(IPublishTraverse)
 
@@ -96,7 +97,7 @@ class AjaxPublishView(PublishView):
         return data
 
     def ajax_get(self, uid, *args, **kwargs):
-        """Return the JSONified
+        """Return the JSONified data from the wrapped object
 
         Any additional positional parameter in *args will pick only these keys
         from the returned dictionary.
@@ -144,6 +145,49 @@ class AjaxPublishView(PublishView):
         data = self.get_json()
         items = data.pop("items", [])
         return self.render_reports(uids=items, **data)
+
+    def ajax_save_reports(self):
+        """Render all reports as PDFs and store them as AR Reports
+        """
+        # This is the html after it was rendered by the client browser and
+        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
+        # N.B. It might also contain multiple reports!
+        data = self.get_json()
+
+        if not data:
+            logger.error("No data in ajax request found")
+            # XXX raise error with proper status code here
+            return False
+
+        html = data.pop("html", "No HTML data found")
+        publisher = self.get_publisher(html, **data)
+        merge = data.get("merge", False)
+        pdfs = publisher.write_pdf(merge=merge)
+        exit_url = self.context.absolute_url()
+
+        def get_pdf(num):
+            if len(pdfs) == 1:
+                return pdfs[0]
+            if len(pdfs) > num:
+                return pdfs[num]
+            return None
+
+        # We want to save the PDFs per AR as ARReport contents
+        ars = map(api.get_object_by_uid, data.get("items", []))
+
+        for num, ar in enumerate(ars):
+            uid = api.get_uid(ar)
+            pdf = get_pdf(num)
+            report = api.create(ar, "ARReport")
+            report.edit(
+                Title="",
+                AnalysisRequest=api.get_uid(ar),
+                Pdf=pdf,
+                Html="".join(publisher.get_reports({"uid": uid})),
+            )
+            exit_url = ar.getClient().absolute_url() + "/published_results"
+
+        return exit_url
 
     def ajax_get_reports(self, *args):
         """Returns a list of JSON mmodels
