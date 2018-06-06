@@ -3,8 +3,8 @@
               i18n:domain="senaite.impress">
   <action-icon
       category="controlpanel"
-      action_id="publisher-controlpanel"
-      title="Publisher Settings"
+      action_id="impress-controlpanel"
+      title="Impress Settings"
       i18n:attributes="title"
       priority="0"
       icon_expr="++resource++senaite.impress.static/img/icon.png"

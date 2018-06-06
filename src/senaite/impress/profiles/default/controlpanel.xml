@@ -3,15 +3,14 @@
     name="portal_controlpanel"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
-
   <configlet
       title="Impress Settings"
-      action_id="publisher-controlpanel"
+      action_id="impress-controlpanel"
       appId="publisher-controlpanel"
       category="Products"
       condition_expr=""
       icon_expr="string:++resource++senaite.impress.static/img/icon.png"
-      url_expr="string:${portal_url}/@@publisher-controlpanel"
+      url_expr="string:${portal_url}/@@impress-controlpanel"
       visible="True"
       i18n:domain="senaite.impress"
       i18n:attributes="title">

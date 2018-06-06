@@ -12,7 +12,7 @@ from zope import schema
 from zope.interface import Interface
 
 
-class IPublisherControlPanel(Interface):
+class IImpressControlPanel(Interface):
 
     default_template = schema.Choice(
         title=_(u"Default Template"),
@@ -36,11 +36,11 @@ class IPublisherControlPanel(Interface):
     )
 
 
-class PublisherControlPanelForm(RegistryEditForm):
-    schema = IPublisherControlPanel
+class ImpressControlPanelForm(RegistryEditForm):
+    schema = IImpressControlPanel
     schema_prefix = "senaite.impress"
-    label = _("SENAITE Publisher Settings")
+    label = _("SENAITE IMPRESS Settings")
 
 
-PublisherControlPanelView = layout.wrap_form(
-    PublisherControlPanelForm, ControlPanelFormWrapper)
+ImpressControlPanelView = layout.wrap_form(
+    ImpressControlPanelForm, ControlPanelFormWrapper)

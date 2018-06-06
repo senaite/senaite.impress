@@ -48,9 +48,9 @@
 
   <!-- Publisher Controlpanel -->
   <browser:page
-      name="publisher-controlpanel"
+      name="impress-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".controlpanel.PublisherControlPanelView"
+      class=".controlpanel.ImpressControlPanelView"
       permission="bika.lims.ManageBika"/>
 
   <!-- Published Results View -->

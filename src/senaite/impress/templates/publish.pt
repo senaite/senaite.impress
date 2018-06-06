@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title i18n:translate="">SENAITE Publisher</title>
+    <title i18n:translate="">SENAITE IMPRESS</title>
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
       <!-- fontawesome.css -->
@@ -40,12 +40,12 @@
       <div class="card row my-4 p-4">
 
         <div class="text-right" tal:condition="python:view.is_manager()">
-          <!-- Link to publisher control panel -->
+          <!-- Link to SENAITE IMPRESS control panel -->
           <a href="#"
              class="btn btn-outline-dark btn-sm"
-             tal:attributes="href string:${view/portal/absolute_url}/publisher-controlpanel"
+             tal:attributes="href string:${view/portal/absolute_url}/impress-controlpanel"
              target="_blank"
-             title="Publisher Controlpanel" i18n:attributes="title">
+             title="Impress Controlpanel" i18n:attributes="title">
             <i class="fas fa-cogs"></i>
           </a>
         </div>
