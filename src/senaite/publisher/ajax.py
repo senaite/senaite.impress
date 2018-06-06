@@ -149,20 +149,28 @@ class AjaxPublishView(PublishView):
     def ajax_save_reports(self):
         """Render all reports as PDFs and store them as AR Reports
         """
+
+        # Data sent via async ajax call as JSON data from the frontend
+        data = self.get_json()
+
         # This is the html after it was rendered by the client browser and
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
-        data = self.get_json()
+        html = data.get("html")
 
-        if not data:
-            logger.error("No data in ajax request found")
-            # XXX raise error with proper status code here
-            return False
+        # Generate the print CSS with the set format/orientation
+        format = data.get("format")
+        orientation = data.get("orientation")
+        css = self.get_print_css(format=format, orientation=orientation)
+        logger.info(u"Print CSS: {}".format(css))
 
-        html = data.pop("html", "No HTML data found")
-        publisher = self.get_publisher(html, **data)
+        # get an publisher instance
+        publisher = self.publisher
+        # add the generated CSS to the publisher
+        publisher.add_inline_css(css)
+
         merge = data.get("merge", False)
-        pdfs = publisher.write_pdf(merge=merge)
+        pdfs = publisher.write_pdf(html, merge=merge)
         exit_url = self.context.absolute_url()
 
         def get_pdf(num):
@@ -179,11 +187,14 @@ class AjaxPublishView(PublishView):
             uid = api.get_uid(ar)
             pdf = get_pdf(num)
             report = api.create(ar, "ARReport")
+            _html = html
+            if not merge:
+                _html = publisher.get_reports(html, attrs={"uid": uid})
             report.edit(
                 Title="",
                 AnalysisRequest=api.get_uid(ar),
                 Pdf=pdf,
-                Html="".join(publisher.get_reports({"uid": uid})),
+                Html=_html,
             )
             exit_url = ar.getClient().absolute_url() + "/published_results"
 
@@ -200,21 +211,30 @@ class AjaxPublishView(PublishView):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
         """
+
+        # Data sent via async ajax call as JSON data from the frontend
+        data = self.get_json()
+
         # This is the html after it was rendered by the client browser and
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # N.B. It might also contain multiple reports!
-        data = self.get_json()
-        html = data.pop("html", None)
+        html = data.get("html")
 
-        publisher = self.get_publisher(html, **data)
-        merge = data.get("merge", False)
-        images = publisher.write_png(merge=merge)
-
-        css = self.get_print_css(**data)
+        # Generate the print CSS with the set format/orientation
+        format = data.get("format")
+        orientation = data.get("orientation")
+        css = self.get_print_css(format=format, orientation=orientation)
         logger.info(u"Preview CSS: {}".format(css))
+
+        # get an publisher instance
+        publisher = self.publisher
+        # add the generated CSS to the publisher
+        publisher.add_inline_css(css)
+
+        merge = data.get("merge", False)
+        images = publisher.write_png(html, merge=merge)
 
         preview = u""
         for image in images:
             preview += publisher.png_to_img(*image)
-        preview += u"<style type='text/css'>{}</style>".format(css)
         return preview

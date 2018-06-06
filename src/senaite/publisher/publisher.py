@@ -32,10 +32,9 @@ class Publisher(object):
     css_class_footer = "section-footer"
     css_resources = "++resource++senaite.publisher.static/css"
 
-    def __init__(self, html):
+    def __init__(self):
         # Ignore WeasyPrint warnings for unknown CSS properties
         logging.getLogger('weasyprint').setLevel(logging.ERROR)
-        self.html = html
         self.css = []
 
     def link_css_file(self, css_file):
@@ -43,15 +42,15 @@ class Publisher(object):
         """
         css_file = os.path.basename(css_file)
         path = "{}/{}/{}".format(self.base_url, self.css_resources, css_file)
-        css = CSS(url=path, url_fetcher=self.url_fetcher,
-                  base_url=self.base_url)
+        css = CSS(
+            url=path, url_fetcher=self.url_fetcher, base_url=self.base_url)
         self.css.append(css)
 
     def add_inline_css(self, css):
         """Add an inline CSS
         """
-        css = CSS(string=css, url_fetcher=self.url_fetcher,
-                  base_url=self.base_url)
+        css = CSS(
+            string=css, url_fetcher=self.url_fetcher, base_url=self.base_url)
         self.css.append(css)
 
     @property
@@ -65,19 +64,13 @@ class Publisher(object):
         """
         return BeautifulSoup(html, parser)
 
-    def get_reports(self, attrs={}):
+    def get_reports(self, html, attrs={}):
         """Returns a list of parsed reports
         """
-        parser = self.get_parser(self.html)
+        parser = self.get_parser(html)
         reports = parser.find_all(
             "div", class_=self.css_class_report, attrs=attrs)
         return map(lambda report: report.prettify(), reports)
-
-    def get_report_by_uid(self, uid):
-        """Return the HTML of the report identified by the given UID
-        """
-        html = self.get_reports({"uid": uid})
-        return "".join(html)
 
     def parse_report_sections(self, report_html):
         """Returns a dictionary of {header, report, footer}
@@ -107,22 +100,22 @@ class Publisher(object):
         """
         start = time.time()
         # Lay out and paginate the document
-        html = HTML(string=html, url_fetcher=self.url_fetcher,
-                    base_url=self.base_url)
+        html = HTML(
+            string=html, url_fetcher=self.url_fetcher, base_url=self.base_url)
         document = html.render(stylesheets=self.css)
         end = time.time()
         logger.info("Publisher::Layout step took {:.2f}s for {} pages"
                     .format(end-start, len(document.pages)))
         return document
 
-    def _render_reports(self, merge=False, uid=None):
+    def _render_reports(self, html, merge=False, uid=None):
         """Render the reports to WeasyPrint documents
         """
         reports = []
         if uid is not None:
-            reports = [self.get_report_by_uid(uid)]
+            reports = self.get_reports(attrs={"uid": uid})
         else:
-            reports = self.get_reports()
+            reports = self.get_reports(html)
 
         # merge all reports to one PDF
         if merge:
@@ -174,11 +167,11 @@ class Publisher(object):
             "redirected_url": redirected_url,
         }
 
-    def write_png(self, merge=False, uid=None):
+    def write_png(self, html, merge=False, uid=None):
         """Write PNGs from the given HTML
         """
         pages = []
-        reports = self._render_reports(merge=merge, uid=uid)
+        reports = self._render_reports(html, merge=merge, uid=uid)
         for report in reports:
             for i, page in enumerate(report.pages):
                 # Render page to PNG
@@ -200,8 +193,8 @@ class Publisher(object):
                   </div>""".format(width, height, data_url)
         return img
 
-    def write_pdf(self, merge=False, uid=None):
+    def write_pdf(self, html, merge=False, uid=None):
         """Write PDFs from the given HTML
         """
-        reports = self._render_reports(merge=merge, uid=uid)
+        reports = self._render_reports(html, merge=merge, uid=uid)
         return map(lambda doc: doc.write_pdf(), reports)

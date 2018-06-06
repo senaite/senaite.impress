@@ -79,6 +79,18 @@ class PublishView(BrowserView):
     def user(self):
         return api.get_current_user()
 
+    @property
+    def publisher(self):
+        """Provides a configured publisher instance
+        """
+        publisher = getUtility(IPublisher)
+        # flush any linked CSS
+        publisher.css = []
+        # link default stylesheets
+        publisher.link_css_file("bootstrap.min.css")
+        publisher.link_css_file("print.css")
+        return publisher
+
     def is_manager(self):
         """Checks if the current user has manager rights
         """
@@ -184,25 +196,9 @@ class PublishView(BrowserView):
         view = getAdapter(collection, IMultiReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
-    def get_publisher(self, html, **kw):
-        """Returns a configured IPublisher instance
-        """
-        publisher = IPublisher(html)
-
-        # generate print CSS
-        css = self.get_print_css(**kw)
-
-        # link CSS
-        publisher.link_css_file("bootstrap.min.css")
-        publisher.link_css_file("print.css")
-        publisher.add_inline_css(css)
-
-        return publisher
-
-    def get_print_css(self, **kw):
+    def get_print_css(self, format="A4", orientation="portrait"):
         """Returns the generated print CSS for the given format/orientation
         """
-        format = kw.get("format", "A4")
         paperformat = self.get_paperformat(format)
 
         margin_top = paperformat["margin_top"]
@@ -221,7 +217,6 @@ class PublishView(BrowserView):
         paperformat["content_height"] = content_height
 
         # Flip sizes in landscape
-        orientation = kw.get("orientation", "portrait")
         if orientation == "landscape":
             paperformat["page_width"] = page_height
             paperformat["page_height"] = page_width

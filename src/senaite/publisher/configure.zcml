@@ -79,9 +79,9 @@
       for="*"
       factory="senaite.publisher.reportmodel.ReportModel"/>
 
-  <!-- HTML/PDB Publisher Adapter -->
-  <adapter
-      for="*"
+  <!-- HTML/PDF Publisher Utility -->
+  <utility
+      provides="senaite.publisher.interfaces.IPublisher"
       factory="senaite.publisher.publisher.Publisher"/>
 
   <!-- Template Finder Utility -->
