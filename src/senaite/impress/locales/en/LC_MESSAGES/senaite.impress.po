@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-06 17:25+0000\n"
+"POT-Creation-Date: 2018-06-06 19:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,6 +152,11 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
+#: senaite/impress/templates/publish.pt:44
+msgid "Impress Controlpanel"
+msgstr ""
+
+#: senaite/impress/profiles/default/actionicons.xml
 #: senaite/impress/profiles/default/controlpanel.xml
 msgid "Impress Settings"
 msgstr ""
@@ -233,14 +238,6 @@ msgstr ""
 msgid "Published results"
 msgstr ""
 
-#: senaite/impress/templates/publish.pt:44
-msgid "Publisher Controlpanel"
-msgstr ""
-
-#: senaite/impress/profiles/default/actionicons.xml
-msgid "Publisher Settings"
-msgstr ""
-
 #: senaite/impress/templates/reports/Default.pt:393
 #: senaite/impress/templates/reports/MultiDefault.pt:418
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:261
@@ -300,15 +297,12 @@ msgid "Review State"
 msgstr ""
 
 #: senaite/impress/configure.zcml:123
+#: senaite/impress/templates/publish.pt:8
 msgid "SENAITE IMPRESS"
 msgstr ""
 
-#: senaite/impress/templates/publish.pt:8
-msgid "SENAITE Publisher"
-msgstr ""
-
 #: senaite/impress/controlpanel.py:42
-msgid "SENAITE Publisher Settings"
+msgid "SENAITE IMPRESS Settings"
 msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:197
