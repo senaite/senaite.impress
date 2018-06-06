@@ -6,4 +6,9 @@
       interface="senaite.impress.controlpanel.IImpressControlPanel"
       prefix="senaite.impress" />
 
+  <!-- Cleanup after package rename -->
+  <record name="senaite.publisher.default_orientation" remove="true" />
+  <record name="senaite.publisher.default_paperformat" remove="true" />
+  <record name="senaite.publisher.default_template" remove="true" />
+
 </registry>
