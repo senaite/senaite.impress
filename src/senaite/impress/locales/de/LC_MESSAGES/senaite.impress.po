@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-07 10:23+0000\n"
+"POT-Creation-Date: 2018-06-07 10:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Ramon Bartl <rb@ridingbytes.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -22,11 +22,11 @@ msgstr ""
 
 #: senaite/impress/templates/email.pt:192
 msgid "${amount} attachments with a total size of ${total_size}"
-msgstr ""
+msgstr "${amount} Anhänge mit einer Gesamtgröße von ${total_size}"
 
 #: senaite/impress/templates/email.pt:115
 msgid "&larr; Back to the ${back_link}"
-msgstr ""
+msgstr "&larr; Zurück zur ${back_link}"
 
 #: senaite/impress/templates/email.pt:222
 msgid "Abort"
@@ -35,15 +35,15 @@ msgstr "Abbrechen"
 #: senaite/impress/profiles/default/types/Client.xml
 #: senaite/impress/reports_listing.py:35
 msgid "Analysis Reports"
-msgstr ""
+msgstr "Analysenberichte"
 
 #: senaite/impress/reports_listing.py:55
 msgid "Analysis Request"
-msgstr ""
+msgstr "Analysenaufträge"
 
 #: senaite/impress/emailview.py:49
 msgid "Analysis Results for {}"
-msgstr ""
+msgstr "Analysenergebnisse für {}"
 
 #: senaite/impress/templates/reports/Default.pt:541
 #: senaite/impress/templates/reports/MultiDefault.pt:574
@@ -59,7 +59,7 @@ msgstr "Anlagen"
 #: senaite/impress/templates/reports/MultiDefault.pt:446
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:289
 msgid "Attachments for ${DYNAMIC_CONTENT}"
-msgstr ""
+msgstr "Anhänge für ${DYNAMIC_CONTENT}"
 
 #: senaite/impress/templates/reports/Default.pt:205
 #: senaite/impress/templates/reports/MultiDefault.pt:220
@@ -69,7 +69,7 @@ msgstr "Batch ID"
 #: senaite/impress/templates/reports/Default.pt:259
 #: senaite/impress/templates/reports/MultiDefault.pt:274
 msgid "Batch Labels"
-msgstr ""
+msgstr "Batch Etiketten"
 
 #: senaite/impress/templates/publish.pt:61
 msgid "CC Contacts"
@@ -92,11 +92,11 @@ msgstr "Kunden Projekt ID"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:96
 msgid "Client Order"
-msgstr ""
+msgstr "Kundenbestellung"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:87
 msgid "Client Reference"
-msgstr ""
+msgstr "Kundenreferenz"
 
 #: senaite/impress/templates/reports/Default.pt:224
 #: senaite/impress/templates/reports/MultiDefault.pt:239
@@ -105,7 +105,7 @@ msgstr "Kundenprobe"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:105
 msgid "Client Sample ID"
-msgstr ""
+msgstr "Kunden Proben-ID"
 
 #: senaite/impress/templates/publish.pt:60
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:78
@@ -125,7 +125,7 @@ msgstr "Eingangsdatum"
 #: senaite/impress/templates/reports/Default.pt:240
 #: senaite/impress/templates/reports/MultiDefault.pt:255
 msgid "Date Verified"
-msgstr ""
+msgstr "Verifikationsdatum"
 
 #: senaite/impress/controlpanel.py:32
 msgid "Default Orientation"
@@ -141,27 +141,27 @@ msgstr "Standard Vorlage"
 
 #: senaite/impress/reports_listing.py:57
 msgid "Download"
-msgstr ""
+msgstr "Herunterladen"
 
 #: senaite/impress/reports_listing.py:50
 msgid "Email"
-msgstr ""
+msgstr "E-Mail"
 
 #: senaite/impress/emailview.py:117
 msgid "Email aborted"
-msgstr ""
+msgstr "E-Mail abgebrochen"
 
 #: senaite/impress/emailview.py:112
 msgid "Failed to send Email(s)"
-msgstr ""
+msgstr "Fehler beim E-Mail Versand"
 
 #: senaite/impress/templates/email.pt:135
 msgid "From"
-msgstr ""
+msgstr "Von"
 
 #: senaite/impress/configure.zcml:143
 msgid "HTML to PDF report engine for SENAITE"
-msgstr ""
+msgstr "HTML zu PDF Berichte Engine für SENAITE"
 
 #: senaite/impress/templates/publish.pt:57
 msgid "ID"
@@ -169,16 +169,16 @@ msgstr "ID"
 
 #: senaite/impress/templates/publish.pt:44
 msgid "Impress Controlpanel"
-msgstr ""
+msgstr "IMPRESS Control Panel"
 
 #: senaite/impress/profiles/default/actionicons.xml
 #: senaite/impress/profiles/default/controlpanel.xml
 msgid "Impress Settings"
-msgstr ""
+msgstr "IMPRESS Einstellungen"
 
 #: senaite/impress/emailview.py:107
 msgid "Message sent to {}, "
-msgstr ""
+msgstr "Nachricht an {} gesendet,"
 
 #: senaite/impress/templates/reports/Default.pt:536
 #: senaite/impress/templates/reports/MultiDefault.pt:569
@@ -192,23 +192,23 @@ msgstr "Methoden verfügbar durch Klick auf den Analysenauftrags-Link"
 
 #: senaite/impress/emailview.py:81
 msgid "No attachments"
-msgstr ""
+msgstr "Keine Anhänge"
 
 #: senaite/impress/reports_listing.py:138
 msgid "No email address set for this contact"
-msgstr ""
+msgstr "Keine E-Mail Adresse für diesen Kontakt hinterlegt"
 
 #: senaite/impress/emailview.py:72
 msgid "No email recipients selected"
-msgstr ""
+msgstr "Keine E-Mail Empfänger ausgewählt"
 
 #: senaite/impress/emailview.py:140
 msgid "Not all contacts are equal for the selected Reports. Please manually select recipients for this email."
-msgstr ""
+msgstr "Nicht alle Kontakte sind gleich für die ausgewählten Berichte. Bitte E-Mail Empfänger manuell auswählen."
 
 #: senaite/impress/emailview.py:146
 msgid "Not all contacts have the email publication preference set. Please manually select recipients for this email."
-msgstr ""
+msgstr "Nicht alle Kontakte haben E-Mail als Publikationspräferenz gesetzt. Bitte E-Mail Empfänger manuell auswählen."
 
 #: senaite/impress/templates/reports/Default.pt:523
 #: senaite/impress/templates/reports/MultiDefault.pt:556
@@ -218,15 +218,15 @@ msgstr "Nicht berechnet"
 
 #: senaite/impress/emailview.py:75
 msgid "Please add an email subject"
-msgstr ""
+msgstr "Bitte E-Mail Betreff angeben"
 
 #: senaite/impress/emailview.py:78
 msgid "Please add an email text"
-msgstr ""
+msgstr "Bitte E-Mail Text angeben"
 
 #: senaite/impress/templates/email_template.pt:11
 msgid "Please find attached the analysis result(s) for ${client_name}"
-msgstr ""
+msgstr "Anbei finden Sie die Analysenergebnisse für ${client_name}"
 
 #: senaite/impress/templates/reports/Default.pt:171
 #: senaite/impress/templates/reports/MultiDefault.pt:170
@@ -236,11 +236,11 @@ msgstr "Vorläufiger Bericht"
 
 #: senaite/impress/reports_listing.py:60
 msgid "Published By"
-msgstr ""
+msgstr "Publiziert durch"
 
 #: senaite/impress/reports_listing.py:59
 msgid "Published Date"
-msgstr ""
+msgstr "Veröffentlichungsdatum"
 
 #: senaite/impress/templates/reports/Default.pt:248
 #: senaite/impress/templates/reports/MultiDefault.pt:263
@@ -265,7 +265,7 @@ msgstr "Eingegangen"
 
 #: senaite/impress/reports_listing.py:61
 msgid "Recipients"
-msgstr ""
+msgstr "Empfänger"
 
 #: senaite/impress/templates/reports/Default.pt:402
 msgid "Remarks"
@@ -304,16 +304,16 @@ msgstr "Ergebnisbewertung"
 
 #: senaite/impress/reports_listing.py:56
 msgid "Review State"
-msgstr ""
+msgstr "Prüfstatus"
 
 #: senaite/impress/configure.zcml:143
 #: senaite/impress/templates/publish.pt:8
 msgid "SENAITE IMPRESS"
-msgstr ""
+msgstr "SENAITE IMPRESS"
 
 #: senaite/impress/controlpanel.py:42
 msgid "SENAITE IMPRESS Settings"
-msgstr ""
+msgstr "SENAITE IMPRESS Einstellungen"
 
 #: senaite/impress/templates/reports/Default.pt:197
 #: senaite/impress/templates/reports/MultiDefault.pt:212
@@ -322,11 +322,11 @@ msgstr "Proben-ID"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:130
 msgid "Sample Point"
-msgstr ""
+msgstr "Probennahmestelle"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:140
 msgid "Sample Remarks"
-msgstr ""
+msgstr "Anmerkungen zur Probe"
 
 #: senaite/impress/templates/reports/Default.pt:228
 #: senaite/impress/templates/reports/MultiDefault.pt:243
@@ -336,15 +336,15 @@ msgstr "Probenart"
 
 #: senaite/impress/templates/email.pt:216
 msgid "Send"
-msgstr ""
+msgstr "Abschicken"
 
 #: senaite/impress/templates/email.pt:108
 msgid "Send Analysis Reports via Email"
-msgstr ""
+msgstr "Analysenberichte via E-Mail versenden"
 
 #: senaite/impress/reports_listing.py:58
 msgid "Size"
-msgstr ""
+msgstr "Größe"
 
 #: senaite/impress/templates/reports/Default.pt:232
 #: senaite/impress/templates/reports/MultiDefault.pt:247
@@ -353,11 +353,11 @@ msgstr "Spezifikation"
 
 #: senaite/impress/templates/publish.pt:63
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #: senaite/impress/templates/email.pt:170
 msgid "Subject"
-msgstr ""
+msgstr "Betreff"
 
 #: senaite/impress/templates/reports/Default.pt:186
 #: senaite/impress/templates/reports/MultiDefault.pt:200
@@ -377,15 +377,15 @@ msgstr "Das Vertrauensniveau von Ergebnissen beträgt ${lab_confidence}%"
 
 #: senaite/impress/templates/email.pt:176
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: senaite/impress/templates/email_template.pt:5
 msgid "Thank you for your analysis request."
-msgstr ""
+msgstr "Vielen Dank für Ihren Analysenauftrag."
 
 #: senaite/impress/templates/email.pt:181
 msgid "The variable ${recipients} will be automatically replaced with the names and emails of the final selected recipients."
-msgstr ""
+msgstr "Die Variable ${recipients} wird automatisch durch die Namen und E-Mail Adressen der final gewählten Empfänger ersetzt"
 
 #: senaite/impress/templates/reports/Default.pt:162
 #: senaite/impress/templates/reports/MultiDefault.pt:159
@@ -407,15 +407,15 @@ msgstr "Dieses Dokument darf ohne schriftliche Genehmigung der${name_lab} nicht 
 
 #: senaite/impress/templates/email_template.pt:14
 msgid "This report was sent to the following contacts:"
-msgstr ""
+msgstr "Dieser Bericht wurde an die folgenden Kontakte versendet:"
 
 #: senaite/impress/templates/email.pt:148
 msgid "To"
-msgstr ""
+msgstr "An"
 
 #: senaite/impress/emailview.py:130
 msgid "Total size of email exceeded {:.2f}MB"
-msgstr ""
+msgstr "Gesamtgröße der E-Mail hat {\\:.2f}MB überschritten"
 
 #: senaite/impress/templates/reports/Default.pt:306
 #: senaite/impress/templates/reports/MultiDefault.pt:323
@@ -424,8 +424,8 @@ msgstr "Einheit"
 
 #: senaite/impress/templates/email_template.pt:20
 msgid "With best regards"
-msgstr ""
+msgstr "Mit freundlichen Grüßen"
 
 #: senaite/impress/templates/email.pt:115
 msgid "published results overview"
-msgstr ""
+msgstr "Übersicht der veröffentlichten Ergebnisse"
