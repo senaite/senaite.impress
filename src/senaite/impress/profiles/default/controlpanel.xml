@@ -5,8 +5,8 @@
 
   <configlet
       title="Impress Settings"
-      action_id="impress-controlpanel"
-      appId="publisher-controlpanel"
+      action_id="senaite.impress"
+      appId="senaite.impress"
       category="Products"
       condition_expr=""
       icon_expr="string:++resource++senaite.impress.static/img/icon.png"

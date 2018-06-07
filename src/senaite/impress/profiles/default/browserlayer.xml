@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <layers>
   <layer name="senaite.impress"
          interface="senaite.impress.interfaces.ILayer" />

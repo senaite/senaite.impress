@@ -7,16 +7,16 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="senaite.impress">
 
-  <five:registerPackage package="." initialize=".initialize"/>
+  <five:registerPackage package="." initialize=".initialize" />
 
   <!-- Register Translations -->
-  <i18n:registerTranslations directory="locales"/>
+  <i18n:registerTranslations directory="locales" />
 
   <!-- Needed for bika.lims.ManageBika permission -->
   <include package="bika.lims" file="permissions.zcml" />
 
   <!-- AR specific Reports -->
-  <include package=".analysisrequest"/>
+  <include package=".analysisrequest" />
 
   <!-- Publish Controller View
 
@@ -44,82 +44,112 @@
       for="*"
       name="ajax_publish"
       class="senaite.impress.ajax.AjaxPublishView"
-      permission="zope.Public"/>
+      permission="zope.Public"
+      layer="senaite.impress.interfaces.ILayer"
+      />
 
   <!-- Publisher Controlpanel -->
   <browser:page
       name="impress-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".controlpanel.ImpressControlPanelView"
-      permission="bika.lims.ManageBika"/>
+      permission="bika.lims.ManageBika"
+      layer="senaite.impress.interfaces.ILayer"
+      />
 
   <!-- Published Results View -->
   <browser:page
       for="bika.lims.interfaces.IClient"
       name="published_results"
       class=".published_results.PublishedResults"
-      permission="bika.lims.ManageAnalysisRequests"/>
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
 
   <!-- Email View -->
   <browser:page
       for="bika.lims.interfaces.IClient"
       name="email"
       class=".emailview.EmailView"
-      permission="bika.lims.ManageAnalysisRequests"/>
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
 
   <!-- Download View for AR Reports (PDFs) -->
   <browser:page
       for="*"
       name="download_pdf"
       class=".downloadview.DownloadView"
-      permission="bika.lims.ManageAnalysisRequests" />
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
 
   <!-- Generic Report Model -->
   <adapter
       for="*"
-      factory="senaite.impress.reportmodel.ReportModel"/>
+      factory="senaite.impress.reportmodel.ReportModel"
+      />
 
   <!-- HTML/PDF Publisher Utility -->
   <utility
       provides="senaite.impress.interfaces.IPublisher"
-      factory="senaite.impress.publisher.Publisher"/>
+      factory="senaite.impress.publisher.Publisher"
+      />
 
   <!-- Template Finder Utility -->
   <utility
       provides="senaite.impress.interfaces.ITemplateFinder"
-      factory="senaite.impress.template.TemplateFinder"/>
+      factory="senaite.impress.template.TemplateFinder"
+      />
 
   <!-- Template Vocabulary -->
   <utility
       name="senaite.impress.vocabularies.Templates"
-      component="senaite.impress.vocabularies.TemplateVocabularyFactory"/>
+      component="senaite.impress.vocabularies.TemplateVocabularyFactory"
+      />
 
   <!-- Paper Format Vocabulary -->
   <utility
       name="senaite.impress.vocabularies.Paperformats"
-      component="senaite.impress.vocabularies.PaperformatVocabularyFactory"/>
+      component="senaite.impress.vocabularies.PaperformatVocabularyFactory"
+      />
 
   <!-- Orientation Vocabulary -->
   <utility
       name="senaite.impress.vocabularies.Orientations"
-      component="senaite.impress.vocabularies.OrientationVocabularyFactory"/>
+      component="senaite.impress.vocabularies.OrientationVocabularyFactory"
+      />
 
   <!-- Report resource directory -->
   <plone:static
       directory="templates/reports"
-      type="senaite.impress.reports"/>
+      type="senaite.impress.reports"
+      />
 
   <!-- Static resource directory -->
   <browser:resourceDirectory
       name="senaite.impress.static"
-      directory="static"/>
+      directory="static"
+      />
 
-  <!-- Generic Setup Profile -->
+  <!-- Generic Setup *INSTALL* Profile -->
   <genericsetup:registerProfile
       name="default"
       title="SENAITE IMPRESS"
       directory="profiles/default"
-      description=""
-      provides="Products.GenericSetup.interfaces.EXTENSION"/>
+      description="HTML to PDF report engine for SENAITE"
+      post_handler="senaite.impress.setuphandlers.post_install"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <!-- Generic Setup *UNINSTALL* Profile -->
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="SENAITE IMPRESS"
+      directory="profiles/uninstall"
+      description="HTML to PDF report engine for SENAITE"
+      post_handler="senaite.impress.setuphandlers.post_uninstall"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
 
 </configure>

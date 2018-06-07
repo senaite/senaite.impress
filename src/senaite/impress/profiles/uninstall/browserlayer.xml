@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<layers>
+  <!-- Remove Browser Layer -->
+  <layer name="senaite.impress"
+         interface="senaite.impress.interfaces.ILayer"
+         remove="True" />
+</layers>

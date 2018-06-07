@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="Client">
+
+  <!-- Remove "Published Results" tab on Clients -->
+  <action action_id="published_results"
+         category="object"
+          remove="True"/>
+
+</object>
