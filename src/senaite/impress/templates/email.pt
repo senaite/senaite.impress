@@ -167,6 +167,27 @@
           </div>
 
           <div class="form-group">
+            <label i18n:translate="" for="responsibles">Responsibles</label>
+            <tal:responsibles repeat="recipient view/responsibles">
+              <span tal:define="name recipient/name;
+                                email recipient/email;
+                                active recipient/active;
+                                valid recipient/valid;
+                                active_cls python:active and 'active' or 'inactive';
+                                valid_cls python:valid and 'valid' or 'invalid';"
+                    tal:attributes="class string:recipient ${valid_cls} ${active_cls}">
+                <input type="hidden"
+                       tal:attributes="value string:${name},${email};"
+                       name="responsibles:list"/>
+
+                <span
+                  tal:attributes="title email;"
+                  tal:content="name|email" />
+              </span>
+            </tal:responsibles>
+          </div>
+
+          <div class="form-group">
             <label i18n:translate="" for="subject">Subject</label>
             <input type="text" name="subject" value="" class="form-control"
                    tal:attributes="value view/email_subject" />

@@ -62,10 +62,14 @@ class EmailView(BrowserView):
             logger.info("*** SENDING EMAIL ***")
 
             # Parse used defined values from the request form
-            recipients = form.get("recipients")
+            recipients = form.get("recipients", [])
+            responsibles = form.get("responsibles", [])
             subject = form.get("subject")
             body = form.get("body")
             reports = self.get_reports()
+
+            # Merge recipiens and responsibles
+            recipients = set(recipients + responsibles)
 
             # sanity checks
             if not recipients:
@@ -134,6 +138,7 @@ class EmailView(BrowserView):
         # prepare the data for the template
         self.reports = map(self.get_report_data, report_objs)
         self.recipients = self.get_recipients_data(report_objs)
+        self.responsibles = self.get_responsibles_data(report_objs)
 
         # inform the user about invalid/inactive recipients
         if not all(map(lambda r: r.get("valid"), self.recipients)):
@@ -323,6 +328,47 @@ class EmailView(BrowserView):
         for recipient in recipients:
             if recipient.get("name") not in common_names:
                 recipient["valid"] = False
+        return recipients
+
+    def get_responsibles_data(self, reports):
+        """Responsibles data to be used in the template
+        """
+        if not reports:
+            return []
+
+        recipients = []
+        recipient_names = []
+
+        for num, report in enumerate(reports):
+            # get the linked AR of this ARReport
+            ar = report.getAnalysisRequest()
+
+            # recipient names of this report
+            report_recipient_names = []
+            responsibles = ar.getResponsible()
+            for manager_id in responsibles.get("ids", []):
+                responsible = responsibles["dict"][manager_id]
+                name = responsible.get("name")
+                email = responsible.get("email")
+                record = {
+                    "name": name,
+                    "email": email,
+                    "active": True,
+                    "valid": True,
+                }
+                if record not in recipients:
+                    recipients.append(record)
+                # remember the name of the recipient for this report
+                report_recipient_names.append(name)
+            recipient_names.append(report_recipient_names)
+
+        # recipient names, which all of the reports have in common
+        common_names = set(recipient_names[0]).intersection(*recipient_names)
+        # mark recipients not in common
+        for recipient in recipients:
+            if recipient.get("name") not in common_names:
+                recipient["valid"] = False
+
         return recipients
 
     @property
