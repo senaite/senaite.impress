@@ -7,10 +7,10 @@
 import json
 import threading
 
-from zope.component import queryAdapter
-from senaite.impress.interfaces import IReportModel
+from bika.lims import api
 from senaite.impress import logger
-from senaite import api
+from senaite.impress.interfaces import IReportModel
+from zope.component import queryAdapter
 
 
 def synchronized(func, max_connections=2):

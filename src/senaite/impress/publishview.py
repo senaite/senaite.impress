@@ -8,9 +8,9 @@ import os
 from collections import defaultdict
 from string import Template
 
+from bika.lims import api
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from senaite import api
 from senaite.impress import logger
 from senaite.impress.config import PAPERFORMATS
 from senaite.impress.interfaces import IMultiReportView

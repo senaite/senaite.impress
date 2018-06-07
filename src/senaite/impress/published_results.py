@@ -5,11 +5,11 @@
 # Copyright 2018 by it's authors.
 
 from bika.lims import api
-from bika.lims import bikaMessageFactory as _
 from bika.lims import logger
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.utils import to_utf8
 from Products.CMFPlone.utils import safe_unicode
+from senaite.impress import senaiteMessageFactory as _
 from ZODB.POSException import POSKeyError
 
 
@@ -32,7 +32,7 @@ class PublishedResults(BikaListingView):
         }
 
         self.form_id = "published_results"
-        self.title = _("Published results")
+        self.title = _("Analysis Reports")
 
         self.icon = "{}/{}".format(
             self.portal_url,
