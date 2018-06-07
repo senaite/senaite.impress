@@ -431,8 +431,6 @@ class EmailView(BrowserView):
             if not contact:
                 return None
             email = contact.getEmailAddress()
-            if not is_email(email):
-                return None
             return {
                 "UID": api.get_uid(contact),
                 "Username": contact.getUsername(),

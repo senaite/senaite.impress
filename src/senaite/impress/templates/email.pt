@@ -114,7 +114,7 @@
         &larr; Back to the
         <a tal:attributes="href view/exit_url"
            i18n:name="back_link"
-           i18n:translate="">published results overview</a>
+           i18n:translate="">overview</a>
       </p>
     </metal:description>
 
@@ -155,9 +155,15 @@
                                 valid_cls python:valid and 'valid' or 'invalid';"
                     tal:attributes="class string:recipient ${valid_cls} ${active_cls}">
                 <input type="checkbox"
+                       tal:condition="email"
                        tal:attributes="value string:${name},${email};
                                        checked python:valid and active and 'checked';"
                        name="recipients:list"/>
+
+                <span tal:condition="not: email"
+                      class="text-danger discreet"
+                      title="No Email Address"
+                      i18n:attributes="title">⚠</span>
 
                 <span
                   tal:attributes="title email;"
@@ -176,9 +182,16 @@
                                 active_cls python:active and 'active' or 'inactive';
                                 valid_cls python:valid and 'valid' or 'invalid';"
                     tal:attributes="class string:recipient ${valid_cls} ${active_cls}">
+
                 <input type="hidden"
+                       tal:condition="email"
                        tal:attributes="value string:${name},${email};"
                        name="responsibles:list"/>
+
+                <span tal:condition="not: email"
+                      class="text-danger discreet"
+                      title="No Email Address"
+                      i18n:attributes="title">⚠</span>
 
                 <span
                   tal:attributes="title email;"
