@@ -7,7 +7,7 @@
 import json
 import threading
 
-from bika.lims import api
+from senaite import api
 from senaite.impress import logger
 from senaite.impress.interfaces import IReportModel
 from zope.component import queryAdapter

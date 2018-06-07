@@ -9,9 +9,9 @@ import mimetypes
 import os
 import time
 
-from bika.lims import api
 from bs4 import BeautifulSoup
 from plone.subrequest import subrequest
+from senaite import api
 from senaite.impress import logger
 from senaite.impress.decorators import synchronized
 from senaite.impress.interfaces import IPublisher

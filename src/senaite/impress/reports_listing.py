@@ -4,11 +4,11 @@
 #
 # Copyright 2018 by it's authors.
 
-from bika.lims import api
 from bika.lims import logger
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.utils import to_utf8
 from Products.CMFPlone.utils import safe_unicode
+from senaite import api
 from senaite.impress import senaiteMessageFactory as _
 from ZODB.POSException import POSKeyError
 

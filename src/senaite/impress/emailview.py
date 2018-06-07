@@ -13,13 +13,13 @@ from email.Utils import formataddr
 from smtplib import SMTPException
 from string import Template
 
-from bika.lims import api
 from bika.lims import logger
 from bika.lims.utils import to_utf8
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from senaite import api
 from senaite.impress import senaiteMessageFactory as _
 from ZODB.POSException import POSKeyError
 

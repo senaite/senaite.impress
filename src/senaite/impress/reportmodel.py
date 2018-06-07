@@ -6,12 +6,12 @@
 
 import json
 
-from bika.lims import api
 from DateTime import DateTime
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.Lazy import LazyMap
+from senaite import api
 from senaite.impress import logger
 from senaite.impress.decorators import returns_report_model
 from senaite.impress.interfaces import IReportModel

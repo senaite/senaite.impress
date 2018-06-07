@@ -7,7 +7,7 @@
 import inspect
 import json
 
-from bika.lims import api
+from senaite import api
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.publishview import PublishView
