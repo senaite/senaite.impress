@@ -7,6 +7,27 @@
 
 </div>
 
+
+## About
+
+SENAITE IMPRESS is basically a rendering engine for HTML documents to PDF. It
+supports any kind of international paperformat with their corresponding paper
+dimensions, portrait and landscape orientation and merging of multiple PDFs to
+one document.
+
+
+## Usage
+
+SENAITE IMPRESS is a drop in replacement for the current publication backend in
+SENAITE CORE. After the Add-on has been installed, it will open automatically
+when an Analysis Request is published, prepublished or repupublished.
+
+A new tab *Published Reports* will be available for Clients, which lists all
+generated PDF reports for all Analysis Requests of this client. Reports can be
+selected in this listing for email delivery. This also allows to send multiple
+PDF Analysis Reports in a single Email.
+
+
 ## Hello World
 
 The easiest way to get started with `senaite.impress` is to copy one of the
@@ -26,6 +47,7 @@ It renders a heading saying “Hello, world!” on the report.
 The next few sections will gradually introduce you to using `senaite.impress`.
 We will examine single- and multi reports, Zope page templates and the report model.
 Once you master them, you can create complex reports for SENAITE.
+
 
 ## Single/Multi Reports
 
@@ -72,6 +94,7 @@ It renders the IDs of the model (in this case the Analysis Requests
 
 Change between the templates `HelloWorld.pt` and `MultiHelloWorld.pt` to see how
 the two selected Analysis Requests render either on two pages or on one page.
+
 
 ## Zope Page Templates
 
