@@ -196,7 +196,7 @@ class AjaxPublishView(PublishView):
                 Pdf=pdf,
                 Html=_html,
             )
-            exit_url = ar.getClient().absolute_url() + "/published_results"
+            exit_url = ar.getClient().absolute_url() + "/reports_listing"
 
         return exit_url
 

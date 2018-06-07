@@ -31,7 +31,7 @@ class ReportsListingView(BikaListingView):
             "sort_order": "descending",
         }
 
-        self.form_id = "published_results"
+        self.form_id = "reports_listing"
         self.title = _("Analysis Reports")
 
         self.icon = "{}/{}".format(

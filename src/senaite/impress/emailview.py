@@ -40,7 +40,7 @@ class EmailView(BrowserView):
         self.request = request
         self.url = self.context.absolute_url()
         # the URL to redirect on abort or after send
-        self.exit_url = "{}/{}".format(self.url, "published_results")
+        self.exit_url = "{}/{}".format(self.url, "reports_listing")
         # we need to transform the title to unicode, so that we can use it for
         self.client_name = safe_unicode(self.context.Title())
         self.email_body = self.context.translate(_(self.email_template(self)))
