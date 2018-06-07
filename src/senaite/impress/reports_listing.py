@@ -7,6 +7,7 @@
 from bika.lims import logger
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.utils import to_utf8
+from bika.lims import bikaMessageFactory as _BMF
 from Products.CMFPlone.utils import safe_unicode
 from senaite import api
 from senaite.impress import senaiteMessageFactory as _
@@ -114,7 +115,7 @@ class ReportsListingView(BikaListingView):
             anchor = "<a href='{}/download_pdf' target='_blank'>{}</a>".format(
                 obj.absolute_url(), "PDF")
             item["replace"]["PDF"] = anchor
-        item["State"] = _(status_title)
+        item["State"] = _BMF(status_title)
         item["state_class"] = "state-{}".format(review_state)
         item["FileSize"] = "{:.2f} Kb".format(filesize)
         fmt_date = self.localize_date(obj.created())
