@@ -57,11 +57,11 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Published Results View -->
+  <!-- Reports listing view -->
   <browser:page
       for="bika.lims.interfaces.IClient"
-      name="published_results"
-      class=".published_results.PublishedResults"
+      name="reports_listing"
+      class=".reports_listing.ReportsListingView"
       permission="bika.lims.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />

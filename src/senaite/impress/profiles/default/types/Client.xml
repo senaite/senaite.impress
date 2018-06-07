@@ -5,11 +5,11 @@
         i18n:domain="senaite.impress"
         purge="False">
 
- <action title="Published results"
-         action_id="published_results"
+ <action title="Analysis Reports"
+         action_id="reports_listing"
          category="object"
          icon_expr=""
-         url_expr="string:${object_url}/published_results"
+         url_expr="string:${object_url}/reports_listing"
          i18n:attributes="title"
          visible="True">
     <permission value="BIKA: Manage Analysis Requests"/>

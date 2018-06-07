@@ -13,12 +13,12 @@ from senaite.impress import senaiteMessageFactory as _
 from ZODB.POSException import POSKeyError
 
 
-class PublishedResults(BikaListingView):
-    """View of all published results for this client
+class ReportsListingView(BikaListingView):
+    """Listing view of all generated reports
     """
 
     def __init__(self, context, request):
-        super(PublishedResults, self).__init__(context, request)
+        super(ReportsListingView, self).__init__(context, request)
 
         self.catalog = "portal_catalog"
         self.contentFilter = {

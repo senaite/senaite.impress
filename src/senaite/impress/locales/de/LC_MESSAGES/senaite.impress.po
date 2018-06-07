@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-06 19:58+0000\n"
+"POT-Creation-Date: 2018-06-07 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Ramon Bartl <rb@ridingbytes.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -32,7 +32,12 @@ msgstr ""
 msgid "Abort"
 msgstr "Abbrechen"
 
-#: senaite/impress/published_results.py:55
+#: senaite/impress/profiles/default/types/Client.xml
+#: senaite/impress/reports_listing.py:35
+msgid "Analysis Reports"
+msgstr ""
+
+#: senaite/impress/reports_listing.py:55
 msgid "Analysis Request"
 msgstr ""
 
@@ -134,11 +139,11 @@ msgstr "Standard Papierformat"
 msgid "Default Template"
 msgstr "Standard Vorlage"
 
-#: senaite/impress/published_results.py:57
+#: senaite/impress/reports_listing.py:57
 msgid "Download"
 msgstr ""
 
-#: senaite/impress/published_results.py:50
+#: senaite/impress/reports_listing.py:50
 msgid "Email"
 msgstr ""
 
@@ -152,6 +157,10 @@ msgstr ""
 
 #: senaite/impress/templates/email.pt:135
 msgid "From"
+msgstr ""
+
+#: senaite/impress/configure.zcml:143
+msgid "HTML to PDF report engine for SENAITE"
 msgstr ""
 
 #: senaite/impress/templates/publish.pt:57
@@ -185,7 +194,7 @@ msgstr "Methoden verfügbar durch Klick auf den Analysenauftrags-Link"
 msgid "No attachments"
 msgstr ""
 
-#: senaite/impress/published_results.py:138
+#: senaite/impress/reports_listing.py:138
 msgid "No email address set for this contact"
 msgstr ""
 
@@ -225,11 +234,11 @@ msgstr ""
 msgid "Provisional report"
 msgstr "Vorläufiger Bericht"
 
-#: senaite/impress/published_results.py:60
+#: senaite/impress/reports_listing.py:60
 msgid "Published By"
 msgstr ""
 
-#: senaite/impress/published_results.py:59
+#: senaite/impress/reports_listing.py:59
 msgid "Published Date"
 msgstr ""
 
@@ -238,11 +247,6 @@ msgstr ""
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:369
 msgid "Published by"
 msgstr "Publiziert durch"
-
-#: senaite/impress/profiles/default/types/Client.xml
-#: senaite/impress/published_results.py:35
-msgid "Published results"
-msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:393
 #: senaite/impress/templates/reports/MultiDefault.pt:418
@@ -259,7 +263,7 @@ msgstr "Bereich"
 msgid "Received"
 msgstr "Eingegangen"
 
-#: senaite/impress/published_results.py:61
+#: senaite/impress/reports_listing.py:61
 msgid "Recipients"
 msgstr ""
 
@@ -298,11 +302,11 @@ msgstr "Ergebnisse"
 msgid "Results interpretation"
 msgstr "Ergebnisbewertung"
 
-#: senaite/impress/published_results.py:56
+#: senaite/impress/reports_listing.py:56
 msgid "Review State"
 msgstr ""
 
-#: senaite/impress/configure.zcml:123
+#: senaite/impress/configure.zcml:143
 #: senaite/impress/templates/publish.pt:8
 msgid "SENAITE IMPRESS"
 msgstr ""
@@ -338,7 +342,7 @@ msgstr ""
 msgid "Send Analysis Reports via Email"
 msgstr ""
 
-#: senaite/impress/published_results.py:58
+#: senaite/impress/reports_listing.py:58
 msgid "Size"
 msgstr ""
 
