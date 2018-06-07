@@ -27,7 +27,6 @@ from ZODB.POSException import POSKeyError
 class EmailView(BrowserView):
     """Email Attachments View
     """
-    max_email_size = 15000
     template = ViewPageTemplateFile("templates/email.pt")
     email_template = ViewPageTemplateFile("templates/email_template.pt")
 
@@ -131,8 +130,9 @@ class EmailView(BrowserView):
         if self.total_size > self.max_email_size:
             # don't allow to send oversized emails
             self.allow_send = False
-            message = _("Total size of email exceeded {:.2f}MB".format(
-                self.total_size/1000))
+            message = _("Total size of email exceeded {:.1f} MB ({:.2f} MB)"
+                        .format(self.max_email_size / 1024,
+                                self.total_size / 1024))
             self.add_status_message(message, "error")
 
         # prepare the data for the template
@@ -390,6 +390,16 @@ class EmailView(BrowserView):
         """Portal email name
         """
         return self.portal.email_from_name
+
+    @property
+    def max_email_size(self):
+        """Return the max. allowed email size in KB
+        """
+        max_size = api.get_registry_record(
+            "senaite.impress.max_email_size")
+        if max_size < 0:
+            return 0.0
+        return max_size * 1024
 
     def get_reports(self):
         """Return the objects from the UIDs given in the request

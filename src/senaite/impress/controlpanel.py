@@ -35,6 +35,13 @@ class IImpressControlPanel(Interface):
         required=True,
     )
 
+    max_email_size = schema.Float(
+        title=_(u"Maximum Email Size in MB"),
+        default=10.0,
+        min=0.0,
+        required=True,
+    )
+
 
 class ImpressControlPanelForm(RegistryEditForm):
     schema = IImpressControlPanel
