@@ -246,7 +246,10 @@ class EmailView(BrowserView):
             # No KeyError is raised if the key does not exist.
             # https://docs.python.org/2/library/email.message.html#email.message.Message.__delitem__
             del mime_msg["To"]
-            mime_msg["To"] = formataddr(pair)
+            # N.B. Use only the email address to avoid Postfix Error 550:
+            # Recipient address rejected: User unknown in local recipient table
+            # mime_msg["To"] = formataddr(pair)
+            mime_msg["To"] = pair[1]
             msg_string = mime_msg.as_string()
             sent = self.send(msg_string)
             if not sent:
