@@ -9,6 +9,9 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
+  <!-- Include extended Fields -->
+  <include package=".extender"/>
+
   <!-- Register Translations -->
   <i18n:registerTranslations directory="locales" />
 

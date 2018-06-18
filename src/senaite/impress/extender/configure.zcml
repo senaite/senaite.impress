@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="senaite.impress">
+
+  <include package="archetypes.schemaextender" />
+
+  <!-- ARReports -->
+  <adapter
+      factory=".arreport.ARReportSchemaExtender"
+      name="arreport-extender"
+      provides="archetypes.schemaextender.interfaces.ISchemaExtender"/>
+
+  <adapter
+      factory=".arreport.ARReportSchemaModifier"
+      name="arreport-modifier"
+      provides="archetypes.schemaextender.interfaces.ISchemaModifier"/>
+
+</configure>

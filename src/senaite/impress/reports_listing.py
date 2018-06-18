@@ -54,6 +54,9 @@ class ReportsListingView(BikaListingView):
 
         self.columns = {
             "AnalysisRequest": {"title": _("Analysis Request")},
+            "ContainedAnalysisRequests": {
+                "title": _("Contained Analysis Requests")
+            },
             "State": {"title": _("Review State")},
             "PDF": {"title": _("Download")},
             "FileSize": {"title": _("Size")},
@@ -69,6 +72,7 @@ class ReportsListingView(BikaListingView):
                 "contentFilter": {},
                 "columns": [
                     "AnalysisRequest",
+                    "ContainedAnalysisRequests",
                     "State",
                     "PDF",
                     "FileSize",
@@ -121,6 +125,23 @@ class ReportsListingView(BikaListingView):
         fmt_date = self.localize_date(obj.created())
         item["Date"] = fmt_date
         item["PublishedBy"] = self.user_fullname(obj.Creator())
+
+        contained_ars = obj.getField("ContainedAnalysisRequests").get(obj)
+        ar_icon_url = "{}/{}".format(
+            self.portal_url,
+            "++resource++bika.lims.images/analysisrequest.png"
+        )
+        ars = []
+        for num, ar in enumerate(contained_ars):
+            ars.append(
+                "<a href='{url}' target='_blank' title='{ar_id}'>"
+                "<img src='{ar_icon_url}' title='{ar_id}'/>"
+                "</a>".format(
+                    url=ar.absolute_url(),
+                    ar_id=ar.getId(),
+                    ar_icon_url=ar_icon_url)
+            )
+        item["replace"]["ContainedAnalysisRequests"] = " ".join(ars)
 
         # N.B. There is a bug in the current publication machinery, so that
         # only the primary contact get stored in the Attachment as recipient.

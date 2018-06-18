@@ -7,6 +7,7 @@
 import inspect
 import json
 
+from DateTime import DateTime
 from senaite import api
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
@@ -181,7 +182,24 @@ class AjaxPublishView(PublishView):
             return None
 
         # We want to save the PDFs per AR as ARReport contents
-        ars = map(api.get_object_by_uid, data.get("items", []))
+        items = filter(None, data.get("items", []))
+        ars = map(api.get_object_by_uid, items)
+
+        # return if no ARs were found
+        if not ars:
+            logger.error("ajax_save_reports: No ARs found!")
+            return exit_url
+
+        # store some metadata
+        metadata = {
+            "template": data.get("template"),
+            "orientation": data.get("orientation", "portrait"),
+            "merge": data.get("merge", False),
+            "contained_ar_ids": map(lambda obj: obj.getId(), ars),
+            "contained_ar_uids": items,
+            "primary_ar_uid": items[-1],
+            "timestamp": DateTime().ISO8601(),
+        }
 
         for num, ar in enumerate(ars):
             uid = api.get_uid(ar)
@@ -195,6 +213,9 @@ class AjaxPublishView(PublishView):
                 AnalysisRequest=api.get_uid(ar),
                 Pdf=pdf,
                 Html=_html,
+                # extended fields
+                ContainedAnalysisRequests=ars,
+                Metadata=metadata,
             )
             exit_url = ar.getClient().absolute_url() + "/reports_listing"
 

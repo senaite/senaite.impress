@@ -101,6 +101,13 @@ class EmailView(BrowserView):
                     # publish the AR
                     self.publish(ar)
 
+                    # Publish all linked ARs of this report
+                    # N.B. `ContainedAnalysisRequests` is an extended field
+                    field = report.getField("ContainedAnalysisRequests")
+                    contained_ars = field.get(report) or []
+                    for obj in contained_ars:
+                        self.publish(obj)
+
                     # add new recipients to the AR Report
                     new_recipients = filter(
                         lambda r: r.get("Fullname") in send_to_names,
