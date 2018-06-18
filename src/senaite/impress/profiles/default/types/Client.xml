@@ -10,9 +10,9 @@
          category="object"
          icon_expr=""
          url_expr="string:${object_url}/reports_listing"
-         i18n:domain="senaite.impress"
-         i18n:attributes="title"
-         visible="True">
+         visible="True"
+         i18n:attributes="title">
+
     <permission value="BIKA: Manage Analysis Requests"/>
  </action>
 
