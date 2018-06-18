@@ -34,8 +34,9 @@ setup(
     install_requires=[
         'setuptools',
         'senaite.api',
-        'senaite.core',
+        'senaite.core>=1.2.7',
         'beautifulsoup4',
+        'archetypes.schemaextender',
     ],
     extras_require={
         'test': [

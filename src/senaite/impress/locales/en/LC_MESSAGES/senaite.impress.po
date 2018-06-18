@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-07 12:14+0000\n"
+"POT-Creation-Date: 2018-06-18 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "Analysis Request"
 msgstr ""
 
-#: senaite/impress/emailview.py:49
+#: senaite/impress/emailview.py:48
 msgid "Analysis Results for {}"
 msgstr ""
 
@@ -106,6 +106,11 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
+#: senaite/impress/extender/arreport.py:39
+#: senaite/impress/reports_listing.py:58
+msgid "Contained Analysis Requests"
+msgstr ""
+
 #: senaite/impress/templates/reports/Default.pt:244
 #: senaite/impress/templates/reports/MultiDefault.pt:259
 msgid "Date Published"
@@ -133,7 +138,7 @@ msgstr ""
 msgid "Default Template"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:58
+#: senaite/impress/reports_listing.py:61
 msgid "Download"
 msgstr ""
 
@@ -141,11 +146,11 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: senaite/impress/emailview.py:121
+#: senaite/impress/emailview.py:127
 msgid "Email aborted"
 msgstr ""
 
-#: senaite/impress/emailview.py:116
+#: senaite/impress/emailview.py:122
 msgid "Failed to send Email(s)"
 msgstr ""
 
@@ -153,7 +158,7 @@ msgstr ""
 msgid "From"
 msgstr ""
 
-#: senaite/impress/configure.zcml:143
+#: senaite/impress/configure.zcml:146
 msgid "HTML to PDF report engine for SENAITE"
 msgstr ""
 
@@ -170,7 +175,11 @@ msgstr ""
 msgid "Impress Settings"
 msgstr ""
 
-#: senaite/impress/emailview.py:111
+#: senaite/impress/controlpanel.py:39
+msgid "Maximum Email Size in MB"
+msgstr ""
+
+#: senaite/impress/emailview.py:117
 msgid "Message sent to {}, "
 msgstr ""
 
@@ -188,23 +197,23 @@ msgstr ""
 msgid "No Email Address"
 msgstr ""
 
-#: senaite/impress/emailview.py:85
+#: senaite/impress/emailview.py:84
 msgid "No attachments"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:139
+#: senaite/impress/reports_listing.py:160
 msgid "No email address set for this contact"
 msgstr ""
 
-#: senaite/impress/emailview.py:76
+#: senaite/impress/emailview.py:75
 msgid "No email recipients selected"
 msgstr ""
 
-#: senaite/impress/emailview.py:145
+#: senaite/impress/emailview.py:152
 msgid "Not all contacts are equal for the selected Reports. Please manually select recipients for this email."
 msgstr ""
 
-#: senaite/impress/emailview.py:151
+#: senaite/impress/emailview.py:158
 msgid "Not all contacts have the email publication preference set. Please manually select recipients for this email."
 msgstr ""
 
@@ -214,11 +223,11 @@ msgstr ""
 msgid "Not invoiced"
 msgstr ""
 
-#: senaite/impress/emailview.py:79
+#: senaite/impress/emailview.py:78
 msgid "Please add an email subject"
 msgstr ""
 
-#: senaite/impress/emailview.py:82
+#: senaite/impress/emailview.py:81
 msgid "Please add an email text"
 msgstr ""
 
@@ -232,11 +241,11 @@ msgstr ""
 msgid "Provisional report"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:61
+#: senaite/impress/reports_listing.py:64
 msgid "Published By"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:60
+#: senaite/impress/reports_listing.py:63
 msgid "Published Date"
 msgstr ""
 
@@ -261,8 +270,12 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:62
+#: senaite/impress/reports_listing.py:65
 msgid "Recipients"
+msgstr ""
+
+#: senaite/impress/extender/arreport.py:42
+msgid "Referenced Analysis Requests in the PDF"
 msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:402
@@ -300,16 +313,16 @@ msgstr ""
 msgid "Results interpretation"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:57
+#: senaite/impress/reports_listing.py:60
 msgid "Review State"
 msgstr ""
 
-#: senaite/impress/configure.zcml:143
+#: senaite/impress/configure.zcml:146
 #: senaite/impress/templates/publish.pt:8
 msgid "SENAITE IMPRESS"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:42
+#: senaite/impress/controlpanel.py:49
 msgid "SENAITE IMPRESS Settings"
 msgstr ""
 
@@ -340,7 +353,7 @@ msgstr ""
 msgid "Send Analysis Reports via Email"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:59
+#: senaite/impress/reports_listing.py:62
 msgid "Size"
 msgstr ""
 
@@ -411,8 +424,8 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: senaite/impress/emailview.py:134
-msgid "Total size of email exceeded {:.2f}MB"
+#: senaite/impress/emailview.py:140
+msgid "Total size of email exceeded {:.1f} MB ({:.2f} MB)"
 msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:306
