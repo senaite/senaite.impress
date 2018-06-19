@@ -5,6 +5,7 @@
 # Copyright 2018 by it's authors.
 
 import socket
+from collections import OrderedDict
 from email.header import Header
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -423,7 +424,8 @@ class EmailView(BrowserView):
         # handle 'uids' GET parameter coming from a redirect
         if isinstance(uids, basestring):
             uids = uids.split(",")
-        return map(self.get_object_by_uid, uids)
+        unique_uids = OrderedDict().fromkeys(uids).keys()
+        return map(self.get_object_by_uid, unique_uids)
 
     def get_object_by_uid(self, uid):
         """Get the object by UID
