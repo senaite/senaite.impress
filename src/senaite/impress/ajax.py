@@ -204,12 +204,12 @@ class AjaxPublishView(PublishView):
         for num, ar in enumerate(ars):
             uid = api.get_uid(ar)
             pdf = get_pdf(num)
-            report = api.create(ar, "ARReport")
+            title = "Report-{}".format(ar.getId())
+            report = api.create(ar, "ARReport", title=title)
             _html = html
             if not merge:
                 _html = publisher.get_reports(html, attrs={"uid": uid})
             report.edit(
-                Title="",
                 AnalysisRequest=api.get_uid(ar),
                 Pdf=pdf,
                 Html=_html,
