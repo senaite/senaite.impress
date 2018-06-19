@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-18 15:47+0000\n"
+"POT-Creation-Date: 2018-06-19 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Ramon Bartl <rb@ridingbytes.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -32,6 +32,7 @@ msgstr "&larr; Zurück zur ${back_link}"
 msgid "Abort"
 msgstr "Abbrechen"
 
+#: senaite/impress/profiles/default/types/Client.xml
 #: senaite/impress/reports_listing.py:36
 msgid "Analysis Reports"
 msgstr "Analysenberichte"
@@ -143,7 +144,7 @@ msgstr "Standard Papierformat"
 msgid "Default Template"
 msgstr "Standard Vorlage"
 
-#: senaite/impress/reports_listing.py:61
+#: senaite/impress/reports_listing.py:62
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -188,6 +189,10 @@ msgstr "Maximal erlaubte E-Mail Größe"
 msgid "Message sent to {}, "
 msgstr "Nachricht an {} gesendet, "
 
+#: senaite/impress/reports_listing.py:60
+msgid "Metadata"
+msgstr "Metadaten"
+
 #: senaite/impress/templates/reports/Default.pt:536
 #: senaite/impress/templates/reports/MultiDefault.pt:569
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:412
@@ -206,7 +211,7 @@ msgstr "Keine E-Mail Adresse"
 msgid "No attachments"
 msgstr "Keine Anhänge"
 
-#: senaite/impress/reports_listing.py:160
+#: senaite/impress/reports_listing.py:176
 msgid "No email address set for this contact"
 msgstr "Keine E-Mail Adresse für diesen Kontakt hinterlegt"
 
@@ -246,11 +251,11 @@ msgstr "Anbei finden Sie die Analysenergebnisse für ${client_name}"
 msgid "Provisional report"
 msgstr "Vorläufiger Bericht"
 
-#: senaite/impress/reports_listing.py:64
+#: senaite/impress/reports_listing.py:65
 msgid "Published By"
 msgstr "Publiziert durch"
 
-#: senaite/impress/reports_listing.py:63
+#: senaite/impress/reports_listing.py:64
 msgid "Published Date"
 msgstr "Veröffentlichungsdatum"
 
@@ -275,7 +280,7 @@ msgstr "Bereich"
 msgid "Received"
 msgstr "Eingegangen"
 
-#: senaite/impress/reports_listing.py:65
+#: senaite/impress/reports_listing.py:66
 msgid "Recipients"
 msgstr "Empfänger"
 
@@ -318,7 +323,7 @@ msgstr "Ergebnisse"
 msgid "Results interpretation"
 msgstr "Ergebnisbewertung"
 
-#: senaite/impress/reports_listing.py:60
+#: senaite/impress/reports_listing.py:61
 msgid "Review State"
 msgstr "Prüfstatus"
 
@@ -358,7 +363,7 @@ msgstr "Abschicken"
 msgid "Send Analysis Reports via Email"
 msgstr "Analysenberichte via E-Mail versenden"
 
-#: senaite/impress/reports_listing.py:62
+#: senaite/impress/reports_listing.py:63
 msgid "Size"
 msgstr "Größe"
 

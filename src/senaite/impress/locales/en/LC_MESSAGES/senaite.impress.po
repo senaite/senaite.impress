@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-06-18 15:47+0000\n"
+"POT-Creation-Date: 2018-06-19 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,7 @@ msgstr ""
 msgid "Abort"
 msgstr ""
 
+#: senaite/impress/profiles/default/types/Client.xml
 #: senaite/impress/reports_listing.py:36
 msgid "Analysis Reports"
 msgstr ""
@@ -137,7 +138,7 @@ msgstr ""
 msgid "Default Template"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:61
+#: senaite/impress/reports_listing.py:62
 msgid "Download"
 msgstr ""
 
@@ -182,6 +183,10 @@ msgstr ""
 msgid "Message sent to {}, "
 msgstr ""
 
+#: senaite/impress/reports_listing.py:60
+msgid "Metadata"
+msgstr ""
+
 #: senaite/impress/templates/reports/Default.pt:536
 #: senaite/impress/templates/reports/MultiDefault.pt:569
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:412
@@ -200,7 +205,7 @@ msgstr ""
 msgid "No attachments"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:160
+#: senaite/impress/reports_listing.py:176
 msgid "No email address set for this contact"
 msgstr ""
 
@@ -240,11 +245,11 @@ msgstr ""
 msgid "Provisional report"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:64
+#: senaite/impress/reports_listing.py:65
 msgid "Published By"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:63
+#: senaite/impress/reports_listing.py:64
 msgid "Published Date"
 msgstr ""
 
@@ -269,7 +274,7 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:65
+#: senaite/impress/reports_listing.py:66
 msgid "Recipients"
 msgstr ""
 
@@ -312,7 +317,7 @@ msgstr ""
 msgid "Results interpretation"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:60
+#: senaite/impress/reports_listing.py:61
 msgid "Review State"
 msgstr ""
 
@@ -352,7 +357,7 @@ msgstr ""
 msgid "Send Analysis Reports via Email"
 msgstr ""
 
-#: senaite/impress/reports_listing.py:62
+#: senaite/impress/reports_listing.py:63
 msgid "Size"
 msgstr ""
 
