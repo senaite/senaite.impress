@@ -149,7 +149,9 @@ class PublishController extends React.Component
       loadtext: "Generating PDFs..."
 
     # generate the reports via the API asynchronously
-    promise = @api.save_reports @getRequestOptions()
+    request_data = @getRequestOptions()
+    request_data.action = event.currentTarget.name
+    promise = @api.save_reports request_data
 
     promise.then ((redirect_url) ->
       # toggle the loader off
@@ -223,6 +225,7 @@ class PublishController extends React.Component
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
             <div className="input-group-append">
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
+              <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />
               <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />
             </div>
           </div>

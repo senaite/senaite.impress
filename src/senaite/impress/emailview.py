@@ -420,6 +420,9 @@ class EmailView(BrowserView):
         """
         # Create a mapping of source ARs for copy
         uids = self.request.form.get("uids", [])
+        # handle 'uids' GET parameter coming from a redirect
+        if isinstance(uids, basestring):
+            uids = uids.split(",")
         return map(self.get_object_by_uid, uids)
 
     def get_object_by_uid(self, uid):

@@ -158,6 +158,9 @@ class AjaxPublishView(PublishView):
         # N.B. It might also contain multiple reports!
         html = data.get("html")
 
+        # This is the clicked button name from the ReactJS component
+        action = data.get("action", "save")
+
         # Metadata
         paperformat = data.get("format")
         template = data.get("template")
@@ -189,6 +192,13 @@ class AjaxPublishView(PublishView):
             logger.error("ajax_save_reports: No ARs found!")
             return exit_url
 
+        # The primary AR
+        primary_ar = ars[0]
+        primary_client_url = primary_ar.getClient().absolute_url()
+
+        # The new created ARReports
+        reports = []
+
         # Generate the AR Reports
         for num, ar in enumerate(ars):
             pdf = pdfs[0]
@@ -215,8 +225,15 @@ class AjaxPublishView(PublishView):
                     "multi": multi,
                 },
             )
-            exit_url = ar.getClient().absolute_url() + "/reports_listing"
+            reports.append(report)
 
+        endpoint = "reports_listing"
+        if action == "email":
+            report_uids = map(api.get_uid, reports)
+            if multi:
+                report_uids = report_uids[:1]
+            endpoint = "email?uids={}".format(",".join(report_uids))
+        exit_url = "{}/{}".format(primary_client_url, endpoint)
         return exit_url
 
     def ajax_get_reports(self, *args):
