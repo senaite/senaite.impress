@@ -393,13 +393,17 @@ class EmailView(BrowserView):
     def email_from_address(self):
         """Portal email
         """
-        return self.portal.email_from_address
+        lab_email = self.laboratory.getEmailAddress()
+        portal_email = self.portal.email_from_address
+        return lab_email or portal_email
 
     @property
     def email_from_name(self):
         """Portal email name
         """
-        return self.portal.email_from_name
+        lab_from_name = self.laboratory.getName()
+        portal_from_name = self.portal.email_from_name
+        return lab_from_name or portal_from_name
 
     @property
     def max_email_size(self):
