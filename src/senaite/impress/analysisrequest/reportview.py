@@ -14,6 +14,7 @@ from itertools import chain
 from operator import itemgetter
 from string import Template
 
+import DateTime
 from bika.lims import POINTS_OF_CAPTURE
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from senaite import api
@@ -85,6 +86,10 @@ class ReportView(Base):
     @property
     def wf_tool(self):
         return api.get_tool("portal_workflow")
+
+    @property
+    def timestamp(self):
+        return DateTime.DateTime()
 
     def to_localized_time(self, date, **kw):
         """Converts the given date to a localized time string
