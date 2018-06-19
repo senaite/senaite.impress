@@ -150,7 +150,6 @@ class AjaxPublishView(PublishView):
     def ajax_save_reports(self):
         """Render all reports as PDFs and store them as AR Reports
         """
-
         # Data sent via async ajax call as JSON data from the frontend
         data = self.get_json()
 
@@ -159,10 +158,17 @@ class AjaxPublishView(PublishView):
         # N.B. It might also contain multiple reports!
         html = data.get("html")
 
+        # Metadata
+        paperformat = data.get("format")
+        template = data.get("template")
+        orientation = data.get("orientation", "portrait")
+        merge = data.get("merge", False)
+        timestamp = DateTime().ISO8601()
+        multi = self.is_multi_template(template)
+
         # Generate the print CSS with the set format/orientation
-        format = data.get("format")
-        orientation = data.get("orientation")
-        css = self.get_print_css(format=format, orientation=orientation)
+        css = self.get_print_css(
+            paperformat=paperformat, orientation=orientation)
         logger.info(u"Print CSS: {}".format(css))
 
         # get an publisher instance
@@ -170,16 +176,9 @@ class AjaxPublishView(PublishView):
         # add the generated CSS to the publisher
         publisher.add_inline_css(css)
 
-        merge = data.get("merge", False)
+        # generate the PDFs
         pdfs = publisher.write_pdf(html, merge=merge)
         exit_url = self.context.absolute_url()
-
-        def get_pdf(num):
-            if len(pdfs) == 1:
-                return pdfs[0]
-            if len(pdfs) > num:
-                return pdfs[num]
-            return None
 
         # We want to save the PDFs per AR as ARReport contents
         items = filter(None, data.get("items", []))
@@ -190,32 +189,31 @@ class AjaxPublishView(PublishView):
             logger.error("ajax_save_reports: No ARs found!")
             return exit_url
 
-        # store some metadata
-        metadata = {
-            "template": data.get("template"),
-            "orientation": data.get("orientation", "portrait"),
-            "merge": data.get("merge", False),
-            "contained_ar_ids": map(lambda obj: obj.getId(), ars),
-            "contained_ar_uids": items,
-            "primary_ar_uid": items[-1],
-            "timestamp": DateTime().ISO8601(),
-        }
-
+        # Generate the AR Reports
         for num, ar in enumerate(ars):
+            pdf = pdfs[0]
+            # there should be one PDF per AR in this case
+            if not multi:
+                pdf = pdfs[num]
             uid = api.get_uid(ar)
-            pdf = get_pdf(num)
             title = "Report-{}".format(ar.getId())
             report = api.create(ar, "ARReport", title=title)
             _html = html
             if not merge:
                 _html = publisher.get_reports(html, attrs={"uid": uid})
             report.edit(
-                AnalysisRequest=api.get_uid(ar),
+                AnalysisRequest=uid,
                 Pdf=pdf,
                 Html=_html,
                 # extended fields
-                ContainedAnalysisRequests=ars,
-                Metadata=metadata,
+                ContainedAnalysisRequests=ars if multi else ar,
+                Metadata={
+                    "template": template,
+                    "paperformat": paperformat,
+                    "orientation": orientation,
+                    "timestamp": timestamp,
+                    "multi": multi,
+                },
             )
             exit_url = ar.getClient().absolute_url() + "/reports_listing"
 
@@ -232,7 +230,6 @@ class AjaxPublishView(PublishView):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
         """
-
         # Data sent via async ajax call as JSON data from the frontend
         data = self.get_json()
 
@@ -241,10 +238,14 @@ class AjaxPublishView(PublishView):
         # N.B. It might also contain multiple reports!
         html = data.get("html")
 
+        # Metadata
+        paperformat = data.get("format")
+        orientation = data.get("orientation", "portrait")
+        merge = data.get("merge", False)
+
         # Generate the print CSS with the set format/orientation
-        format = data.get("format")
-        orientation = data.get("orientation")
-        css = self.get_print_css(format=format, orientation=orientation)
+        css = self.get_print_css(
+            paperformat=paperformat, orientation=orientation)
         logger.info(u"Preview CSS: {}".format(css))
 
         # get an publisher instance
@@ -252,7 +253,7 @@ class AjaxPublishView(PublishView):
         # add the generated CSS to the publisher
         publisher.add_inline_css(css)
 
-        merge = data.get("merge", False)
+        # generate the PNGs
         images = publisher.write_png(html, merge=merge)
 
         preview = u""

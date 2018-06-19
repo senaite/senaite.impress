@@ -57,6 +57,7 @@ class ReportsListingView(BikaListingView):
             "ContainedAnalysisRequests": {
                 "title": _("Contained Analysis Requests")
             },
+            "Metadata": {"title": _("Metadata")},
             "State": {"title": _("Review State")},
             "PDF": {"title": _("Download")},
             "FileSize": {"title": _("Size")},
@@ -73,6 +74,7 @@ class ReportsListingView(BikaListingView):
                 "columns": [
                     "AnalysisRequest",
                     "ContainedAnalysisRequests",
+                    "Metadata",
                     "State",
                     "PDF",
                     "FileSize",
@@ -132,6 +134,7 @@ class ReportsListingView(BikaListingView):
             "++resource++bika.lims.images/analysisrequest.png"
         )
         ars = []
+        item["ContainedAnalysisRequests"] = ""
         for num, ar in enumerate(contained_ars):
             ars.append(
                 "<a href='{url}' target='_blank' title='{ar_id}'>"
@@ -142,6 +145,19 @@ class ReportsListingView(BikaListingView):
                     ar_icon_url=ar_icon_url)
             )
         item["replace"]["ContainedAnalysisRequests"] = " ".join(ars)
+
+        # Metadata
+        metadata = obj.getField("Metadata").get(obj) or {}
+        template = metadata.get("template", "")
+        paperformat = metadata.get("paperformat", "")
+        orientation = metadata.get("orientation", "")
+        item["Metadata"] = ""
+        if all([template, paperformat, orientation]):
+            item["replace"]["Metadata"] = " ".join([
+                "<abbr title='{}'>ℹ</abbr>".format(template),
+                "<abbr title='{}'>⇲</abbr>".format(paperformat),
+                "<abbr title='{}'>↺</abbr>".format(orientation),
+            ])
 
         # N.B. There is a bug in the current publication machinery, so that
         # only the primary contact get stored in the Attachment as recipient.

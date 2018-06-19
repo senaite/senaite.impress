@@ -196,41 +196,42 @@ class PublishView(BrowserView):
         view = getAdapter(collection, IMultiReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
-    def get_print_css(self, format="A4", orientation="portrait"):
+    def get_print_css(self, paperformat="A4", orientation="portrait"):
         """Returns the generated print CSS for the given format/orientation
         """
-        paperformat = self.get_paperformat(format)
+        _paperformat = self.get_paperformat(paperformat)
 
-        margin_top = paperformat["margin_top"]
-        margin_right = paperformat["margin_right"]
-        margin_bottom = paperformat["margin_bottom"]
-        margin_left = paperformat["margin_left"]
+        margin_top = _paperformat["margin_top"]
+        margin_right = _paperformat["margin_right"]
+        margin_bottom = _paperformat["margin_bottom"]
+        margin_left = _paperformat["margin_left"]
 
-        page_width = paperformat["page_width"]
-        page_height = paperformat["page_height"]
+        page_width = _paperformat["page_width"]
+        page_height = _paperformat["page_height"]
 
         # calculate content width/height accordding to the margins
         content_height = page_height - margin_top - margin_bottom
         content_width = page_width - margin_left - margin_right
 
-        paperformat["content_width"] = content_width
-        paperformat["content_height"] = content_height
+        _paperformat["content_width"] = content_width
+        _paperformat["content_height"] = content_height
 
         # Flip sizes in landscape
         if orientation == "landscape":
-            paperformat["page_width"] = page_height
-            paperformat["page_height"] = page_width
-            paperformat["content_width"] = content_height
-            paperformat["content_height"] = content_width
+            _paperformat["page_width"] = page_height
+            _paperformat["page_height"] = page_width
+            _paperformat["content_width"] = content_height
+            _paperformat["content_height"] = content_width
 
-        return CSS.safe_substitute(paperformat)
+        return CSS.safe_substitute(_paperformat)
 
-    def get_paperformat(self, format):
+    def get_paperformat(self, paperformat):
+        """Return the paperformat dictionary
+        """
         paperformats = self.get_paperformats()
-        if format not in paperformats:
-            raise KeyError("Unknown Paper Format '{}'".format(format))
-        paperformat = paperformats[format].copy()
-        return paperformat
+        if paperformat not in paperformats:
+            raise KeyError("Unknown Paper Format '{}'".format(paperformat))
+        return paperformats[paperformat].copy()
 
     def get_paperformats(self):
         """Returns a mapping of available paper formats
