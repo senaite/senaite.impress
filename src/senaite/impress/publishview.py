@@ -293,6 +293,8 @@ class PublishView(BrowserView):
         return template
 
     def is_multi_template(self, template):
+        if not os.path.exists(template):
+            template = self.get_report_template(template)
         filename = os.path.basename(template)
         basename, ext = os.path.splitext(filename)
         if basename.lower().startswith("multi"):
