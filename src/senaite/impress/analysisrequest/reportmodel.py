@@ -206,3 +206,19 @@ class ReportModel(Base):
                 continue
             out.append(manager)
         return out
+
+    @property
+    def verifiers(self):
+        """Returns a list of user objects
+        """
+        out = []
+        userids = reduce(lambda v1, v2: v1+v2,
+                         map(lambda v: v.Verificators.split(","),
+                             self.Analyses))
+        for userid in set(userids):
+            user = api.get_user(userid)
+            if user is None:
+                logger.warn("Could not find user '{}'".format(userid))
+                continue
+            out.append(user)
+        return out

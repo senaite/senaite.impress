@@ -74,6 +74,8 @@ class ReportView(Base):
     @property
     def current_user(self):
         user = api.get_current_user()
+        # XXX: we're missing here LDAP properties!
+        #      needs to be fixed in the API.
         properties = api.get_user_properties(user)
         properties.update({
             "userid": user.getId(),
