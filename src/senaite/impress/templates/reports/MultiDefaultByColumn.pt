@@ -318,7 +318,7 @@
               <colgroup>
                 <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
               </colgroup>
-              <tr tal:repeat="chunk python:model.group_into_chunks(an_attachments, attachments_per_row)">
+              <tr tal:repeat="chunk python:view.group_into_chunks(an_attachments, attachments_per_row)">
                 <td class="align-bottom"
                     style="border:none;padding-left:0;"
                     tal:repeat="attachment chunk">

@@ -74,13 +74,14 @@ class ReportView(Base):
     @property
     def current_user(self):
         user = api.get_current_user()
-        properties = {
+        properties = api.get_user_properties(user)
+        properties.update({
             "userid": user.getId(),
             "username": user.getUserName(),
             "roles": user.getRoles(),
             "email": user.getProperty("email"),
-        }
-        properties.update(api.get_user_properties(user))
+            "fullname": user.getProperty("fullname"),
+        })
         return properties
 
     @property
