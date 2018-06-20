@@ -53,7 +53,6 @@ CSS = Template("""/** Paper Format CSS **/
   @media (min-width: ${content_width}mm) {
     .container {
         min-width: ${page_width}mm!important;
-        max-width: ${page_width}mm!important;
     }
   }
 }
