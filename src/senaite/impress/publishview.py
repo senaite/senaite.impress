@@ -50,7 +50,12 @@ CSS = Template("""/** Paper Format CSS **/
     height: ${page_height}mm;
   }
   /* Bootstrap container fixture to display the full paper */
-  .container { min-width: ${page_width}mm!important; }
+  @media (min-width: ${content_width}mm) {
+    .container {
+        min-width: ${page_width}mm!important;
+        max-width: ${page_width}mm!important;
+    }
+  }
 }
 """)
 
