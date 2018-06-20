@@ -458,6 +458,7 @@
                     style="border:none;padding-left:0;"
                     tal:repeat="attachment chunk">
                   <img class="img-fluid"
+                       style="width:100%;"
                        tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
                   <div class="text-secondary">
                     <span tal:content="attachment/AttachmentKeys"/>
@@ -480,6 +481,7 @@
                     style="border:none;padding-left:0;"
                     tal:repeat="attachment chunk">
                   <img class="img-fluid"
+                       style="width:100%;"
                        tal:attributes="src python:attachment[1].absolute_url() + '/AttachmentFile'"/>
                   <div class="text-secondary">
                     <span tal:content="python:attachment[1].title"/>:
