@@ -97,6 +97,8 @@ class ReportView(Base):
     def to_localized_time(self, date, **kw):
         """Converts the given date to a localized time string
         """
+        if date is None:
+            return ""
         # default options
         options = {
             "long_format": True,
