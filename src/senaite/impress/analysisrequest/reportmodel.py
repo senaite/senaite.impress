@@ -9,6 +9,7 @@ from bika.lims.utils import formatDecimalMark
 from bika.lims.utils import to_utf8
 from bika.lims.utils.analysis import format_uncertainty
 from senaite import api
+from senaite.impress import logger
 from senaite.impress.decorators import returns_report_model
 from senaite.impress.reportmodel import ReportModel as Base
 
