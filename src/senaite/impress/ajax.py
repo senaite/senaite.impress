@@ -276,6 +276,7 @@ class AjaxPublishView(PublishView):
         preview = u""
         for image in images:
             preview += publisher.png_to_img(*image)
-        # Add the generated CSS to the preview, so that the container can grow accordingly
+        # Add the generated CSS to the preview, so that the container can grow
+        # accordingly
         preview += "<style type='text/css'>{}</style>".format(css)
         return preview
