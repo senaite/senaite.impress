@@ -16,11 +16,11 @@
      table td.label { white-space: nowrap; }
      @page {
        @bottom-left {
-         font-size: 9pt;
+         font-size: 8pt;
          content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
        }
        @bottom-center {
-         font-size: 9pt;
+         font-size: 8pt;
          <tal:single tal:condition="python:len(collection) == 1">
            content: '<tal:content replace="python:collection[0].getId()"/>';
          </tal:single>
@@ -29,7 +29,7 @@
          </tal:multi>
        }
        @bottom-right {
-         font-size: 9pt;
+         font-size: 8pt;
          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
        }
      }
@@ -186,15 +186,17 @@
           <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
 
           <!-- Results table per PoC -->
-          <table class="table table-sm">
+          <table class="table table-sm table-condensed small">
             <thead>
               <tr>
                 <th></th>
-                <th class="font-weight-normal small text-center"
-                    tal:repeat="model collection">
-                  <div class="text-primary" tal:content="model/getId"/>
-                  <div class="text-secondary" tal:content="model/Sample/SampleTypeTitle|nothing"/>
-                </th>
+                <tal:ar repeat="model collection">
+                  <th colspan="2" class="font-weight-normal text-right">
+                    <div class="text-primary"
+                         tal:content="model/getId"/>
+                  </th>
+                  <th></th>
+                </tal:ar>
               </tr>
             </thead>
             <tbody>
@@ -202,7 +204,7 @@
               <tal:categories_in_poc tal:repeat="category python:view.sort_items(categories_by_poc.get(poc))">
                 <tr>
                   <td class="font-weight-bold table-warning"
-                      tal:attributes="colspan python:len(collection) + 1">
+                      tal:attributes="colspan python:len(collection) * 3 + 1">
                     <span tal:content="category/Title"/>
                   </td>
                 </tr>
@@ -212,19 +214,34 @@
                   <td class="text-secondary">
                     <span tal:content="analysis_title"/>
                   </td>
-                  <td tal:repeat="model collection">
-                    <tal:analysis tal:repeat="analysis python:view.get_analyses_by(model, title=analysis_title);">
-                      <span class="font-weight-light small" tal:content="python:model.get_formatted_result(analysis)"/>
-                      <span class="font-italic small font-weight-light text-secondary" tal:content="python:model.get_formatted_unit(analysis)"/>
-                      <span tal:condition="python:model.is_out_of_range(analysis)"
-                            class="font-weight-light">
-                        <span class="outofrange text-danger"
-                              style="font-family:Lucida Console, Courier, monospace;"
-                              tal:content="outofrange_symbol">
-                        </span>
-                      </span>
-                    </tal:analysis>
-                  </td>
+                  <tal:results repeat="model collection">
+                    <tal:analyses tal:define="analyses python:view.get_analyses_by(model, title=analysis_title);">
+                      <tal:analysis tal:repeat="analysis analyses">
+                        <td class="text-right">
+                          <span class="font-weight-light"
+                                tal:content="structure python:model.get_formatted_result(analysis)"/>
+                        </td>
+                        <td class="text-left">
+                          <span class="font-italic font-weight-light text-secondary text-nowrap"
+                                tal:content="structure python:model.get_formatted_unit(analysis)"/>
+                        </td>
+                        <td class="text-left">
+                          <span tal:condition="python:model.is_out_of_range(analysis)"
+                                class="font-weight-light">
+                            <span class="outofrange text-danger"
+                                  style="font-family:Lucida Console, Courier, monospace;"
+                                  tal:content="outofrange_symbol">
+                            </span>
+                          </span>
+                        </td>
+                      </tal:analysis>
+                      <tal:analysis condition="not:analyses">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tal:analysis>
+                    </tal:analyses>
+                  </tal:results>
                 </tr>
               </tal:categories_in_poc>
             </tbody>
@@ -240,12 +257,14 @@
       <div class="row section-resultsinterpretation"
            tal:define="ris python:model.get_resultsinterpretation()"
            tal:condition="ris">
-        <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
-        <div class="col-sm-12" tal:condition="ris">
-          <tal:ri repeat="ri ris">
-            <h4 tal:content="ri/title|nothing">Department</h4>
-            <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
-          </tal:ri>
+        <div class="col col-sm-12">
+          <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
+          <div tal:condition="ris">
+            <tal:ri repeat="ri ris">
+              <h4 tal:content="ri/title|nothing">Department</h4>
+              <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+            </tal:ri>
+          </div>
         </div>
       </div>
     </tal:model>
@@ -256,9 +275,11 @@
     <tal:model repeat="model collection">
       <tal:qc define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
         <div class="row section-results" tal:condition="qcanalyses">
-          <h2 i18n:translate>QC Results for <span tal:replace="model/getId"/></h2>
           <div class="col col-sm-12">
-            <h1 i18n:translate="">QC Results</h1>
+            <h2 i18n:translate>QC Results for <span tal:replace="model/getId"/></h2>
+            <div>
+              <h1 i18n:translate="">QC Results</h1>
+            </div>
           </div>
         </div>
       </tal:qc>
