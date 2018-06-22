@@ -7,12 +7,12 @@
   <!-- ARReports -->
   <adapter
       factory=".arreport.ARReportSchemaExtender"
-      name="arreport-extender"
+      name="senaite-impress-arreport-extender"
       provides="archetypes.schemaextender.interfaces.ISchemaExtender"/>
 
   <adapter
       factory=".arreport.ARReportSchemaModifier"
-      name="arreport-modifier"
+      name="senaite-impress-arreport-modifier"
       provides="archetypes.schemaextender.interfaces.ISchemaModifier"/>
 
 </configure>
