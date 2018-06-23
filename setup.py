@@ -7,6 +7,8 @@ version = "1.0.0"
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+with open("docs/Changelog.rst", "r") as fh:
+    long_description += "\n\n" + fh.read()
 
 setup(
     name="senaite.impress",

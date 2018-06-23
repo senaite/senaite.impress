@@ -1,0 +1,6 @@
+include LICENSE
+include *.rst
+include *.md
+recursive-exclude docs *
+recursive-include src/senaite/impress *
+recursive-exclude src/senaite/impress *.pyc *.mo
