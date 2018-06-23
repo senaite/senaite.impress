@@ -34,8 +34,36 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
+  <!-- Analysis Requests Folder Publish -->
   <browser:page
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
+      name="publish"
+      class="senaite.impress.publishview.PublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+  <!-- Client Publish -->
+  <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="publish"
+      class="senaite.impress.publishview.PublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+  <!-- Analysis Request Publish -->
+  <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="publish"
+      class="senaite.impress.publishview.PublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+  <!-- Batch Publish -->
+  <browser:page
+      for="bika.lims.interfaces.IBatch"
       name="publish"
       class="senaite.impress.publishview.PublishView"
       permission="bika.lims.ManageAnalysisRequests"
