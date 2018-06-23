@@ -134,7 +134,7 @@ contacts of the Analysis Request.
 <img src="static/email_view.png" alt="Email View" />
 
 If the Email was successfully sent, the corresponding Analysis Requests change
-the state to "Published**.
+the state to "Published".
 
 **Note**
 
