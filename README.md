@@ -3,6 +3,18 @@
     <img src="static/impress-logo.png" alt="SENAITE IMPRESS" height="64" />
   </a>
   <p>Publication of HTML/PDF Reports in SENAITE</p>
+
+  <div>
+    <a href="https://pypi.python.org/pypi/senaite.impress">
+      <img src="https://img.shields.io/pypi/v/senaite.impress.svg?style=flat-square" alt="travis-ci" />
+    </a>
+    <a href="https://travis-ci.org/senaite/senaite.impress">
+      <img src="https://img.shields.io/travis/senaite/senaite.impress.svg?style=flat-square" alt="travis-ci" />
+    </a>
+    <a href="#">
+      <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="pr" />
+    </a>
+  </div>
 </div>
 
 
@@ -78,6 +90,7 @@ The following versions are required for SENAITE IMPRESS:
 - Plone 4.3.17
 - senaite.core >= 1.2.7
 - senaite.lims >= 1.2.0
+- senaite.api >= 1.2.0
 
 
 ### Activate the Add-on
