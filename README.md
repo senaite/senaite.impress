@@ -20,12 +20,76 @@ Please follow the installations instructions for
 [Plone 4](https://docs.plone.org/4/en/manage/installing/index.html)
 and [senaite.lims](https://github.com/senaite/senaite.lims#installation).
 
+To install SENAITE IMPRESS, you have to add `senaite.impress` into the `eggs`
+list inside the `[buildout]` section of your `buildout.cfg`:
 
-### Requirements
+    [buildout]
+    parts =
+        instance
+    extends =
+        http://dist.plone.org/release/4.3.17/versions.cfg
+    find-links =
+        http://dist.plone.org/release/4.3.17
+        http://dist.plone.org/thirdparty
+    eggs =
+        Plone
+        Pillow
+        senaite.lims
+        senaite.impress
+    zcml =
+    eggs-directory = ${buildout:directory}/eggs
 
-- Plone 4.3.7
+    [instance]
+    recipe = plone.recipe.zope2instance
+    user = admin:admin
+    http-address = 0.0.0.0:8080
+    eggs =
+        ${buildout:eggs}
+    zcml =
+        ${buildout:zcml}
+
+    [versions]
+    setuptools =
+    zc.buildout =
+
+    
+**Note***`
+
+The above example works for the buildout created by the unified installer. If
+you however have a custom buildout you might need to add the egg to the `eggs`
+list in the `[instance]` section rather than adding it in the `[buildout]`
+section.
+
+Also see this section of the Plone documentation for further details:
+https://docs.plone.org/4/en/manage/installing/installing_addons.html
+
+
+**Important**
+
+For the changes to take effect you need to re-run buildout from your console:
+
+    bin/buildout
+
+
+### Installation Requirements
+
+The following versions are required for SENAITE IMPRESS:
+
+- Plone 4.3.17
 - senaite.core >= 1.2.7
 - senaite.lims >= 1.2.0
+
+
+### Activate the Add-on
+
+Please browse to the *Add-ons* Controlpanel and activate the **SENAITE IMPRESS** Add-on:
+
+<img src="static/activate_addon.png" alt="Activate SENAITE IMPRESS Add-on" />
+
+SENAITE IMPRESS replaced now the built-in publication engine and will open
+automatically when you publish an Analysis Request.
+
+You can also safely deactivate this Plugin to switch back to the old publication engine.
 
 
 ## Usage
@@ -34,14 +98,60 @@ SENAITE IMPRESS is a drop in replacement for the current publication backend in
 SENAITE CORE. After the Add-on has been installed, it will open automatically
 when an Analysis Request is published, prepublished or repupublished.
 
-A new tab *Published Reports* will be available for Clients, which lists all
+<img src="static/verify_analyses.png" alt="Verify Analyses" />
+
+The above screenshot shows 4 Analysis Requests in the workflow state "Verified".
+Select them and click the "Publish" Button.
+
+<img src="static/publish_view.png" alt="Publish View" />
+
+The SENAITE IMPRESS preview allows you to change the report template,
+paperformat and the orientation.
+
+The "merge" checkbox creates a single PDF, even when no multi-template was selected.
+
+The button "Save" will do the following actions:
+
+- Generate the PDF and store it below the corresponding Analysis Request
+- Redirect to the "Analysis Reports" view of the customer
+- Keep the current Workflow state (Publication is only done by sending the Email)
+
+The button "Email" will do the same actions as "Save", but redirects directly to the Email view.
+
+
+### Analysis Reports Listing View
+
+A new tab *Analysis Reports* will be available for Clients, which lists all
 generated PDF reports for all Analysis Requests of this client. Reports can be
 selected in this listing for email delivery. This also allows to send multiple
 PDF Analysis Reports in a single Email.
 
+<img src="static/analysis_reports.png" alt="Analysis Reports" />
+
+Selecting one or more Reports allows to send the generated PDFs to the selected
+contacts of the Analysis Request.
+
+<img src="static/email_view.png" alt="Email View" />
+
+If the Email was successfully sent, the corresponding Analysis Requests change
+the state to "Published**.
+
+**Note**
+
+In the case that multiple Analysis Requests are rendered in a single Report, the
+contained Analysis Requests are also published when this Report was send.
 
 
 ## Custom Reports
+
+Most of the labs require custom reports and SENAITE IMPRESS allows you to do
+that with relative ease.
+
+The following sections will guide you through the process of creating a custom report.
+
+You can also contact a SENAITE service provider for a professional solution:
+
+https://www.senaite.com/#providers
 
 
 ### Hello World
