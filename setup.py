@@ -4,12 +4,16 @@ from setuptools import setup, find_packages
 
 version = "1.0.0"
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 
 setup(
     name="senaite.impress",
     version=version,
-    description="SENAITE IMPRESS",
-    long_description=open("docs/Changelog.rst").read(),
+    description="Publication of HTML/PDF Reports in SENAITE",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     # Get more strings from
     # http://pypi.python.org/pypi?:action=list_classifiers
     classifiers=[
