@@ -1,7 +1,8 @@
 include LICENSE
 include *.rst
 include *.md
-recursive-exclude docs *
+recursive-include docs *
+recursive-include static *
 recursive-include src/senaite/impress *
 recursive-exclude src/senaite/impress *.pyc *.mo
 recursive-exclude src/senaite/impress/static/js/node_modules *
