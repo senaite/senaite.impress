@@ -4,3 +4,6 @@ include *.md
 recursive-exclude docs *
 recursive-include src/senaite/impress *
 recursive-exclude src/senaite/impress *.pyc *.mo
+recursive-exclude src/senaite/impress/static/js/node_modules *
+recursive-exclude node_modules *
+recursive-exclude src/senaite/impress/locales/.tx *
