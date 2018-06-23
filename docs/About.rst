@@ -1,5 +1,5 @@
 .. figure:: https://raw.githubusercontent.com/senaite/senaite.impress/master/static/impress-logo.png
-   :height: 235px
+   :height: 64px
    :alt: senaite.impress
    :align: center
 
