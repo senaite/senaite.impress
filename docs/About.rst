@@ -1,21 +1,21 @@
 .. figure:: https://raw.githubusercontent.com/senaite/senaite.impress/master/static/impress-logo.png
-   :height: 64px
+   :height: 235px
    :alt: senaite.impress
    :align: center
 
 - **SENAITE.IMPRESS**: *Publication of HTML/PDF Reports in SENAITE*
 
 .. image:: https://img.shields.io/pypi/v/senaite.impress.svg?style=flat-square
-           :target: https://pypi.python.org/pypi/senaite.impress
+   :target: https://pypi.python.org/pypi/senaite.impress
 
 .. image:: https://img.shields.io/github/issues-pr/senaite/senaite.impress.svg?style=flat-square
-           :target: https://github.com/senaite/senaite.impress/pulls
+   :target: https://github.com/senaite/senaite.impress/pulls
 
 .. image:: https://img.shields.io/github/issues/senaite/senaite.impress.svg?style=flat-square
-           :target: https://github.com/senaite/senaite.impress/issues
+   :target: https://github.com/senaite/senaite.impress/issues
 
 .. image:: https://img.shields.io/badge/README-GitHub-blue.svg?style=flat-square
-           :target: https://github.com/senaite/senaite.impress#readme
+   :target: https://github.com/senaite/senaite.impress#readme
 
 
 About
