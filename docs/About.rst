@@ -1,6 +1,6 @@
 .. image:: https://raw.githubusercontent.com/senaite/senaite.impress/master/static/impress-logo.png
-   :height: 64 px
    :alt: senaite.impress
+   :height: 64 px
    :align: center
 
 - **SENAITE.IMPRESS**: *Publication of HTML/PDF Reports in SENAITE*
