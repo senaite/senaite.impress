@@ -4,7 +4,6 @@
 #
 # Copyright 2018 by it's authors.
 
-
 import json
 from collections import Iterable
 from collections import OrderedDict
