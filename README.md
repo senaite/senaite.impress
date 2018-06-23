@@ -28,7 +28,14 @@ selected in this listing for email delivery. This also allows to send multiple
 PDF Analysis Reports in a single Email.
 
 
-## Hello World
+## Installation
+
+### Requirements
+
+## Custom Reports
+
+
+### Hello World
 
 The easiest way to get started with `senaite.impress` is to copy one of the
 existing templates in the `templates/reports` folder within this package.
@@ -49,7 +56,7 @@ We will examine single- and multi reports, Zope page templates and the report mo
 Once you master them, you can create complex reports for SENAITE.
 
 
-## Single/Multi Reports
+### Single/Multi Reports
 
 The difference between single- and multi reports is that a single reports
 receive a single report object, while multi reports receive a collection of
@@ -96,7 +103,7 @@ Change between the templates `HelloWorld.pt` and `MultiHelloWorld.pt` to see how
 the two selected Analysis Requests render either on two pages or on one page.
 
 
-## Zope Page Templates
+### Zope Page Templates
 
 [Zope Page Templates](http://zope.readthedocs.io/en/latest/zope2book/ZPT.html)
 is the main web page generation tool in SENAITE.
@@ -110,7 +117,7 @@ page headline in the previous reports:
 <h1 tal:content="model/id">This will be replaced with the ID of the model</h1>
 ```
 
-## Report Model
+### Report Model
 
 The Report Model is a special wrapper object for database objects in SENAITE.
 The advantage of Report Models is that they provide transparent access to all
@@ -140,7 +147,7 @@ Now it should render the title of the sample type below the ID of the Analysis R
 <img src="static/4_report_model.png" alt="Report Model" />
 
 
-## Bootstrap
+### Bootstrap
 
 `senaite.impress` uses [Bootstrap 4](https://getbootstrap.com) as the main front-end component library.
 Each report will therefore follow these style guidelines and can be easily extended.
@@ -170,7 +177,7 @@ format.
 <img src="static/5_bootstrap.png" alt="Bootstrap" />
 
 
-## Customizing the report design
+### Customizing the report design
 
 To customize the style of your report, it is recommended to add the CSS style inline.
 
@@ -216,7 +223,7 @@ any other media that splits content into discrete pages.
 <img src="static/6_custom_css.png" alt="Custom CSS" />
 
 
-## Report View
+### Report View
 
 The Report View acts as a controller for the multi- and single reports. It
 provides code logic to group, sort and extract the data of the report model/collection.
@@ -276,7 +283,7 @@ is consulted for commercial support.
 <img src="static/7_report_view.png" alt="Report View" />
 
 
-## Reports in external packages
+### Reports in external packages
 
 Until now we created all reports on the file system within this package, which
 is **not** the recommended way, because with future updates of
@@ -304,7 +311,7 @@ In your new package `configure.zcml` you have to specify the folder where your r
 This will integrate the `reports` directory within your package into the search path of `senaite.impress`.
 
 
-## Further Reading
+### Further Reading
 
 `senaite.impress` comes with some default templates included. It is
 recommended to read the code of these templates or use them as the base for new
