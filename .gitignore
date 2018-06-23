@@ -107,3 +107,4 @@ yarn-error.log
 bin
 src/senaite.core
 src/senaite.api
+/src/senaite.lims/
