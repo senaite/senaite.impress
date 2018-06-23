@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/senaite/senaite.impress">
-    <img src="static/impress-logo.png" alt="SENAITE IMPRESS" width="64" />
+    <img src="static/impress-logo.png" alt="SENAITE IMPRESS" height="64" />
   </a>
   <p>Publication of HTML/PDF Reports in SENAITE</p>
 
