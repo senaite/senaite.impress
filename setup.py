@@ -2,13 +2,16 @@
 
 from setuptools import setup, find_packages
 
-version = "1.0.0-r3"
+version = "1.0.1"
 
 with open("docs/About.rst", "r") as fh:
     long_description = fh.read()
 
 with open("docs/Changelog.rst", "r") as fh:
-    long_description += "\n\n" + fh.read()
+    long_description += "\n\n"
+    long_description += "Changelog\n"
+    long_description += "=========\n\n"
+    long_description += fh.read()
 
 setup(
     name="senaite.impress",
@@ -37,7 +40,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
-        "senaite.api",
+        "senaite.api>=1.2.0",
         "senaite.core>=1.2.7",
         "beautifulsoup4",
         "archetypes.schemaextender",
