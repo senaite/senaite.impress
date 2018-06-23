@@ -1,14 +1,4 @@
-1.0.0 (unreleased)
+1.0.0 (2018-06-23)
 ------------------
 
-**Added**
-
-- Package
-
-**Removed**
-
-**Changed**
-
-**Fixed**
-
-**Security**
+- Initial Release

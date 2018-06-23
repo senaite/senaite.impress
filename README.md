@@ -1,10 +1,8 @@
 <div align="center">
-
   <a href="https://github.com/senaite/senaite.impress">
     <img src="static/impress-logo.png" alt="SENAITE IMPRESS" height="64" />
   </a>
   <p>Publication of HTML/PDF Reports in SENAITE</p>
-
 </div>
 
 
@@ -14,6 +12,20 @@ SENAITE IMPRESS is basically a rendering engine for HTML documents to PDF. It
 supports any kind of international paperformat with their corresponding paper
 dimensions, portrait and landscape orientation and merging of multiple PDFs to
 one document.
+
+
+## Installation
+
+Please follow the installations instructions for
+[Plone 4](https://docs.plone.org/4/en/manage/installing/index.html)
+and [senaite.lims](https://github.com/senaite/senaite.lims#installation).
+
+
+### Requirements
+
+- Plone 4.3.7
+- senaite.core >= 1.2.7
+- senaite.lims >= 1.2.0
 
 
 ## Usage
@@ -28,9 +40,6 @@ selected in this listing for email delivery. This also allows to send multiple
 PDF Analysis Reports in a single Email.
 
 
-## Installation
-
-### Requirements
 
 ## Custom Reports
 
