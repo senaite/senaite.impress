@@ -2,9 +2,9 @@
 
 from setuptools import setup, find_packages
 
-version = "1.0.0"
+version = "1.0.0-r2"
 
-with open("README.md", "r") as fh:
+with open("docs/About.rst", "r") as fh:
     long_description = fh.read()
 
 with open("docs/Changelog.rst", "r") as fh:
@@ -15,7 +15,7 @@ setup(
     version=version,
     description="Publication of HTML/PDF Reports in SENAITE",
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    # long_description_content_type="text/markdown",
     # Get more strings from
     # http://pypi.python.org/pypi?:action=list_classifiers
     classifiers=[
