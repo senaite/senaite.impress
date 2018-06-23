@@ -53,7 +53,7 @@ list inside the `[buildout]` section of your `buildout.cfg`:
     zc.buildout =
 
     
-**Note***`
+**Note**
 
 The above example works for the buildout created by the unified installer. If
 you however have a custom buildout you might need to add the egg to the `eggs`
