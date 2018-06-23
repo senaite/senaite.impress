@@ -136,6 +136,14 @@ contacts of the Analysis Request.
 If the Email was successfully sent, the corresponding Analysis Requests change
 the state to "Published".
 
+<img src="static/published.png" alt="Published" />
+
+After you clicked the "Send" button, the Email with the attched reports are
+delivered to the selected recipients.
+
+The workflow states of the Analysis Requests have changed their state to "Published".
+
+
 **Note**
 
 In the case that multiple Analysis Requests are rendered in a single Report, the
