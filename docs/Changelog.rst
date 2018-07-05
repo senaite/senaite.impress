@@ -1,6 +1,7 @@
 1.0.2 (unreleased)
 ------------------
 
+- #7: Correct margin calculation
 - #6: Updated default report templates
 
 
