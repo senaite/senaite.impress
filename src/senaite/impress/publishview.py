@@ -203,31 +203,34 @@ class PublishView(BrowserView):
     def get_print_css(self, paperformat="A4", orientation="portrait"):
         """Returns the generated print CSS for the given format/orientation
         """
-        _paperformat = self.get_paperformat(paperformat)
+        pf = self.get_paperformat(paperformat)
 
-        margin_top = _paperformat["margin_top"]
-        margin_right = _paperformat["margin_right"]
-        margin_bottom = _paperformat["margin_bottom"]
-        margin_left = _paperformat["margin_left"]
+        margin_top = pf["margin_top"]
+        margin_right = pf["margin_right"]
+        margin_bottom = pf["margin_bottom"]
+        margin_left = pf["margin_left"]
 
-        page_width = _paperformat["page_width"]
-        page_height = _paperformat["page_height"]
+        if orientation == "portrait":
+            page_width = pf["page_width"]
+            page_height = pf["page_height"]
+        else:
+            page_width = pf["page_height"]
+            page_height = pf["page_width"]
 
         # calculate content width/height accordding to the margins
-        content_height = page_height - margin_top - margin_bottom
         content_width = page_width - margin_left - margin_right
+        content_height = page_height - margin_top - margin_bottom
 
-        _paperformat["content_width"] = content_width
-        _paperformat["content_height"] = content_height
+        # prepare the substitution context
+        context = pf.copy()
+        context.update({
+            "page_width": page_width,
+            "page_height": page_height,
+            "content_width": content_width,
+            "content_height": content_height,
+        })
 
-        # Flip sizes in landscape
-        if orientation == "landscape":
-            _paperformat["page_width"] = page_height
-            _paperformat["page_height"] = page_width
-            _paperformat["content_width"] = content_height
-            _paperformat["content_height"] = content_width
-
-        return CSS.safe_substitute(_paperformat)
+        return CSS.safe_substitute(context)
 
     def get_paperformat(self, paperformat):
         """Return the paperformat dictionary
