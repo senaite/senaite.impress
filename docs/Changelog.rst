@@ -1,3 +1,9 @@
+1.0.2 (unreleased)
+------------------
+
+- #6: Updated default report templates
+
+
 1.0.1 (2018-06-23)
 ------------------
 
