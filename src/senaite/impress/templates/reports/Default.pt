@@ -7,7 +7,7 @@
   <tal:css define="laboratory view/laboratory;">
     <style type="text/css">
      html, body { font-size: 1em; }
-     h1 { font-size: 160%; }
+     h1 { font-size: 140%; }
      h2 { font-size: 120%; }
      .colon-after:after { content: ":"; }
      table.noborder td { border: none; }
@@ -34,24 +34,12 @@
   <!-- HEADER -->
   <tal:render condition="python:True">
     <div class="row section-header">
-      <div class="col-sm-6">
+      <div class="col-sm-12">
         <div class="text-left">
           <a tal:attributes="href view/portal_url">
             <img style="max-height: 100px"
                  tal:attributes="src python:view.get_resource_url('logo_print.png')"/>
           </a>
-        </div>
-      </div>
-      <div class="col-sm-6 pt-2">
-        <!-- Barcode -->
-        <div class="text-center float-right barcode-container">
-          <div class="barcode"
-               data-code="code128"
-               data-showHRI="true"
-               data-barHeight="15"
-               data-addQuietZone="true"
-               tal:attributes="data-id model/getId">
-          </div>
         </div>
       </div>
     </div>
@@ -65,7 +53,7 @@
   <div class="row section-info">
     <div class="col-sm-12">
       <!-- Client Info -->
-      <table class="table table-sm">
+      <table class="table table-sm table-condensed">
         <colgroup>
           <!-- Client Address -->
           <col style="width: 40%;">
@@ -183,8 +171,20 @@
                       spec python:publication_specification or specification;">
     <div class="row section-summary">
       <div class="col col-sm-12">
+
+        <!-- Barcode -->
+        <div class="text-center float-right barcode-container">
+          <div class="barcode"
+               data-code="code128"
+               data-showHRI="true"
+               data-barHeight="15"
+               data-addQuietZone="true"
+               tal:attributes="data-id model/getId">
+          </div>
+        </div>
+
         <h1 i18n:translate="">Summary</h1>
-        <table class="table table-sm">
+        <table class="table table-sm table-condensed">
           <tr>
             <td style="width:20%" class="label" i18n:translate="">Request ID</td>
             <td>
@@ -274,14 +274,12 @@
         <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
                  repeat="poc analyses_by_poc">
 
-          <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
-
           <!-- Analysis Category -->
           <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
                                  repeat="category python:view.sort_items(categories_by_poc.get(poc))">
 
             <!-- Analysis in POC and Category -->
-            <table class="table table-sm">
+            <table class="table table-sm table-condensed">
               <colgroup>
                 <!-- Category -->
                 <col style="width: 40%;">
@@ -295,7 +293,7 @@
                 <col style="width: 5%">
               </colgroup>
               <thead>
-                <tr>
+                <tr class="small">
                   <th class="analysis">
                     <span class="font-weight-bold" tal:content="category/Title">Category</span>
                   </th>
@@ -378,7 +376,7 @@
         <h1 i18n:translate="">Results interpretation</h1>
 
         <tal:ri repeat="ri ris">
-          <h4 tal:content="ri/title|nothing">Department</h4>
+          <h2 tal:condition="ri/richtext|nothing" tal:content="ri/title|nothing">Department</h2>
           <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
         </tal:ri>
       </div>
@@ -469,7 +467,7 @@
     <div class="row section-signatures">
       <div class="col-sm-12">
         <h1 i18n:translate="">Responsibles</h1>
-        <table class="table table-sm">
+        <table class="table table-sm table-condensed">
           <tr>
             <tal:manager repeat="manager python:model.managers">
               <td style="border:none">

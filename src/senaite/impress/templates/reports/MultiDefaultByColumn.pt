@@ -7,7 +7,7 @@
   <tal:css define="laboratory view/laboratory;">
     <style type="text/css">
      html, body { font-size: 1em; }
-     h1 { font-size: 160%; }
+     h1 { font-size: 140%; }
      h2 { font-size: 120%; }
      .colon-after:after { content: ":"; }
      table.noborder td { border: none; }
@@ -51,7 +51,10 @@
   </tal:render>
 
   <!-- INFO -->
-  <tal:render condition="python:True">
+  <tal:render condition="python:len(collection)>0"
+              define="primarymodel python:collection[0];
+                      samples python:map(lambda m: m.Sample, collection);">
+
     <div class="row section-info">
       <div class="col-sm-12 py-4 small">
         <!-- Client Info -->
@@ -63,7 +66,7 @@
           <tr>
             <td class="align-top">
               <!-- Left Table -->
-              <table class="table table-sm mr-1">
+              <table class="table table-sm table-condensed mr-1">
                 <!-- Client Name(s) -->
                 <tr>
                   <td class="label" i18n:translate="">Client</td>
@@ -109,12 +112,6 @@
                     </tal:by_client_sid>
                   </td>
                 </tr>
-              </table>
-            </td>
-            <td class="align-top">
-              <!-- Right Table -->
-              <table class="table table-sm ml-1"
-                     tal:define="samples python:map(lambda m: m.Sample, collection)">
                 <!-- Sample Type -->
                 <tr>
                   <td class="label" i18n:translate="">Sample Type</td>
@@ -146,6 +143,58 @@
                 </tr>
               </table>
             </td>
+            <td class="align-top">
+              <!-- Right Table -->
+              <table class="table table-sm table-condensed ml-1"
+                     tal:define="laboratory python:view.laboratory;">
+                <tr>
+                  <td>
+                    <!-- Laboratory Info -->
+                    <address class="laboratory-address text-right">
+                      <div class="lab-title font-weight-bold">
+                        <div tal:replace="laboratory/title|nothing"/>
+                      </div>
+                      <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
+                        <span i18n:translate="">Supervisor</span>:
+                        <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
+                      </div>
+                      <div class="lab-address">
+                        <div class="lab-street">
+                          <div tal:replace="laboratory/PostalAddress/address|nothing"></div>
+                        </div>
+                        <span class="lab-zip">
+                          <div tal:replace="laboratory/PostalAddress/zip|nothing"></div>
+                        </span>
+                        <span class="lab-city">
+                          <div tal:replace="laboratory/PostalAddress/city|nothing"></div>
+                        </span>
+                        <div class="lab-country">
+                          <div tal:replace="laboratory/PostalAddress/country|nothing"></div>
+                        </div>
+                      </div>
+                      <div class="lab-url">
+                        <a tal:attributes="href laboratory/LabURL"
+                           tal:content="laboratory/LabURL"></a>
+                      </div>
+                    </address>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-right">
+                    <!-- Barcode -->
+                    <div tal:repeat="model collection" class="text-center float-right barcode-container mt-2">
+                      <div class="barcode"
+                           data-code="code128"
+                           data-showHRI="true"
+                           data-barHeight="15"
+                           data-addQuietZone="false"
+                           tal:attributes="data-id model/getId">
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
           </tr>
         </table>
       </div>
@@ -156,7 +205,7 @@
   <tal:render condition="python:True">
     <tal:model repeat="model collection">
       <div class="alert alert-danger" tal:condition="model/is_invalid">
-        <h4 class="alert-heading"><span tal:replace="model/getId"/></h4>
+        <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
         <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
         <tal:invalidreport tal:define="child model/ChildAnalysisRequest"
                            tal:condition="child">
@@ -167,7 +216,7 @@
       </div>
 
       <div class="alert alert-info" tal:condition="model/is_provisional">
-        <h4 class="alert-heading"><span tal:replace="model/getId"/></h4>
+        <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
         <div i18n:translate="">Provisional report</div>
       </div>
     </tal:model>
@@ -183,7 +232,7 @@
 
         <!-- Point of Captures -->
         <tal:poc tal:repeat="poc analyses_by_poc">
-          <h4 tal:content="python:view.points_of_capture.get(poc)"></h4>
+          <h2 tal:content="python:view.points_of_capture.get(poc)"></h2>
 
           <!-- Results table per PoC -->
           <table class="table table-sm table-condensed small">
@@ -191,7 +240,7 @@
               <tr>
                 <th></th>
                 <tal:ar repeat="model collection">
-                  <th colspan="2" class="font-weight-normal text-right">
+                  <th colspan="2" class="font-weight-normal text-center">
                     <div class="text-primary"
                          tal:content="model/getId"/>
                   </th>
@@ -261,7 +310,7 @@
           <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
           <div tal:condition="ris">
             <tal:ri repeat="ri ris">
-              <h4 tal:content="ri/title|nothing">Department</h4>
+              <h2 tal:condition="ri/richtext|nothing" tal:content="ri/title|nothing">Department</h2>
               <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
             </tal:ri>
           </div>
@@ -306,9 +355,9 @@
                                   an_attachments python:model.get_sorted_an_attachments('r')"
                       tal:condition="python: ar_attachments or an_attachments">
 
-        <h4 i18n:translate="">
+        <h2 i18n:translate="">
           Attachments for <span tal:replace="model/getId"/>
-        </h4>
+        </h2>
 
         <!-- AR ATTACHMENTS -->
         <div class="row section-an-attachments" tal:condition="ar_attachments">
@@ -366,7 +415,7 @@
       <div class="row section-signatures">
         <div class="col-sm-12">
           <h1 i18n:translate="">Responsibles</h1>
-          <table class="table table-sm">
+          <table class="table table-sm table-condensed">
             <tr>
               <tal:manager repeat="manager managers">
                 <td style="border:none">
