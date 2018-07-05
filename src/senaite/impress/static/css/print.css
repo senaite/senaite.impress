@@ -9,8 +9,9 @@
 
 @media print {
   .noprint { display: none; }
-  .report { page-break-after: always; }
+  .report { page-break-after: always; overflow: visible; }
   h1, h2, h3, h4, h5 { page-break-after: avoid; }
+  div.row { page-break-inside: avoid; }
 }
 
 /** For screen preview **/
