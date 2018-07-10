@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-07-05 14:19+0000\n"
+"POT-Creation-Date: 2018-07-10 20:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Pau Soliva <psoliva@naralabs.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/senaite/teams/87187/es/)\n"
@@ -235,11 +235,11 @@ msgstr ""
 
 #: senaite/impress/emailview.py:79
 msgid "Please add an email subject"
-msgstr ""
+msgstr "Por favor, añada un asunto de correo electrónico"
 
 #: senaite/impress/emailview.py:82
 msgid "Please add an email text"
-msgstr ""
+msgstr "Por favor, añada el texto en el correo"
 
 #: senaite/impress/templates/email_template.pt:11
 msgid "Please find attached the analysis result(s) for ${client_name}"
@@ -249,27 +249,27 @@ msgstr ""
 #: senaite/impress/templates/reports/MultiDefault.pt:170
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:220
 msgid "Provisional report"
-msgstr ""
+msgstr "Informe provisional"
 
 #: senaite/impress/reports_listing.py:65
 msgid "Published By"
-msgstr ""
+msgstr "Publicado por"
 
 #: senaite/impress/reports_listing.py:64
 msgid "Published Date"
-msgstr ""
+msgstr "Fecha de Publicación"
 
 #: senaite/impress/templates/reports/Default.pt:248
 #: senaite/impress/templates/reports/MultiDefault.pt:263
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:441
 msgid "Published by"
-msgstr ""
+msgstr "Publicado por"
 
 #: senaite/impress/templates/reports/Default.pt:391
 #: senaite/impress/templates/reports/MultiDefault.pt:416
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:330
 msgid "QC Results"
-msgstr ""
+msgstr "Resultados de control de calidad"
 
 #: senaite/impress/templates/reports/Default.pt:307
 #: senaite/impress/templates/reports/MultiDefault.pt:324
@@ -278,11 +278,11 @@ msgstr ""
 
 #: senaite/impress/templates/publish.pt:58
 msgid "Received"
-msgstr ""
+msgstr "Recibido"
 
 #: senaite/impress/reports_listing.py:66
 msgid "Recipients"
-msgstr ""
+msgstr "Destinatarios"
 
 #: senaite/impress/extender/arreport.py:42
 msgid "Referenced Analysis Requests in the PDF"
@@ -290,7 +290,7 @@ msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:400
 msgid "Remarks"
-msgstr ""
+msgstr "Notas"
 
 #: senaite/impress/templates/reports/Default.pt:189
 #: senaite/impress/templates/reports/MultiDefault.pt:204
