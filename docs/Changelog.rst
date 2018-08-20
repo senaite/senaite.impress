@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #12: Added upgrade-step machinery
 - #11: Refactored to ReportModel -> SuperModel
 
 
