@@ -3,8 +3,9 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       i18n:domain="senaite.impress" lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title i18n:translate="">SENAITE IMPRESS</title>
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">

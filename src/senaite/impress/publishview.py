@@ -92,6 +92,7 @@ class PublishView(BrowserView):
         publisher.css = []
         # link default stylesheets
         publisher.link_css_file("bootstrap.min.css")
+        publisher.link_css_file("bootstrap-print.css")
         publisher.link_css_file("print.css")
         return publisher
 
