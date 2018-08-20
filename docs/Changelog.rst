@@ -1,7 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
-- # : Refactor to `senaite.core.supermodel`
+- #11: Refactored to ReportModel -> SuperModel
 
 
 1.0.2 (2018-07-10)
