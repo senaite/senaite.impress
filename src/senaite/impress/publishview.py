@@ -11,12 +11,12 @@ from string import Template
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
+from senaite.core.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.config import PAPERFORMATS
 from senaite.impress.interfaces import IMultiReportView
 from senaite.impress.interfaces import IPublisher
 from senaite.impress.interfaces import IPublishView
-from senaite.impress.interfaces import IReportModel
 from senaite.impress.interfaces import IReportView
 from senaite.impress.interfaces import ITemplateFinder
 from zope.component import ComponentLookupError
@@ -115,7 +115,7 @@ class PublishView(BrowserView):
         return filter(None, self.request.get("items", "").split(","))
 
     def get_collection(self, uids=None):
-        """Wraps the given UIDs into a collection of ReportModels
+        """Wraps the given UIDs into a collection of SuperModels
         """
         if uids is None:
             uids = self.get_uids()
@@ -129,17 +129,17 @@ class PublishView(BrowserView):
         return collection
 
     def to_model(self, uid):
-        """Returns a report Model for the given UID
+        """Returns a SuperModel for the given UID
         """
         model = None
         # Fetch the report (portal-) type for component lookups
         _type = self.get_report_type()
         try:
-            model = getAdapter(uid, IReportModel, name=_type)
+            model = getAdapter(uid, ISuperModel, name=_type)
         except ComponentLookupError:
-            logger.error("Lookup Error: No Report Model registered for name={}"
+            logger.error("Lookup Error: No SuperModel registered for name={}"
                          .format(_type))
-            model = getAdapter(uid, IReportModel)
+            model = getAdapter(uid, ISuperModel)
 
         logger.debug("Created Model for UID={}->{}".format(uid, model))
         return model
@@ -187,14 +187,14 @@ class PublishView(BrowserView):
         return "\n".join(htmls)
 
     def render_report(self, model, template, **kw):
-        """Render a ReportModel to HTML
+        """Render a SuperModel to HTML
         """
         _type = self.get_report_type()
         view = getAdapter(model, IReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
     def render_multi_report(self, collection, template, **kw):
-        """Render multiple ReportModels to HTML
+        """Render multiple SuperModels to HTML
         """
         _type = self.get_report_type()
         view = getAdapter(collection, IMultiReportView, name=_type)

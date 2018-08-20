@@ -6,6 +6,7 @@
 
 from collections import OrderedDict
 
+
 # Value of key `format` must match the allowed CSS size attribute:
 # https://developer.mozilla.org/en-US/docs/Web/CSS/@page/size
 PAPERFORMATS = OrderedDict((

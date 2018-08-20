@@ -17,9 +17,9 @@ import DateTime
 from bika.lims import POINTS_OF_CAPTURE
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from senaite import api
+from senaite.core.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
-from senaite.impress.decorators import returns_report_model
-from senaite.impress.interfaces import IReportModel
+from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base
 
 
@@ -52,7 +52,7 @@ class ReportView(Base):
         return OrderedDict(items)
 
     @property
-    @returns_report_model
+    @returns_super_model
     def portal(self):
         return api.get_portal()
 
@@ -61,12 +61,12 @@ class ReportView(Base):
         return api.get_portal().absolute_url()
 
     @property
-    @returns_report_model
+    @returns_super_model
     def setup(self):
         return self.portal.bika_setup
 
     @property
-    @returns_report_model
+    @returns_super_model
     def laboratory(self):
         return self.setup.laboratory
 
@@ -222,7 +222,7 @@ class ReportView(Base):
         return sorted(items, key=key, reverse=reverse)
 
     def to_list(self, model_or_collection):
-        if IReportModel.providedBy(model_or_collection):
+        if ISuperModel.providedBy(model_or_collection):
             return [model_or_collection]
         if isinstance(model_or_collection, Sequence):
             return model_or_collection

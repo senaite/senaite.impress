@@ -108,3 +108,4 @@ bin
 src/senaite.core
 src/senaite.api
 /src/senaite.lims/
+/src/senaite.core.supermodel/

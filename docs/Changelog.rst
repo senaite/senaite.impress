@@ -1,7 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
-- no changes yet
+- # : Refactor to `senaite.core.supermodel`
 
 
 1.0.2 (2018-07-10)

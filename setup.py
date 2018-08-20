@@ -42,6 +42,7 @@ setup(
         "setuptools",
         "senaite.api>=1.2.0",
         "senaite.core>=1.2.7",
+        "senaite.core.supermodel>=1.0.0",
         "beautifulsoup4",
         "archetypes.schemaextender",
     ],

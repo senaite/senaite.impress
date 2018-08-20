@@ -28,11 +28,6 @@ class IMultiReportView(Interface):
     """
 
 
-class IReportModel(Interface):
-    """A Report Model wrapper
-    """
-
-
 class IPublisher(Interface):
     """HTML -> PDF Publishing Engine
     """

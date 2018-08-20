@@ -9,13 +9,13 @@ from bika.lims.utils import formatDecimalMark
 from bika.lims.utils import to_utf8
 from bika.lims.utils.analysis import format_uncertainty
 from senaite import api
+from senaite.core.supermodel import SuperModel as BaseModel
 from senaite.impress import logger
-from senaite.impress.decorators import returns_report_model
-from senaite.impress.reportmodel import ReportModel as Base
+from senaite.impress.decorators import returns_super_model
 
 
-class ReportModel(Base):
-    """Analysis Request Report Model
+class SuperModel(BaseModel):
+    """Analysis Request SuperModel
     """
 
     def is_invalid(self):
@@ -192,7 +192,7 @@ class ReportModel(Base):
         return sorted(attachments, cmp=att_cmp)
 
     @property
-    @returns_report_model
+    @returns_super_model
     def departments(self):
         return self.getDepartments()
 

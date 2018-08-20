@@ -8,8 +8,8 @@ import json
 import threading
 
 from senaite import api
+from senaite.core.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
-from senaite.impress.interfaces import IReportModel
 from zope.component import queryAdapter
 
 
@@ -44,16 +44,16 @@ def returns_json(func):
     return decorator
 
 
-def returns_report_model(func):
-    """Wraps an object into a report model
+def returns_super_model(func):
+    """Wraps an object into a super model
     """
 
-    def to_report_model(obj):
+    def to_super_model(obj):
         # avoid circular imports
-        from senaite.impress.reportmodel import ReportModel
+        from senaite.core.supermodel import SuperModel
 
-        # Object is already a Publication Object, return immediately
-        if isinstance(obj, ReportModel):
+        # Object is already a SuperModel, return immediately
+        if isinstance(obj, SuperModel):
             return obj
 
         # Only portal objects are supported
@@ -65,15 +65,15 @@ def returns_report_model(func):
         uid = api.get_uid(obj)
         portal_type = api.get_portal_type(obj)
 
-        adapter = queryAdapter(uid, IReportModel, name=portal_type)
+        adapter = queryAdapter(uid, ISuperModel, name=portal_type)
         if adapter is None:
-            return ReportModel(uid)
+            return SuperModel(uid)
         return adapter
 
     def decorator(*args, **kwargs):
         obj = func(*args, **kwargs)
         if isinstance(obj, (list, tuple)):
-            return map(to_report_model, obj)
-        return to_report_model(obj)
+            return map(to_super_model, obj)
+        return to_super_model(obj)
 
     return decorator
