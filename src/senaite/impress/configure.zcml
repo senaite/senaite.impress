@@ -21,6 +21,9 @@
   <!-- AR specific Reports -->
   <include package=".analysisrequest" />
 
+  <!-- Upgrade Steps -->
+  <include package=".upgrades" />
+
   <!-- Publish Controller View
 
        TODO: Rename to `publish` for drop-in replacement as soon as this package
