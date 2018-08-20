@@ -20,10 +20,10 @@
       provides="senaite.impress.interfaces.IMultiReportView"
       permission="zope2.View"/>
 
-  <!-- Report Model -->
+  <!-- SuperModel -->
   <adapter
       for="*"
       name="AnalysisRequest"
-      factory=".reportmodel.ReportModel"/>
+      factory=".model.SuperModel"/>
 
 </configure>

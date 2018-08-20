@@ -115,10 +115,10 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Generic Report Model -->
+  <!-- Generic Model -->
   <adapter
       for="*"
-      factory="senaite.impress.reportmodel.ReportModel"
+      factory="senaite.core.supermodel.SuperModel"
       />
 
   <!-- HTML/PDF Publisher Utility -->

@@ -9,10 +9,10 @@ import json
 
 from DateTime import DateTime
 from senaite import api
+from senaite.core.supermodel import SuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.publishview import PublishView
-from senaite.impress.reportmodel import ReportModel
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
@@ -106,7 +106,7 @@ class AjaxPublishView(PublishView):
         logger.info("ajaxPrintView::ajax_get: {}{}"
                     .format(uid, "/".join(args)))
 
-        model = ReportModel(uid)
+        model = SuperModel(uid)
         if not model.is_valid():
             return self.fail("No object found for UID '{}'"
                              .format(uid), status=404)
@@ -240,7 +240,7 @@ class AjaxPublishView(PublishView):
         """Returns a list of JSON mmodels
         """
         uids = self.get_json().get("items") or args
-        models = map(lambda uid: ReportModel(uid), uids)
+        models = map(lambda uid: SuperModel(uid), uids)
         return map(lambda model: model.to_dict(), models)
 
     def ajax_load_preview(self):
