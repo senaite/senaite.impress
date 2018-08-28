@@ -182,13 +182,15 @@
                 <tr>
                   <td class="text-right">
                     <!-- Barcode -->
-                    <div tal:repeat="model collection" class="text-center float-right barcode-container mt-2">
-                      <div class="barcode"
-                           data-code="code128"
-                           data-showHRI="true"
-                           data-barHeight="15"
-                           data-addQuietZone="false"
-                           tal:attributes="data-id model/getId">
+                    <div tal:repeat="model collection" class="barcode-container mt-2">
+                      <div class="clearfix">
+                        <div class="barcode float-right"
+                             data-code="code128"
+                             data-showHRI="true"
+                             data-barHeight="15"
+                             data-addQuietZone="false"
+                             tal:attributes="data-id model/getId">
+                        </div>
                       </div>
                     </div>
                   </td>
