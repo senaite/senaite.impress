@@ -1,10 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 
-
 module.exports = {
   entry: {
-    publish: path.resolve(__dirname, './src/publish.coffee')
+    publish: path.resolve(__dirname, './src/publish.coffee'),
+    email: path.resolve(__dirname, './src/email.coffee')
   },
   output: {
     filename: 'senaite.impress.[name].js',
@@ -45,9 +45,14 @@ module.exports = {
     ]
   },
   plugins: [
+    // https://webpack.js.org/plugins/provide-plugin/
     new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
+      // $: 'jquery',
+      // jQuery: 'jquery'
     })
   ],
+  externals: {
+    // https://webpack.js.org/configuration/externals
+    jquery: '$'
+  }
 };

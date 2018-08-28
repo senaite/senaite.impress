@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title i18n:translate="">SENAITE IMPRESS</title>
+
     <!-- CSS -->
     <tal:css define="portal context/@@plone_portal_state/portal;">
       <!-- fontawesome.css -->
@@ -27,6 +28,24 @@
     </tal:css>
     <!-- /CSS -->
 
+    <!-- PORTAL JS -->
+    <tal:portal_javascripts define="view context/@@javascripts_view"
+                            repeat="script view/scripts">
+      <tal:block define="inline script/inline;
+                         condcomment script/conditionalcomment">
+        <tal:jquery condition="not:inline">
+          <script type="text/javascript" tal:attributes="src script/src"></script>
+        </tal:jquery>
+        <tal:inline condition="inline">
+          <script type="text/javascript" tal:content="structure script/content"></script>
+        </tal:inline>
+        <tal:wcondcomment tal:condition="condcomment">
+          <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
+        </tal:wcondcomment>
+      </tal:block>
+    </tal:portal_javascripts>
+    <!-- /PORTAL JS -->
+
     <!-- JS -->
     <tal:js define="portal context/@@plone_portal_state/portal;">
       <!-- publish.js -->
@@ -35,6 +54,7 @@
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/dist/senaite.impress.publish.js"></script>
     </tal:js>
     <!-- /JS -->
+
   </head>
   <body>
     <div class="container">
