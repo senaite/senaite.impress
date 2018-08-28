@@ -56,6 +56,10 @@
 #emailview .recipient.invalid {
     background-color: #f0ad4e;
 }
+#emailview input[name=subject] {
+    padding: 1.25em 12px;
+    font-weight: bold;
+}
 #emailview .attachments {
     margin-top: 1em;
     min-height: 20px;

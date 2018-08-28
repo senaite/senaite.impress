@@ -13,7 +13,7 @@ class EmailController
 
 
   initialize: ->
-    console.debug "BECHEM:Email::initialize"
+    console.debug "senaite.impress:Email::initialize"
     # Initialize overlays
     @init_overlays()
 
@@ -23,7 +23,7 @@ class EmailController
      * Initialize all overlays for later loading
      *
     ###
-    console.debug "BECHEM:Email::init_overlays"
+    console.debug "senaite.impress:Email::init_overlays"
 
     $("a.attachment-link,a.report-link").prepOverlay
       subtype: "iframe"
@@ -45,7 +45,7 @@ class EmailController
      * delegate the event: https://learn.jquery.com/events/event-delegation/
      *
     ###
-    console.debug "BECHEM:I18N::bind_eventhandler"
+    console.debug "senaite.impress::bind_eventhandler"
 
     # Toggle additional attachments visibility
     $("body").on "click", "#add-attachments", @on_add_attachments_click
