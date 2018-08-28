@@ -16,6 +16,7 @@ from string import Template
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
 from Products.CMFPlone.i18nl10n import ulocalized_time
+from Products.CMFPlone.utils import safe_unicode
 from senaite import api
 from senaite.core.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
@@ -183,7 +184,7 @@ class ReportView(Base):
         def sortable_title(obj):
             sort_key = obj.get("SortKey") or 0.0
             title = obj.title.lower()
-            return u"{:010.3f}{}".format(sort_key, title)
+            return u"{:010.3f}{}".format(sort_key, safe_unicode(title))
 
         def _cmp(obj1, obj2):
             st1 = sortable_title(obj1)

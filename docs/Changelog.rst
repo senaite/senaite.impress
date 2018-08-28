@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #16: Fix unicode error in sort method
 - #15: Handle commas in recipient email name better
 - #13: Fix bootstrap columns CSS for WeasyPrint
 - #12: Added upgrade-step machinery
