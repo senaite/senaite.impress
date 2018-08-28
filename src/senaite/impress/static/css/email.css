@@ -70,7 +70,6 @@
     padding: 1em 0;
 }
 #emailview .attachment a {
-    color: #5bc0de;
     font-size: 80%;
 }
 #emailview #additional-attachments-container {
@@ -83,7 +82,6 @@
     vertical-align: baseline;
 }
 #emailview .attachment-info {
-    display: inline-block;
 }
 #emailview .attachment-info a {
     text-decoration: none;

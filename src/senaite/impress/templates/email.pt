@@ -182,13 +182,16 @@
                                             title string:${attachment/filename} ${attachment/mimetype}(${attachment/filesize} kB)"
                             src="++resource++bechem.lims.www/images/attachment.png" width="32" />
                       </div>
-                      <div class="attachment-info">
-                        <div tal:content="attachment/filename"/>
+                      <span class="filename" tal:content="attachment/filename"/>
+
+                      <div class="attachment-info small">
                         <span tal:content="attachment/attachment_keys"/>
                         <span i18n:translate="">in</span>
                         <span tal:content="report/ar/getId"/>
-                        <span class="small" tal:content="attachment/mimetype"/>
-                        <span class="small" tal:content="string:${attachment/filesize}kB"/>
+                        <div class="fileinfo">
+                          <span class="filetype" tal:content="attachment/mimetype"/>
+                          <span class="filesize" tal:content="string:${attachment/filesize}kB"/>
+                        </div>
                       </div>
                     </a>
                   </div>
