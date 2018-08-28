@@ -2,7 +2,6 @@
   tal:define="client_name python:view.client_name;
               laboratory python:context.bika_setup.laboratory"
   i18n:domain="senaite.impress">
-
 <tal:p i18n:translate="">
 Thank you for your analysis request.
 </tal:p>
@@ -26,5 +25,4 @@ With best regards
 <tal:p i18n:translate="">
 *** This is an automatically generated email, please do not reply to this message. ***
 </tal:p>
-
 </tal:email_template>
