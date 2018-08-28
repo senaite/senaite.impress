@@ -194,7 +194,7 @@ class EmailView(BrowserView):
     def parse_email(self, email):
         """parse an email to an unicode name, email tuple
         """
-        splitted = safe_unicode(email).split(",")
+        splitted = safe_unicode(email).rsplit(",", 1)
         if len(splitted) == 1:
             return (False, splitted[0])
         elif len(splitted) == 2:
