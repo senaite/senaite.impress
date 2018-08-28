@@ -51,7 +51,7 @@
       <!-- publish.js -->
       <script type="text/javascript"
               src="senaite.impress.publish.js"
-              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/dist/senaite.impress.publish.js"></script>
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/scripts/senaite.impress.publish.js"></script>
     </tal:js>
     <!-- /JS -->
 
