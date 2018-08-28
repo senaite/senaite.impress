@@ -105,10 +105,18 @@ class ReportsListingView(BikaListingView):
         """
         return self.ulocalized_time(date, long_format=1)
 
+    def get_pdf(self, obj):
+        """Get the report PDF
+        """
+        try:
+            return obj.getPdf()
+        except (POSKeyError, TypeError):
+            return None
+
     def folderitem(self, obj, item, index):
         """Augment folder listing item
         """
-        pdf = obj.getPdf()
+        pdf = self.get_pdf(obj)
         ar = obj.getAnalysisRequest()
         review_state = api.get_workflow_status_of(ar)
         status_title = review_state.capitalize().replace("_", " ")

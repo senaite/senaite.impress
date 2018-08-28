@@ -6,100 +6,15 @@
   <head>
     <metal:block fill-slot="javascript_head_slot"
                  tal:define="portal context/@@plone_portal_state/portal;">
+      <script type="text/javascript"
+              src="senaite.impress.email.js"
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/dist/senaite.impress.email.js"></script>
     </metal:block>
 
     <metal:block fill-slot="style_slot"
                  tal:define="portal context/@@plone_portal_state/portal;">
-      <style type="text/css">
-       #emailview .email_wrapper {
-         position: relative;
-         /* Includes padding and border in the element's total width and height */
-         box-sizing: border-box;
-         background: white;
-         box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
-         margin: 3em auto 1em;
-         padding: 2em;
-         border-radius: 4px;
-       }
-       #emailview label {
-         display: inline-block;
-         max-width: 100%;
-         margin-bottom: 5px;
-         font-weight: 700;
-       }
-       #emailview .form-control {
-         display: block;
-         width: 100%;
-         height: 20px;
-         padding: 6px 12px;
-         color: #555!important;
-         background-color: #fff;
-         border: 1px solid #ccc;
-         border-radius: 4px;
-         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-         font-family: inherit;
-         font-size: inherit;
-       }
-       #emailview textarea.form-control {
-         height: auto;
-       }
-       #emailview .recipient {
-         display: inline;
-         padding: .5em;
-         font-size: 100%;
-         font-weight: 700;
-         line-height: 1;
-         margin-right: 0.5em;
-         color: #fff;
-         text-align: center;
-         white-space: nowrap;
-         border-radius: .25em;
-         vertical-align: middle;
-       }
-       #emailview .recipient input {
-         vertical-align: middle;
-         margin: 0;
-       }
-       #emailview .recipient.valid {
-         background-color: #5bc0de;
-       }
-       #emailview .recipient.valid.inactive {
-         background-color: #777;
-       }
-       #emailview .recipient.invalid {
-         background-color: #f0ad4e;
-       }
-       #emailview .attachments {
-         margin-top: 1em;
-         min-height: 20px;
-         padding: 19px;
-         margin-bottom: 20px;
-         background-color: #f5f5f5;
-         border: 1px solid #e3e3e3;
-         border-radius: 4px;
-         box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-       }
-       #emailview .attachment {
-         display: inline-block;
-         padding: 0 1em 1em 0;
-       }
-       #emailview .attachment a {
-         color: #5bc0de;
-         font-size: 80%;
-       }
-       #emailview .attachment img {
-         vertical-align: middle;
-       }
-       code {
-         padding: 2px 4px;
-         font-size: 90%;
-         color: #c7254e;
-         background-color: #f9f2f4;
-         border-radius: 4px;
-       }
-      </style>
-      <!-- Latest compiled and minified CSS -->
-      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link rel="stylesheet" type="text/css" media="all" href="#"
+            tal:attributes="href string:${portal/absolute_url}/++resource++senaite.impress.static/css/email.css"/>
     </metal:block>
   </head>
   <body>
@@ -218,26 +133,69 @@
             </p>
           </div>
 
-          <div class="form-group">
+          <div class="form-group"
+               tal:define="attachments python:map(lambda r:r.get('attachments'), view.reports)">
             <label i18n:translate="" for="attachments">Attachments</label>
+            <button id="add-attachments"
+                    tal:condition="python:any(attachments)"
+                    class="btn btn-xs btn-secondary">+</button>
             <div class="total_size discreet" i18n:translate="">
-              <span i18n:name="amount" tal:replace="python:len(view.reports)"/>
+              <span id="attachment-files"
+                    i18n:name="amount"
+                    tal:content="python:len(view.reports)"/>
               attachments with a total size of
-              <span i18n:name="total_size" tal:replace="python:'%.2f Kb' % view.total_size"/>
+              <span id="email-size" i18n:name="total_size" tal:content="python:'%.2f Kb' % view.total_size"/>
             </div>
-            <div class="attachments well">
+
+            <div id="report-attachments-container"
+                 class="attachments well row">
               <tal:reports repeat="report view/reports">
                 <input type="hidden" name="uids:list" tal:attributes="value report/uid"/>
-                <div class="attachment">
+                <div class="attachment col-xs-12 col-sm-4 col-md-3 col-lg-2">
                   <a href="#"
+                     class="report-link"
                      target="_blank"
-                     tal:attributes="href string:${report/obj/absolute_url}/download_pdf">
+                     tal:attributes="href string:${report/obj/absolute_url}/Pdf">
                     <img tal:attributes="alt report/filename;
                                          title string:${report/filename}(${report/filesize})"
-                         src="++resource++senaite.impress.static/img/pdf.png" width="32" />
+                         src="++resource++bechem.lims.www/images/pdf.png" width="32" />
                     <span tal:content="report/filename"/>
                   </a>
                 </div>
+              </tal:reports>
+            </div>
+
+            <div id="additional-attachments-container"
+                 class="attachments well row"
+                 tal:condition="python:any(attachments)">
+              <!-- Additional Attachments -->
+              <tal:reports repeat="report view/reports">
+                <tal:attachments repeat="attachment report/attachments">
+                  <div class="attachment col-xs-12 col-sm-4 col-md-3 col-lg-2">
+                    <input type="checkbox" name="attachment_uids:list" tal:attributes="value attachment/uid"/>
+                    <a href="#"
+                       class="attachment-link"
+                       target="_blank"
+                       tal:attributes="href string:${attachment/obj/absolute_url}/AttachmentFile">
+                      <div class="attachment-file">
+                        <img tal:attributes="alt attachment/filename;
+                                            title string:${attachment/filename} ${attachment/mimetype}(${attachment/filesize} kB)"
+                            src="++resource++bechem.lims.www/images/attachment.png" width="32" />
+                      </div>
+                      <span class="filename" tal:content="attachment/filename"/>
+
+                      <div class="attachment-info small">
+                        <span tal:content="attachment/attachment_keys"/>
+                        <span i18n:translate="">in</span>
+                        <span tal:content="report/ar/getId"/>
+                        <div class="fileinfo">
+                          <span class="filetype" tal:content="attachment/mimetype"/>
+                          <span class="filesize" tal:content="string:${attachment/filesize}kB"/>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </tal:attachments>
               </tal:reports>
             </div>
 

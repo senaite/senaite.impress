@@ -118,6 +118,15 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
+  <!-- JavaScripts Helper View -->
+  <browser:page
+      for="*"
+      name="javascripts_view"
+      class=".javascripts.JavaScriptsView"
+      permission="zope.Public"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
   <!-- Generic Model -->
   <adapter
       for="*"

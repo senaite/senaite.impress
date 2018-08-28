@@ -4,10 +4,14 @@
 #
 # Copyright 2018 by it's authors.
 
+import inspect
+import json
+import mimetypes
 import socket
 from collections import OrderedDict
+from email import encoders
 from email.header import Header
-from email.mime.application import MIMEApplication
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.Utils import formataddr
@@ -23,11 +27,27 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
 from senaite.impress import senaiteMessageFactory as _
 from ZODB.POSException import POSKeyError
+from zope.interface import implements
+from zope.publisher.interfaces import IPublishTraverse
+
+
+def returns_json(func):
+    """Decorator for functions which return JSON
+    """
+    def decorator(*args, **kwargs):
+        result = func(*args, **kwargs)
+        instance = args[0]
+        request = getattr(instance, "request", None)
+        request.response.setHeader("Content-Type", "application/json")
+        return json.dumps(result)
+    return decorator
 
 
 class EmailView(BrowserView):
     """Email Attachments View
     """
+    implements(IPublishTraverse)
+
     template = ViewPageTemplateFile("templates/email.pt")
     email_template = ViewPageTemplateFile("templates/email_template.pt")
 
@@ -49,8 +69,56 @@ class EmailView(BrowserView):
         subject = self.context.translate(_("Analysis Results for {}"))
         self.email_subject = subject.format(self.client_name)
         self.allow_send = True
+        self.traverse_subpath = []
 
     def __call__(self):
+        # handle subpath request
+        if len(self.traverse_subpath) > 0:
+            return self.handle_ajax_request()
+        # handle standard request
+        return self.handle_http_request()
+
+    def publishTraverse(self, request, name):
+        """Called before __call__ for each path name
+        """
+        self.traverse_subpath.append(name)
+        return self
+
+    def fail(self, message, status=500, **kw):
+        """Set a JSON error object and a status to the response
+        """
+        self.request.response.setStatus(status)
+        result = {"success": False, "errors": message, "status": status}
+        result.update(kw)
+        return result
+
+    @returns_json
+    def handle_ajax_request(self):
+        """Handle requests ajax routes
+        """
+        # check if the method exists
+        func_arg = self.traverse_subpath[0]
+        func_name = "ajax_{}".format(func_arg)
+        func = getattr(self, func_name, None)
+
+        if func is None:
+            return self.fail("Invalid function", status=400)
+
+        # Additional provided path segments after the function name are handled
+        # as positional arguments
+        args = self.traverse_subpath[1:]
+
+        # check mandatory arguments
+        func_sig = inspect.getargspec(func)
+        # positional arguments after `self` argument
+        required_args = func_sig.args[1:]
+
+        if len(args) < len(required_args):
+            return self.fail("Wrong signature, please use '{}/{}'"
+                             .format(func_arg, "/".join(required_args)), 400)
+        return func(*args)
+
+    def handle_http_request(self):
         request = self.request
         form = request.form
 
@@ -87,10 +155,32 @@ class EmailView(BrowserView):
 
             success = False
             if all([recipients, subject, body, reports]):
-                success = self.send_email(recipients=recipients,
-                                          subject=subject,
-                                          body=body,
-                                          reports=reports)
+                attachments = []
+
+                # report pdfs
+                for report in reports:
+                    pdf = self.get_pdf(report)
+                    if pdf is None:
+                        logger.error("Skipping empty PDF for report {}"
+                                     .format(report.getId()))
+                        continue
+                    ar = report.getAnalysisRequest()
+                    filename = "{}.pdf".format(ar.getId())
+                    filedata = pdf.data
+                    attachments.append(
+                        self.to_email_attachment(filename, filedata))
+
+                # additional attachments
+                for attachment in self.get_attachments():
+                    af = attachment.getAttachmentFile()
+                    filedata = af.data
+                    filename = af.filename
+                    attachments.append(
+                        self.to_email_attachment(filename, filedata))
+
+                success = self.send_email(
+                    recipients, subject, body, attachments=attachments)
+
             if success:
                 # selected name, email pairs which received the email
                 pairs = map(self.parse_email, recipients)
@@ -130,11 +220,11 @@ class EmailView(BrowserView):
             return request.response.redirect(self.exit_url)
 
         # get the selected ARReport objects
-        report_objs = self.get_reports()
+        reports = self.get_reports()
+        attachments = self.get_attachments()
 
         # calculate the total size of all PDFs
-        self.total_size = reduce(
-            lambda x, y: x+y, map(self.get_filesize, report_objs), 0)
+        self.total_size = self.get_total_size(reports, attachments)
         if self.total_size > self.max_email_size:
             # don't allow to send oversized emails
             self.allow_send = False
@@ -144,9 +234,9 @@ class EmailView(BrowserView):
             self.add_status_message(message, "error")
 
         # prepare the data for the template
-        self.reports = map(self.get_report_data, report_objs)
-        self.recipients = self.get_recipients_data(report_objs)
-        self.responsibles = self.get_responsibles_data(report_objs)
+        self.reports = map(self.get_report_data, reports)
+        self.recipients = self.get_recipients_data(reports)
+        self.responsibles = self.get_responsibles_data(reports)
 
         # inform the user about invalid/inactive recipients
         if not all(map(lambda r: r.get("valid"), self.recipients)):
@@ -202,17 +292,34 @@ class EmailView(BrowserView):
         else:
             raise ValueError("Could not parse email '{}'".format(email))
 
-    def send_email(self,
-                   recipients=None,
-                   subject=None,
-                   body=None,
-                   reports=None):
+    def to_email_attachment(self, filename, filedata, **kw):
+        """Create a new MIME Attachment
+
+        The Content-Type: header is build from the maintype and subtype of the
+        guessed filename mimetype. Additional parameters for this header are
+        taken from the keyword arguments.
+        """
+        maintype = "application"
+        subtype = "octet-stream"
+
+        mime_type = mimetypes.guess_type(filename)[0]
+        if mime_type is not None:
+            maintype, subtype = mime_type.split("/")
+
+        attachment = MIMEBase(maintype, subtype, **kw)
+        attachment.set_payload(filedata)
+        encoders.encode_base64(attachment)
+        attachment.add_header("Content-Disposition",
+                              "attachment; filename=%s" % filename)
+        return attachment
+
+    def send_email(self, recipients, subject, body, attachments=None):
         """Prepare and send email to the recipients
 
         :param recipients: a list of email or name,email strings
         :param subject: the email subject
         :param body: the email body
-        :param reports: list of report objects to attach
+        :param attachments: list of email attachments
         :returns: True if all emails were sent, else false
         """
 
@@ -237,13 +344,8 @@ class EmailView(BrowserView):
         mime_msg["From"] = _from
         mime_msg.attach(_body)
 
-        # Attach the PDFs
-        for report in reports:
-            ar = report.getAnalysisRequest()
-            filename = "{}.pdf".format(ar.getId())
-            attachment = MIMEApplication(report.getPdf().data, _subtype="pdf")
-            attachment.add_header("Content-Disposition",
-                                  "attachment; filename=%s" % filename)
+        # Attach attachments
+        for attachment in attachments:
             mime_msg.attach(attachment)
 
         success = []
@@ -254,9 +356,9 @@ class EmailView(BrowserView):
             # No KeyError is raised if the key does not exist.
             # https://docs.python.org/2/library/email.message.html#email.message.Message.__delitem__
             del mime_msg["To"]
-            # N.B. Use only the email address to avoid Postfix Error 550:
+
+            # N.B. we use just the email here to prevent this Postfix Error:
             # Recipient address rejected: User unknown in local recipient table
-            # mime_msg["To"] = formataddr(pair)
             mime_msg["To"] = pair[1]
             msg_string = mime_msg.as_string()
             sent = self.send(msg_string)
@@ -291,16 +393,42 @@ class EmailView(BrowserView):
         """Report data to be used in the template
         """
         ar = report.getAnalysisRequest()
-        pdf = report.getPdf()
+        attachments = map(self.get_attachment_data, ar.getAttachment())
+        pdf = self.get_pdf(report)
         filesize = "{} Kb".format(self.get_filesize(pdf))
         filename = "{}.pdf".format(ar.getId())
+
         return {
             "ar": ar,
+            "attachments": attachments,
             "pdf": pdf,
             "obj": report,
             "uid": api.get_uid(report),
             "filesize": filesize,
             "filename": filename,
+        }
+
+    def get_attachment_data(self, attachment):
+        """Attachments data
+        """
+        f = attachment.getAttachmentFile()
+        attachment_type = attachment.getAttachmentType()
+        attachment_keys = attachment.getAttachmentKeys()
+        filename = f.filename
+        filesize = self.get_filesize(f)
+        mimetype = f.getContentType()
+        report_option = attachment.getReportOption()
+
+        return {
+            "obj": attachment,
+            "attachment_type": attachment_type,
+            "attachment_keys": attachment_keys,
+            "file": f,
+            "uid": api.get_uid(attachment),
+            "filesize": filesize,
+            "filename": filename,
+            "mimetype": mimetype,
+            "report_option": report_option,
         }
 
     def get_recipients_data(self, reports):
@@ -406,6 +534,24 @@ class EmailView(BrowserView):
         portal_from_name = self.portal.email_from_name
         return lab_from_name or portal_from_name
 
+    def get_total_size(self, *files):
+        """Calculate the total size of the given files
+        """
+
+        # Recursive unpack an eventual list of lists
+        def iterate(item):
+            if isinstance(item, (list, tuple)):
+                for i in item:
+                    for ii in iterate(i):
+                        yield ii
+            else:
+                yield item
+
+        # Calculate the total size of the given objects starting with an
+        # initial size of 0
+        return reduce(lambda x, y: x + y,
+                      map(self.get_filesize, iterate(files)), 0)
+
     @property
     def max_email_size(self):
         """Return the max. allowed email size in KB
@@ -427,6 +573,13 @@ class EmailView(BrowserView):
         unique_uids = OrderedDict().fromkeys(uids).keys()
         return map(self.get_object_by_uid, unique_uids)
 
+    def get_attachments(self):
+        """Return the objects from the UIDs given in the request
+        """
+        # Create a mapping of source ARs for copy
+        uids = self.request.form.get("attachment_uids", [])
+        return map(self.get_object_by_uid, uids)
+
     def get_object_by_uid(self, uid):
         """Get the object by UID
         """
@@ -436,14 +589,22 @@ class EmailView(BrowserView):
             logger.warn("!! No object found for UID #{} !!")
         return obj
 
-    def get_filesize(self, pdf):
+    def get_filesize(self, f):
         """Return the filesize of the PDF as a float
         """
         try:
-            filesize = float(pdf.get_size())
+            filesize = float(f.get_size())
             return float("%.2f" % (filesize / 1024))
-        except (POSKeyError, TypeError):
+        except (POSKeyError, TypeError, AttributeError):
             return 0.0
+
+    def get_pdf(self, obj):
+        """Get the report PDF
+        """
+        try:
+            return obj.getPdf()
+        except (POSKeyError, TypeError):
+            return None
 
     def get_recipients(self, ar):
         """Return the AR recipients in the same format like the AR Report
@@ -488,3 +649,17 @@ class EmailView(BrowserView):
         cc_emails = filter(None, map(recipient_from_email, cc_emails))
 
         return to + cc + cc_emails
+
+    def ajax_recalculate_size(self):
+        """Recalculate the total size of the selected attachments
+        """
+        reports = self.get_reports()
+        attachments = self.get_attachments()
+        total_size = self.get_total_size(reports, attachments)
+
+        return {
+            "files": len(reports) + len(attachments),
+            "size": "%.2f" % total_size,
+            "limit": self.max_email_size,
+            "limit_exceeded": total_size > self.max_email_size,
+        }

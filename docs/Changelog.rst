@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #19: Allow additional attachments in publication email
 - #18: Fixed barcode rendering in multi-colum report
 - #17: Fix alert section overlapping of the header section
 - #16: Fix unicode error in sort method
