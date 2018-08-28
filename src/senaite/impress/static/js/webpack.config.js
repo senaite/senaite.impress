@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     filename: 'senaite.impress.[name].js',
-    path: path.resolve(__dirname, './dist')
+    path: path.resolve(__dirname, './scripts')
   },
   module: {
     rules: [

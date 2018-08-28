@@ -8,7 +8,7 @@
                  tal:define="portal context/@@plone_portal_state/portal;">
       <script type="text/javascript"
               src="senaite.impress.email.js"
-              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/dist/senaite.impress.email.js"></script>
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/scripts/senaite.impress.email.js"></script>
     </metal:block>
 
     <metal:block fill-slot="style_slot"
@@ -158,7 +158,7 @@
                      tal:attributes="href string:${report/obj/absolute_url}/Pdf">
                     <img tal:attributes="alt report/filename;
                                          title string:${report/filename}(${report/filesize})"
-                         src="++resource++bechem.lims.www/images/pdf.png" width="32" />
+                         src="++resource++senaite.impress.static/img/pdf.png" width="32" />
                     <span tal:content="report/filename"/>
                   </a>
                 </div>
@@ -180,7 +180,7 @@
                       <div class="attachment-file">
                         <img tal:attributes="alt attachment/filename;
                                             title string:${attachment/filename} ${attachment/mimetype}(${attachment/filesize} kB)"
-                            src="++resource++bechem.lims.www/images/attachment.png" width="32" />
+                            src="++resource++senaite.impress.static/img/attachment.png" width="32" />
                       </div>
                       <span class="filename" tal:content="attachment/filename"/>
 
