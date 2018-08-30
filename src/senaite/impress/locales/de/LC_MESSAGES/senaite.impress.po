@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-08-30 15:03+0000\n"
+"POT-Creation-Date: 2018-08-30 15:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Ramon Bartl <rb@ridingbytes.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -30,7 +30,7 @@ msgstr "&larr; Zurück zur ${back_link}"
 
 #: senaite/impress/templates/email_template.pt:25
 msgid "*** This is an automatically generated email, please do not reply to this message. ***"
-msgstr ""
+msgstr "*** Dies ist eine automatisch generierte E-Mail. Bitte antworten Sie nicht auf diese Nachricht. ***"
 
 #: senaite/impress/templates/email.pt:214
 msgid "Abort"
@@ -47,7 +47,7 @@ msgstr "Analysenaufträge"
 
 #: senaite/impress/reports_listing.py:62
 msgid "Analysis Requests in PDF"
-msgstr ""
+msgstr "Analysenaufträge im PDF "
 
 #: senaite/impress/emailview.py:69
 msgid "Analysis Results for {}"
@@ -153,7 +153,7 @@ msgstr "Standard Vorlage"
 
 #: senaite/impress/reports_listing.py:68
 msgid "Download PDF"
-msgstr ""
+msgstr "PDF Herunterladen"
 
 #: senaite/impress/reports_listing.py:53
 msgid "Email"
@@ -165,7 +165,7 @@ msgstr "E-Mail abgebrochen"
 
 #: senaite/impress/controlpanel.py:54
 msgid "Email sending will be disabled if the given limit is exceeded"
-msgstr ""
+msgstr "E-Mail-Versand wird deaktiviert, wenn das angegebene Limit überschritten wird"
 
 #: senaite/impress/emailview.py:213
 msgid "Failed to send Email(s)"
@@ -173,7 +173,7 @@ msgstr "Fehler beim E-Mail Versand"
 
 #: senaite/impress/reports_listing.py:70
 msgid "Filesize"
-msgstr ""
+msgstr "Dateigröße"
 
 #: senaite/impress/templates/email.pt:50
 msgid "From"
@@ -198,15 +198,15 @@ msgstr "IMPRESS Einstellungen"
 
 #: senaite/impress/controlpanel.py:37
 msgid "Initially loaded orientation"
-msgstr ""
+msgstr "Anfangs geladene Ausrichtung"
 
 #: senaite/impress/controlpanel.py:29
 msgid "Initially loaded paper format"
-msgstr ""
+msgstr "Anfangs geladenes Papierformat"
 
 #: senaite/impress/controlpanel.py:21
 msgid "Initially loaded report template"
-msgstr ""
+msgstr "Anfangs geladene Vorlage"
 
 #: senaite/impress/controlpanel.py:53
 msgid "Maximum Email Size in MB"
@@ -401,11 +401,11 @@ msgstr "Status"
 
 #: senaite/impress/controlpanel.py:44
 msgid "Store Multi-Report PDFs Individually"
-msgstr ""
+msgstr "Multi-Bericht PDFs individuell speichern"
 
 #: senaite/impress/controlpanel.py:45
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
-msgstr ""
+msgstr "Speichern Sie generierte PDF-Dateien mit mehreren Berichten einzeln. Deaktivieren Sie diese Option, um die PDF-Datei mit mehreren Berichten nur für das primäre Element des Berichts zu speichern"
 
 #: senaite/impress/templates/email.pt:119
 msgid "Subject"
@@ -481,7 +481,7 @@ msgstr "Mit freundlichen Grüßen"
 
 #: senaite/impress/templates/email.pt:189
 msgid "in"
-msgstr ""
+msgstr "in"
 
 #: senaite/impress/templates/email.pt:30
 msgid "overview"
