@@ -188,6 +188,8 @@ class AjaxPublishView(PublishView):
         template = data.get("template")
         orientation = data.get("orientation", "portrait")
         timestamp = DateTime().ISO8601()
+        is_multi_template = self.is_multi_template(template)
+        store_individually = self.store_multireports_individually()
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
@@ -238,6 +240,10 @@ class AjaxPublishView(PublishView):
                     })
                 reports.append(report)
                 client_url = api.get_url(obj.getClient())
+
+                # generate report only for the primary object
+                if is_multi_template and not store_individually:
+                    break
 
             # remember the generated report UIDs for this iteration
             report_uids = map(api.get_uid, reports)

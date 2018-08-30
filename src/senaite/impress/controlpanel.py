@@ -35,6 +35,15 @@ class IImpressControlPanel(Interface):
         required=True,
     )
 
+    store_multireports_individually = schema.Bool(
+        title=_(u"Store Multi-Report PDFs Individually"),
+        description=_("Store generated multi-report PDFs individually. "
+                      "Turn off to store the multi-report PDF only for the "
+                      "primary item of the report."),
+        default=True,
+        required=False,
+    )
+
     max_email_size = schema.Float(
         title=_(u"Maximum Email Size in MB"),
         default=10.0,

@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #24: Control individual report generation for multi-report PDFs
 - #23: Fixed multi client report handling
 - #21: Improved email template
 - #19: Allow additional attachments in publication email
