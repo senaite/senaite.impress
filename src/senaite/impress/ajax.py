@@ -140,6 +140,8 @@ class AjaxPublishView(PublishView):
 
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html
+
+        This method also groups the reports by client
         """
         # update the request form with the parsed json data
         data = self.get_json()
@@ -158,13 +160,13 @@ class AjaxPublishView(PublishView):
 
         # iterate over the ARs of each client
         for client_uid, collection in grouped_by_client.items():
+            # render multi report
             if is_multi_template:
-                # render multi report
                 html = self.render_multi_report(collection, template)
                 htmls.append(html)
             else:
+                # render single report
                 for model in collection:
-                    # render single report
                     html = self.render_report(model, template)
                     htmls.append(html)
 
