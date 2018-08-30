@@ -8,8 +8,10 @@ import logging
 import mimetypes
 import os
 import time
+from collections import OrderedDict
+from string import Template
 
-from bs4 import BeautifulSoup
+import bs4
 from plone.subrequest import subrequest
 from senaite import api
 from senaite.impress import logger
@@ -20,6 +22,12 @@ from weasyprint import HTML
 from weasyprint import default_url_fetcher
 from weasyprint.compat import base64_encode
 from zope.interface import implements
+
+IMG_TAG_TEMPLATE = Template("""<!-- PNG Report Page -->
+<div class="report">
+  <img src="${data}" style="width:${width}px; height:${height}px;"/>
+</div>
+""")
 
 
 class Publisher(object):
@@ -59,18 +67,41 @@ class Publisher(object):
         """
         return api.get_portal().absolute_url()
 
+    def to_html(self, html):
+        """Return plain HTML
+        """
+        if isinstance(html, bs4.Tag):
+            return html.prettify()
+        if isinstance(html, basestring):
+            return html
+        raise TypeError("Unknown HTML type {}".format(type(html)))
+
     def get_parser(self, html, parser="html.parser"):
         """Returns a HTML parser instance
         """
-        return BeautifulSoup(html, parser)
+        return bs4.BeautifulSoup(html, parser)
 
-    def get_reports(self, html, attrs=None):
-        """Returns a list of parsed reports
+    def parse_reports(self, html):
+        """Parse reports from the given html
+
+        :returns: List of report nodes
         """
         parser = self.get_parser(html)
         reports = parser.find_all(
-            "div", class_=self.css_class_report, attrs=attrs)
-        return map(lambda report: report.prettify(), reports)
+            "div", class_=self.css_class_report)
+        return reports
+
+    def group_reports(self, html, group_by=None):
+        """Parse and group reports
+        """
+        grouped = OrderedDict()
+        for report in self.parse_reports(html):
+            key = report.get(group_by, "")
+            if key not in grouped:
+                grouped[key] = [report]
+            else:
+                grouped[key].append(report)
+        return grouped
 
     def parse_report_sections(self, report_html):
         """Returns a dictionary of {header, report, footer}
@@ -98,6 +129,9 @@ class Publisher(object):
 
         http://weasyprint.readthedocs.io/en/stable/api.html#python-api
         """
+        # ensure we have plain html and not a BS4 node
+        html = self.to_html(html)
+
         start = time.time()
         # Lay out and paginate the document
         html = HTML(
@@ -107,14 +141,6 @@ class Publisher(object):
         logger.info("Publisher::Layout step took {:.2f}s for {} pages"
                     .format(end-start, len(document.pages)))
         return document
-
-    def _render_reports(self, html, **kw):
-        """Render the reports to WeasyPrint documents
-
-        The additional keywords are passed to the HTML parser
-        """
-        reports = self.get_reports(html, attrs=kw)
-        return map(self._layout_and_paginate, reports)
 
     @synchronized
     def url_fetcher(self, url):
@@ -160,34 +186,39 @@ class Publisher(object):
             "redirected_url": redirected_url,
         }
 
-    def write_png(self, html):
-        """Write PNGs from the given HTML
+    def write_png(self, html, resolution=96):
+        """Write a PNG from the given HTML
         """
-        pages = []
-        reports = self._render_reports(html)
-        for report in reports:
-            for i, page in enumerate(report.pages):
-                # Render page to PNG
-                # What is the default DPI of the browser print dialog?
-                png_bytes, width, height = report.copy([page]).write_png(
-                    resolution=96)
-                # Append tuple of (png_bytes, width, height)
-                pages.append((png_bytes, width, height))
-
-        return pages
-
-    def png_to_img(self, png, width, height):
-        """Generate a data url image tag
-        """
-        data_url = 'data:image/png;base64,' + (
-            base64_encode(png).decode('ascii').replace('\n', ''))
-        img = """<div class='report'>
-                    <img src='{2}' style='width: {0}px; height: {1}px'/>
-                  </div>""".format(width, height, data_url)
-        return img
+        doc = self._layout_and_paginate(html)
+        return doc.write_png(resultion=resolution)
 
     def write_pdf(self, html):
-        """Write PDFs from the given HTML
+        """Write a PDF from the given HTML
         """
-        reports = self._render_reports(html)
-        return map(lambda doc: doc.write_pdf(), reports)
+        doc = self._layout_and_paginate(html)
+        return doc.write_pdf()
+
+    def write_png_pages(self, html, resolution=96):
+        """Write one PNG per page from the given HTML
+
+        :returns: List of (png_bytes, width, height) tuples per page
+        """
+        doc = self._layout_and_paginate(html)
+
+        pages = []
+        for i, page in enumerate(doc.pages):
+            # Render page to PNG
+            png_bytes, width, height = doc.copy([page]).write_png(
+                resolution=resolution)
+            # Append tuple of (png_bytes, width, height)
+            pages.append((png_bytes, width, height))
+        return pages
+
+    def png_to_img(self, png, width, height, **kw):
+        """Generate a data url image tag
+        """
+        data_url = "data:image/png;base64," + (
+            base64_encode(png).decode("ascii").replace("\n", ""))
+        img = IMG_TAG_TEMPLATE.safe_substitute(
+            width=width, height=height, data=data_url, **kw)
+        return img
