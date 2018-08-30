@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #25: Added controlpanel descriptions
 - #24: Control individual report generation for multi-report PDFs
 - #23: Fixed multi client report handling
 - #21: Improved email template

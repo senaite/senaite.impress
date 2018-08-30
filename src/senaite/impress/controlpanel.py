@@ -13,9 +13,12 @@ from zope.interface import Interface
 
 
 class IImpressControlPanel(Interface):
+    """Controlpanel Settings
+    """
 
     default_template = schema.Choice(
         title=_(u"Default Template"),
+        description=_("Initially loaded report template"),
         vocabulary="senaite.impress.vocabularies.Templates",
         default="senaite.impress:MultiDefault.pt",
         required=True,
@@ -23,6 +26,7 @@ class IImpressControlPanel(Interface):
 
     default_paperformat = schema.Choice(
         title=_(u"Default Paper Format"),
+        description=_("Initially loaded paper format"),
         vocabulary="senaite.impress.vocabularies.Paperformats",
         default="A4",
         required=True,
@@ -30,6 +34,7 @@ class IImpressControlPanel(Interface):
 
     default_orientation = schema.Choice(
         title=_(u"Default Orientation"),
+        description=_("Initially loaded orientation"),
         vocabulary="senaite.impress.vocabularies.Orientations",
         default="portrait",
         required=True,
@@ -39,13 +44,15 @@ class IImpressControlPanel(Interface):
         title=_(u"Store Multi-Report PDFs Individually"),
         description=_("Store generated multi-report PDFs individually. "
                       "Turn off to store the multi-report PDF only for the "
-                      "primary item of the report."),
+                      "primary item of the report"),
         default=True,
         required=False,
     )
 
     max_email_size = schema.Float(
         title=_(u"Maximum Email Size in MB"),
+        description=_("Email sending will be disabled if the given limit is "
+                      "exceeded"),
         default=10.0,
         min=0.0,
         required=True,
