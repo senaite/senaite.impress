@@ -4,7 +4,6 @@
 #
 # Copyright 2018 by it's authors.
 
-import json
 from collections import Iterable
 from collections import OrderedDict
 from collections import Sequence
@@ -25,9 +24,9 @@ from senaite.impress.reportview import ReportView as Base
 
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
-<div class="report" id="${id}" uid="${uid}" client_uid="${client_uid}">
+<div class="report" uids="${uids}" client_uid="${client_uid}">
   <script type="text/javascript">
-    console.log("*** BEFORE TEMPLATE RENDER ${id} ***");
+    console.log("*** BEFORE TEMPLATE RENDER ***");
   </script>
   ${template}
 </div>
@@ -249,28 +248,9 @@ class SingleReportView(ReportView):
 
     def get_template_context(self, model):
         return {
-            "id": model.getId(),
-            "uid": model.UID(),
+            "uids": model.UID(),
             "client_uid": model.getClientUID(),
-            # XXX temporary piggypack solution to handle DateTime objects right
-            "user": json.dumps(model.stringify(self.current_user)),
-            "api": {
-                "report": self.get_api_url(model),
-                "setup": self.get_api_url(self.setup),
-                "laboratory": self.get_api_url(self.laboratory),
-            }
         }
-
-    def get_api_url(self, model):
-        """Returns the API URL for the passed in object
-        """
-        info = {
-            "uid": model.UID(),
-            "endpoint": "ajax_printview",
-            "action": "get",
-            "base_url": self.portal.absolute_url(),
-        }
-        return "{base_url}/{endpoint}/{action}/{uid}".format(**info)
 
 
 class MultiReportView(ReportView):
