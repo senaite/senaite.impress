@@ -6,6 +6,9 @@
 
 import inspect
 import json
+from collections import Iterable
+from collections import defaultdict
+from collections import OrderedDict
 
 from DateTime import DateTime
 from senaite import api
@@ -97,6 +100,22 @@ class AjaxPublishView(PublishView):
                 data[key] = model.stringify(value)
         return data
 
+    def group_items_by(self, key, items):
+        """Group the items (mappings with dict interface) by the given key
+        """
+        if not isinstance(items, Iterable):
+            raise TypeError("Items must be iterable")
+        results = OrderedDict()
+        for item in items:
+            group_key = item.get(key)
+            if callable(group_key):
+                group_key = group_key()
+            if group_key in results:
+                results[group_key].append(item)
+            else:
+                results[group_key] = [item]
+        return results
+
     def ajax_get(self, uid, *args, **kwargs):
         """Return the JSONified data from the wrapped object
 
@@ -144,8 +163,32 @@ class AjaxPublishView(PublishView):
         """
         # update the request form with the parsed json data
         data = self.get_json()
-        items = data.pop("items", [])
-        return self.render_reports(uids=items, **data)
+
+        # Create a collection of the requested UIDs
+        collection = self.get_collection(data.get("items"))
+
+        # Lookup the requested template
+        template = self.get_report_template(data.get("template"))
+        is_multi_template = self.is_multi_template(template)
+
+        htmls = []
+
+        # always group ARs by client
+        grouped_by_client = self.group_items_by("getClientUID", collection)
+
+        # iterate over the ARs of each client
+        for client_uid, collection in grouped_by_client.items():
+            if is_multi_template:
+                # render multi report
+                html = self.render_multi_report(collection, template)
+                htmls.append(html)
+            else:
+                for model in collection:
+                    # render single report
+                    html = self.render_report(model, template)
+                    htmls.append(html)
+
+        return "\n".join(htmls)
 
     def ajax_save_reports(self):
         """Render all reports as PDFs and store them as AR Reports
