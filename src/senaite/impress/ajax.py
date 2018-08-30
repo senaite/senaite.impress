@@ -7,7 +7,6 @@
 import inspect
 import json
 from collections import Iterable
-from collections import defaultdict
 from collections import OrderedDict
 
 from DateTime import DateTime
@@ -154,7 +153,6 @@ class AjaxPublishView(PublishView):
             "format": self.get_default_paperformat(),
             "orientation": self.get_default_orientation(),
             "template": self.get_default_template(),
-            "merge": False,
         }
         return config
 
@@ -208,7 +206,6 @@ class AjaxPublishView(PublishView):
         paperformat = data.get("format")
         template = data.get("template")
         orientation = data.get("orientation", "portrait")
-        merge = data.get("merge", False)
         timestamp = DateTime().ISO8601()
         multi = self.is_multi_template(template)
 
@@ -223,7 +220,7 @@ class AjaxPublishView(PublishView):
         publisher.add_inline_css(css)
 
         # generate the PDFs
-        pdfs = publisher.write_pdf(html, merge=merge)
+        pdfs = publisher.write_pdf(html)
         exit_url = self.context.absolute_url()
 
         # We want to save the PDFs per AR as ARReport contents
@@ -251,21 +248,21 @@ class AjaxPublishView(PublishView):
             uid = api.get_uid(ar)
             title = "Report-{}".format(ar.getId())
             report = api.create(ar, "ARReport", title=title)
-            _html = html
-            if not merge:
-                _html = publisher.get_reports(html, attrs={"uid": uid})
+
+            # ARs printed in the PDF
+            contained_ars = ars if multi else ar
             report.edit(
                 AnalysisRequest=uid,
                 Pdf=pdf,
-                Html=_html,
-                # extended fields
-                ContainedAnalysisRequests=ars if multi else ar,
+                Html=html,
+                ContainedAnalysisRequests=contained_ars,
                 Metadata={
                     "template": template,
                     "paperformat": paperformat,
                     "orientation": orientation,
                     "timestamp": timestamp,
                     "multi": multi,
+                    "contained_requests": map(api.get_uid, contained_ars),
                 },
             )
             reports.append(report)
@@ -301,7 +298,6 @@ class AjaxPublishView(PublishView):
         # Metadata
         paperformat = data.get("format")
         orientation = data.get("orientation", "portrait")
-        merge = data.get("merge", False)
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
@@ -314,7 +310,7 @@ class AjaxPublishView(PublishView):
         publisher.add_inline_css(css)
 
         # generate the PNGs
-        images = publisher.write_png(html, merge=merge)
+        images = publisher.write_png(html)
 
         preview = u""
         for image in images:

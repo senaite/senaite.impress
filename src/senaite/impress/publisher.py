@@ -64,7 +64,7 @@ class Publisher(object):
         """
         return BeautifulSoup(html, parser)
 
-    def get_reports(self, html, attrs={}):
+    def get_reports(self, html, attrs=None):
         """Returns a list of parsed reports
         """
         parser = self.get_parser(html)
@@ -108,19 +108,12 @@ class Publisher(object):
                     .format(end-start, len(document.pages)))
         return document
 
-    def _render_reports(self, html, merge=False, uid=None):
+    def _render_reports(self, html, **kw):
         """Render the reports to WeasyPrint documents
+
+        The additional keywords are passed to the HTML parser
         """
-        reports = []
-        if uid is not None:
-            reports = self.get_reports(attrs={"uid": uid})
-        else:
-            reports = self.get_reports(html)
-
-        # merge all reports to one PDF
-        if merge:
-            reports = ["".join(reports)]
-
+        reports = self.get_reports(html, attrs=kw)
         return map(self._layout_and_paginate, reports)
 
     @synchronized
@@ -167,11 +160,11 @@ class Publisher(object):
             "redirected_url": redirected_url,
         }
 
-    def write_png(self, html, merge=False, uid=None):
+    def write_png(self, html):
         """Write PNGs from the given HTML
         """
         pages = []
-        reports = self._render_reports(html, merge=merge, uid=uid)
+        reports = self._render_reports(html)
         for report in reports:
             for i, page in enumerate(report.pages):
                 # Render page to PNG
@@ -193,8 +186,8 @@ class Publisher(object):
                   </div>""".format(width, height, data_url)
         return img
 
-    def write_pdf(self, html, merge=False, uid=None):
+    def write_pdf(self, html):
         """Write PDFs from the given HTML
         """
-        reports = self._render_reports(html, merge=merge, uid=uid)
+        reports = self._render_reports(html)
         return map(lambda doc: doc.write_pdf(), reports)
