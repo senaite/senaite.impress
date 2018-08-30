@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #23: Fixed multi client report handling
 - #21: Improved email template
 - #19: Allow additional attachments in publication email
 - #18: Fixed barcode rendering in multi-colum report
