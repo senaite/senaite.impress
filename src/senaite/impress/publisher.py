@@ -8,7 +8,6 @@ import logging
 import mimetypes
 import os
 import time
-from collections import OrderedDict
 from string import Template
 
 import bs4
@@ -90,18 +89,6 @@ class Publisher(object):
         reports = parser.find_all(
             "div", class_=self.css_class_report)
         return reports
-
-    def group_reports(self, html, group_by=None):
-        """Parse and group reports
-        """
-        grouped = OrderedDict()
-        for report in self.parse_reports(html):
-            key = report.get(group_by, "")
-            if key not in grouped:
-                grouped[key] = [report]
-            else:
-                grouped[key].append(report)
-        return grouped
 
     def parse_report_sections(self, report_html):
         """Returns a dictionary of {header, report, footer}

@@ -274,7 +274,6 @@ class AjaxPublishView(PublishView):
         # Metadata
         paperformat = data.get("format")
         orientation = data.get("orientation", "portrait")
-        group_by = data.get("group_by", "client_uid")
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
@@ -286,20 +285,14 @@ class AjaxPublishView(PublishView):
         # add the generated CSS to the publisher
         publisher.add_inline_css(css)
 
-        # parse the html into grouped reports
-        grouped_reports = publisher.group_reports(html, group_by=group_by)
-
+        # HTML image previews
         preview = u""
-        for group_key, reports in grouped_reports.items():
-            # Generate PNGs for the pages of each report
-            reports_pages = map(publisher.write_png_pages, reports)
-            for report_pages in reports_pages:
-                # add an invisible anchor
-                preview += "<div id='{}'></div>".format(group_key)
-                previews = map(
-                    lambda page: publisher.png_to_img(*page),
-                    report_pages)
-                preview += "\n".join(previews)
+
+        # Generate PNG previews for the pages of each report
+        for report_node in publisher.parse_reports(html):
+            pages = publisher.write_png_pages(report_node)
+            previews = map(lambda page: publisher.png_to_img(*page), pages)
+            preview += "\n".join(previews)
 
         # Add the generated CSS to the preview, so that the container can grow
         # accordingly
