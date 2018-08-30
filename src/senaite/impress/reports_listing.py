@@ -4,10 +4,12 @@
 #
 # Copyright 2018 by it's authors.
 
-from bika.lims import logger
+import collections
+
+from bika.lims import bikaMessageFactory as _BMF
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.utils import to_utf8
-from bika.lims import bikaMessageFactory as _BMF
+from bika.lims.utils import get_link
 from Products.CMFPlone.utils import safe_unicode
 from senaite import api
 from senaite.impress import senaiteMessageFactory as _
@@ -52,44 +54,37 @@ class ReportsListingView(BikaListingView):
             "url": "email"
         }
 
-        self.columns = {
-            "AnalysisRequest": {"title": _("Analysis Request")},
-            "ContainedAnalysisRequests": {
-                "title": _("Contained Analysis Requests")
-            },
-            "Metadata": {"title": _("Metadata")},
-            "State": {"title": _("Review State")},
-            "PDF": {"title": _("Download")},
-            "FileSize": {"title": _("Size")},
-            "Date": {"title": _("Published Date")},
-            "PublishedBy": {"title": _("Published By")},
-            "Recipients": {"title": _("Recipients")},
-        }
+        self.columns = collections.OrderedDict((
+            ("AnalysisRequest", {
+                "title": _("Analysis Request"),
+                "index": "sortable_title"},),
+            ("ContainedAnalysisRequests", {
+                "title": _("Analysis Requests in PDF")},),
+            ("Metadata", {
+                "title": _("Metadata")},),
+            ("State", {
+                "title": _("Review State")},),
+            ("PDF", {
+                "title": _("Download PDF")},),
+            ("FileSize", {
+                "title": _("Filesize")},),
+            ("Date", {
+                "title": _("Published Date")},),
+            ("PublishedBy", {
+                "title": _("Published By")},),
+            ("Recipients", {
+                "title": _("Recipients")},),
+        ))
 
         self.review_states = [
             {
                 "id": "default",
                 "title": "All",
                 "contentFilter": {},
-                "columns": [
-                    "AnalysisRequest",
-                    "ContainedAnalysisRequests",
-                    "Metadata",
-                    "State",
-                    "PDF",
-                    "FileSize",
-                    "Date",
-                    "PublishedBy",
-                    "Recipients",
-                ],
+                "columns": self.columns.keys(),
                 "custom_transitions": [send_email_transition]
             },
         ]
-
-    def before_render(self):
-        """Before render hook
-        """
-        logger.info("PublishedResults.before_render")
 
     def get_filesize(self, pdf):
         """Compute the filesize of the PDF
@@ -116,19 +111,22 @@ class ReportsListingView(BikaListingView):
     def folderitem(self, obj, item, index):
         """Augment folder listing item
         """
-        pdf = self.get_pdf(obj)
+
         ar = obj.getAnalysisRequest()
         review_state = api.get_workflow_status_of(ar)
         status_title = review_state.capitalize().replace("_", " ")
 
-        item["replace"]["AnalysisRequest"] = "<a href='{}'>{}</a>".format(
-            ar.absolute_url(), ar.Title()
+        item["replace"]["AnalysisRequest"] = get_link(
+            ar.absolute_url(), value=ar.Title()
         )
+
+        pdf = self.get_pdf(obj)
         filesize = self.get_filesize(pdf)
         if filesize > 0:
-            anchor = "<a href='{}/download_pdf' target='_blank'>{}</a>".format(
-                obj.absolute_url(), "PDF")
-            item["replace"]["PDF"] = anchor
+            url = "{}/download_pdf".format(obj.absolute_url())
+            item["replace"]["PDF"] = get_link(
+                url, value="PDF", target="_blank")
+
         item["State"] = _BMF(status_title)
         item["state_class"] = "state-{}".format(review_state)
         item["FileSize"] = "{:.2f} Kb".format(filesize)

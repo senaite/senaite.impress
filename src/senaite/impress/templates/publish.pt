@@ -86,7 +86,7 @@
           </thead>
           <tbody>
             <tr class="report-row"
-                tal:repeat="model view/get_collection"
+                tal:repeat="model python:view.get_collection(group_by='getClientUID')"
                 tal:attributes="uid model/UID;">
               <!-- ID -->
               <td>

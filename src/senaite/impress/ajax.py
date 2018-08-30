@@ -135,17 +135,42 @@ class AjaxPublishView(PublishView):
             "format": self.get_default_paperformat(),
             "orientation": self.get_default_orientation(),
             "template": self.get_default_template(),
-            "merge": False,
         }
         return config
 
     def ajax_render_reports(self, *args):
         """Renders all reports and returns the html
+
+        This method also groups the reports by client
         """
         # update the request form with the parsed json data
         data = self.get_json()
-        items = data.pop("items", [])
-        return self.render_reports(uids=items, **data)
+
+        # Create a collection of the requested UIDs
+        collection = self.get_collection(data.get("items"))
+
+        # Lookup the requested template
+        template = self.get_report_template(data.get("template"))
+        is_multi_template = self.is_multi_template(template)
+
+        htmls = []
+
+        # always group ARs by client
+        grouped_by_client = self.group_items_by("getClientUID", collection)
+
+        # iterate over the ARs of each client
+        for client_uid, collection in grouped_by_client.items():
+            # render multi report
+            if is_multi_template:
+                html = self.render_multi_report(collection, template)
+                htmls.append(html)
+            else:
+                # render single report
+                for model in collection:
+                    html = self.render_report(model, template)
+                    htmls.append(html)
+
+        return "\n".join(htmls)
 
     def ajax_save_reports(self):
         """Render all reports as PDFs and store them as AR Reports
@@ -158,16 +183,11 @@ class AjaxPublishView(PublishView):
         # N.B. It might also contain multiple reports!
         html = data.get("html")
 
-        # This is the clicked button name from the ReactJS component
-        action = data.get("action", "save")
-
         # Metadata
         paperformat = data.get("format")
         template = data.get("template")
         orientation = data.get("orientation", "portrait")
-        merge = data.get("merge", False)
         timestamp = DateTime().ISO8601()
-        multi = self.is_multi_template(template)
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
@@ -179,61 +199,59 @@ class AjaxPublishView(PublishView):
         # add the generated CSS to the publisher
         publisher.add_inline_css(css)
 
-        # generate the PDFs
-        pdfs = publisher.write_pdf(html, merge=merge)
-        exit_url = self.context.absolute_url()
+        # TODO: Refactor code below to be not AR specific
 
-        # We want to save the PDFs per AR as ARReport contents
-        items = filter(None, data.get("items", []))
-        ars = map(api.get_object_by_uid, items)
+        # remember the values of the last iteration for the exit url
+        client_url = None
+        report_uids = None
 
-        # return if no ARs were found
-        if not ars:
-            logger.error("ajax_save_reports: No ARs found!")
-            return exit_url
+        for report_node in publisher.parse_reports(html):
+            # generate the PDF
+            pdf = publisher.write_pdf(report_node)
+            # get contained AR UIDs in this report
+            uids = filter(None, report_node.get("uids", "").split(","))
+            # remember generated report objects
+            reports = []
 
-        # The primary AR
-        primary_ar = ars[0]
-        primary_client_url = primary_ar.getClient().absolute_url()
+            # fetch the objects rendered in the report by their UID
+            for uid in uids:
+                obj = api.get_object_by_uid(uid, None)
+                if obj is None:
+                    logger.warn("!!!No object found for UID {}!!!".format(uid))
+                    continue
 
-        # The new created ARReports
-        reports = []
+                # TODO: refactor to adapter
+                # Create a report object which holds the generated PDF
+                title = "Report-{}".format(obj.getId())
+                report = api.create(obj, "ARReport", title=title)
+                report.edit(
+                    AnalysisRequest=uid,
+                    Pdf=pdf,
+                    Html=publisher.to_html(report_node),
+                    ContainedAnalysisRequests=uids,
+                    Metadata={
+                        "template": template,
+                        "paperformat": paperformat,
+                        "orientation": orientation,
+                        "timestamp": timestamp,
+                        "contained_requests": uids,
+                    })
+                reports.append(report)
+                client_url = api.get_url(obj.getClient())
 
-        # Generate the AR Reports
-        for num, ar in enumerate(ars):
-            pdf = pdfs[0]
-            # there should be one PDF per AR in this case
-            if not multi:
-                pdf = pdfs[num]
-            uid = api.get_uid(ar)
-            title = "Report-{}".format(ar.getId())
-            report = api.create(ar, "ARReport", title=title)
-            _html = html
-            if not merge:
-                _html = publisher.get_reports(html, attrs={"uid": uid})
-            report.edit(
-                AnalysisRequest=uid,
-                Pdf=pdf,
-                Html=_html,
-                # extended fields
-                ContainedAnalysisRequests=ars if multi else ar,
-                Metadata={
-                    "template": template,
-                    "paperformat": paperformat,
-                    "orientation": orientation,
-                    "timestamp": timestamp,
-                    "multi": multi,
-                },
-            )
-            reports.append(report)
-
-        endpoint = "reports_listing"
-        if action == "email":
+            # remember the generated report UIDs for this iteration
             report_uids = map(api.get_uid, reports)
-            if multi:
-                report_uids = report_uids[:1]
-            endpoint = "email?uids={}".format(",".join(report_uids))
-        exit_url = "{}/{}".format(primary_client_url, endpoint)
+
+        # This is the clicked button name from the ReactJS component
+        action = data.get("action", "save")
+
+        exit_url = self.context.absolute_url()
+        if all([client_url, report_uids]):
+            endpoint = "reports_listing"
+            if action == "email":
+                endpoint = "email?uids={}".format(",".join(report_uids))
+            exit_url = "{}/{}".format(client_url, endpoint)
+
         return exit_url
 
     def ajax_get_reports(self, *args):
@@ -258,7 +276,6 @@ class AjaxPublishView(PublishView):
         # Metadata
         paperformat = data.get("format")
         orientation = data.get("orientation", "portrait")
-        merge = data.get("merge", False)
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
@@ -270,12 +287,15 @@ class AjaxPublishView(PublishView):
         # add the generated CSS to the publisher
         publisher.add_inline_css(css)
 
-        # generate the PNGs
-        images = publisher.write_png(html, merge=merge)
-
+        # HTML image previews
         preview = u""
-        for image in images:
-            preview += publisher.png_to_img(*image)
+
+        # Generate PNG previews for the pages of each report
+        for report_node in publisher.parse_reports(html):
+            pages = publisher.write_png_pages(report_node)
+            previews = map(lambda page: publisher.png_to_img(*page), pages)
+            preview += "\n".join(previews)
+
         # Add the generated CSS to the preview, so that the container can grow
         # accordingly
         preview += "<style type='text/css'>{}</style>".format(css)

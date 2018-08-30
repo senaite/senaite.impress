@@ -5,8 +5,9 @@
 # Copyright 2018 by it's authors.
 
 import os
-from collections import defaultdict
 from string import Template
+from collections import Iterable
+from collections import OrderedDict
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -115,7 +116,7 @@ class PublishView(BrowserView):
         """
         return filter(None, self.request.get("items", "").split(","))
 
-    def get_collection(self, uids=None):
+    def get_collection(self, uids=None, group_by=None):
         """Wraps the given UIDs into a collection of SuperModels
         """
         if uids is None:
@@ -127,6 +128,9 @@ class PublishView(BrowserView):
             else:
                 logger.error("Could not fetch report model for UID={}"
                              .format(model.uid))
+        if group_by is not None:
+            grouped_collection = self.group_items_by(group_by, collection)
+            return reduce(lambda a, b: a+b, grouped_collection.values(), [])
         return collection
 
     def to_model(self, uid):
@@ -153,39 +157,6 @@ class PublishView(BrowserView):
         # However, we can later easy provide with this mechanism reports for
         # any other content type as well.
         return self.request.form.get("type", "AnalysisRequest")
-
-    def render_reports(self, uids=None, **kw):
-        """Render Single/Multi Reports to HTML
-        """
-        htmls = []
-        template = self.get_report_template(kw.get("template"))
-        collection = self.get_collection(uids)
-
-        if self.is_multi_template(template):
-            group = kw.get("group_by_client", True)
-
-            # group the models by client
-            if group:
-                by_client = defaultdict(list)
-
-                for model in collection:
-                    by_client[model.Client.getId()].append(model)
-
-                for client, collection in by_client.items():
-                    # render multi report
-                    html = self.render_multi_report(collection, template)
-                    htmls.append(html)
-            else:
-                # render multi report
-                html = self.render_multi_report(collection, template)
-                htmls.append(html)
-        else:
-            for model in collection:
-                # render single report
-                html = self.render_report(model, template)
-                htmls.append(html)
-
-        return "\n".join(htmls)
 
     def render_report(self, model, template, **kw):
         """Render a SuperModel to HTML
@@ -316,3 +287,19 @@ class PublishView(BrowserView):
         if ext in [".pt", ".zpt"]:
             return True
         return False
+
+    def group_items_by(self, key, items):
+        """Group the items (mappings with dict interface) by the given key
+        """
+        if not isinstance(items, Iterable):
+            raise TypeError("Items must be iterable")
+        results = OrderedDict()
+        for item in items:
+            group_key = item.get(key)
+            if callable(group_key):
+                group_key = group_key()
+            if group_key in results:
+                results[group_key].append(item)
+            else:
+                results[group_key] = [item]
+        return results

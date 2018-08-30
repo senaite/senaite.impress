@@ -9,7 +9,6 @@ import PublishAPI from './api.coffee'
 import Button from "./components/Button.js"
 import ErrorBox from "./components/ErrorBox.js"
 import Loader from "./components/Loader.js"
-import MergeToggle from "./components/MergeToggle.js"
 import OrientationSelection from "./components/OrientationSelection.js"
 import PaperFormatSelection from "./components/PaperFormatSelection.js"
 import Preview from "./components/Preview.js"
@@ -45,7 +44,6 @@ class PublishController extends React.Component
       items: @api.get_items()
       html: ""
       preview: ""
-      merge: no
       format: "A4"
       orientation: "portrait"
       template: ""
@@ -61,7 +59,6 @@ class PublishController extends React.Component
     options =
       items: @state.items
       html: @getProcessedReportHTML()
-      merge: @state.merge
       format: @state.format
       orientation: @state.orientation
       template: @state.template
@@ -130,11 +127,16 @@ class PublishController extends React.Component
     # fetch the rendered previews via the API asynchronously
     promise = @api.load_preview @getRequestOptions()
 
-    promise.then ((preview) ->
-      @setState
+    me = this
+    promise.then (preview) ->
+      me.setState
         preview: preview
         loading: no
-    ).bind(this)
+    .catch (error) ->
+      me.setState
+        html: ""
+        loading: no
+        error: error.toString()
 
 
   saveReports: (event) ->
@@ -153,12 +155,17 @@ class PublishController extends React.Component
     request_data.action = event.currentTarget.name
     promise = @api.save_reports request_data
 
-    promise.then ((redirect_url) ->
+    me = this
+    promise.then (redirect_url) ->
       # toggle the loader off
-      @setState
+      me.setState
         loading: no
       window.location.href = redirect_url
-    ).bind(this)
+    .catch (error) ->
+      me.setState
+        html: ""
+        loading: no
+        error: error.toString()
 
 
   componentDidUpdate: ->
@@ -215,11 +222,6 @@ class PublishController extends React.Component
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
           <div className="input-group">
-            <div className="input-group-prepend">
-              <div className="input-group-text">
-                <MergeToggle api={@api} onChange={@handleChange} value={@state.merge} className="" name="merge" />
-              </div>
-            </div>
             <TemplateSelection api={@api} onChange={@handleChange} value={@state.template} className="custom-select" name="template" />
             <PaperFormatSelection api={@api} onChange={@handleChange} value={@state.format} className="custom-select" name="format" />
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
