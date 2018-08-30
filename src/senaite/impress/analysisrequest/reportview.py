@@ -25,7 +25,7 @@ from senaite.impress.reportview import ReportView as Base
 
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
-<div class="report" id="${id}" uid="${uid}">
+<div class="report" id="${id}" uid="${uid}" client_uid="${client_uid}">
   <script type="text/javascript">
     console.log("*** BEFORE TEMPLATE RENDER ${id} ***");
   </script>
@@ -34,7 +34,7 @@ SINGLE_TEMPLATE = Template("""<!-- Single Report -->
 """)
 
 MULTI_TEMPLATE = Template("""<!-- Multi Report -->
-<div class="report">
+<div class="report" uids="${uids}" client_uid="${client_uid}">
   <script type="text/javascript">
     console.log("*** BEFORE MULTI TEMPLATE RENDER ***");
   </script>
@@ -251,6 +251,7 @@ class SingleReportView(ReportView):
         return {
             "id": model.getId(),
             "uid": model.UID(),
+            "client_uid": model.getClientUID(),
             # XXX temporary piggypack solution to handle DateTime objects right
             "user": json.dumps(model.stringify(self.current_user)),
             "api": {
@@ -289,9 +290,16 @@ class MultiReportView(ReportView):
     def render(self, template):
         """Wrap the template and render
         """
-        context = {}  # additional context before rendering
+        context = self.get_template_context(self.collection)
         template = Template(template).safe_substitute(context)
         return MULTI_TEMPLATE.safe_substitute(context, template=template)
 
     def get_template_context(self, collection):
-        return {}
+        if not collection:
+            return {}
+        uids = map(lambda m: m.uid, collection)
+        client_uid = collection[0].getClientUID()
+        return {
+            "uids": ",".join(uids),
+            "client_uid": client_uid,
+        }
