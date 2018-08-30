@@ -127,11 +127,16 @@ class PublishController extends React.Component
     # fetch the rendered previews via the API asynchronously
     promise = @api.load_preview @getRequestOptions()
 
-    promise.then ((preview) ->
-      @setState
+    me = this
+    promise.then (preview) ->
+      me.setState
         preview: preview
         loading: no
-    ).bind(this)
+    .catch (error) ->
+      me.setState
+        html: ""
+        loading: no
+        error: error.toString()
 
 
   saveReports: (event) ->
@@ -150,12 +155,17 @@ class PublishController extends React.Component
     request_data.action = event.currentTarget.name
     promise = @api.save_reports request_data
 
-    promise.then ((redirect_url) ->
+    me = this
+    promise.then (redirect_url) ->
       # toggle the loader off
-      @setState
+      me.setState
         loading: no
       window.location.href = redirect_url
-    ).bind(this)
+    .catch (error) ->
+      me.setState
+        html: ""
+        loading: no
+        error: error.toString()
 
 
   componentDidUpdate: ->
