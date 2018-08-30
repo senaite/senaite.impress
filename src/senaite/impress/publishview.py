@@ -116,7 +116,7 @@ class PublishView(BrowserView):
         """
         return filter(None, self.request.get("items", "").split(","))
 
-    def get_collection(self, uids=None):
+    def get_collection(self, uids=None, group_by=None):
         """Wraps the given UIDs into a collection of SuperModels
         """
         if uids is None:
@@ -128,6 +128,9 @@ class PublishView(BrowserView):
             else:
                 logger.error("Could not fetch report model for UID={}"
                              .format(model.uid))
+        if group_by is not None:
+            grouped_collection = self.group_items_by(group_by, collection)
+            return reduce(lambda a, b: a+b, grouped_collection.values(), [])
         return collection
 
     def to_model(self, uid):
