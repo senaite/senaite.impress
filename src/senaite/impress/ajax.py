@@ -6,8 +6,6 @@
 
 import inspect
 import json
-from collections import Iterable
-from collections import OrderedDict
 
 from DateTime import DateTime
 from senaite import api
@@ -98,22 +96,6 @@ class AjaxPublishView(PublishView):
             if value is not marker:
                 data[key] = model.stringify(value)
         return data
-
-    def group_items_by(self, key, items):
-        """Group the items (mappings with dict interface) by the given key
-        """
-        if not isinstance(items, Iterable):
-            raise TypeError("Items must be iterable")
-        results = OrderedDict()
-        for item in items:
-            group_key = item.get(key)
-            if callable(group_key):
-                group_key = group_key()
-            if group_key in results:
-                results[group_key].append(item)
-            else:
-                results[group_key] = [item]
-        return results
 
     def ajax_get(self, uid, *args, **kwargs):
         """Return the JSONified data from the wrapped object

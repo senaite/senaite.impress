@@ -6,6 +6,8 @@
 
 import os
 from string import Template
+from collections import Iterable
+from collections import OrderedDict
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -282,3 +284,19 @@ class PublishView(BrowserView):
         if ext in [".pt", ".zpt"]:
             return True
         return False
+
+    def group_items_by(self, key, items):
+        """Group the items (mappings with dict interface) by the given key
+        """
+        if not isinstance(items, Iterable):
+            raise TypeError("Items must be iterable")
+        results = OrderedDict()
+        for item in items:
+            group_key = item.get(key)
+            if callable(group_key):
+                group_key = group_key()
+            if group_key in results:
+                results[group_key].append(item)
+            else:
+                results[group_key] = [item]
+        return results
