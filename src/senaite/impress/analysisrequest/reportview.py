@@ -238,8 +238,7 @@ class SingleReportView(ReportView):
                     .format(model))
         super(SingleReportView, self).__init__(model, request)
         self.model = model
-        self.context = model.instance
-        self.request = api.get_request()
+        self.request = request
 
     def render(self, template):
         context = self.get_template_context(self.model)
@@ -263,9 +262,6 @@ class MultiReportView(ReportView):
         super(MultiReportView, self).__init__(collection, request)
         self.collection = collection
         self.request = request
-
-        # needed for template rendering
-        self.context = api.get_portal()
 
     def render(self, template):
         """Wrap the template and render

@@ -4,6 +4,7 @@
 #
 # Copyright 2018 by it's authors.
 
+from senaite import api
 from senaite.impress.interfaces import IReportView
 from zope.interface import implements
 
@@ -15,9 +16,9 @@ class ReportView(object):
     """
     implements(IReportView)
 
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
+    def __init__(self, *args, **kwargs):
+        # needed for template rendering
+        self.context = api.get_portal()
 
     def render(self, template):
         raise NotImplemented("Must be implemented by subclass")
