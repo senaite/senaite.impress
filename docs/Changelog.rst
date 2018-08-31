@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #28: Fixed i18n domain for time localization
 - #27: Refactored Report Adapters to Multi Adapters
 - #25: Added controlpanel descriptions
 - #24: Control individual report generation for multi-report PDFs
