@@ -6,7 +6,8 @@
 
   <!-- View for Single Reports -->
   <adapter
-      for="*"
+      for="zope.interface.Interface
+           zope.publisher.interfaces.browser.IBrowserRequest"
       name="AnalysisRequest"
       factory=".reportview.SingleReportView"
       provides="senaite.impress.interfaces.IReportView"
@@ -14,7 +15,8 @@
 
   <!-- View for Multi Reports -->
   <adapter
-      for="*"
+      for="zope.interface.Interface
+           zope.publisher.interfaces.browser.IBrowserRequest"
       name="AnalysisRequest"
       factory=".reportview.MultiReportView"
       provides="senaite.impress.interfaces.IMultiReportView"

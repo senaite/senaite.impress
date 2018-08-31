@@ -233,10 +233,10 @@ class SingleReportView(ReportView):
     """View for Single Reports
     """
 
-    def __init__(self, model):
+    def __init__(self, model, request):
         logger.info("SingleReportView::__init__:model={}"
                     .format(model))
-        super(SingleReportView, self).__init__(model=model)
+        super(SingleReportView, self).__init__(model, request)
         self.model = model
         self.context = model.instance
         self.request = api.get_request()
@@ -257,12 +257,12 @@ class MultiReportView(ReportView):
     """View for Multi Reports
     """
 
-    def __init__(self, collection):
+    def __init__(self, collection, request):
         logger.info("MultiReportView::__init__:collection={}"
                     .format(collection))
-        super(MultiReportView, self).__init__(collection=collection)
+        super(MultiReportView, self).__init__(collection, request)
         self.collection = collection
-        self.request = api.get_request()
+        self.request = request
 
         # needed for template rendering
         self.context = api.get_portal()
