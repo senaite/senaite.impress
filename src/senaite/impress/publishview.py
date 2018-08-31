@@ -5,9 +5,9 @@
 # Copyright 2018 by it's authors.
 
 import os
-from string import Template
 from collections import Iterable
 from collections import OrderedDict
+from string import Template
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -22,6 +22,7 @@ from senaite.impress.interfaces import IReportView
 from senaite.impress.interfaces import ITemplateFinder
 from zope.component import ComponentLookupError
 from zope.component import getAdapter
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implements
 
@@ -162,14 +163,19 @@ class PublishView(BrowserView):
         """Render a SuperModel to HTML
         """
         _type = self.get_report_type()
-        view = getAdapter(model, IReportView, name=_type)
+        # Query the controller view as a multi-adapter to allow 3rd party
+        # overriding with a browser layer
+        view = getMultiAdapter((model, self.request), IReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
     def render_multi_report(self, collection, template, **kw):
         """Render multiple SuperModels to HTML
         """
         _type = self.get_report_type()
-        view = getAdapter(collection, IMultiReportView, name=_type)
+        # Query the controller view as a multi-adapter to allow 3rd party
+        # overriding with a browser layer
+        view = getMultiAdapter(
+            (collection, self.request), IMultiReportView, name=_type)
         return view.render(self.read_template(template, view, **kw))
 
     def get_print_css(self, paperformat="A4", orientation="portrait"):
