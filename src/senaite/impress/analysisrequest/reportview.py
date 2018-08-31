@@ -104,7 +104,7 @@ class ReportView(Base):
             "time_only": False,
             "context": api.get_portal(),
             "request": api.get_request(),
-            "domain": "bika",
+            "domain": "senaite.core",
         }
         options.update(kw)
         return ulocalized_time(date, **options)
