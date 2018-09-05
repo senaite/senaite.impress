@@ -176,6 +176,12 @@ class PublishAPI
      * Render ranges (graphs)
     ###
     new RangeGraph().load()
+    this.convert_svg_to_image()
 
+  convert_svg_to_image: ->
+    jQuery("svg").each ->
+      img = document.createElement("img")
+      img.src = 'data:image/svg+xml;base64,' + btoa($(@).parent().html())
+      jQuery(@).replaceWith(img)
 
 export default PublishAPI
