@@ -171,5 +171,11 @@ class PublishAPI
         barcode_hri = '<div class=\'barcode-hri\'>' + id + '</div>'
         $(this).append barcode_hri
 
+  render_ranges: ->
+    ###
+     * Render ranges (graphs)
+    ###
+    new RangeGraph().load()
+
 
 export default PublishAPI
