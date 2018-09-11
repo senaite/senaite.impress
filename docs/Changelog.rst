@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #32: Added language selector
 - #31: Fix sort order of uniquified items
 - #30: Keep order of grouped items
 - #29: Added report developer mode
