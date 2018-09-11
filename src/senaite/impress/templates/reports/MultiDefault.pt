@@ -503,7 +503,7 @@
 
   <!--  SIGNATURES -->
   <tal:render condition="python:True">
-    <tal:responsibles define="managers python:set(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))">
+    <tal:responsibles define="managers python:view.uniquify_items(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))">
       <div class="row section-signatures">
         <div class="col-sm-12">
           <h1 i18n:translate="">Responsibles</h1>
