@@ -9,6 +9,7 @@ from collections import Iterable
 from collections import OrderedDict
 from string import Template
 
+from plone.app.i18n.locales.browser.selector import LanguageSelector
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
@@ -323,3 +324,16 @@ class PublishView(BrowserView):
             else:
                 results[group_key] = [item]
         return results
+
+    def get_language_info(self):
+        """Returns the current configured languages
+        """
+
+        # Use the language selector viewlet
+        viewlet = LanguageSelector(self.context, self.request, None, None)
+        viewlet.update()
+
+        return {
+            "available": viewlet.available(),
+            "languages": viewlet.languages(),
+        }

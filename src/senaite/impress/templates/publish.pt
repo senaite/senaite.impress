@@ -52,6 +52,10 @@
       <script type="text/javascript"
               src="senaite.impress.publish.js"
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/scripts/senaite.impress.publish.js"></script>
+      <!-- Bootstrap JS -->
+      <script type="text/javascript"
+              src="bootstrap.js"
+              tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/scripts/bootstrap.bundle.min.js"></script>
     </tal:js>
     <!-- /JS -->
 
@@ -59,17 +63,63 @@
   <body>
     <div class="container">
       <div class="card row my-4 p-4">
+        <div class="text-right">
 
-        <div class="text-right" tal:condition="python:view.is_manager()">
-          <!-- Link to SENAITE IMPRESS control panel -->
-          <a href="#"
-             class="btn btn-outline-dark btn-sm"
-             tal:attributes="href string:${view/portal/absolute_url}/impress-controlpanel"
-             target="_blank"
-             title="Impress Controlpanel" i18n:attributes="title">
-            <i class="fas fa-cogs"></i>
-          </a>
+          <!-- Language Button -->
+          <div class="d-inline-block">
+            <div class="dropdown pull-right"
+                 tal:define="lang_info view/get_language_info"
+                 tal:condition="lang_info/available"
+                 i18n:domain="plone">
+              <button class="btn btn-outline-dark btn-sm dropdown-toggle"
+                      type="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false">
+                <span class="fas fa-globe" aria-hidden="true"></span>
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu"
+                  tal:define="languages lang_info/languages;
+                              base_url  context/@@plone_context_state/current_base_url;">
+                <tal:language repeat="lang languages">
+                  <div tal:define="code       lang/code;
+                                   qs         request/QUERY_STRING;
+                                   params     python:filter(lambda x: x and not x.startswith('set_language'), qs.split('&'));
+                                   lang_param string:set_language=${code};
+                                   new_params python:'&'.join(params + [lang_param]);
+                                   selected   lang/selected;
+                                   codeclass  string:language-${code};
+                                   current    python: selected and 'currentLanguage active ' or '';"
+                      tal:attributes="class string:${current}${codeclass}">
+
+                    <a href=""
+                       tal:define="name lang/native|lang/name;"
+                       tal:attributes="href string:${base_url}?${new_params};
+                                       class string:${current} dropdown-item;
+                                       title name">
+                      <span tal:content="name"/>
+                    </a>
+                  </div>
+                </tal:language>
+              </div>
+            </div>
+          </div>
+          <!-- Language Button -->
+
+          <!-- Setup Button -->
+          <div class="d-inline-block" tal:condition="python:view.is_manager()">
+            <a href="#"
+               class="btn btn-outline-dark btn-sm"
+               tal:attributes="href string:${view/portal/absolute_url}/impress-controlpanel"
+               target="_blank"
+               title="Impress Controlpanel" i18n:attributes="title">
+              <i class="fas fa-cogs"></i>
+            </a>
+          </div>
+
         </div>
+        <!-- settings -->
 
         <!-- Report Info -->
         <table class="table table-sm table-condensed small my-4">
