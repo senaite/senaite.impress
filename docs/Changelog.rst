@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #31: Fix sort order of uniquified items
 - #30: Keep order of grouped items
 - #29: Added report developer mode
 - #28: Fixed i18n domain for time localization
