@@ -7,7 +7,6 @@
 from collections import Iterable
 from collections import OrderedDict
 from collections import Sequence
-from collections import defaultdict
 from itertools import chain
 from operator import itemgetter
 from string import Template
@@ -197,12 +196,15 @@ class ReportView(Base):
         """
         if not isinstance(items, Iterable):
             raise TypeError("Items must be iterable")
-        results = defaultdict(list)
+        results = OrderedDict()
         for item in items:
             group_key = item[key]
             if callable(group_key):
                 group_key = group_key()
-            results[group_key].append(item)
+            if group_key not in results:
+                results[group_key] = [item]
+            else:
+                results[group_key].append(item)
         return results
 
     def group_into_chunks(self, items, chunk_size=1):
