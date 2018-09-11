@@ -58,6 +58,13 @@ class IImpressControlPanel(Interface):
         required=True,
     )
 
+    developer_mode = schema.Bool(
+        title=_(u"Developer Mode"),
+        description=_("Returns the raw HTML in the report preview."),
+        default=False,
+        required=False,
+    )
+
 
 class ImpressControlPanelForm(RegistryEditForm):
     schema = IImpressControlPanel

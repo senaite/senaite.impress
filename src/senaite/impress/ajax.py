@@ -279,6 +279,9 @@ class AjaxPublishView(PublishView):
         # N.B. It might also contain multiple reports!
         html = data.get("html")
 
+        if self.get_developer_mode():
+            return html
+
         # Metadata
         paperformat = data.get("format")
         orientation = data.get("orientation", "portrait")
