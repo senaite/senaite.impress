@@ -265,6 +265,13 @@ class PublishView(BrowserView):
             "senaite.impress.store_multireports_individually")
         return store_individually
 
+    def get_developer_mode(self):
+        """Returns the configured setting from the registry
+        """
+        mode = api.get_registry_record(
+            "senaite.impress.developer_mode", False)
+        return mode
+
     def get_report_template(self, template=None):
         """Returns the path of report template
         """
