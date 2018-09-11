@@ -171,5 +171,22 @@ class PublishAPI
         barcode_hri = '<div class=\'barcode-hri\'>' + id + '</div>'
         $(this).append barcode_hri
 
+  render_ranges: ->
+    ###
+     * Render ranges (graphs)
+    ###
+    new RangeGraph().load()
+    @convert_svg_to_image()
+
+  convert_svg_to_image: ->
+    ###
+     * Convert SVGs to Images
+    ###
+    jQuery("svg").each ->
+      console.debug "Convert SVG to IMG: ", @
+      img = document.createElement "img"
+      img.src = "data:image/svg+xml;base64," + btoa($(@).parent().html())
+      jQuery(@).replaceWith(img)
+
 
 export default PublishAPI

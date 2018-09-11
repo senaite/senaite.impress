@@ -12,7 +12,9 @@ from Products.Five.browser import BrowserView
 from Products.PythonScripts.standard import url_quote
 
 INCLUDE = [
-    ".*jquery"
+    ".*jquery",
+    "d3.js",
+    "bika.lims.graphics.range.js",
 ]
 
 
