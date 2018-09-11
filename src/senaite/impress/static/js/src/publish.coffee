@@ -180,6 +180,9 @@ class PublishController extends React.Component
     # render the barcodes
     @api.render_barcodes()
 
+    # render range graphs
+    @api.render_ranges()
+
 
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
