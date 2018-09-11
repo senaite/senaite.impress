@@ -223,6 +223,16 @@ class ReportView(Base):
             key = itemgetter(key)
         return sorted(items, key=key, reverse=reverse)
 
+    def uniquify_items(self, items):
+        """Uniquify the items with sort order
+        """
+        unique = []
+        for item in items:
+            if item in unique:
+                continue
+            unique.append(item)
+        return unique
+
     def to_list(self, model_or_collection):
         if ISuperModel.providedBy(model_or_collection):
             return [model_or_collection]

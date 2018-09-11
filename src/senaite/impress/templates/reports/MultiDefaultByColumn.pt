@@ -117,7 +117,7 @@
                   <td class="label" i18n:translate="">Sample Type</td>
                   <td class="field">
                     <tal:sampletype define="sampletypes python:map(lambda m: m.SampleTypeTitle, samples)"
-                                    repeat="sampletype python:set(sampletypes)">
+                                    repeat="sampletype python:view.uniquify_items(sampletypes)">
                       <div tal:content="sampletype"/>
                     </tal:sampletype>
                   </td>
@@ -127,7 +127,7 @@
                   <td class="label" i18n:translate="">Sample Point</td>
                   <td class="field">
                     <tal:samplepoint define="samplepoints python:map(lambda m: m.SamplePointTitle, samples)"
-                                     repeat="samplepoint python:set(samplepoints)">
+                                     repeat="samplepoint python:view.uniquify_items(samplepoints)">
                       <div tal:content="samplepoint"/>
                     </tal:samplepoint>
                   </td>
@@ -264,8 +264,9 @@
                   </td>
                 </tr>
                 <tr tal:define="analyses python:view.get_analyses_by(collection, poc=poc, category=category);
-                                analyses_by_title python:set(map(lambda a: a.Title(), analyses))"
-                    tal:repeat="analysis_title python:analyses_by_title">
+                                analyses_by_title python:map(lambda a: a.Title(), analyses);
+                                analyses_titles python:view.uniquify_items(analyses_by_title)"
+                    tal:repeat="analysis_title python:analyses_titles">
                   <td class="text-secondary">
                     <span tal:content="analysis_title"/>
                   </td>
@@ -417,7 +418,7 @@
 
   <!--  SIGNATURES -->
   <tal:render condition="python:True">
-    <tal:responsibles define="managers python:set(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))">
+    <tal:responsibles define="managers python:view.uniquify_items(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))">
       <div class="row section-signatures">
         <div class="col-sm-12">
           <h1 i18n:translate="">Responsibles</h1>
