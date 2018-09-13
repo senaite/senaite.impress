@@ -4,7 +4,12 @@
           accredited_symbol string:★;
           outofrange_symbol string:⚠;">
 
-  <tal:css define="laboratory view/laboratory;">
+  <tal:css define="laboratory view/laboratory;
+                   page_width options/page_width|nothing;
+                   page_height options/page_height|nothing;
+                   content_width options/content_width|nothing;
+                   content_height options/content_height|nothing;
+                   footer_text python:view.get_footer_text();">
     <style type="text/css">
      html, body { font-size: 1em; }
      h1 { font-size: 140%; }
@@ -14,22 +19,36 @@
      table.nopadding td { padding: 0; }
      table td.label { padding-right: 0.3rem; }
      table td.label { white-space: nowrap; }
+     .section-footer {
+       position: fixed;
+       left: -20mm;
+       bottom: 0;
+       margin-bottom: -8mm;
+       margin-left: 20mm;
+       height: 8mm;
+       text-align: left;
+       font-size: 8pt;
+     }
+     <tal:block condition="python:content_width and content_height">
+     /* Ensure that the images stay within the borders */
+     .section-attachments img {
+       max-width: <tal:t replace="python:'%fmm' % float(content_width)"/>;
+       max-height: <tal:t replace="python:'%fmm' % (float(content_height) * 0.9)"/>;
+     }
+     </tal:block>
      @page {
-       @bottom-left {
-         font-size: 8pt;
-         content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
-       }
-       @bottom-center {
-         font-size: 8pt;
-         <tal:single tal:condition="python:len(collection) == 1">
-           content: '<tal:content replace="python:collection[0].getId()"/>';
-         </tal:single>
-         <tal:multi tal:condition="python:len(collection) > 1">
-           content: '<tal:content replace="python:' • '.join(map(lambda m: m.getId(), collection))"/>';
-         </tal:multi>
-       }
+       <tal:footer condition="footer_text">
+         @bottom-left {
+           font-size: 9pt;
+           content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
+         }
+         @bottom-center {
+           font-size: 9pt;
+           content: '<span tal:omit-tag="" tal:content="footer_text"/>';
+         }
+       </tal:footer>
        @bottom-right {
-         font-size: 8pt;
+         font-size: 9pt;
          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
        }
      }
@@ -38,8 +57,8 @@
 
   <!-- HEADER -->
   <tal:render condition="python:True">
-    <div class="row section-header">
-      <div class="col-sm-12">
+    <div class="row section-header no-gutters">
+      <div class="">
         <div class="text-right">
           <a tal:attributes="href view/portal_url">
             <img style="max-height: 100px"
@@ -55,8 +74,8 @@
               define="primarymodel python:collection[0];
                       samples python:map(lambda m: m.Sample, collection);">
 
-    <div class="row section-info">
-      <div class="col-sm-12 py-4 small">
+    <div class="row section-info no-gutters">
+      <div class="py-4 small">
         <!-- Client Info -->
         <table class="col">
           <colgroup>
@@ -205,8 +224,8 @@
 
   <!-- ALERTS -->
   <tal:render condition="python:True">
-    <div class="row section-alerts">
-      <div class="col col-sm-12">
+    <div class="row section-alerts no-gutters">
+      <div class="">
         <tal:model repeat="model collection">
           <div class="alert alert-danger" tal:condition="model/is_invalid">
             <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
@@ -232,8 +251,8 @@
   <tal:render condition="python:True"
               define="analyses_by_poc python:view.get_analyses_by_poc(collection);
                       categories_by_poc python:view.get_categories_by_poc(collection)">
-    <div class="row section-results">
-      <div class="col col-sm-12">
+    <div class="row section-results no-gutters">
+      <div class="">
         <h1 i18n:translate="">Results</h1>
 
         <!-- Point of Captures -->
@@ -310,10 +329,10 @@
   <!--  RESULTS INTERPRETATIONS -->
   <tal:render condition="python:True">
     <tal:model repeat="model collection">
-      <div class="row section-resultsinterpretation"
+      <div class="row section-resultsinterpretation no-gutters"
            tal:define="ris python:model.get_resultsinterpretation()"
            tal:condition="ris">
-        <div class="col col-sm-12">
+        <div class="">
           <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
           <div tal:condition="ris">
             <tal:ri repeat="ri ris">
@@ -330,8 +349,8 @@
   <tal:render condition="python:True">
     <tal:model repeat="model collection">
       <tal:qc define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
-        <div class="row section-results" tal:condition="qcanalyses">
-          <div class="col col-sm-12">
+        <div class="row section-results no-gutters" tal:condition="qcanalyses">
+          <div class="">
             <h2 i18n:translate>QC Results for <span tal:replace="model/getId"/></h2>
             <div>
               <h1 i18n:translate="">QC Results</h1>
@@ -345,8 +364,8 @@
   <!--  REMARKS -->
   <tal:render condition="python:True">
     <tal:model repeat="model collection">
-      <div class="row section-remarks" tal:condition="model/Remarks">
-        <div class="col-sm-12">
+      <div class="row section-remarks no-gutters" tal:condition="model/Remarks">
+        <div class="">
           <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
           <div class="text-info" tal:content="structure model/Remarks"></div>
         </div>
@@ -367,8 +386,8 @@
         </h2>
 
         <!-- AR ATTACHMENTS -->
-        <div class="row section-an-attachments" tal:condition="ar_attachments">
-          <div class="col-sm-12">
+        <div class="row section-attachments no-gutters" tal:condition="ar_attachments">
+          <div class="">
             <table class="table">
               <colgroup>
                 <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
@@ -390,8 +409,8 @@
         </div>
 
         <!-- AN ATTACHMENTS -->
-        <div class="row section-an-attachments" tal:condition="an_attachments">
-          <div class="col-sm-12">
+        <div class="row section-attachments no-gutters" tal:condition="an_attachments">
+          <div class="">
             <table class="table">
               <colgroup>
                 <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
@@ -404,7 +423,7 @@
                        style="width:100%;"
                        tal:attributes="src python:attachment[1].absolute_url() + '/AttachmentFile'"/>
                   <div class="text-secondary">
-                    <span tal:content="python:attachment[1].title"/>:
+                    <span tal:content="python:attachment[1].getAnalysis().title"/>:
                     <span tal:content="python:attachment[1].AttachmentKeys"/>
                   </div>
                 </td>
@@ -419,8 +438,8 @@
   <!--  SIGNATURES -->
   <tal:render condition="python:True">
     <tal:responsibles define="managers python:view.uniquify_items(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))">
-      <div class="row section-signatures">
-        <div class="col-sm-12">
+      <div class="row section-signatures no-gutters">
+        <div class="">
           <h1 i18n:translate="">Responsibles</h1>
           <table class="table table-sm table-condensed">
             <tr>
@@ -466,8 +485,8 @@
   <!-- DISCREETER -->
   <tal:render condition="python:True"
               define="laboratory python:view.laboratory;">
-    <div class="row section-discreeter">
-      <div class="col-sm-12 text-muted font-weight-light small">
+    <div class="row section-discreeter no-gutters">
+      <div class="text-muted font-weight-light small">
         <div class="discreeter-outofrange">
           <span class="outofrange text-danger"
                 style="font-family:Lucida Console, Courier, monospace;"
@@ -507,6 +526,38 @@
           Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
         </div>
       </div>
+    </div>
+  </tal:render>
+
+  <!-- FOOTER -->
+  <tal:render condition="python: not view.get_footer_text()"
+              define="laboratory python:view.laboratory;">
+    <div class="row section-footer no-gutters">
+      <table class="">
+        <tr>
+          <td>
+            <div>
+              <strong tal:content="laboratory/Name">Lab Name</strong>
+              • <span tal:content="laboratory/PhysicalAddress/address">Lab Street and Number</span>
+              • <span tal:content="laboratory/PhysicalAddress/zip">Lab ZIP</span>
+                <span tal:content="laboratory/PhysicalAddress/city">Lab City</span>
+              • <span tal:content="laboratory/PhysicalAddress/country">Lab Country</span>
+            </div>
+            <div>
+              <span i18n:translate="">Phone</span>:
+              <span tal:content="laboratory/Phone">Lab Phone Number</span>
+              • <span i18n:translate="">Fax</span>:
+                <span tal:content="laboratory/Fax">Lab Fax Number</span>
+              • <a href="#" tal:attributes="href string:mailto:${laboratory/EmailAddress}">
+                <span tal:content="laboratory/EmailAddress">Lab Email</span>
+              </a>
+              • <a href="#" tal:attributes="href laboratory/LabURL">
+                <span tal:content="laboratory/LabURL">Lab URL</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
   </tal:render>
 

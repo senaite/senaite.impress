@@ -252,16 +252,18 @@ class SingleReportView(ReportView):
         self.model = model
         self.request = request
 
-    def render(self, template):
-        context = self.get_template_context(self.model)
+    def render(self, template, **kw):
+        context = self.get_template_context(self.model, **kw)
         template = Template(template).safe_substitute(context)
         return SINGLE_TEMPLATE.safe_substitute(context, template=template)
 
-    def get_template_context(self, model):
-        return {
+    def get_template_context(self, model, **kw):
+        context = {
             "uids": model.UID(),
             "client_uid": model.getClientUID(),
         }
+        context.update(kw)
+        return context
 
 
 class MultiReportView(ReportView):
@@ -275,19 +277,21 @@ class MultiReportView(ReportView):
         self.collection = collection
         self.request = request
 
-    def render(self, template):
+    def render(self, template, **kw):
         """Wrap the template and render
         """
-        context = self.get_template_context(self.collection)
+        context = self.get_template_context(self.collection, **kw)
         template = Template(template).safe_substitute(context)
         return MULTI_TEMPLATE.safe_substitute(context, template=template)
 
-    def get_template_context(self, collection):
+    def get_template_context(self, collection, **kw):
         if not collection:
             return {}
         uids = map(lambda m: m.uid, collection)
         client_uid = collection[0].getClientUID()
-        return {
+        context = {
             "uids": ",".join(uids),
             "client_uid": client_uid,
         }
+        context.update(kw)
+        return context
