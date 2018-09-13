@@ -160,16 +160,20 @@ class PublishView(BrowserView):
         # any other content type as well.
         return self.request.form.get("type", "AnalysisRequest")
 
-    def render_report(self, model, template, **kw):
+    def render_report(self, model, template, paperformat, orientation, **kw):
         """Render a SuperModel to HTML
         """
         _type = self.get_report_type()
         # Query the controller view as a multi-adapter to allow 3rd party
         # overriding with a browser layer
         view = getMultiAdapter((model, self.request), IReportView, name=_type)
-        return view.render(self.read_template(template, view, **kw))
+        # pass through the calculated dimensions to the template
+        dimensions = self.calculate_dimensions(paperformat, orientation)
+        template = self.read_template(template, view, **dimensions)
+        return view.render(
+            template, paperformat=paperformat, orientation=orientation, **kw)
 
-    def render_multi_report(self, collection, template, **kw):
+    def render_multi_report(self, collection, template, paperformat, orientation, **kw):  # noqa
         """Render multiple SuperModels to HTML
         """
         _type = self.get_report_type()
@@ -177,10 +181,14 @@ class PublishView(BrowserView):
         # overriding with a browser layer
         view = getMultiAdapter(
             (collection, self.request), IMultiReportView, name=_type)
-        return view.render(self.read_template(template, view, **kw))
+        # pass through the calculated dimensions to the template
+        dimensions = self.calculate_dimensions(paperformat, orientation)
+        template = self.read_template(template, view, **dimensions)
+        return view.render(
+            template, paperformat=paperformat, orientation=orientation, **kw)
 
-    def get_print_css(self, paperformat="A4", orientation="portrait"):
-        """Returns the generated print CSS for the given format/orientation
+    def calculate_dimensions(self, paperformat="A4", orientation="portrait"):
+        """Calculate the page and content dimensions
         """
         pf = self.get_paperformat(paperformat)
 
@@ -201,15 +209,21 @@ class PublishView(BrowserView):
         content_height = page_height - margin_top - margin_bottom
 
         # prepare the substitution context
-        context = pf.copy()
-        context.update({
+        dimensions = pf.copy()
+        dimensions.update({
             "page_width": page_width,
             "page_height": page_height,
             "content_width": content_width,
             "content_height": content_height,
         })
+        return dimensions
 
-        return CSS.safe_substitute(context)
+    def get_print_css(self, paperformat="A4", orientation="portrait"):
+        """Returns the generated print CSS for the given format/orientation
+        """
+        dimensions = self.calculate_dimensions(
+            paperformat=paperformat, orientation=orientation)
+        return CSS.safe_substitute(dimensions)
 
     def get_paperformat(self, paperformat):
         """Return the paperformat dictionary
@@ -286,7 +300,7 @@ class PublishView(BrowserView):
 
     def read_template(self, template, instance, **kw):
         if self.is_page_template(template):
-            template = ViewPageTemplateFile(template, **kw)(instance)
+            template = ViewPageTemplateFile(template)(instance, **kw)
         else:
             with open(template, "r") as template:
                 template = template.read()

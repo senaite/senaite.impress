@@ -20,5 +20,5 @@ class ReportView(object):
         # needed for template rendering
         self.context = api.get_portal()
 
-    def render(self, template):
+    def render(self, template, **kw):
         raise NotImplemented("Must be implemented by subclass")

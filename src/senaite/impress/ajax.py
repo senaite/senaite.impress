@@ -146,6 +146,9 @@ class AjaxPublishView(PublishView):
         # update the request form with the parsed json data
         data = self.get_json()
 
+        paperformat = data.get("format", "A4")
+        orientation = data.get("orientation", "portrait")
+
         # Create a collection of the requested UIDs
         collection = self.get_collection(data.get("items"))
 
@@ -162,12 +165,18 @@ class AjaxPublishView(PublishView):
         for client_uid, collection in grouped_by_client.items():
             # render multi report
             if is_multi_template:
-                html = self.render_multi_report(collection, template)
+                html = self.render_multi_report(collection,
+                                                template,
+                                                paperformat=paperformat,
+                                                orientation=orientation)
                 htmls.append(html)
             else:
                 # render single report
                 for model in collection:
-                    html = self.render_report(model, template)
+                    html = self.render_report(model,
+                                              template,
+                                              paperformat=paperformat,
+                                              orientation=orientation)
                     htmls.append(html)
 
         return "\n".join(htmls)
