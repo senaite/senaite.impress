@@ -209,8 +209,9 @@ class PublishController extends React.Component
       if name == "template"
         # reload HTML and Preview if the template changed
         return @loadReports()
-      # reload only the Preview
-      return @loadPreview()
+      # N.B. we always render now the full reports, so that the template can
+      #      handle the changed dimensions of the paperformat and orientation
+      return @loadReports()
 
 
   isMultiReport: ->
