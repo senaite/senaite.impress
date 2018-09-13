@@ -225,7 +225,7 @@
   <!-- ALERTS -->
   <tal:render condition="python:True">
     <div class="row section-alerts no-gutters">
-      <div class="col-sm-12">
+      <div class="">
         <tal:model repeat="model collection">
           <div class="alert alert-danger" tal:condition="model/is_invalid">
             <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
