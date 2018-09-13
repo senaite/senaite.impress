@@ -44,7 +44,7 @@
          }
          @bottom-center {
            font-size: 9pt;
-           content: '<span tal:omit-tag="" tal:content="python:view.get_footer_text()"/>';
+           content: '<span tal:omit-tag="" tal:content="footer_text"/>';
          }
        </tal:footer>
        @bottom-right {
