@@ -31,18 +31,7 @@
     <!-- PORTAL JS -->
     <tal:portal_javascripts define="view context/@@javascripts_view"
                             repeat="script view/scripts">
-      <tal:block define="inline script/inline;
-                         condcomment script/conditionalcomment">
-        <tal:jquery condition="not:inline">
-          <script type="text/javascript" tal:attributes="src script/src"></script>
-        </tal:jquery>
-        <tal:inline condition="inline">
-          <script type="text/javascript" tal:content="structure script/content"></script>
-        </tal:inline>
-        <tal:wcondcomment tal:condition="condcomment">
-          <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
-        </tal:wcondcomment>
-      </tal:block>
+      <script type="text/javascript" tal:attributes="src script/src"></script>
     </tal:portal_javascripts>
     <!-- /PORTAL JS -->
 
