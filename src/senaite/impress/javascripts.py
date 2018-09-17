@@ -15,6 +15,7 @@ INCLUDE = [
     ".*jquery",
     "d3.js",
     "bika.lims.graphics.range.js",
+    "senaite.impress.*.js",  # append all senaite.impress javascripts
 ]
 
 
