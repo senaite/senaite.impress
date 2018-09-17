@@ -13,6 +13,7 @@ from string import Template
 
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
+from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
 from senaite import api
@@ -135,7 +136,8 @@ class ReportView(Base):
         return self.sort_items(analyses)
 
     def get_analyses_by(self, model_or_collection,
-                        title=None, poc=None, category=None,
+                        title=None, service_title=None,
+                        poc=None, category=None,
                         hidden=False, retracted=False):
         """Returns a sorted list of Analyses for the given POC which are in the
         given Category
@@ -143,6 +145,12 @@ class ReportView(Base):
         analyses = self.get_analyses(model_or_collection)
         if title is not None:
             analyses = filter(lambda an: an.Title() == title, analyses)
+        if service_title is not None:
+            def get_service_title(analysis):
+                service = analysis.getAnalysisService()
+                return service.Title()
+            analyses = filter(
+                lambda an: get_service_title(an) == service_title, analyses)
         if poc is not None:
             analyses = filter(lambda an: an.PointOfCapture == poc, analyses)
         if category is not None:
@@ -239,6 +247,22 @@ class ReportView(Base):
         if isinstance(model_or_collection, Sequence):
             return model_or_collection
         raise TypeError("Need a model or collection")
+
+    def hyphenize(self, string):
+        """Replace minus (-) with the HTML entitiy &hyphen;
+
+        This is needed for proper text wrapping on overflow
+        """
+        if not isinstance(string, basestring):
+            return string
+        return string.replace("-", "&hyphen;")
+
+    def get_transition_date(self, obj, transition=None):
+        """Returns the date of the given Transition
+        """
+        if transition is None:
+            return None
+        return getTransitionDate(obj, transition, return_as_datetime=True)
 
 
 class SingleReportView(ReportView):
