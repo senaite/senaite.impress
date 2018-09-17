@@ -106,12 +106,35 @@ class PublishController extends React.Component
     promise.then (html) ->
       me.setState
         html: html
-      me.loadPreview()
+      , ->
+        # At this point we can be sure that the HTML is in the DOM
+        console.debug "Report HTML in DOM, loading scripts & preview"
+        me.loadScripts()
+        me.loadPreview()
     .catch (error) ->
       me.setState
         html: ""
         loading: no
         error: error.toString()
+
+
+  loadScripts: ->
+    ###
+     * Execute inline JavaScripts
+    ###
+    me = this
+
+    reports = document.getElementsByClassName "report"
+    $.each reports, (index, report) ->
+      scripts = report.getElementsByTagName "script"
+      $.each scripts, (index, script) ->
+        try
+          text = script.innerText
+          window.eval text
+        catch error
+          me.setState
+            error: error.toString()
+
 
   loadPreview: ->
     ###

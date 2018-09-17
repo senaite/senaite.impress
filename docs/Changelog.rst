@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #36: Allow JS injection and custom report scripts
 - #34: Pass through the calculated dimensions to the template
 - #33: Include D3JS and support for Range Graphs
 - #32: Added language selector

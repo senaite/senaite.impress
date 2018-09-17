@@ -29,14 +29,14 @@
     <!-- /CSS -->
 
     <!-- PORTAL JS -->
-    <tal:portal_javascripts define="view context/@@javascripts_view"
-                            repeat="script view/scripts">
+    <tal:portal_js define="view context/@@javascripts_view"
+                   repeat="script view/scripts">
       <script type="text/javascript" tal:attributes="src script/src"></script>
-    </tal:portal_javascripts>
+    </tal:portal_js>
     <!-- /PORTAL JS -->
 
-    <!-- JS -->
-    <tal:js define="portal context/@@plone_portal_state/portal;">
+    <!-- PUBLISH JS -->
+    <tal:publish_js define="portal context/@@plone_portal_state/portal;">
       <!-- publish.js -->
       <script type="text/javascript"
               src="senaite.impress.publish.js"
@@ -45,8 +45,17 @@
       <script type="text/javascript"
               src="bootstrap.js"
               tal:attributes="src string:${portal/absolute_url}/++resource++senaite.impress.static/js/scripts/bootstrap.bundle.min.js"></script>
-    </tal:js>
-    <!-- /JS -->
+    </tal:publish_js>
+    <!-- /PUBLISH JS -->
+
+    <!-- CUSTOM JS
+         N.B. we render the JS inline, because traversal seems to not work for plone:static resouces!
+    -->
+    <tal:custom_js repeat="script view/get_custom_javascripts">
+      <!-- <tal:t replace="script/filename"/> -->
+      <script type="text/javascript" tal:content="script/filecontents"></script>
+    </tal:custom_js>
+    <!-- /CUSTOM JS -->
 
   </head>
   <body>

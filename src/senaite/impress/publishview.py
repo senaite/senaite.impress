@@ -10,6 +10,7 @@ from collections import OrderedDict
 from string import Template
 
 from plone.app.i18n.locales.browser.selector import LanguageSelector
+from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite import api
@@ -351,3 +352,47 @@ class PublishView(BrowserView):
             "available": viewlet.available(),
             "languages": viewlet.languages(),
         }
+
+    def get_custom_javascripts(self):
+        """Load custom JavaScript resouces
+
+        Example:
+
+            <!-- senaite.impress JS resource directory -->
+            <plone:static
+                directory="js"
+                type="senaite.impress.js"
+                name="MY-CUSTOM-SCRIPTS"/>
+
+        All JS files in this directory get rendered inline in the publishview
+        """
+
+        TYPE = "senaite.impress.js"
+
+        scripts = []
+        for resource in iterDirectoriesOfType(TYPE):
+            for fname in resource.listDirectory():
+                # only consider files
+                if not resource.isFile(fname):
+                    continue
+
+                # only JS files
+                if not os.path.splitext(fname)[-1] == ".js":
+                    continue
+
+                portal_url = self.portal.absolute_url()
+                directory = resource.directory
+                resourcename = resource.__name__
+
+                scripts.append({
+                    # XXX Seems like traversal does not work in Plone 4
+                    "url": "{}/++{}++{}/{}".format(
+                        portal_url, TYPE, resourcename, fname),
+                    "directory": directory,
+                    "filepath": os.path.join(directory, fname),
+                    "filename": fname,
+                    "resourcename": resourcename,
+                    "filecontents": resource.readFile(fname),
+                })
+
+        return scripts
