@@ -216,6 +216,7 @@ class PublishView(BrowserView):
             "page_height": page_height,
             "content_width": content_width,
             "content_height": content_height,
+            "orientation": orientation,
         })
         return dimensions
 
