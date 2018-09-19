@@ -260,9 +260,16 @@ class ReportView(Base):
     def get_transition_date(self, obj, transition=None):
         """Returns the date of the given Transition
         """
+        if self.is_model(obj):
+            obj = obj.instance
         if transition is None:
             return None
         return getTransitionDate(obj, transition, return_as_datetime=True)
+
+    def is_model(self, obj):
+        """Check if the given object is a SuperModel
+        """
+        return ISuperModel.providedBy(obj)
 
 
 class SingleReportView(ReportView):
