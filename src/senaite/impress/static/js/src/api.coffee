@@ -13,6 +13,14 @@ class PublishAPI
     return @
 
 
+  parse_html: (html) ->
+    ###
+     * Parse the HTML to a DOM element
+    ###
+    parser = new DOMParser()
+    return parser.parseFromString(html, "text/html")
+
+
   get_base_url: ->
     ###
      * Calculate the current base url

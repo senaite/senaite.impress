@@ -168,11 +168,11 @@ class PublishView(BrowserView):
         # Query the controller view as a multi-adapter to allow 3rd party
         # overriding with a browser layer
         view = getMultiAdapter((model, self.request), IReportView, name=_type)
+        options = kw
         # pass through the calculated dimensions to the template
-        dimensions = self.calculate_dimensions(paperformat, orientation)
-        template = self.read_template(template, view, **dimensions)
-        return view.render(
-            template, paperformat=paperformat, orientation=orientation, **kw)
+        options.update(self.calculate_dimensions(paperformat, orientation))
+        template = self.read_template(template, view, **options)
+        return view.render(template, **options)
 
     def render_multi_report(self, collection, template, paperformat, orientation, **kw):  # noqa
         """Render multiple SuperModels to HTML
@@ -182,11 +182,12 @@ class PublishView(BrowserView):
         # overriding with a browser layer
         view = getMultiAdapter(
             (collection, self.request), IMultiReportView, name=_type)
+        options = kw
         # pass through the calculated dimensions to the template
-        dimensions = self.calculate_dimensions(paperformat, orientation)
-        template = self.read_template(template, view, **dimensions)
-        return view.render(
-            template, paperformat=paperformat, orientation=orientation, **kw)
+        options.update(self.calculate_dimensions(paperformat, orientation))
+
+        template = self.read_template(template, view, **options)
+        return view.render(template, **options)
 
     def calculate_dimensions(self, paperformat="A4", orientation="portrait"):
         """Calculate the page and content dimensions

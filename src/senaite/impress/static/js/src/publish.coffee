@@ -14,6 +14,7 @@ import PaperFormatSelection from "./components/PaperFormatSelection.js"
 import Preview from "./components/Preview.js"
 import ReportHTML from "./components/ReportHTML.js"
 import TemplateSelection from "./components/TemplateSelection.js"
+import ReportOptions from "./components/ReportOptions.js"
 
 
 # DOCUMENT READY ENTRY POINT
@@ -50,6 +51,8 @@ class PublishController extends React.Component
       loading: no
       loadtext: ""
       error: ""
+      controls: ""
+      report_options: {}
 
 
   getRequestOptions: ->
@@ -62,6 +65,7 @@ class PublishController extends React.Component
       format: @state.format
       orientation: @state.orientation
       template: @state.template
+      report_options: @state.report_options
 
     console.debug("Request Options=", options)
     return options
@@ -104,6 +108,19 @@ class PublishController extends React.Component
 
     me = this
     promise.then (html) ->
+
+      # parse the html into a DOM element
+      doc = me.api.parse_html html
+
+      # parse the report controls div
+      controls = doc.getElementById "controls"
+      if controls isnt null
+        me.setState
+          controls: controls.innerHTML
+      else
+        me.setState
+          controls: ""
+
       me.setState
         html: html
       , ->
@@ -224,10 +241,16 @@ class PublishController extends React.Component
     target = event.target
     value = if target.type is "checkbox" then target.checked else target.value
     name = target.name
+    option =
+      [name]: value
 
     console.info("PublishController::handleChange: name=#{name} value=#{value}")
-    @setState
-      [name]: value
+    if name not in @state
+      # put unknown keys into the report_options object
+      option = @state.report_options
+      option[name] = value
+
+    @setState option
     , ->
       if name == "template"
         # reload HTML and Preview if the template changed
@@ -260,6 +283,7 @@ class PublishController extends React.Component
           </div>
         </div>
       </form>
+      <ReportOptions api={@api} onChange={@handleChange} controls={@state.controls} className="" name="reportcontrols" />
       <hr className="my-2"/>
       <div className="row">
         <div className="col-sm-12">
