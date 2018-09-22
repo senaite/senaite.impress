@@ -1,7 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
-- #40: Custom report options
+- #40: Customizable report options
 - #37: Added hyphenize and get_transition_date helper methods
 - #36: Allow JS injection and custom report scripts
 - #34: Pass through the calculated dimensions to the template
