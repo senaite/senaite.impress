@@ -148,6 +148,8 @@ class AjaxPublishView(PublishView):
 
         paperformat = data.get("format", "A4")
         orientation = data.get("orientation", "portrait")
+        # custom report options
+        report_options = data.get("report_options", {})
 
         # Create a collection of the requested UIDs
         collection = self.get_collection(data.get("items"))
@@ -168,7 +170,8 @@ class AjaxPublishView(PublishView):
                 html = self.render_multi_report(collection,
                                                 template,
                                                 paperformat=paperformat,
-                                                orientation=orientation)
+                                                orientation=orientation,
+                                                report_options=report_options)
                 htmls.append(html)
             else:
                 # render single report
@@ -176,7 +179,8 @@ class AjaxPublishView(PublishView):
                     html = self.render_report(model,
                                               template,
                                               paperformat=paperformat,
-                                              orientation=orientation)
+                                              orientation=orientation,
+                                              report_options=report_options)
                     htmls.append(html)
 
         return "\n".join(htmls)

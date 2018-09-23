@@ -13,6 +13,7 @@ import OrientationSelection from "./components/OrientationSelection.js"
 import PaperFormatSelection from "./components/PaperFormatSelection.js"
 import Preview from "./components/Preview.js"
 import ReportHTML from "./components/ReportHTML.js"
+import ReportOptions from "./components/ReportOptions.js"
 import TemplateSelection from "./components/TemplateSelection.js"
 
 
@@ -50,6 +51,8 @@ class PublishController extends React.Component
       loading: no
       loadtext: ""
       error: ""
+      controls: ""
+      report_options: {}
 
 
   getRequestOptions: ->
@@ -62,6 +65,7 @@ class PublishController extends React.Component
       format: @state.format
       orientation: @state.orientation
       template: @state.template
+      report_options: @state.report_options
 
     console.debug("Request Options=", options)
     return options
@@ -104,6 +108,19 @@ class PublishController extends React.Component
 
     me = this
     promise.then (html) ->
+
+      # parse the html into a DOM element
+      doc = me.api.parse_html html
+
+      # parse the report controls div
+      controls = doc.getElementById "controls"
+      if controls isnt null
+        me.setState
+          controls: controls.innerHTML
+      else
+        me.setState
+          controls: ""
+
       me.setState
         html: html
       , ->
@@ -224,17 +241,18 @@ class PublishController extends React.Component
     target = event.target
     value = if target.type is "checkbox" then target.checked else target.value
     name = target.name
-
-    console.info("PublishController::handleChange: name=#{name} value=#{value}")
-    @setState
+    option =
       [name]: value
-    , ->
-      if name == "template"
-        # reload HTML and Preview if the template changed
-        return @loadReports()
-      # N.B. we always render now the full reports, so that the template can
-      #      handle the changed dimensions of the paperformat and orientation
-      return @loadReports()
+    console.info "PublishController::handleChange: name=#{name} value=#{value}"
+
+    if name not in @state
+      # Put unknown keys into the report_options object.
+      # These keys will be passed directly to the report in the `options` mapping
+      option = @state.report_options
+      option[name] = value
+
+    # Reload the whole report
+    @setState option, @loadReports
 
 
   isMultiReport: ->
@@ -260,6 +278,7 @@ class PublishController extends React.Component
           </div>
         </div>
       </form>
+      <ReportOptions api={@api} onChange={@handleChange} controls={@state.controls} className="" name="reportcontrols" />
       <hr className="my-2"/>
       <div className="row">
         <div className="col-sm-12">
