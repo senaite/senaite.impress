@@ -25,9 +25,9 @@ PAPERFORMATS = OrderedDict((
     ("A4", {
         "name": "DIN A4",
         "format": "A4",
-        "margin_top": 10.0,
+        "margin_top": 20.0,
         "margin_right": 20.0,
-        "margin_bottom": 10.0,
+        "margin_bottom": 20.0,
         "margin_left": 20.0,
         "page_width": 210.0,
         "page_height": 297.0,
