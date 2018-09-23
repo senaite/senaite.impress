@@ -303,7 +303,7 @@
   <!-- ALERTS -->
   <tal:render condition="python:True">
     <div class="row section-alerts no-gutters">
-      <div class="mb-2">
+      <div class="w-100 mb-2">
         <tal:model repeat="model collection">
           <div class="alert alert-danger" tal:condition="model/is_invalid">
             <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
@@ -561,7 +561,7 @@
   <tal:render condition="python:True"
               define="laboratory python:view.laboratory;">
     <div class="row section-discreeter no-gutters">
-      <div class="text-muted font-weight-light small">
+      <div class="w-100 text-muted font-weight-light small">
         <div class="discreeter-outofrange">
           <span class="outofrange text-danger"
                 style="font-family:Lucida Console, Courier, monospace;"

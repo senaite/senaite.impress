@@ -251,7 +251,7 @@
   <!-- ALERTS -->
   <tal:render condition="python:True">
     <div class="row section-alerts no-gutters">
-      <div class="mb-2">
+      <div class="w-100 mb-2">
         <div class="alert alert-danger" tal:condition="model/is_invalid">
           <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
           <tal:invalidreport tal:define="child model/ChildAnalysisRequest"
@@ -573,7 +573,7 @@
   <!--  SIGNATURES -->
   <tal:render condition="python:True">
     <div class="row section-signatures no-gutters">
-      <div class="">
+      <div class="w-100">
         <h1 i18n:translate="">Responsibles</h1>
         <table class="table table-sm table-condensed">
           <tr>
@@ -620,7 +620,7 @@
               define="laboratory python:view.laboratory;
                       contact model/Contact">
     <div class="row section-discreeter no-gutters">
-      <div class="text-muted font-weight-light small">
+      <div class="w-100 text-muted font-weight-light small">
         <div class="discreeter-outofrange">
           <span class="outofrange text-danger"
                 style="font-family:Lucida Console, Courier, monospace;"
