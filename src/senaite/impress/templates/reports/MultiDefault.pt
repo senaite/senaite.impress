@@ -2,52 +2,113 @@
   i18n:domain="senaite.impress"
   define="collection view/collection;
           accredited_symbol string:★;
-          outofrange_symbol string:⚠;">
+          outofrange_symbol string:⚠;
+          report_options python:options.get('report_options', {});
+          attachments_per_row python:int(report_options.get('attachments_per_row', 2));
+          attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
+          page_width options/page_width|nothing;
+          page_height options/page_height|nothing;
+          content_width options/content_width|nothing;
+          content_height options/content_height|nothing;">
 
-  <tal:css define="laboratory view/laboratory;
-                   page_width options/page_width|nothing;
-                   page_height options/page_height|nothing;
-                   content_width options/content_width|nothing;
-                   content_height options/content_height|nothing;
-                   footer_text python:view.get_footer_text();">
+  <!-- Custom Report Controls -->
+  <div id="controls" class="noprint">
+    <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
+    <!-- Attachments per row -->
+    <div class="mb-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="attachments_per_row" i18n:translate="">
+            Attachments per Row
+          </label>
+        </div>
+        <input tal:attributes="value attachments_per_row"
+               type="number"
+               class="form-control"
+               name="attachments_per_row"
+               min="1"/>
+      </div>
+      <small class="form-text text-muted" i18n:translate="">
+        <div>Only attachments within one Analysis Request are affected by this setting.</div>
+        <div>Attachments coming from different Analysis Requests start always in a new row.</div>
+      </small>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+   console.info("######################################################################");
+   window.options = "<tal:t replace='options'/>";
+   console.log(window.options);
+   console.info("######################################################################");
+  </script>
+
+  <tal:css define="footer_text python:view.get_footer_text();">
     <style type="text/css">
-     html, body { font-size: 1em; }
-     h1 { font-size: 140%; }
-     h2 { font-size: 120%; }
-     .colon-after:after { content: ":"; }
-     table.noborder td { border: none; }
-     table.nopadding td { padding: 0; }
-     table td.label { padding-right: 0.3rem; }
-     table td.label { white-space: nowrap; }
-     .section-footer {
+     .report * { font: 9pt Arial, Verdana, sans-serif; }
+     .report h1 { font-size: 140%; }
+     .report h2 { font-size: 120%; }
+     .report h3 { font-size: 110%; }
+     .report .font-size-140 { font-size: 140%; }
+     .report .font-size-120 { font-size: 120%; }
+     .report .font-size-100 { font-size: 100%; }
+     .report .colon-after:after { content: ":"; }
+     .report address { margin: 1rem 0; }
+     .report table.noborder td, .report table.noborder th { border: none; }
+     .report table.nopadding td { padding: 0; }
+     .report table td.label { padding-right: 0.3rem; font-weight: bold; }
+     .report table { border-color: black; }
+     .report table td, .report table th { border-top: 1px solid black; border-bottom: 1px solid black; }
+     .report table th { border-bottom: 1px solid black; }
+     .report table.range-table td { padding: 0 0.3rem 0 0; border: none; }
+     .report .section-header h1 { font-size: 175%; }
+     .report .section-header img.logo { height: 100px; margin: 20px 0; }
+     .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
+     .report .section-footer table td { border: none; }
+     .report .section-footer {
        position: fixed;
        left: -20mm;
-       bottom: 0;
-       margin-bottom: -8mm;
+       bottom: -20mm;
        margin-left: 20mm;
-       height: 8mm;
+       margin-top: 10mm;
+       height: 20mm;
+       width: 100%;
        text-align: left;
-       font-size: 8pt;
+       font-size: 9pt;
      }
+     .report .section-footer #footer-line {
+       width: 100%;
+       height: 2mm;
+       border-top: 1px solid black;
+     }
+
      <tal:block condition="python:content_width and content_height">
+     <tal:block condition="python:all([content_width, content_height])"
+                   define="cw python:float(content_width);
+                           ch python:float(content_height);">
      /* Ensure that the images stay within the borders */
-     .section-attachments img {
-       max-width: <tal:t replace="python:'%fmm' % float(content_width)"/>;
-       max-height: <tal:t replace="python:'%fmm' % (float(content_height) * 0.9)"/>;
+     .report .section-attachments img {
+       max-width: <tal:t replace="python:'{:.2f}mm'.format(cw / attachments_per_row)"/>;
+       max-height: <tal:t replace="python:'{:.2f}mm'.format(ch * 0.75)"/>;
      }
      </tal:block>
      @page {
        <tal:footer condition="footer_text">
          @bottom-left {
+           vertical-align: top;
+           margin-top: 2mm;
            font-size: 9pt;
            content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
          }
          @bottom-center {
+           vertical-align: top;
+           margin-top: 2mm;
            font-size: 9pt;
-           content: '<span tal:omit-tag="" tal:content="footer_text"/>';
+           content: '<span tal:omit-tag="" tal:content="python:footer_text"/>';
          }
        </tal:footer>
        @bottom-right {
+         vertical-align: top;
+         margin-top: 2mm;
          font-size: 9pt;
          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
        }
@@ -58,16 +119,29 @@
   <!-- HEADER -->
   <tal:render condition="python:True">
     <div class="row section-header no-gutters">
-      <div class="">
-        <div class="text-left">
-          <a tal:attributes="href view/portal_url">
-            <img style="max-height: 100px"
-                 tal:attributes="src python:view.get_resource_url('logo_print.png')"/>
-          </a>
-        </div>
+      <!-- Header Table -->
+      <div class="col-sm-12 mb-2">
+        <table class="w-100 mb-0 noborder">
+          <colgroup>
+            <col style="width:50%"/>
+            <col style="width:50%;"/>
+          </colgroup>
+          <tr>
+            <!-- Header Left -->
+            <td class="align-middle text-left">
+              <h1 i18n:translate="">Analysis Report</h1>
+            </td>
+            <!-- Header Right -->
+            <td class="align-middle text-right">
+              <img class="logo"
+                   tal:attributes="src python:view.get_resource_url('logo_print.png')"/>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </tal:render>
+  <!-- /HEADER -->
 
   <!-- INFO (First AR is primary for the data) -->
   <tal:render condition="python:len(collection)>0"
@@ -77,7 +151,7 @@
                       laboratory python:view.laboratory;">
 
     <div class="row section-info no-gutters">
-      <div class="">
+      <div class="col-sm-12">
         <!-- Client Info -->
         <table class="table table-sm table-condensed">
           <colgroup>
@@ -157,9 +231,11 @@
                                accreditation_logo laboratory/AccreditationBodyLogo"
                    tal:condition="accredited">
                 <img class="img-fluid"
+                     style="max-width:200px;"
                      tal:condition="accreditation_logo"
                      tal:attributes="src accreditation_logo/absolute_url"/>
                 <img class="img-fluid"
+                     style="max-width:200px;"
                      tal:condition="not:accreditation_logo"
                      tal:attributes="src python:view.get_resource_url('AccreditationBodyLogo.png', prefix='bika.lims.images' )"/>
               </div>
@@ -167,13 +243,17 @@
           </tr>
         </table>
       </div>
+      <!-- Clear Floats
+           https://github.com/Kozea/WeasyPrint/issues/36
+      -->
+      <div class="clearfix"></div>
     </div>
   </tal:render>
 
   <!-- ALERTS -->
   <tal:render condition="python:True">
     <div class="row section-alerts no-gutters">
-      <div class="">
+      <div class="mb-2">
         <tal:model repeat="model collection">
           <div class="alert alert-danger" tal:condition="model/is_invalid">
             <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
@@ -207,7 +287,7 @@
                       spec python:publication_specification or specification;">
 
     <div class="row section-summary no-gutters">
-      <div class="">
+      <div class="w-100">
 
         <!-- Barcode -->
         <div class="text-center float-right barcode-container">
@@ -307,7 +387,7 @@
     <tal:model repeat="model collection">
 
       <div class="row section-results no-gutters">
-        <div class="">
+        <div class="w-100">
           <h1 i18n:translate>Results for <span tal:replace="model/getId"/></h1>
 
           <!-- Point of Capture -->
@@ -416,9 +496,10 @@
   <tal:render condition="python:True">
     <tal:model repeat="model collection">
       <div class="row section-resultsinterpretation no-gutters"
-           tal:define="ris python:model.get_resultsinterpretation()"
+           tal:define="ris python:model.get_resultsinterpretation();
+                       has_ri python:any(map(lambda r: r.get('richtext'), ris));"
            tal:condition="ris">
-        <div class="" tal:condition="ris">
+        <div class="" tal:condition="has_ri">
           <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
           <tal:ri repeat="ri ris">
             <h2 tal:condition="ri/richtext|nothing" tal:content="ri/title|nothing">Department</h2>
@@ -460,61 +541,58 @@
               define="attachments_per_row python:2">
     <tal:model repeat="model collection">
       <tal:attachment tal:define="ar_attachments python:model.get_sorted_ar_attachments('r');
-                                  an_attachments python:model.get_sorted_an_attachments('r')"
-                      tal:condition="python: ar_attachments or an_attachments">
+                                  an_attachments python:model.get_sorted_an_attachments('r')">
 
-        <div class="section-attachments">
-          <h2 i18n:translate="">Attachments</h2>
+        <h1 i18n:translate=""
+            tal:condition="python:ar_attachments or an_attachments">
+          Attachments
+        </h1>
 
-          <!-- AR ATTACHMENTS -->
-          <div class="row section-attachments no-gutters" tal:condition="ar_attachments">
-            <div class="">
-              <table class="table">
-                <colgroup>
-                  <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
-                </colgroup>
-                <tr tal:repeat="chunk python:view.group_into_chunks(ar_attachments, attachments_per_row)">
-                  <td class="align-bottom"
-                      style="border:none;padding-left:0;"
-                      tal:repeat="attachment chunk">
-                    <img class="img-fluid"
-                         style="width:100%;"
-                         tal:attributes="src string:${attachment/absolute_url}/AttachmentFile"/>
-                    <div class="text-secondary">
-                      <span tal:content="attachment/AttachmentKeys"/>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
+        <!-- AR ATTACHMENTS -->
+        <div class="row section-attachments no-gutters" tal:condition="ar_attachments">
+          <div class="small">
+            <table class="table w-100">
+              <colgroup>
+                <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+              </colgroup>
+              <tr tal:repeat="chunk python:view.group_into_chunks(ar_attachments, attachments_per_row)">
+                <td class="align-bottom"
+                    style="border:none;padding-left:0;"
+                    tal:repeat="attachment chunk">
+                  <img class="img-fluid"
+                       tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;
+                              style python:len(ar_attachments)==1 and 'max-width:%.2fmm' % (float(content_width))"/>
+                  <div class="text-secondary">
+                    <span tal:content="attachment/AttachmentKeys"/>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
-          <!-- /AR ATTACHMENTS -->
+        </div>
 
-          <!-- AN ATTACHMENTS -->
-          <div class="row section-attachments no-gutters" tal:condition="an_attachments">
-            <div class="">
-              <table class="table">
-                <colgroup>
-                  <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
-                </colgroup>
-                <tr tal:repeat="chunk python:view.group_into_chunks(an_attachments, attachments_per_row)">
-                  <td class="align-bottom"
-                      style="border:none;padding-left:0;"
-                      tal:repeat="attachment chunk">
-                    <img class="img-fluid"
-                         style="width:100%;"
-                         tal:attributes="src python:attachment[1].absolute_url() + '/AttachmentFile'"/>
-                    <div class="text-secondary">
-                      <span tal:content="python:attachment[1].title"/>:
-                      <span tal:content="python:attachment[1].AttachmentKeys"/>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
+        <!-- AN ATTACHMENTS -->
+        <div class="row section-attachments no-gutters" tal:condition="an_attachments">
+          <div class="small">
+            <table class="table w-100">
+              <colgroup>
+                <col tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+              </colgroup>
+              <tr tal:repeat="chunk python:view.group_into_chunks(an_attachments, attachments_per_row)">
+                <td class="align-bottom"
+                    style="border:none;padding-left:0;"
+                    tal:repeat="attachment chunk">
+                  <img class="img-fluid"
+                       tal:attributes="src python:attachment[1].absolute_url() + '/AttachmentFile';
+                              style python:len(an_attachments)==1 and 'max-width:%.2fmm' % (float(content_width))"/>
+                  <div class="text-secondary">
+                    <span tal:content="python:attachment[1].getAnalysis().title"/>:
+                    <span tal:content="python:attachment[1].AttachmentKeys"/>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
-          <!-- /AN ATTACHMENTS -->
-
         </div>
       </tal:attachment>
     </tal:model>
@@ -618,7 +696,9 @@
   <tal:render condition="python: not view.get_footer_text()"
               define="laboratory python:view.laboratory;">
     <div class="row section-footer no-gutters">
-      <table class="">
+      <!-- Footer Line -->
+      <div id="footer-line"></div>
+      <table class="w-100">
         <tr>
           <td>
             <div>
