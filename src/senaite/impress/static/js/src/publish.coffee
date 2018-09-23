@@ -13,8 +13,8 @@ import OrientationSelection from "./components/OrientationSelection.js"
 import PaperFormatSelection from "./components/PaperFormatSelection.js"
 import Preview from "./components/Preview.js"
 import ReportHTML from "./components/ReportHTML.js"
-import TemplateSelection from "./components/TemplateSelection.js"
 import ReportOptions from "./components/ReportOptions.js"
+import TemplateSelection from "./components/TemplateSelection.js"
 
 
 # DOCUMENT READY ENTRY POINT
@@ -243,21 +243,16 @@ class PublishController extends React.Component
     name = target.name
     option =
       [name]: value
+    console.info "PublishController::handleChange: name=#{name} value=#{value}"
 
-    console.info("PublishController::handleChange: name=#{name} value=#{value}")
     if name not in @state
-      # put unknown keys into the report_options object
+      # Put unknown keys into the report_options object.
+      # These keys will be passed directly to the report in the `options` mapping
       option = @state.report_options
       option[name] = value
 
-    @setState option
-    , ->
-      if name == "template"
-        # reload HTML and Preview if the template changed
-        return @loadReports()
-      # N.B. we always render now the full reports, so that the template can
-      #      handle the changed dimensions of the paperformat and orientation
-      return @loadReports()
+    # Reload the whole report
+    @setState option, @loadReports
 
 
   isMultiReport: ->
