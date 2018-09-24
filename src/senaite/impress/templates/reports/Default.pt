@@ -32,8 +32,7 @@
                min="1"/>
       </div>
       <small class="form-text text-muted" i18n:translate="">
-        <div>Only attachments within one Analysis Request are affected by this setting.</div>
-        <div>Attachments coming from different Analysis Requests start always in a new row.</div>
+        Number of attachments rendered within one row per Analysis Request
       </small>
     </div>
   </div>
