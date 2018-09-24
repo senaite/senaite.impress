@@ -1,6 +1,7 @@
 1.0.3 (unreleased)
 ------------------
 
+- #42: Combine Attachments coming from Request and Analysis together for unified grouping/sorting
 - #41: Default reports update
 - #40: Customizable report options
 - #37: Added hyphenize and get_transition_date helper methods

@@ -216,11 +216,13 @@ class ReportView(Base):
         return results
 
     def group_into_chunks(self, items, chunk_size=1):
-        """Group items into chunks of the given sizesize
+        """Group items into chunks of the given size
         """
         if chunk_size > len(items):
             chunk_size = len(items)
-        return zip(*[iter(items)] * chunk_size)
+
+        for i in range(0, len(items), chunk_size):
+            yield items[i:i + chunk_size]
 
     def sort_items_by(self, key, items, reverse=False):
         """Sort the items (mappings with dict interface) by the given key

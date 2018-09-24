@@ -4,6 +4,8 @@
 #
 # Copyright 2018 by it's authors.
 
+import itertools
+
 from bika.lims.utils import format_supsub
 from bika.lims.utils import formatDecimalMark
 from bika.lims.utils import to_utf8
@@ -154,6 +156,15 @@ class SuperModel(BaseModel):
             out.append({"title": title, "richtext": richtext})
 
         return out
+
+    def get_sorted_attachments(self, option="r"):
+        """Return the sorted AR/AN Attachments with the given Report Option set
+        """
+        ar_attachments = self.Attachment
+        an_attachments = [a for a in itertools.chain(*map(
+            lambda an: an.Attachment, self.Analyses))]
+        attachments = ar_attachments + an_attachments
+        return self.sort_attachments(attachments)
 
     def get_sorted_ar_attachments(self, option="r"):
         """Return the sorted AR Attchments with the given Report Option set
