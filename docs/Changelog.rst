@@ -1,4 +1,4 @@
-1.0.3 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
 - #42: Combine Attachments coming from Request and Analysis together for unified grouping/sorting
