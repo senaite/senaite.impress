@@ -253,7 +253,7 @@
       <div class="w-100 mb-2">
         <div class="alert alert-danger" tal:condition="model/is_invalid">
           <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
-          <tal:invalidreport tal:define="child model/ChildAnalysisRequest"
+          <tal:invalidreport tal:define="child model/Retest"
                              tal:condition="child">
             <span i18n:translate="">This Analysis request has been replaced by</span>
             <a tal:attributes="href child/absolute_url"
