@@ -1,6 +1,7 @@
 1.1.0 (unreleased)
 ------------------
 
+- #44: Changed field ChildAnalysisRequest -> Retest
 - #42: Combine Attachments coming from Request and Analysis together for unified grouping/sorting
 - #41: Default reports update
 - #40: Customizable report options
