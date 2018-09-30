@@ -163,7 +163,8 @@ class SuperModel(BaseModel):
         ar_attachments = self.Attachment
         an_attachments = [a for a in itertools.chain(*map(
             lambda an: an.Attachment, self.Analyses))]
-        attachments = ar_attachments + an_attachments
+        attachments = filter(lambda a: a.getReportOption() == option,
+                             ar_attachments + an_attachments)
         return self.sort_attachments(attachments)
 
     def get_sorted_ar_attachments(self, option="r"):
