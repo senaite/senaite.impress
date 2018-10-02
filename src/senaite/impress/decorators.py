@@ -6,6 +6,8 @@
 
 import json
 import threading
+import time
+from functools import wraps
 
 from senaite import api
 from senaite.core.supermodel.interfaces import ISuperModel
@@ -77,3 +79,22 @@ def returns_super_model(func):
         return to_super_model(obj)
 
     return decorator
+
+
+def timeit(threshold=0):
+    """Decorator to log the execution time of a function
+    """
+
+    def inner(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            return_value = func(*args, **kwargs)
+            end = time.time()
+            duration = float(end-start)
+            if duration > threshold:
+                logger.info("Execution of '{}{}' took {:2f}s".format(
+                    func.__name__, args, duration))
+            return return_value
+        return wrapper
+    return inner
