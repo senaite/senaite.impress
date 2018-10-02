@@ -46,7 +46,7 @@
 
   <tal:css define="footer_text python:view.get_footer_text();">
     <style type="text/css">
-     .report * { font: 9pt Arial, Verdana, sans-serif; }
+     .report * { font: 9pt; }
      .report h1 { font-size: 140%; }
      .report h2 { font-size: 120%; }
      .report h3 { font-size: 110%; }
@@ -92,6 +92,10 @@
        max-width: <tal:t replace="python:'{:.2f}mm'.format(cw / attachments_per_row)"/>;
        max-height: <tal:t replace="python:'{:.2f}mm'.format(ch * 0.75)"/>;
      }
+     .report .section-resultsinterpretation img {
+       max-width: <tal:t replace="python:'{:.2f}mm'.format(cw)"/>;
+       max-height: <tal:t replace="python:'{:.2f}mm'.format(ch * 0.75)"/>;
+     }
      </tal:block>
      @page {
        <tal:footer condition="footer_text">
@@ -122,7 +126,7 @@
   <tal:render condition="python:True">
     <div class="row section-header no-gutters">
       <!-- Header Table -->
-      <div class="col-sm-12 mb-2">
+      <div class="w-100 mb-2">
         <table class="w-100 mb-0 noborder">
           <colgroup>
             <col style="width:50%"/>
@@ -148,7 +152,7 @@
   <!-- INFO -->
   <tal:render condition="python:True">
   <div class="row section-info no-gutters">
-    <div class="col-sm-12">
+    <div class="w-100">
       <!-- Client Info -->
       <table class="table table-sm table-condensed w-100">
         <colgroup>
@@ -530,14 +534,19 @@
                 tal:repeat="attachment chunk">
               <figure class="figure">
                 <img class="figure-img img-fluid"
-                      tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;
-                            style python:len(attachments)==1 and 'max-width:%.2fmm' % (float(content_width))"/>
+                     tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"/>
                 <figcaption class="figure-caption pt-2">
-                  <div i18n:translate="">
-                    Attachment for
-                    <span tal:replace="attachment/getTextTitle|model/getId"/>
+                  <div class="att_for">
+                    <span i18n:translate="">Attachment for</span>
+                    <span tal:content="attachment/getTextTitle|model/getId"/>
                   </div>
-                  <span tal:content="attachment/AttachmentKeys"/>
+                  <div class="att_keys">
+                    <span tal:content="attachment/AttachmentKeys"/>
+                  </div>
+                  <div class="att_filename">
+                    <span i18n:translate="">Filename:</span>
+                    <span tal:content="attachment/AttachmentFile/filename"/>
+                  </div>
                 </figcaption>
               </figure>
             </td>
