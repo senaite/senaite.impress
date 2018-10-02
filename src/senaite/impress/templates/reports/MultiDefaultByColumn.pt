@@ -1,6 +1,7 @@
 <tal:report
   i18n:domain="senaite.impress"
   define="collection python:view.collection;
+          laboratory view/laboratory;
           accredited_symbol string:★;
           outofrange_symbol string:⚠;
           report_options python:options.get('report_options', {});
