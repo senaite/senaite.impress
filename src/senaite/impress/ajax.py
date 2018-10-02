@@ -12,6 +12,7 @@ from senaite import api
 from senaite.core.supermodel import SuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
+from senaite.impress.decorators import timeit
 from senaite.impress.publishview import PublishView
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -185,6 +186,7 @@ class AjaxPublishView(PublishView):
 
         return "\n".join(htmls)
 
+    @timeit()
     def ajax_save_reports(self):
         """Render all reports as PDFs and store them as AR Reports
         """
@@ -280,6 +282,7 @@ class AjaxPublishView(PublishView):
         models = map(lambda uid: SuperModel(uid), uids)
         return map(lambda model: model.to_dict(), models)
 
+    @timeit()
     def ajax_load_preview(self):
         """Recalculate the HTML of one rendered report after all the embedded
         JavaScripts modified the report on the client side.
