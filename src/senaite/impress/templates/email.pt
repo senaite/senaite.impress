@@ -211,11 +211,11 @@
                i18n:attributes="value"
                tal:attributes="disabled python:not view.allow_send and 'disabled'"
                value="Send"/>
-        <input class="btn btn-danger btn-sm"
+        <input class="btn btn-secondary btn-sm"
                type="submit"
-               name="abort"
+               name="cancel"
                i18n:attributes="value"
-               value="Abort"/>
+               value="Cancel"/>
         <!-- /Email Form Controls -->
 
       </form>

@@ -59,7 +59,7 @@ class EmailView(BrowserView):
         self.context = context
         self.request = request
         self.url = self.context.absolute_url()
-        # the URL to redirect on abort or after send
+        # the URL to redirect on cancel or after send
         self.exit_url = "{}/{}".format(self.url, "reports_listing")
         # we need to transform the title to unicode, so that we can use it for
         self.client_name = safe_unicode(self.context.Title())
@@ -124,7 +124,7 @@ class EmailView(BrowserView):
 
         submitted = form.get("submitted", False)
         send = form.get("send", False)
-        abort = form.get("abort", False)
+        cancel = form.get("cancel", False)
 
         if submitted and send:
             logger.info("*** SENDING EMAIL ***")
@@ -213,9 +213,9 @@ class EmailView(BrowserView):
                 message = _("Failed to send Email(s)")
                 self.add_status_message(message, "error")
 
-        if submitted and abort:
-            logger.info("*** EMAIL ABORTED ***")
-            message = _("Email aborted")
+        if submitted and cancel:
+            logger.info("*** EMAIL CANCELLED ***")
+            message = _("Email cancelled")
             self.add_status_message(message, "info")
             return request.response.redirect(self.exit_url)
 
