@@ -42,9 +42,9 @@ list inside the `[buildout]` section of your `buildout.cfg`:
     parts =
         instance
     extends =
-        http://dist.plone.org/release/4.3.17/versions.cfg
+        http://dist.plone.org/release/4.3.18/versions.cfg
     find-links =
-        http://dist.plone.org/release/4.3.17
+        http://dist.plone.org/release/4.3.18
         http://dist.plone.org/thirdparty
     eggs =
         Plone
@@ -67,7 +67,7 @@ list inside the `[buildout]` section of your `buildout.cfg`:
     setuptools =
     zc.buildout =
 
-    
+
 **Note**
 
 The above example works for the buildout created by the unified installer. If
@@ -90,7 +90,7 @@ For the changes to take effect you need to re-run buildout from your console:
 
 The following versions are required for SENAITE IMPRESS:
 
-- Plone 4.3.17
+- Plone 4.3.18
 - senaite.core >= 1.2.7
 - senaite.lims >= 1.2.0
 - senaite.api >= 1.2.0

@@ -50,7 +50,6 @@ setup(
         "test": [
             "Products.PloneTestCase",
             "Products.SecureMailHost",
-            "plone.app.robotframework",
             "plone.app.testing",
             "unittest2",
         ]

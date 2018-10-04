@@ -1,4 +1,4 @@
-1.1.0 (unreleased)
+1.1.0 (2018-10-04)
 ------------------
 
 - #44: Changed field ChildAnalysisRequest -> Retest

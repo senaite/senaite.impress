@@ -348,8 +348,8 @@
                 <th></th>
                 <tal:ar repeat="model collection">
                   <th colspan="2" class="font-weight-normal text-center">
-                    <div class="text-primary"
-                         tal:content="model/getId"/>
+                    <div class="text-primary text-right"
+                         tal:content="model/Title"/>
                   </th>
                   <th></th>
                 </tal:ar>
@@ -375,16 +375,16 @@
                     <tal:analyses tal:define="analyses python:view.get_analyses_by(model, title=analysis_title);">
                       <tal:analysis tal:repeat="analysis analyses">
                         <td class="text-right">
-                          <span class="font-weight-light"
+                          <span class="font-weight-normal"
                                 tal:content="structure python:model.get_formatted_result(analysis)"/>
                         </td>
                         <td class="text-left">
-                          <span class="font-italic font-weight-light text-secondary text-nowrap"
+                          <span class="font-italic font-weight-normal text-secondary text-nowrap"
                                 tal:content="structure python:model.get_formatted_unit(analysis)"/>
                         </td>
                         <td class="text-left">
                           <span tal:condition="python:model.is_out_of_range(analysis)"
-                                class="font-weight-light">
+                                class="font-weight-normal">
                             <span class="outofrange text-danger"
                                   style="font-family:Lucida Console, Courier, monospace;"
                                   tal:content="outofrange_symbol">
@@ -547,7 +547,7 @@
   <tal:render condition="python:True"
               define="laboratory python:view.laboratory;">
     <div class="row section-discreeter no-gutters">
-      <div class="w-100 text-muted font-weight-light small">
+      <div class="w-100 text-muted font-weight-normal small">
         <div class="discreeter-outofrange">
           <span class="outofrange text-danger"
                 style="font-family:Lucida Console, Courier, monospace;"

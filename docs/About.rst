@@ -41,9 +41,9 @@ To install SENAITE IMPRESS, you have to add `senaite.impress` into the
    parts =
        instance
    extends =
-       http://dist.plone.org/release/4.3.17/versions.cfg
+       http://dist.plone.org/release/4.3.18/versions.cfg
    find-links =
-       http://dist.plone.org/release/4.3.17
+       http://dist.plone.org/release/4.3.18
        http://dist.plone.org/thirdparty
    eggs =
        Plone
@@ -90,8 +90,9 @@ Installation Requirements
 
 The following versions are required for SENAITE IMPRESS:
 
--  Plone 4.3.17
--  senaite.core >= 1.2.7
+-  Plone 4.3.18
+-  senaite.core >= 1.2.9
+-  senaite.core.supermodel >= 1.0.0
 -  senaite.lims >= 1.2.0
 -  senaite.api >= 1.2.0
 
