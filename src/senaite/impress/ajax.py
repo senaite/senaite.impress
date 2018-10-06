@@ -231,7 +231,8 @@ class AjaxPublishView(PublishView):
             reports = []
 
             # fetch the objects rendered in the report by their UID
-            for uid in uids:
+            # N.B. we use the reversed order to have the primary AR first
+            for uid in reversed(uids):
                 obj = api.get_object_by_uid(uid, None)
                 if obj is None:
                     logger.warn("!!!No object found for UID {}!!!".format(uid))
