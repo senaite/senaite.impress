@@ -447,7 +447,7 @@
                     <td class="specs">
                       <span tal:condition="analysis/Uncertainty"
                             tal:content="structure python:model.get_formatted_uncertainty(analysis)"></span>
-                      <span tal:content="python:'(RT)' if model.is_retested(analysis) else ''"></span>
+                      <span tal:content="python:'(RT)' if model.is_retest(analysis) else ''"></span>
                       <span tal:content="python:model.get_formatted_specs(analysis)">50 - 60</span>
                     </td>
                     <td class="text-center align-middle">

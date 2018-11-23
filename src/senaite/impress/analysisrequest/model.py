@@ -38,10 +38,10 @@ class SuperModel(BaseModel):
         from bika.lims.api.analysis import is_out_of_range
         return is_out_of_range(analysis.instance)[0]
 
-    def is_retested(self, analysis):
-        """Check if the analysis is retested
+    def is_retest(self, analysis):
+        """Check if the analysis is a retest
         """
-        return analysis.getRetested()
+        return analysis.isRetest()
 
     def get_workflow_by_id(self, wfid):
         """Returns a workflow by ID
