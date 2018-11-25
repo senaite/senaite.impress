@@ -1,6 +1,7 @@
 1.1.1 (unreleased)
 ------------------
 
+- #52: Use the most recent AR as the primary storage
 - #48: Fix PDF storage in primary AR when "Store Multi-Report PDFs Individually" option is turned off
 
 
