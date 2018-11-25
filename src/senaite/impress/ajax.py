@@ -6,6 +6,7 @@
 
 import inspect
 import json
+from operator import methodcaller
 
 from DateTime import DateTime
 from senaite import api
@@ -227,23 +228,21 @@ class AjaxPublishView(PublishView):
             pdf = publisher.write_pdf(report_node)
             # get contained AR UIDs in this report
             uids = filter(None, report_node.get("uids", "").split(","))
+            # get the AR objects
+            objs = map(api.get_object_by_uid, uids)
+            # sort the objects by created to have the most recent object first
+            # -> supersedes https://github.com/senaite/senaite.impress/pull/48
+            objs = sorted(objs, key=methodcaller("created"), reverse=True)
             # remember generated report objects
             reports = []
 
-            # fetch the objects rendered in the report by their UID
-            # N.B. we use the reversed order to have the primary AR first
-            for uid in reversed(uids):
-                obj = api.get_object_by_uid(uid, None)
-                if obj is None:
-                    logger.warn("!!!No object found for UID {}!!!".format(uid))
-                    continue
-
+            for obj in objs:
                 # TODO: refactor to adapter
                 # Create a report object which holds the generated PDF
                 title = "Report-{}".format(obj.getId())
                 report = api.create(obj, "ARReport", title=title)
                 report.edit(
-                    AnalysisRequest=uid,
+                    AnalysisRequest=api.get_uid(obj),
                     Pdf=pdf,
                     Html=publisher.to_html(report_node),
                     ContainedAnalysisRequests=uids,
