@@ -41,10 +41,11 @@ setup(
     install_requires=[
         "setuptools",
         "senaite.api>=1.2.0",
-        "senaite.core>=1.2.9",
-        "senaite.core.supermodel>=1.0.0",
+        "senaite.core>=1.3.0",
+        "senaite.core.supermodel>=1.1.0",
         "beautifulsoup4",
         "archetypes.schemaextender",
+        "WeasyPrint==0.42.3",
     ],
     extras_require={
         "test": [
