@@ -282,7 +282,6 @@
   <!-- SUMMARY (First AR is primary for the data) -->
   <tal:render condition="python:len(collection) > 0"
               define="model python:collection[0];
-                      sample model/Sample;
                       batch model/Batch;
                       client model/Client;
                       reporter python:view.current_user;
@@ -308,18 +307,10 @@
 
         <table class="table table-sm table-condensed">
           <tr>
-            <td style="width:20%" class="label" i18n:translate="">Request ID</td>
+            <td style="width:20%" class="label" i18n:translate="">Sample ID</td>
             <td>
               <a tal:content="model/getId"
                  tal:attributes="href model/absolute_url;">
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td class="label" i18n:translate="">Sample ID</td>
-            <td>
-              <a tal:content="sample/id"
-                 tal:attributes="href sample/absolute_url">
               </a>
             </td>
           </tr>
@@ -348,7 +339,7 @@
           </tr>
           <tr>
             <td class="label" i18n:translate="">Sample Type</td>
-            <td tal:content="sample/SampleType/title|nothing"></td>
+            <td tal:content="model/SampleType/title|nothing"></td>
           </tr>
           <tr>
             <td class="label" i18n:translate="">Specification</td>

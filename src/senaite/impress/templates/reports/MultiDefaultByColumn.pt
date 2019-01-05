@@ -149,8 +149,7 @@
 
   <!-- INFO -->
   <tal:render condition="python:len(collection)>0"
-              define="primarymodel python:collection[0];
-                      samples python:map(lambda m: m.Sample, collection);">
+              define="primarymodel python:collection[0];">
 
     <div class="row section-info no-gutters">
       <div class="w-100">
@@ -213,7 +212,7 @@
                 <tr>
                   <td class="label" i18n:translate="">Sample Type</td>
                   <td class="field">
-                    <tal:sampletype define="sampletypes python:map(lambda m: m.SampleTypeTitle, samples)"
+                    <tal:sampletype define="sampletypes python:map(lambda m: m.SampleTypeTitle, collection)"
                                     repeat="sampletype python:view.uniquify_items(sampletypes)">
                       <div tal:content="sampletype"/>
                     </tal:sampletype>
@@ -223,7 +222,7 @@
                 <tr>
                   <td class="label" i18n:translate="">Sample Point</td>
                   <td class="field">
-                    <tal:samplepoint define="samplepoints python:map(lambda m: m.SamplePointTitle, samples)"
+                    <tal:samplepoint define="samplepoints python:map(lambda m: m.SamplePointTitle, collection)"
                                      repeat="samplepoint python:view.uniquify_items(samplepoints)">
                       <div tal:content="samplepoint"/>
                     </tal:samplepoint>
