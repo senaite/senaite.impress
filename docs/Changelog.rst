@@ -1,4 +1,4 @@
-1.1.1 (unreleased)
+1.2.0 (unreleased)
 ------------------
 
 - #52: Use the most recent AR as the primary storage

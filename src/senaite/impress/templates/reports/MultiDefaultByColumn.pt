@@ -4,6 +4,7 @@
           laboratory view/laboratory;
           accredited_symbol string:★;
           outofrange_symbol string:⚠;
+          footer python:view.get_footer_text();
           report_options python:options.get('report_options', {});
           attachments_per_row python:int(report_options.get('attachments_per_row', 2));
           attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
@@ -42,7 +43,7 @@
    console.info("######################################################################");
   </script>
 
-  <tal:css define="footer_text python:view.get_footer_text();">
+  <tal:css>
     <style type="text/css">
      .report * { font: 9pt; }
      .report h1 { font-size: 140%; }
@@ -96,20 +97,6 @@
      }
      </tal:block>
      @page {
-       <tal:footer condition="footer_text">
-         @bottom-left {
-           vertical-align: top;
-           margin-top: 2mm;
-           font-size: 9pt;
-           content: '<span tal:omit-tag="" tal:content="laboratory/Name"/>';
-         }
-         @bottom-center {
-           vertical-align: top;
-           margin-top: 2mm;
-           font-size: 9pt;
-           content: '<span tal:omit-tag="" tal:content="python:footer_text"/>';
-         }
-       </tal:footer>
        @bottom-right {
          vertical-align: top;
          margin-top: 2mm;
@@ -589,8 +576,17 @@
     </div>
   </tal:render>
 
-  <!-- FOOTER -->
-  <tal:render condition="python: not view.get_footer_text()"
+  <!-- CUSTOM FOOTER -->
+  <tal:render condition="python:footer">
+    <div class="row section-footer no-gutters">
+      <!-- Footer Line -->
+      <div id="footer-line"></div>
+      <div tal:replace="structure footer"/>
+    </div>
+  </tal:render>
+
+  <!-- DEFAULT FOOTER -->
+  <tal:render condition="python:not footer"
               define="laboratory python:view.laboratory;">
     <div class="row section-footer no-gutters">
       <!-- Footer Line -->
