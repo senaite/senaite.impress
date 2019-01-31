@@ -9,6 +9,17 @@ from senaite.impress import logger
 PROFILE_ID = "profile-senaite.impress:default"
 
 
+def to_1200(portal_setup):
+    """Migration from version 1000 -> 1200
+
+    :param portal_setup: The portal_setup tool
+    """
+
+    logger.info("Run all import steps from SENAITE IMPRESS ...")
+    portal_setup.runAllImportStepsFromProfile(PROFILE_ID)
+    logger.info("Run all import steps from SENAITE IMPRESS [DONE]")
+
+
 def to_1000(portal_setup):
     """Initial version to 1000
 
