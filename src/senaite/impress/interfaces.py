@@ -13,6 +13,11 @@ class ILayer(IBikaLIMS):
     """
 
 
+class ISenaiteImpressLayer(ILayer):
+    """Senaite Impress Browser Layer Interface
+    """
+
+
 class IPublishView(Interface):
     """Publish View
     """
