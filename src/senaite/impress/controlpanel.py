@@ -49,13 +49,12 @@ class IImpressControlPanel(Interface):
         required=False,
     )
 
-    max_email_size = schema.Float(
-        title=_(u"Maximum Email Size in MB"),
-        description=_("Email sending will be disabled if the given limit is "
-                      "exceeded"),
-        default=10.0,
-        min=0.0,
-        required=True,
+    footer = schema.Text(
+        title=_(u"Footer Text"),
+        description=_("The footer text will be rendered on every PDF page "
+                      "and may contain arbitrary HTML"),
+        default=u"",
+        required=False,
     )
 
     developer_mode = schema.Bool(

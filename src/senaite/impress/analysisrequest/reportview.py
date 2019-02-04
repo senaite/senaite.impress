@@ -122,11 +122,7 @@ class ReportView(Base):
     def get_footer_text(self, escape=True):
         """Returns the footer text from the setup
         """
-        setup = self.setup
-        footer = setup.getResultFooter().decode("utf-8")
-        if escape:
-            return footer.replace("\r\n", "\A")
-        return footer
+        return api.get_registry_record("senaite.impress.footer")
 
     def get_analyses(self, model_or_collection):
         """Returns a flat list of all analyses for the given model or collection

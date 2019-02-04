@@ -3,8 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    publish: path.resolve(__dirname, './src/publish.coffee'),
-    email: path.resolve(__dirname, './src/email.coffee')
+    publish: path.resolve(__dirname, './src/publish.coffee')
   },
   output: {
     filename: 'senaite.impress.[name].js',

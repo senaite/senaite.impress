@@ -9,9 +9,6 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
-  <!-- Include extended Fields -->
-  <include package=".extender"/>
-
   <!-- Register Translations -->
   <i18n:registerTranslations directory="locales" />
 
@@ -88,33 +85,6 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".controlpanel.ImpressControlPanelView"
       permission="bika.lims.ManageBika"
-      layer="senaite.impress.interfaces.ILayer"
-      />
-
-  <!-- Reports listing view -->
-  <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="reports_listing"
-      class=".reports_listing.ReportsListingView"
-      permission="bika.lims.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
-      />
-
-  <!-- Email View -->
-  <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="email"
-      class=".emailview.EmailView"
-      permission="bika.lims.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
-      />
-
-  <!-- Download View for AR Reports (PDFs) -->
-  <browser:page
-      for="*"
-      name="download_pdf"
-      class=".downloadview.DownloadView"
-      permission="bika.lims.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />
 
