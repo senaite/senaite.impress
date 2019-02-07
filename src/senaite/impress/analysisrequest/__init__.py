@@ -2,4 +2,4 @@
 #
 # This file is part of SENAITE.IMPRESS
 #
-# Copyright 2018 by it's authors.
+# Copyright 2018-2019 by it's authors.
