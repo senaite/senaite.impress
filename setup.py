@@ -44,8 +44,9 @@ setup(
         "senaite.core>=1.3.0",
         "senaite.core.supermodel>=1.1.0",
         "beautifulsoup4",
-        "archetypes.schemaextender",
         "WeasyPrint==0.42.3",
+        "cairocffi<1.0.0",
+        "CairoSVG==1.0.20",
     ],
     extras_require={
         "test": [
