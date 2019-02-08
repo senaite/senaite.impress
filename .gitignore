@@ -98,14 +98,12 @@ ENV/
 /site
 
 # mypy
+.mr.developer.cfg
 .mypy_cache/
+bin
+eggs
 node_modules
 package-lock.json
-yarn.lock
+src/senaite.*
 yarn-error.log
-.mr.developer.cfg
-bin
-src/senaite.core
-src/senaite.api
-/src/senaite.lims/
-/src/senaite.core.supermodel/
+yarn.lock
