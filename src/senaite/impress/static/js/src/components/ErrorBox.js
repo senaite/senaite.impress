@@ -14,9 +14,9 @@ class ErrorBox extends React.Component {
     }
     return (
       <div id="error" className="alert alert-danger">
-	<h4 className="alert-heading">Ooops, an error occured</h4>
-	<hr/>
-        <code>{this.props.error}</code>
+        <h4 className="alert-heading">Ooops, an error occured</h4>
+        <hr/>
+        <pre>{this.props.error}</pre>
       </div>
     );
   }
