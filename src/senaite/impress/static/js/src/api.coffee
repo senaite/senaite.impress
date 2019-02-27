@@ -93,7 +93,11 @@ class PublishAPI
     console.info "PublishAPI::fetch:endpoint=#{endpoint} init=",init
     request = new Request(url, init)
     return fetch(request).then (response) ->
-      return response.json()
+      if response.status isnt 200
+        return response.json().then (json) ->
+          throw new Error(json.error or "Unknown Error")
+      else
+        return response.json()
 
 
   render_reports: (data) ->

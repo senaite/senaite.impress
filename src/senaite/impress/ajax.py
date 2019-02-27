@@ -62,7 +62,12 @@ class AjaxPublishView(PublishView):
         if len(args) < len(required_args):
             return self.fail("Wrong signature, please use '{}/{}'"
                              .format(func_arg, "/".join(required_args)), 400)
-        return func(*args)
+
+        try:
+            return func(*args)
+        except Exception as exc:
+            self.request.response.setStatus(500)
+            return {"error": str(exc)}
 
     def get_json(self):
         """Extracts the JSON from the request
