@@ -30,7 +30,7 @@
       for="*"
       name="printview"
       class="senaite.impress.publishview.PublishView"
-      permission="bika.lims.ManageAnalysisRequests"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />
 
@@ -39,7 +39,7 @@
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="bika.lims.ManageAnalysisRequests"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />
 
@@ -48,7 +48,7 @@
       for="bika.lims.interfaces.IClient"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="bika.lims.ManageAnalysisRequests"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />
 
@@ -57,7 +57,7 @@
       for="bika.lims.interfaces.IAnalysisRequest"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="bika.lims.ManageAnalysisRequests"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />
 
@@ -66,7 +66,7 @@
       for="bika.lims.interfaces.IBatch"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="bika.lims.ManageAnalysisRequests"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
       layer="senaite.impress.interfaces.ILayer"
       />
 
@@ -84,7 +84,7 @@
       name="impress-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".controlpanel.ImpressControlPanelView"
-      permission="bika.lims.ManageBika"
+      permission="senaite.core.permissions.ManageBika"
       layer="senaite.impress.interfaces.ILayer"
       />
 

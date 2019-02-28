@@ -14,7 +14,7 @@
       visible="True"
       i18n:domain="senaite.impress"
       i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
   </configlet>
 
 </object>
