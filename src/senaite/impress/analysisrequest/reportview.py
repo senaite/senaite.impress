@@ -134,7 +134,7 @@ class ReportView(Base):
     def get_analyses_by(self, model_or_collection,
                         title=None, service_title=None,
                         poc=None, category=None,
-                        hidden=False, retracted=False):
+                        hidden=False, retracted=False, rejected=False):
         """Returns a sorted list of Analyses for the given POC which are in the
         given Category
         """
@@ -157,6 +157,10 @@ class ReportView(Base):
             def is_not_retracted(analysis):
                 return analysis.review_state != "retracted"
             analyses = filter(is_not_retracted, analyses)
+        if not rejected:
+            def is_not_rejected(analysis):
+                return analysis.review_state != "rejected"
+            analyses = filter(is_not_rejected, analyses)
         return self.sort_items(analyses)
 
     def get_analyses_by_poc(self, model_or_collection):
