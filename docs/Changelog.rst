@@ -1,6 +1,7 @@
 1.2.0 (unreleased)
 ------------------
 
+- #64: Fix Rejected AS are shown in the PDF Report
 - #62: Better error message handling
 - #57: SENAITE CORE integration
 - #52: Use the most recent AR as the primary storage
