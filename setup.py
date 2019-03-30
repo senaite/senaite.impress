@@ -40,13 +40,14 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
-        "senaite.api>=1.2.0",
-        "senaite.core>=1.3.0",
-        "senaite.core.supermodel>=1.1.0",
+        "senaite.lims>=1.3.0",
         "beautifulsoup4",
-        "WeasyPrint==0.42.3",
         "cairocffi<1.0.0",
         "CairoSVG==1.0.20",
+        # Python 2.x is not supported by WeasyPrint v43
+        'WeasyPrint==0.42.3',
+        # tinycss2 >= 1.0.0 does not support Python 2.x anymore
+        'tinycss2<1.0.0',
     ],
     extras_require={
         "test": [
