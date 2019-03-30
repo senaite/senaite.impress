@@ -1,4 +1,4 @@
-1.2.0 (unreleased)
+1.2.0 (2019-03-30)
 ------------------
 
 - #64: Fix Rejected AS are shown in the PDF Report
