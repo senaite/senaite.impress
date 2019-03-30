@@ -17,6 +17,9 @@
     <a href="#">
       <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="pr" />
     </a>
+    <a href="https://www.senaite.com">
+      <img src="https://img.shields.io/badge/Made%20for%20SENAITE-%E2%AC%A1-lightgrey.svg" alt="Made for SENAITE" />
+    </a>
   </div>
 </div>
 
@@ -57,7 +60,7 @@ list inside the `[buildout]` section of your `buildout.cfg`:
     [instance]
     recipe = plone.recipe.zope2instance
     user = admin:admin
-    http-address = 0.0.0.0:8080
+    http-address = 127.0.0.1:8080
     eggs =
         ${buildout:eggs}
     zcml =
@@ -91,9 +94,7 @@ For the changes to take effect you need to re-run buildout from your console:
 The following versions are required for SENAITE IMPRESS:
 
 - Plone 4.3.18
-- senaite.core >= 1.2.7
-- senaite.lims >= 1.2.0
-- senaite.api >= 1.2.0
+- senaite.lims >= 1.3.0
 
 
 ### Activate the Add-on

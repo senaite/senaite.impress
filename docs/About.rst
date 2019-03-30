@@ -1,9 +1,11 @@
-.. image:: https://raw.githubusercontent.com/senaite/senaite.impress/master/static/impress-logo.png
+.. image:: https://raw.githubusercontent.com/senaite/senaite.impress/master/static/logo_pypi.png
+   :target: https://github.com/senaite/senaite.impress#readme
    :alt: senaite.impress
    :height: 64
-   :align: center
+   :height: 128
 
-- **SENAITE.IMPRESS**: *Publication of HTML/PDF Reports in SENAITE*
+*Publication of HTML/PDF Reports in SENAITE*
+============================================
 
 .. image:: https://img.shields.io/pypi/v/senaite.impress.svg?style=flat-square
    :target: https://pypi.python.org/pypi/senaite.impress
@@ -16,6 +18,12 @@
 
 .. image:: https://img.shields.io/badge/README-GitHub-blue.svg?style=flat-square
    :target: https://github.com/senaite/senaite.impress#readme
+
+.. image:: https://img.shields.io/badge/Built%20with-%E2%9D%A4-red.svg
+   :target: https://github.com/senaite/senaite.impress
+
+.. image:: https://img.shields.io/badge/Made%20for%20SENAITE-%E2%AC%A1-lightgrey.svg
+   :target: https://www.senaite.com
 
 
 About
@@ -56,7 +64,7 @@ To install SENAITE IMPRESS, you have to add `senaite.impress` into the
    [instance]
    recipe = plone.recipe.zope2instance
    user = admin:admin
-   http-address = 0.0.0.0:8080
+   http-address = 127.0.0.1:8080
    eggs =
        ${buildout:eggs}
    zcml =
@@ -91,10 +99,7 @@ Installation Requirements
 The following versions are required for SENAITE IMPRESS:
 
 -  Plone 4.3.18
--  senaite.core >= 1.2.9
--  senaite.core.supermodel >= 1.0.0
--  senaite.lims >= 1.2.0
--  senaite.api >= 1.2.0
+-  senaite.lims >= 1.3.0
 
 
 .. _Plone 4: https://docs.plone.org/4/en/manage/installing/index.html
