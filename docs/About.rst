@@ -1,7 +1,6 @@
 .. image:: https://raw.githubusercontent.com/senaite/senaite.impress/master/static/logo_pypi.png
    :target: https://github.com/senaite/senaite.impress#readme
    :alt: senaite.impress
-   :height: 64
    :height: 128
 
 *Publication of HTML/PDF Reports in SENAITE*
