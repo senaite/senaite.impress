@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-02-07 21:49+0000\n"
+"POT-Creation-Date: 2019-03-30 09:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,19 +116,19 @@ msgstr ""
 msgid "Date Verified"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:36
+#: senaite/impress/controlpanel.py:50
 msgid "Default Orientation"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:28
+#: senaite/impress/controlpanel.py:42
 msgid "Default Paper Format"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:20
+#: senaite/impress/controlpanel.py:34
 msgid "Default Template"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:61
+#: senaite/impress/controlpanel.py:75
 msgid "Developer Mode"
 msgstr ""
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "Filename:"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:53
+#: senaite/impress/controlpanel.py:67
 msgid "Footer Text"
 msgstr ""
 
@@ -165,15 +165,15 @@ msgstr ""
 msgid "Impress Settings"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:37
+#: senaite/impress/controlpanel.py:51
 msgid "Initially loaded orientation"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:29
+#: senaite/impress/controlpanel.py:43
 msgid "Initially loaded paper format"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:21
+#: senaite/impress/controlpanel.py:35
 msgid "Initially loaded report template"
 msgstr ""
 
@@ -262,7 +262,7 @@ msgstr ""
 msgid "Results interpretation"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:62
+#: senaite/impress/controlpanel.py:76
 msgid "Returns the raw HTML in the report preview."
 msgstr ""
 
@@ -271,7 +271,7 @@ msgstr ""
 msgid "SENAITE IMPRESS"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:71
+#: senaite/impress/controlpanel.py:85
 msgid "SENAITE IMPRESS Settings"
 msgstr ""
 
@@ -303,11 +303,11 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:44
+#: senaite/impress/controlpanel.py:58
 msgid "Store Multi-Report PDFs Individually"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:45
+#: senaite/impress/controlpanel.py:59
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
 msgstr ""
 
@@ -328,7 +328,7 @@ msgstr ""
 msgid "Test results are at a ${lab_confidence}% confidence level"
 msgstr ""
 
-#: senaite/impress/controlpanel.py:54
+#: senaite/impress/controlpanel.py:68
 msgid "The footer text will be rendered on every PDF page and may contain arbitrary HTML"
 msgstr ""
 

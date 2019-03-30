@@ -2,15 +2,15 @@
 # SOME DESCRIPTIVE TITLE.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Translators:
-# Pau Soliva <psoliva@naralabs.com>, 2018
 # Jordi Puiggené <jpuiggene@naralabs.com>, 2018
+# Pau Soliva <psoliva@naralabs.com>, 2019
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-02-07 21:49+0000\n"
+"POT-Creation-Date: 2019-03-30 09:49+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
-"Last-Translator: Jordi Puiggené <jpuiggene@naralabs.com>, 2018\n"
+"Last-Translator: Pau Soliva <psoliva@naralabs.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/senaite/teams/87187/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,19 +124,19 @@ msgstr "Fecha de recepción"
 msgid "Date Verified"
 msgstr "Fecha de verificación"
 
-#: senaite/impress/controlpanel.py:36
+#: senaite/impress/controlpanel.py:50
 msgid "Default Orientation"
 msgstr "Orientación predeterminada"
 
-#: senaite/impress/controlpanel.py:28
+#: senaite/impress/controlpanel.py:42
 msgid "Default Paper Format"
 msgstr "Formato de papel predeterminado"
 
-#: senaite/impress/controlpanel.py:20
+#: senaite/impress/controlpanel.py:34
 msgid "Default Template"
 msgstr "Plantilla predeterminada"
 
-#: senaite/impress/controlpanel.py:61
+#: senaite/impress/controlpanel.py:75
 msgid "Developer Mode"
 msgstr "Modo para desarrollo"
 
@@ -152,9 +152,9 @@ msgstr "Fax"
 msgid "Filename:"
 msgstr "Fichero: "
 
-#: senaite/impress/controlpanel.py:53
+#: senaite/impress/controlpanel.py:67
 msgid "Footer Text"
-msgstr ""
+msgstr "Texto de pie de página"
 
 #: senaite/impress/configure.zcml:156
 msgid "HTML to PDF report engine for SENAITE"
@@ -173,15 +173,15 @@ msgstr "Panel de control de Impress"
 msgid "Impress Settings"
 msgstr "Ajustes de Impress"
 
-#: senaite/impress/controlpanel.py:37
+#: senaite/impress/controlpanel.py:51
 msgid "Initially loaded orientation"
 msgstr "Orientación por defecto "
 
-#: senaite/impress/controlpanel.py:29
+#: senaite/impress/controlpanel.py:43
 msgid "Initially loaded paper format"
 msgstr "Formato de página por defecto "
 
-#: senaite/impress/controlpanel.py:21
+#: senaite/impress/controlpanel.py:35
 msgid "Initially loaded report template"
 msgstr "Plantilla de informe por defecto"
 
@@ -270,7 +270,7 @@ msgstr "Resultados"
 msgid "Results interpretation"
 msgstr "Interpretación de resultados"
 
-#: senaite/impress/controlpanel.py:62
+#: senaite/impress/controlpanel.py:76
 msgid "Returns the raw HTML in the report preview."
 msgstr "Muestra el HTML en crudo en la vista de previsualización"
 
@@ -279,7 +279,7 @@ msgstr "Muestra el HTML en crudo en la vista de previsualización"
 msgid "SENAITE IMPRESS"
 msgstr "SENAITE IMPRESS"
 
-#: senaite/impress/controlpanel.py:71
+#: senaite/impress/controlpanel.py:85
 msgid "SENAITE IMPRESS Settings"
 msgstr "Configuración de SENAITE IMPRESS"
 
@@ -311,11 +311,11 @@ msgstr "Especificaciones"
 msgid "State"
 msgstr "Estado"
 
-#: senaite/impress/controlpanel.py:44
+#: senaite/impress/controlpanel.py:58
 msgid "Store Multi-Report PDFs Individually"
 msgstr "Guardar los PDFs de informes múltiples de resultados de forma individual"
 
-#: senaite/impress/controlpanel.py:45
+#: senaite/impress/controlpanel.py:59
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
 msgstr "Guardar los PDFs de informes múltiples de resultados de forma individual. Desactive si desea guardar los informes múltiples de resultados solo para el primer cliente del informe."
 
@@ -336,9 +336,9 @@ msgstr "Supervisor"
 msgid "Test results are at a ${lab_confidence}% confidence level"
 msgstr "Los resultados se expresan con un ${lab_confidence}% de nivel de confidencia"
 
-#: senaite/impress/controlpanel.py:54
+#: senaite/impress/controlpanel.py:68
 msgid "The footer text will be rendered on every PDF page and may contain arbitrary HTML"
-msgstr ""
+msgstr "El texto del pie de página se generará en cada página del PDF y puede contener código HTML."
 
 #: senaite/impress/templates/reports/Default.pt:246
 #: senaite/impress/templates/reports/MultiDefault.pt:251
