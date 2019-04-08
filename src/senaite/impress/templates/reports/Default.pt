@@ -623,10 +623,6 @@
              tal:condition="confidence_level" i18n:translate="">
           Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
         </div>
-        <div class="discreeter-linkage"
-             tal:condition="python:contact and contact.PublicationPreference != '' and 'email' in contact.PublicationPreference" i18n:translate="">
-          Methods of analysis available by clicking on the 'Request' link
-        </div>
       </div>
     </div>
   </tal:render>

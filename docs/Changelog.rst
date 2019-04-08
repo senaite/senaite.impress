@@ -1,3 +1,8 @@
+1.2.1 (unreleased)
+------------------
+
+- #66: Fix Publication Preference Traceback with Default template
+
 1.2.0 (2019-03-30)
 ------------------
 
