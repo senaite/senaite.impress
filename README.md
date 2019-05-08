@@ -438,7 +438,7 @@ is **not** the recommended way, because with future updates of
 
 Therefore it is recommended to create a new
 [SENAITE Add-On Package](https://docs.plone.org/4/en/develop/addons/schema-driven-forms/creating-a-simple-form/creating-a-package.html)
-and put the custom reports in there.
+and put the custom reports in there. Note that the naming of the report template is important if you are customising a multi-sample report - you MUST start or end the template name with the word 'multi'.
 
 In your new package `configure.zcml` you have to specify the folder where your reports live:
 
