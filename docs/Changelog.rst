@@ -2,6 +2,7 @@
 ------------------
 
 - #66: Fix Publication Preference Traceback with Default template
+- #68: Fix empty Date Published on Default report
 
 1.2.0 (2019-03-30)
 ------------------
