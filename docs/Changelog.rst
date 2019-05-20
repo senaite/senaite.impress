@@ -1,6 +1,7 @@
 1.2.1 (unreleased)
 ------------------
 
+- #71: Implemented storage adapter
 - #66: Fix Publication Preference Traceback with Default template
 - #68: Fix empty Date Published on Default report
 
