@@ -18,6 +18,12 @@ class StorageAdapter(object):
 
     def get_primary_report(self, objs):
         """Get the primary report
+
+        TODO: It would be better to provide a radio selection in the publish
+        view to let the user select the primary report when the option
+        "store_individually" is deselected.
+
+        Also see here: https://github.com/senaite/senaite.impress/issues/58
         """
         # sort the objects by created to have the most recent object first
         objs = sorted(objs, key=methodcaller("created"))
@@ -46,7 +52,7 @@ class StorageAdapter(object):
         objs = map(api.get_object_by_uid, uids)
 
         # handle primary object storage
-        if self.store_multireports_individually():
+        if not self.store_multireports_individually():
             # reduce the list to the primary object only
             objs = [self.get_primary_report(objs)]
 
