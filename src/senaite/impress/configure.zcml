@@ -133,6 +133,13 @@
       component="senaite.impress.vocabularies.OrientationVocabularyFactory"
       />
 
+  <!-- Storage Adapter -->
+  <adapter
+      for="zope.interface.Interface
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      factory=".storage.StorageAdapter"
+      permission="zope2.View"/>
+
   <!-- Report resource directory -->
   <plone:static
       directory="templates/reports"
