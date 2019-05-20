@@ -26,7 +26,7 @@ class StorageAdapter(object):
         Also see here: https://github.com/senaite/senaite.impress/issues/58
         """
         # sort the objects by created to have the most recent object first
-        objs = sorted(objs, key=methodcaller("created"))
+        objs = sorted(objs, key=methodcaller("created"), reverse=True)
         return objs[0]
 
     def store_multireports_individually(self):
