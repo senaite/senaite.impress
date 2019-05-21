@@ -493,7 +493,7 @@ class IMyLIMSLayer(IBikaLIMS, ISenaiteLIMS, ISenaiteIMPRESS):
     """
 ```
 
-And a `browserlayer.xml`:
+And a `profiles/default/browserlayer.xml`:
 ```xml
 <layers>
   <layer name="my.lims"
@@ -513,7 +513,9 @@ class MyMultiReportView(MultiReportView):
     def __init__(self, collection, request):
         logger.info("MyMultiReportView::__init__:collection={}"
                     .format(collection))
-        super(MyMultiReportView, self).__init__(collection, re
+        super(MultiReportView, self).__init__(collection, request)
+        self.collection = collection
+        self.request = request
 ```
 
 ### Further Reading
