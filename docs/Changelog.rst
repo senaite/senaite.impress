@@ -1,6 +1,7 @@
 1.2.1 (unreleased)
 ------------------
 
+- Extend README wrt 'Reports in external packages'
 - #66: Fix Publication Preference Traceback with Default template
 - #68: Fix empty Date Published on Default report
 
