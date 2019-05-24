@@ -20,15 +20,17 @@
 
 import inspect
 import json
-from operator import methodcaller
 
+from bika.lims import _
+from bika.lims import api
 from DateTime import DateTime
-from senaite import api
 from senaite.core.supermodel import SuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.decorators import timeit
+from senaite.impress.interfaces import IPdfReportStorage
 from senaite.impress.publishview import PublishView
+from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 
@@ -82,6 +84,11 @@ class AjaxPublishView(PublishView):
         except Exception as exc:
             self.request.response.setStatus(500)
             return {"error": str(exc)}
+
+    def add_status_message(self, message, level="info"):
+        """Set a portal status message
+        """
+        return self.context.plone_utils.addPortalMessage(message, level)
 
     def get_json(self):
         """Extracts the JSON from the request
@@ -215,82 +222,114 @@ class AjaxPublishView(PublishView):
 
         # This is the html after it was rendered by the client browser and
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
-        # N.B. It might also contain multiple reports!
+        # NOTE: It might also contain multiple reports!
         html = data.get("html")
 
-        # Metadata
-        paperformat = data.get("format")
+        # get the triggered action (Save|Email)
+        action = data.get("action", "save")
+
+        # get the selected template
         template = data.get("template")
+
+        # get the selected paperformat
+        paperformat = data.get("format")
+
+        # get the selected orientation
         orientation = data.get("orientation", "portrait")
-        timestamp = DateTime().ISO8601()
-        is_multi_template = self.is_multi_template(template)
-        store_individually = self.store_multireports_individually()
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
             paperformat=paperformat, orientation=orientation)
         logger.info(u"Print CSS: {}".format(css))
 
-        # get an publisher instance
+        # get the publisher instance
         publisher = self.publisher
         # add the generated CSS to the publisher
         publisher.add_inline_css(css)
 
-        # TODO: Refactor code below to be not AR specific
+        # split the html per report
+        # NOTE: each report is an instance of <bs4.Tag>
+        html_reports = publisher.parse_reports(html)
 
-        # remember the values of the last iteration for the exit url
-        client_url = None
-        report_uids = None
+        # generate a PDF for each HTML report
+        pdf_reports = map(publisher.write_pdf, html_reports)
 
-        for report_node in publisher.parse_reports(html):
-            # generate the PDF
-            pdf = publisher.write_pdf(report_node)
-            # get contained AR UIDs in this report
-            uids = filter(None, report_node.get("uids", "").split(","))
-            # get the AR objects
-            objs = map(api.get_object_by_uid, uids)
-            # sort the objects by created to have the most recent object first
-            # -> supersedes https://github.com/senaite/senaite.impress/pull/48
-            objs = sorted(objs, key=methodcaller("created"), reverse=True)
-            # remember generated report objects
-            reports = []
+        # extract the UIDs of each HTML report
+        # NOTE: UIDs are injected in `.analysisrequest.reportview.render`
+        report_uids = map(
+            lambda report: report.get("uids", "").split(","), html_reports)
 
-            for obj in objs:
-                # TODO: refactor to adapter
-                # Create a report object which holds the generated PDF
-                title = "Report-{}".format(obj.getId())
-                report = api.create(obj, "ARReport", title=title)
-                report.edit(
-                    AnalysisRequest=api.get_uid(obj),
-                    Pdf=pdf,
-                    Html=publisher.to_html(report_node),
-                    ContainedAnalysisRequests=uids,
-                    Metadata={
-                        "template": template,
-                        "paperformat": paperformat,
-                        "orientation": orientation,
-                        "timestamp": timestamp,
-                        "contained_requests": uids,
-                    })
-                reports.append(report)
-                client_url = api.get_url(obj.getClient())
+        # prepare some metadata
+        metadata = {
+            "template": template,
+            "paperformat": paperformat,
+            "orientation": orientation,
+            "timestamp": DateTime().ISO8601(),
+        }
 
-                # generate report only for the primary object
-                if is_multi_template and not store_individually:
-                    break
+        # get the storage multi-adapter to save the generated PDFs
+        storage = getMultiAdapter(
+            (self.context, self.request), IPdfReportStorage)
 
-            # remember the generated report UIDs for this iteration
-            report_uids = map(api.get_uid, reports)
+        report_groups = []
+        for pdf, html, uids in zip(pdf_reports, html_reports, report_uids):
+            # ensure we have valid UIDs here
+            uids = filter(api.is_uid, uids)
+            # convert the bs4.Tag back to pure HTML
+            html = publisher.to_html(html)
+            # BBB: inject contained UIDs into metadata
+            metadata["contained_requests"] = uids
+            # store the report(s)
+            objs = storage.store(pdf, html, uids, metadata=metadata)
+            # append the generated reports to the list
+            report_groups.append(objs)
 
-        # This is the clicked button name from the ReactJS component
-        action = data.get("action", "save")
+        # NOTE: The reports might be stored in multiple places (clients),
+        #       which makes it difficult to redirect to a single exit URL
+        #       based on the action the users clicked (save/email)
+        exit_urls = map(lambda reports: self.get_exit_url_for(
+            reports, action=action), report_groups)
 
+        if not exit_urls:
+            return api.get_url(self.context)
+
+        return exit_urls[0]
+
+    def get_exit_url_for(self, reports, action="save"):
+        """Handle the response for the generated reports
+
+        This method determines based on the generated reports where the browser
+        should redirect the user and what status message to display.
+
+        :param reports: List of report objects
+        :returns: A single redirect URL
+        """
+
+        # view endpoint
+        endpoint = action == "email" and "email" or "reports_listing"
+
+        # get the report uids
+        clients = []
+        report_uids = []
+        parent_titles = []
+
+        for report in reports:
+            parent = api.get_parent(report)
+            if hasattr(parent, "getClient"):
+                clients.append(parent.getClient())
+            report_uids.append(api.get_uid(report))
+            parent_titles.append(api.get_title(parent))
+
+        # generate status message
+        message = _("Generated reports for: {}".format(
+            ", ".join(parent_titles)))
+        self.add_status_message(message, level="info")
+
+        # generate exit URL
         exit_url = self.context.absolute_url()
-        if all([client_url, report_uids]):
-            endpoint = "reports_listing"
-            if action == "email":
-                endpoint = "email?uids={}".format(",".join(report_uids))
-            exit_url = "{}/{}".format(client_url, endpoint)
+        if clients:
+            exit_url = "{}/{}?uids={}".format(
+                api.get_url(clients[0]), endpoint, ",".join(report_uids))
 
         return exit_url
 

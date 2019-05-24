@@ -55,3 +55,13 @@ class IPublisher(Interface):
 class ITemplateFinder(Interface):
     """Utility to find template resources
     """
+
+
+class IPdfReportStorage(Interface):
+    """Storage adapter for report PDFs
+    """
+
+    def store(pdf, html, uids, metadata):
+        """Stores the generated PDF for the given UIDs in a location and
+        returns a list of generated report objects.
+        """
