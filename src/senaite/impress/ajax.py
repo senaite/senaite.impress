@@ -28,7 +28,7 @@ from senaite.core.supermodel import SuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.decorators import timeit
-from senaite.impress.interfaces import IStorage
+from senaite.impress.interfaces import IPdfReportStorage
 from senaite.impress.publishview import PublishView
 from zope.component import getMultiAdapter
 from zope.interface import implements
@@ -268,7 +268,8 @@ class AjaxPublishView(PublishView):
         }
 
         # get the storage multi-adapter to save the generated PDFs
-        storage = getMultiAdapter((self.context, self.request), IStorage)
+        storage = getMultiAdapter(
+            (self.context, self.request), IPdfReportStorage)
 
         report_groups = []
         for pdf, html, uids in zip(pdf_reports, html_reports, report_uids):

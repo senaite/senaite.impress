@@ -3,14 +3,14 @@
 from operator import methodcaller
 
 from bika.lims import api
-from senaite.impress.interfaces import IStorage
+from senaite.impress.interfaces import IPdfReportStorage
 from zope.interface import implements
 
 
-class StorageAdapter(object):
+class PdfReportStorageAdapter(object):
     """Storage adapter for PDF reports
     """
-    implements(IStorage)
+    implements(IPdfReportStorage)
 
     def __init__(self, context, request):
         self.context = context

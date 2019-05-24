@@ -57,7 +57,7 @@ class ITemplateFinder(Interface):
     """
 
 
-class IStorage(Interface):
+class IPdfReportStorage(Interface):
     """Storage adapter for report PDFs
     """
 
