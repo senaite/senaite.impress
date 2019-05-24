@@ -458,6 +458,66 @@ In your new package `configure.zcml` you have to specify the folder where your r
 This will integrate the `reports` directory within your package into the search path of `senaite.impress`.
 
 
+One can define your own reportview for your custom reports.
+Add this in your add-on's `configure.zcml`:
+
+```xml
+  <!-- View for Single Reports -->
+  <adapter
+      for="zope.interface.Interface
+           my.lims.interfaces.IMyLIMS"
+      name="AnalysisRequest"
+      factory=".reportview.MySingleReportView"
+      provides="senaite.impress.interfaces.IReportView"
+      permission="zope2.View"/>
+
+  <!-- View for Multi Reports -->
+  <adapter
+      for="zope.interface.Interface
+           my.lims.interfaces.IMyLIMSLayer"
+      name="AnalysisRequest"
+      factory=".reportview.MyMultiReportView"
+      provides="senaite.impress.interfaces.IMultiReportView"
+      permission="zope2.View"/>
+```
+
+And `interfaces.py`:
+```
+from bika.lims.interfaces import IBikaLIMS
+from senaite.impress.interfaces import ILayer as ISenaiteIMPRESS
+from senaite.lims.interfaces import ISenaiteLIMS
+
+
+class IMyLIMSLayer(IBikaLIMS, ISenaiteLIMS, ISenaiteIMPRESS):
+    """Marker interface that defines a Zope 3 browser layer.
+    """
+```
+
+And a `profiles/default/browserlayer.xml`:
+```xml
+<layers>
+  <layer name="my.lims"
+         interface="my.lims.interfaces.IMyLIMSLayer" />
+</layers>
+```
+
+And create your own reportview.py module:
+
+```xml
+from senaite.impress.analysisrequest.reportview import MultiReportView
+
+class MyMultiReportView(MultiReportView):
+    """My specific controller view for multi-reports
+    """
+
+    def __init__(self, collection, request):
+        logger.info("MyMultiReportView::__init__:collection={}"
+                    .format(collection))
+        super(MultiReportView, self).__init__(collection, request)
+        self.collection = collection
+        self.request = request
+```
+
 ### Further Reading
 
 `senaite.impress` comes with some default templates included. It is
