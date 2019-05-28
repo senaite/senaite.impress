@@ -70,13 +70,16 @@ class PdfReportStorageAdapter(object):
         :param parent: parent object where to create the report inside
         :returns: ARReport
         """
-        report = api.create(parent, "ARReport")
-        report.edit(
-            title=api.get_id(report),
+        report = api.create(
+            parent,
+            "ARReport",
             AnalysisRequest=api.get_uid(parent),
             Pdf=pdf,
             Html=html,
             ContainedAnalysisRequests=uids,
             Metadata=metadata)
+
+        # set the generated ID as the title
+        report.setTitle(report.getId())
 
         return report
