@@ -143,7 +143,7 @@ class Publisher(object):
                     .format(end-start, len(document.pages)))
         return document
 
-    @synchronized
+    @synchronized(max_connections=2)
     def url_fetcher(self, url):
         """Fetches internal URLs by path and not via an external request.
 
