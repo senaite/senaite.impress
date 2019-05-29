@@ -1,6 +1,7 @@
 1.2.1 (unreleased)
 ------------------
 
+- #75: Conflict safe concurrent report creation
 - #71: Implemented storage adapter
 - #73: Extend README wrt 'Reports in external packages'
 - #66: Fix Publication Preference Traceback with Default template
