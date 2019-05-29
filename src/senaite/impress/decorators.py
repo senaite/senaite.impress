@@ -29,10 +29,10 @@ from senaite.impress import logger
 from zope.component import queryAdapter
 
 
-def synchronized(max_connections=2):
+def synchronized(max_connections=2, verbose=0):
     """Synchronize function call via semaphore
     """
-    semaphore = threading.BoundedSemaphore(max_connections, verbose=1)
+    semaphore = threading.BoundedSemaphore(max_connections, verbose=verbose)
 
     def inner(func):
         logger.debug("Semaphore for {} -> {}".format(func, semaphore))
