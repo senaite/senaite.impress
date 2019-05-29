@@ -2,7 +2,10 @@
 
 from operator import methodcaller
 
+import transaction
 from bika.lims import api
+from senaite.impress import logger
+from senaite.impress.decorators import synchronized
 from senaite.impress.interfaces import IPdfReportStorage
 from zope.interface import implements
 
@@ -64,12 +67,24 @@ class PdfReportStorageAdapter(object):
 
         return reports
 
+    @synchronized(max_connections=1)
     def create_report(self, parent, pdf, html, uids, metadata):
         """Create a new report object
+
+        NOTE: We limit the creation of reports to 1 to avoid conflict errors on
+              simultaneous publication.
 
         :param parent: parent object where to create the report inside
         :returns: ARReport
         """
+
+        parent_id = api.get_id(parent)
+        logger.info("Create Report for {} ...".format(parent_id))
+
+        # Manually update the view on the database to avoid conflict errors
+        parent._p_jar.sync()
+
+        # Create the report object
         report = api.create(
             parent,
             "ARReport",
@@ -79,7 +94,9 @@ class PdfReportStorageAdapter(object):
             ContainedAnalysisRequests=uids,
             Metadata=metadata)
 
-        # set the generated ID as the title
-        report.setTitle(report.getId())
+        # Commit the changes
+        transaction.commit()
+
+        logger.info("Create Report for {} [DONE]".format(parent_id))
 
         return report
