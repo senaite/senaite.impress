@@ -27,6 +27,7 @@ from string import Template
 
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
+from bika.lims.interfaces import IInternalUse
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
@@ -143,6 +144,9 @@ class ReportView(Base):
         """
         collection = self.to_list(model_or_collection)
         analyses = chain(*map(lambda m: m.Analyses, collection))
+        # Boil out analyses meant to be used for internal use only
+        analyses = filter(lambda an: not IInternalUse.providedBy(an.instance),
+                          analyses)
         return self.sort_items(analyses)
 
     def get_analyses_by(self, model_or_collection,
