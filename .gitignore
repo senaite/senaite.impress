@@ -106,7 +106,6 @@ node_modules
 package-lock.json
 src/senaite.*
 yarn-error.log
-yarn.lock
 
 # vim editor
 *.swp
