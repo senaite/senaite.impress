@@ -1,4 +1,4 @@
-1.2.1 (unreleased)
+1.2.1 (2019-07-01)
 ------------------
 
 - #75: Conflict safe concurrent report creation
@@ -6,6 +6,7 @@
 - #73: Extend README wrt 'Reports in external packages'
 - #66: Fix Publication Preference Traceback with Default template
 - #68: Fix empty Date Published on Default report
+
 
 1.2.0 (2019-03-30)
 ------------------
