@@ -1,7 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
-- no changes yet
+- #79: Use senaite.core.api instead of senaite.api
 
 
 1.2.1 (2019-07-01)
