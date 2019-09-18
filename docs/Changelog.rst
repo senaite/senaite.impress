@@ -1,7 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
-- no changes yet
+- #80: Update Bootstrap CSS to version 4.3.1
 
 
 1.2.1 (2019-07-01)
