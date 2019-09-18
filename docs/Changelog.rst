@@ -1,7 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
-- no changes yet
+- #78: Fix template error on missing lab address data
 
 
 1.2.1 (2019-07-01)
