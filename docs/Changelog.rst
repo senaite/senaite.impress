@@ -2,6 +2,7 @@
 ------------------
 
 - #79: Use senaite.core.api instead of senaite.api
+- #78: Fix template error on missing lab address data
 
 
 1.2.1 (2019-07-01)
