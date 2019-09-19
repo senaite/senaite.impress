@@ -24,7 +24,7 @@ from bika.lims.utils import format_supsub
 from bika.lims.utils import formatDecimalMark
 from bika.lims.utils import to_utf8
 from bika.lims.utils.analysis import format_uncertainty
-from senaite import api
+from bika.lims import api
 from senaite.core.supermodel import SuperModel as BaseModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model

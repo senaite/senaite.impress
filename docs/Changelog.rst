@@ -1,6 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
+- #79: Use senaite.core.api instead of senaite.api
 - #78: Fix template error on missing lab address data
 
 
