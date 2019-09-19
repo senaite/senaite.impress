@@ -18,7 +18,7 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from senaite import api
+from bika.lims import api
 from senaite.impress.interfaces import IReportView
 from zope.interface import implements
 

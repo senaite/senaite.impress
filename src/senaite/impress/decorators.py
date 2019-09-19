@@ -23,7 +23,7 @@ import threading
 import time
 from functools import wraps
 
-from senaite import api
+from bika.lims import api
 from senaite.core.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from zope.component import queryAdapter
