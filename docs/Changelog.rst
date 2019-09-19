@@ -2,6 +2,9 @@
 ------------------
 
 - #81: Rebuild JavaScript bundle with new versions
+- #80: Update Bootstrap CSS to version 4.3.1
+- #79: Use senaite.core.api instead of senaite.api
+- #78: Fix template error on missing lab address data
 
 
 1.2.1 (2019-07-01)

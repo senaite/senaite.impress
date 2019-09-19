@@ -26,7 +26,7 @@ from string import Template
 
 import bs4
 from plone.subrequest import subrequest
-from senaite import api
+from bika.lims import api
 from senaite.impress import logger
 from senaite.impress.decorators import synchronized
 from senaite.impress.interfaces import IPublisher
