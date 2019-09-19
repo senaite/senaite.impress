@@ -1,7 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
-- no changes yet
+- #81: Rebuild JavaScript bundle with new versions
 
 
 1.2.1 (2019-07-01)
