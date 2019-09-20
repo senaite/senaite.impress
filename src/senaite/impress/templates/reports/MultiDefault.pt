@@ -342,7 +342,7 @@
           </tr>
           <tr>
             <td class="label" i18n:translate="">Date Published</td>
-            <td tal:content="python:view.to_localized_time(model.DatePublished)"></td>
+            <td tal:content="python:view.to_localized_time(view.timestamp)"></td>
           </tr>
           <tr tal:condition="reporter">
             <td class="label" i18n:translate="">Published by</td>
