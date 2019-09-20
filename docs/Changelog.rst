@@ -1,7 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
-- #68: Fix empty Date Published on Multi Default report
+- #82: Fix Date Published is empty on MultiDefault report
 - #81: Rebuild JavaScript bundle with new versions
 - #80: Update Bootstrap CSS to version 4.3.1
 - #79: Use senaite.core.api instead of senaite.api
