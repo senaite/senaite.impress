@@ -12,34 +12,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|coffee)$/,
-        exclude: [/node_modules/],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['react', 'es2015', 'env'],
-            plugins: ['transform-class-properties']
-          }
-        }
-      }, {
         test: /\.coffee$/,
         exclude: [/node_modules/],
-        use: [
-          {
-            loader: 'coffee-loader',
-            options: {}
-          }
-        ]
+        use: ["babel-loader", "coffee-loader"]
+      }, {
+        test: /\.(js|jsx)$/,
+        exclude: [/node_modules/],
+        use: ["babel-loader"]
       }, {
         test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          }
-        ]
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
