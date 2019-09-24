@@ -1,6 +1,7 @@
 1.2.2 (unreleased)
 ------------------
 
+- #83: Handle `None` values in decorator more gracefully
 - #82: Fix Date Published is empty on MultiDefault report
 - #81: Rebuild JavaScript bundle with new versions
 - #80: Update Bootstrap CSS to version 4.3.1
