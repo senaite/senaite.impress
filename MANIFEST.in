@@ -6,5 +6,6 @@ recursive-exclude static *
 recursive-include src/senaite/impress *
 recursive-exclude src/senaite/impress *.pyc *.mo
 recursive-exclude src/senaite/impress/static/js/node_modules *
+recursive-exclude src/senaite/impress/static/js/src *
 recursive-exclude node_modules *
 recursive-exclude src/senaite/impress/locales/.tx *
