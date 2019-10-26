@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-03-30 09:49+0000\n"
+"POT-Creation-Date: 2019-10-26 19:01+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: Stefan Gruber <s.gruber@liscon.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -140,7 +140,7 @@ msgstr "Standard Vorlage"
 msgid "Developer Mode"
 msgstr "Entwicklermodus"
 
-#: senaite/impress/templates/reports/Default.pt:662
+#: senaite/impress/templates/reports/Default.pt:658
 #: senaite/impress/templates/reports/MultiDefault.pt:686
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:607
 msgid "Fax"
@@ -156,7 +156,11 @@ msgstr "Dateiname:"
 msgid "Footer Text"
 msgstr "Fußtext"
 
-#: senaite/impress/configure.zcml:156
+#: senaite/impress/ajax.py:324
+msgid "Generated reports for: {}, "
+msgstr ""
+
+#: senaite/impress/configure.zcml:163
 msgid "HTML to PDF report engine for SENAITE"
 msgstr "HTML zu PDF Berichte Engine für SENAITE"
 
@@ -191,10 +195,6 @@ msgstr "Anfangs geladene Vorlage"
 msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
 msgstr "Methoden, die in der Akkreditierungsurkunde der ${accreditation_body} für dieses Labor aufgeführt sind. Hinweise zu Analysen sind nicht akkreditiert."
 
-#: senaite/impress/templates/reports/Default.pt:626
-msgid "Methods of analysis available by clicking on the 'Request' link"
-msgstr "Methoden verfügbar durch Klick auf den Analysenauftrags-Link"
-
 #: senaite/impress/templates/reports/Default.pt:595
 #: senaite/impress/templates/reports/MultiDefault.pt:623
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:544
@@ -207,7 +207,7 @@ msgstr "Nicht berechnet"
 msgid "Number of attachments rendered within one row per Analysis Request"
 msgstr "Anzahl der Anhänge die in einer Zeile pro Analysenauftrag abgebildet werden"
 
-#: senaite/impress/templates/reports/Default.pt:660
+#: senaite/impress/templates/reports/Default.pt:656
 #: senaite/impress/templates/reports/MultiDefault.pt:684
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:605
 msgid "Phone"
@@ -274,7 +274,7 @@ msgstr "Ergebnisbewertung"
 msgid "Returns the raw HTML in the report preview."
 msgstr "Zeigt das rohe HTML Format in der Berichtsvorschau an."
 
-#: senaite/impress/configure.zcml:156
+#: senaite/impress/configure.zcml:163
 #: senaite/impress/templates/publish.pt:9
 msgid "SENAITE IMPRESS"
 msgstr "SENAITE IMPRESS"

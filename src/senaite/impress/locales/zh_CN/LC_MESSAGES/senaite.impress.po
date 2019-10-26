@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-03-30 09:49+0000\n"
+"POT-Creation-Date: 2019-10-26 19:01+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/senaite/teams/87187/zh_CN/)\n"
@@ -136,7 +136,7 @@ msgstr ""
 msgid "Developer Mode"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:662
+#: senaite/impress/templates/reports/Default.pt:658
 #: senaite/impress/templates/reports/MultiDefault.pt:686
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:607
 msgid "Fax"
@@ -152,7 +152,11 @@ msgstr ""
 msgid "Footer Text"
 msgstr ""
 
-#: senaite/impress/configure.zcml:156
+#: senaite/impress/ajax.py:324
+msgid "Generated reports for: {}, "
+msgstr ""
+
+#: senaite/impress/configure.zcml:163
 msgid "HTML to PDF report engine for SENAITE"
 msgstr ""
 
@@ -187,10 +191,6 @@ msgstr ""
 msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:626
-msgid "Methods of analysis available by clicking on the 'Request' link"
-msgstr ""
-
 #: senaite/impress/templates/reports/Default.pt:595
 #: senaite/impress/templates/reports/MultiDefault.pt:623
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:544
@@ -203,7 +203,7 @@ msgstr ""
 msgid "Number of attachments rendered within one row per Analysis Request"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:660
+#: senaite/impress/templates/reports/Default.pt:656
 #: senaite/impress/templates/reports/MultiDefault.pt:684
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:605
 msgid "Phone"
@@ -270,7 +270,7 @@ msgstr ""
 msgid "Returns the raw HTML in the report preview."
 msgstr ""
 
-#: senaite/impress/configure.zcml:156
+#: senaite/impress/configure.zcml:163
 #: senaite/impress/templates/publish.pt:9
 msgid "SENAITE IMPRESS"
 msgstr ""
