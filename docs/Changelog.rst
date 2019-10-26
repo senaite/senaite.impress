@@ -1,4 +1,4 @@
-1.2.2 (unreleased)
+1.2.2 (2019-10-26)
 ------------------
 
 - #83: Handle `None` values in decorator more gracefully
