@@ -38,7 +38,9 @@ class PublishAPI
     segments = location.pathname.split "/"
     current_view = segments[segments.length-1]
     url = @get_base_url().split(current_view)[0]
-    return "#{url}#{api_endpoint}/#{endpoint}"
+    # we also pass back eventual query parameters to the API
+    params = location.search
+    return "#{url}#{api_endpoint}/#{endpoint}#{params}"
 
 
   get_url_parameter: (name) ->
