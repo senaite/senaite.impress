@@ -133,6 +133,11 @@ class PublishView(BrowserView):
         """
         return filter(None, self.request.get("items", "").split(","))
 
+    def get_request_parameter(self, parameter, default=None):
+        """Returns the request parameter
+        """
+        return self.request.get(parameter, default)
+
     def get_collection(self, uids=None, group_by=None):
         """Wraps the given UIDs into a collection of SuperModels
         """
@@ -266,6 +271,9 @@ class PublishView(BrowserView):
     def get_default_template(self, default="senaite.lims:Default.pt"):
         """Returns the configured default template from the registry
         """
+        template = self.get_request_parameter("template")
+        if self.template_exists(template):
+            return template
         template = api.get_registry_record(
             "senaite.impress.default_template")
         if template is None:
@@ -275,6 +283,9 @@ class PublishView(BrowserView):
     def get_default_paperformat(self, default="A4"):
         """Returns the configured default paperformat from the registry
         """
+        paperformat = self.get_request_parameter("paperformat")
+        if paperformat in self.get_paperformats():
+            return paperformat
         paperformat = api.get_registry_record(
             "senaite.impress.default_paperformat")
         if paperformat is None:
@@ -284,6 +295,9 @@ class PublishView(BrowserView):
     def get_default_orientation(self, default="portrait"):
         """Returns the configured default orientation from the registry
         """
+        orientation = self.get_request_parameter("orientation")
+        if orientation in ["portrait", "landscape"]:
+            return orientation
         orientation = api.get_registry_record(
             "senaite.impress.default_orientation")
         if orientation is None:
@@ -303,6 +317,17 @@ class PublishView(BrowserView):
         mode = api.get_registry_record(
             "senaite.impress.developer_mode", False)
         return mode
+
+    def template_exists(self, template):
+        """Checks if the template exists
+        """
+        if not template:
+            return False
+        finder = getUtility(ITemplateFinder)
+        template_path = finder.find_template(template)
+        if template_path is None:
+            return False
+        return True
 
     def get_report_template(self, template=None):
         """Returns the path of report template
