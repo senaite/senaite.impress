@@ -283,6 +283,9 @@ class PublishView(BrowserView):
     def get_default_paperformat(self, default="A4"):
         """Returns the configured default paperformat from the registry
         """
+        paperformat = self.get_request_parameter("paperformat")
+        if paperformat in self.get_paperformats():
+            return paperformat
         paperformat = api.get_registry_record(
             "senaite.impress.default_paperformat")
         if paperformat is None:
