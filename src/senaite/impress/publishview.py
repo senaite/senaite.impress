@@ -295,6 +295,9 @@ class PublishView(BrowserView):
     def get_default_orientation(self, default="portrait"):
         """Returns the configured default orientation from the registry
         """
+        orientation = self.get_request_parameter("orientation")
+        if orientation in ["portrait", "landscape"]:
+            return orientation
         orientation = api.get_registry_record(
             "senaite.impress.default_orientation")
         if orientation is None:
