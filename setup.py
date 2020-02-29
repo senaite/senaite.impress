@@ -41,12 +41,12 @@ setup(
     install_requires=[
         "setuptools",
         "beautifulsoup4",
-        "cairocffi<1.0.0",
         "CairoSVG==1.0.20",
+        "cairocffi<1.0.0",
         # Python 2.x is not supported by WeasyPrint v43
         'WeasyPrint==0.42.3',
         # tinycss2 >= 1.0.0 does not support Python 2.x anymore
-        'tinycss2<1.0.0',
+        "tinycss2<1.0.0",
     ],
     extras_require={
         "test": [
