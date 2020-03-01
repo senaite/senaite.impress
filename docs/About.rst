@@ -48,9 +48,9 @@ To install SENAITE IMPRESS, you have to add `senaite.impress` into the
    parts =
        instance
    extends =
-       http://dist.plone.org/release/4.3.18/versions.cfg
+       http://dist.plone.org/release/4.3.19/versions.cfg
    find-links =
-       http://dist.plone.org/release/4.3.18
+       http://dist.plone.org/release/4.3.19
        http://dist.plone.org/thirdparty
    eggs =
        Plone
@@ -58,7 +58,6 @@ To install SENAITE IMPRESS, you have to add `senaite.impress` into the
        senaite.lims
        senaite.impress
    zcml =
-   eggs-directory = ${buildout:directory}/eggs
 
    [instance]
    recipe = plone.recipe.zope2instance
@@ -97,7 +96,7 @@ Installation Requirements
 
 The following versions are required for SENAITE IMPRESS:
 
--  Plone 4.3.18
+-  Plone 4.3.19
 -  senaite.lims >= 1.3.0
 
 
