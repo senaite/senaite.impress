@@ -1,4 +1,4 @@
-1.2.3 (2020-02-29)
+1.2.3 (2020-03-01)
 ------------------
 
 - #86 Allow request parameter overrides for template, orientation and paperformat
