@@ -45,9 +45,9 @@ list inside the `[buildout]` section of your `buildout.cfg`:
     parts =
         instance
     extends =
-        http://dist.plone.org/release/4.3.18/versions.cfg
+        http://dist.plone.org/release/4.3.19/versions.cfg
     find-links =
-        http://dist.plone.org/release/4.3.18
+        http://dist.plone.org/release/4.3.19
         http://dist.plone.org/thirdparty
     eggs =
         Plone
@@ -93,7 +93,7 @@ For the changes to take effect you need to re-run buildout from your console:
 
 The following versions are required for SENAITE IMPRESS:
 
-- Plone 4.3.18
+- Plone 4.3.19
 - senaite.lims >= 1.3.0
 
 
