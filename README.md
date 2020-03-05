@@ -37,7 +37,7 @@ one document.
 SENAITE IMPRESS is included in the SENAITE LIMS distribution, so no further
 installation steps are needed.
 
-To learn more about how to install SENAITE, please follow the 
+To learn more about how to install SENAITE, please follow the
 [SNEAITE Installation Manual](https://www.senaite.com/docs/installation)
 
 
@@ -355,7 +355,7 @@ https://github.com/senaite/senaite.impress/blob/master/src/senaite/impress/analy
 
 ### Reports in external packages
 
-Until now we created all reports on the file system within this package, which 
+Until now we created all reports on the file system within this package, which
 is **not** the recommended way, because with future updates of
 `senaite.impress`, these changes will be lost.
 
