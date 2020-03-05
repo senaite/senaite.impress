@@ -23,11 +23,11 @@ from collections import Iterable
 from collections import OrderedDict
 from string import Template
 
+from bika.lims import api
 from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bika.lims import api
 from senaite.core.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.config import PAPERFORMATS
@@ -40,8 +40,8 @@ from zope.component import ComponentLookupError
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryMultiAdapter
 from zope.interface import implements
-
 
 CSS = Template("""/** Paper Format CSS **/
 @page {
@@ -180,13 +180,32 @@ class PublishView(BrowserView):
         # any other content type as well.
         return self.request.form.get("type", "AnalysisRequest")
 
+    def get_report_view_controller(self, model_or_collection, interface):
+        """Get a suitable report view controller
+
+        Query the controller view as a multi-adapter to allow 3rd party
+        overriding with a browser layer.
+        """
+        name = self.get_report_type()
+
+        context = self.context
+        request = self.request
+
+        # Give precedence to multiadapters that adapt the context as well
+        view = queryMultiAdapter(
+            (context, model_or_collection, request), interface, name=name)
+        if view is None:
+            # Return the default multiadapter
+            return getMultiAdapter(
+                (model_or_collection, request), interface, name=name)
+        return view
+
     def render_report(self, model, template, paperformat, orientation, **kw):
         """Render a SuperModel to HTML
         """
-        _type = self.get_report_type()
-        # Query the controller view as a multi-adapter to allow 3rd party
-        # overriding with a browser layer
-        view = getMultiAdapter((model, self.request), IReportView, name=_type)
+        # get the report view controller
+        view = self.get_report_view_controller(model, IReportView)
+
         options = kw
         # pass through the calculated dimensions to the template
         options.update(self.calculate_dimensions(paperformat, orientation))
@@ -196,11 +215,9 @@ class PublishView(BrowserView):
     def render_multi_report(self, collection, template, paperformat, orientation, **kw):  # noqa
         """Render multiple SuperModels to HTML
         """
-        _type = self.get_report_type()
-        # Query the controller view as a multi-adapter to allow 3rd party
-        # overriding with a browser layer
-        view = getMultiAdapter(
-            (collection, self.request), IMultiReportView, name=_type)
+        # get the report view controller
+        view = self.get_report_view_controller(collection, IMultiReportView)
+
         options = kw
         # pass through the calculated dimensions to the template
         options.update(self.calculate_dimensions(paperformat, orientation))

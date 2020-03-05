@@ -34,86 +34,17 @@ one document.
 
 ## Installation
 
-Please follow the installations instructions for
-[Plone 4](https://docs.plone.org/4/en/manage/installing/index.html)
-and [senaite.lims](https://github.com/senaite/senaite.lims#installation).
+SENAITE IMPRESS is included in the SENAITE LIMS distribution, so no further
+installation steps are needed.
 
-To install SENAITE IMPRESS, you have to add `senaite.impress` into the `eggs`
-list inside the `[buildout]` section of your `buildout.cfg`:
-
-    [buildout]
-    parts =
-        instance
-    extends =
-        http://dist.plone.org/release/4.3.19/versions.cfg
-    find-links =
-        http://dist.plone.org/release/4.3.19
-        http://dist.plone.org/thirdparty
-    eggs =
-        Plone
-        Pillow
-        senaite.lims
-        senaite.impress
-    zcml =
-    eggs-directory = ${buildout:directory}/eggs
-
-    [instance]
-    recipe = plone.recipe.zope2instance
-    user = admin:admin
-    http-address = 127.0.0.1:8080
-    eggs =
-        ${buildout:eggs}
-    zcml =
-        ${buildout:zcml}
-
-    [versions]
-    setuptools =
-    zc.buildout =
-
-
-**Note**
-
-The above example works for the buildout created by the unified installer. If
-you however have a custom buildout you might need to add the egg to the `eggs`
-list in the `[instance]` section rather than adding it in the `[buildout]`
-section.
-
-Also see this section of the Plone documentation for further details:
-https://docs.plone.org/4/en/manage/installing/installing_addons.html
-
-
-**Important**
-
-For the changes to take effect you need to re-run buildout from your console:
-
-    bin/buildout
-
-
-### Installation Requirements
-
-The following versions are required for SENAITE IMPRESS:
-
-- Plone 4.3.19
-- senaite.lims >= 1.3.0
-
-
-### Activate the Add-on
-
-Please browse to the *Add-ons* Controlpanel and activate the **SENAITE IMPRESS** Add-on:
-
-<img src="static/activate_addon.png" alt="Activate SENAITE IMPRESS Add-on" />
-
-SENAITE IMPRESS replaced now the built-in publication engine and will open
-automatically when you publish an Analysis Request.
-
-You can also safely deactivate this Plugin to switch back to the old publication engine.
+To learn more about how to install SENAITE, please follow the 
+[SNEAITE Installation Manual](https://www.senaite.com/docs/installation)
 
 
 ## Usage
 
-SENAITE IMPRESS is a drop in replacement for the current publication backend in
-SENAITE CORE. After the Add-on has been installed, it will open automatically
-when an Analysis Request is published, prepublished or repupublished.
+SENAITE IMPRESS opens automatically when a Sample is published, prepublished or
+repupublished.
 
 <img src="static/verify_analyses.png" alt="Verify Analyses" />
 
@@ -173,10 +104,6 @@ Most of the labs require custom reports and SENAITE IMPRESS allows you to do
 that with relative ease.
 
 The following sections will guide you through the process of creating a custom report.
-
-You can also contact a SENAITE service provider for a professional solution:
-
-https://www.senaite.com/#providers
 
 
 ### Hello World
@@ -383,10 +310,6 @@ Report views can be customized per report for any specific report behavior and m
 The standard report view for models of the type Analysis Request is located here:
 https://github.com/senaite/senaite.impress/blob/master/src/senaite/impress/analysisrequest/reportview.py
 
-However, as [Python](https://python.org) code know-how is needed to change report views, it is
-recommend that a [Professional SENAITE Service Provider](http://www.senaite.com/#providers)
-is consulted for commercial support.
-
 ```html
 <tal:report define="model python:view.model;">
 
@@ -432,13 +355,15 @@ is consulted for commercial support.
 
 ### Reports in external packages
 
-Until now we created all reports on the file system within this package, which
+Until now we created all reports on the file system within this package, which 
 is **not** the recommended way, because with future updates of
 `senaite.impress`, these changes will be lost.
 
 Therefore it is recommended to create a new
 [SENAITE Add-On Package](https://docs.plone.org/4/en/develop/addons/schema-driven-forms/creating-a-simple-form/creating-a-package.html)
-and put the custom reports in there. Note that the naming of the report template is important if you are customising a multi-sample report - you MUST start or end the template name with the word 'multi'.
+and put the custom reports in there. Note that the naming of the report template
+is important if you are customising a multi-sample report - you MUST start or
+end the template name with the word 'multi'.
 
 In your new package `configure.zcml` you have to specify the folder where your reports live:
 
@@ -455,11 +380,36 @@ In your new package `configure.zcml` you have to specify the folder where your r
 </configure>
 ```
 
-This will integrate the `reports` directory within your package into the search path of `senaite.impress`.
+This will integrate the `reports` directory within your package into the search
+path of `senaite.impress`.
+
+It is recommended to have a report controller view in place to avoid heavy
+Python logic in the domain of the page template.
+
+To create a custom report controller view, you need to have first a custom
+browser layer defined in your `interfaces.py`:
+
+```python
+from bika.lims.interfaces import IBikaLIMS
+from senaite.impress.interfaces import ILayer as ISenaiteIMPRESS
+from senaite.lims.interfaces import ISenaiteLIMS
 
 
-One can define your own reportview for your custom reports.
-Add this in your add-on's `configure.zcml`:
+class IMyLIMSLayer(IBikaLIMS, ISenaiteLIMS, ISenaiteIMPRESS):
+    """Marker interface that defines a Zope 3 browser layer.
+    """
+```
+
+and register the layer in `profiles/default/browserlayer.xml`:
+```xml
+<layers>
+  <layer name="my.lims"
+         interface="my.lims.interfaces.IMyLIMSLayer" />
+</layers>
+``**
+
+
+Then you can register the controller view in `configure.zcml`:
 
 ```xml
   <!-- View for Single Reports -->
@@ -481,29 +431,10 @@ Add this in your add-on's `configure.zcml`:
       permission="zope2.View"/>
 ```
 
-And `interfaces.py`:
-```
-from bika.lims.interfaces import IBikaLIMS
-from senaite.impress.interfaces import ILayer as ISenaiteIMPRESS
-from senaite.lims.interfaces import ISenaiteLIMS
-
-
-class IMyLIMSLayer(IBikaLIMS, ISenaiteLIMS, ISenaiteIMPRESS):
-    """Marker interface that defines a Zope 3 browser layer.
-    """
-```
-
-And a `profiles/default/browserlayer.xml`:
-```xml
-<layers>
-  <layer name="my.lims"
-         interface="my.lims.interfaces.IMyLIMSLayer" />
-</layers>
-```
 
 And create your own reportview.py module:
 
-```xml
+```python
 from senaite.impress.analysisrequest.reportview import MultiReportView
 
 class MyMultiReportView(MultiReportView):
@@ -518,11 +449,57 @@ class MyMultiReportView(MultiReportView):
         self.request = request
 ```
 
+**Note**:
+Since version 1.2.4 it is also possible to register a multiadapter that adapts
+the current rendering context, the report model/collection and the request:
+
+```xml
+  <!-- View for Single Reports -->
+  <adapter
+      for="*
+           *
+           my.lims.interfaces.IMyLIMS"
+      name="AnalysisRequest"
+      factory=".reportview.MySingleReportView"
+      provides="senaite.impress.interfaces.IReportView"
+      permission="zope2.View"/>
+
+  <!-- View for Multi Reports -->
+  <adapter
+      for="*
+           *
+           my.lims.interfaces.IMyLIMSLayer"
+      name="AnalysisRequest"
+      factory=".reportview.MyMultiReportView"
+      provides="senaite.impress.interfaces.IMultiReportView"
+      permission="zope2.View"/>
+```
+
+This would allow to use the current context where `publish` view was called
+can be used as well:
+
+```python
+from senaite.impress.analysisrequest.reportview import MultiReportView
+
+class MyMultiReportView(MultiReportView):
+    """My specific controller view for multi-reports
+    """
+
+    def __init__(self, context, collection, request):
+        logger.info("MyMultiReportView::__init__:collection={}"
+                    .format(collection))
+        super(MultiReportView, self).__init__(collection, request)
+        self.collection = collection
+        self.context = context
+        self.request = request
+```
+
+
 ### Further Reading
 
-`senaite.impress` comes with some default templates included. It is
-recommended to read the code of these templates or use them as the base for new
-reports.
+`senaite.impress` comes with some default templates included. It is recommended
+to read the code of these templates or use them as the base for new reports.
+
 
 ### senaite.impress:Default.pt
 
