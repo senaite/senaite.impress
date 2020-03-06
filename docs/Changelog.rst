@@ -1,3 +1,9 @@
+1.2.4 (unreleased)
+------------------
+
+- #88 Support context aware report controller views
+
+
 1.2.3 (2020-03-01)
 ------------------
 
