@@ -89,7 +89,44 @@ class PublishView(BrowserView):
         self.request = request
 
     def __call__(self):
+        if self.request.form.get("download", False):
+            return self.download()
         return self.template()
+
+    def download(self):
+        """Generate PDF and send it fot download
+        """
+        form = self.request.form
+        # This is the html after it was rendered by the client browser and
+        # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
+        # NOTE: It might also contain multiple reports!
+        html = form.get("html", "")
+        # get the selected template
+        template = form.get("template")
+        # get the selected paperformat
+        paperformat = form.get("format")
+        # get the selected orientation
+        orientation = form.get("orientation", "portrait")
+        # get the filename
+        filename = form.get("filename", "{}.pdf".format(template))
+        # Generate the print CSS with the set format/orientation
+        css = self.get_print_css(
+            paperformat=paperformat, orientation=orientation)
+        logger.info(u"Print CSS: {}".format(css))
+        # get the publisher instance
+        publisher = self.publisher
+        # add the generated CSS to the publisher
+        publisher.add_inline_css(css)
+        # generate the PDF
+        pdf = publisher.write_pdf(html)
+
+        self.request.response.setHeader(
+            "Content-Disposition", "attachment; filename=%s.pdf" % filename)
+        self.request.response.setHeader("Content-Type", "application/pdf")
+        self.request.response.setHeader("Content-Length", len(pdf))
+        self.request.response.setHeader("Cache-Control", "no-store")
+        self.request.response.setHeader("Pragma", "no-cache")
+        self.request.response.write(pdf)
 
     @property
     def portal(self):
