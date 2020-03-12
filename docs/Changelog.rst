@@ -1,6 +1,7 @@
 1.2.4 (unreleased)
 ------------------
 
+- #89 PDF Print View
 - #88 Support context aware report controller views
 
 
