@@ -40,6 +40,7 @@ class PublishController extends React.Component
     @handleChange = @handleChange.bind(this)
     @loadReports = @loadReports.bind(this)
     @saveReports = @saveReports.bind(this)
+    @printReports = @printReports.bind(this)
 
     @state =
       items: @api.get_items()
@@ -179,6 +180,35 @@ class PublishController extends React.Component
         error: error.toString()
 
 
+  printReports: (event) ->
+    ###
+     * Print all PDFs
+    ###
+    event.preventDefault()
+
+    target = event.target
+
+    # Set the loader
+    @setState
+      loading: yes
+      loadtext: "Generating PDF..."
+
+    options = @getRequestOptions()
+
+    # print the PDF
+    promise = @api.print_pdf options
+
+    me = this
+    promise.then ->
+      # toggle the loader off
+      me.setState
+        loading: no
+    .catch (error) ->
+      me.setState
+        loading: no
+        error: error.toString()
+
+
   saveReports: (event) ->
     ###
      * Save all PDFs to the Server
@@ -258,11 +288,14 @@ class PublishController extends React.Component
   isMultiReport: ->
     return @state.template.search("Multi") > -1
 
-
   render: ->
     ###
      * Publication UI
     ###
+
+    print_mode = location.pathname.endsWith "printview"
+    publish_mode =  location.pathname.endsWith "publish"
+
     <div className="col-sm-12">
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
@@ -272,8 +305,9 @@ class PublishController extends React.Component
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
             <div className="input-group-append">
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
-              <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />
-              <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />
+              {publish_mode and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
+              {publish_mode and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
+              {print_mode and <Button name="" title="PDF" onClick={@printReports} className="btn btn-outline-secondary" />}
             </div>
           </div>
         </div>
