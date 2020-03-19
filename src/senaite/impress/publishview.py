@@ -21,6 +21,7 @@
 import os
 from collections import Iterable
 from collections import OrderedDict
+from functools import reduce
 from string import Template
 
 from bika.lims import api
@@ -168,19 +169,25 @@ class PublishView(BrowserView):
     def get_uids(self):
         """Parse the UIDs from the request `items` parameter
         """
-        return filter(None, self.request.get("items", "").split(","))
+        return filter(api.is_uid, self.request.get("items", "").split(","))
 
     def get_request_parameter(self, parameter, default=None):
         """Returns the request parameter
         """
         return self.request.get(parameter, default)
 
-    def get_collection(self, uids=None, group_by=None):
+    def get_collection(self, uids, group_by=None):
         """Wraps the given UIDs into a collection of SuperModels
+
+        :param uids: list of UIDs
+        :param group_by: Grouping field accessor, e.g getClientUID
+        :returns: list of SuperModels
         """
-        if uids is None:
-            uids = self.get_uids()
         collection = []
+
+        # filter out all non-UIDs
+        uids = filter(api.is_uid, uids)
+
         for model in map(self.to_model, uids):
             if model.is_valid():
                 collection.append(model)
