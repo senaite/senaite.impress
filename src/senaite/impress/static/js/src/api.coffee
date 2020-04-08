@@ -147,9 +147,7 @@ class PublishAPI
     .then (blob) ->
       # open the PDF in a separate window
       url= window.URL.createObjectURL(blob)
-      pdf = window.open(url, "_blank")
-      # call print if we have a new window object
-      pdf?.print()
+      window.open(url, "_blank")
 
       # Alternate way to download a named PDF
       #
