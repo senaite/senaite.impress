@@ -102,6 +102,9 @@ class PublishView(BrowserView):
         # eventually extended by JavaScript, e.g. Barcodes or Graphs added etc.
         # NOTE: It might also contain multiple reports!
         html = form.get("html", "")
+        # convert to unicode
+        # https://github.com/senaite/senaite.impress/pull/93
+        html = api.safe_unicode(html)
         # get the selected template
         template = form.get("template")
         # get the selected paperformat
