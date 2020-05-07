@@ -1,6 +1,7 @@
 1.2.4 (unreleased)
 ------------------
 
+- #96 Remove call to getObjectWorkflowStates (in `is_provisional` func)
 - #91 Fix infinite recursion when calling print/publish view w/o items parameter
 - #89 PDF Print View
 - #88 Support context aware report controller views

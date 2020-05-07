@@ -41,7 +41,7 @@ class SuperModel(BaseModel):
         if self.is_invalid():
             return True
         valid_states = ['verified', 'published']
-        return api.get_review_status(self.instance) in valid_states
+        return api.get_review_status(self.instance) not in valid_states
 
     def is_out_of_range(self, analysis):
         """Check if the analysis is out of range
