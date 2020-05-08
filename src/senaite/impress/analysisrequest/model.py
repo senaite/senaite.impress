@@ -41,10 +41,7 @@ class SuperModel(BaseModel):
         if self.is_invalid():
             return True
         valid_states = ['verified', 'published']
-        states = self.getObjectWorkflowStates().values()
-        if not any(map(lambda s: s in valid_states, states)):
-            return True
-        return False
+        return api.get_review_status(self.instance) not in valid_states
 
     def is_out_of_range(self, analysis):
         """Check if the analysis is out of range
