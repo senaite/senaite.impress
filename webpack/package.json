@@ -1,8 +1,8 @@
 {
   "name": "senaite.impress",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "",
-  "main": "senaite.impress.printview.js",
+  "main": "app/senaite.impress.coffee",
   "scripts": {
     "build": "webpack -p",
     "watch": "webpack -d --watch",
@@ -14,27 +14,31 @@
       "@babel/preset-react"
     ],
     "plugins": [
-       "@babel/plugin-proposal-class-properties"
+      "@babel/plugin-proposal-class-properties"
     ]
   },
-  "author": "SENAITE Foundation",
+  "author": "RIDING BYTES & NARALABS",
   "license": "GPL-2.0-only",
+  "dependencies": {
+    "bootstrap": "^4.5.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.4.1",
+    "copy-webpack-plugin": "^6.0.1",
     "css-loader": "^3.2.0",
-    "style-loader": "^1.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9"
-  },
-  "dependencies": {
-    "jquery": "^3.4.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
   }
 }

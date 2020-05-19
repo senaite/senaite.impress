@@ -51,7 +51,7 @@ class Publisher(object):
     css_class_report = "report"
     css_class_header = "section-header"
     css_class_footer = "section-footer"
-    css_resources = "++resource++senaite.impress.static/css"
+    css_resources = "++plone++senaite.impress.static/css"
 
     def __init__(self):
         # Ignore WeasyPrint warnings for unknown CSS properties

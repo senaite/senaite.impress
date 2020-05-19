@@ -7,7 +7,7 @@
       title="Impress Settings"
       i18n:attributes="title"
       priority="0"
-      icon_expr="++resource++senaite.impress.static/img/icon.png"
+      icon_expr="++plone++senaite.impress.static/assets/svg/impress.svg"
       />
 
 </action-icons>

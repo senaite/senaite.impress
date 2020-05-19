@@ -90,6 +90,7 @@ class PublishAPI
       method: method
       headers:
         "Content-Type": "application/json"
+        "X-CSRF-TOKEN": @get_csrf_token()
       body: if method is "POST" then data else null
       credentials: "include"
     console.info "PublishAPI::fetch:endpoint=#{endpoint} init=",init
@@ -238,6 +239,14 @@ class PublishAPI
       img = document.createElement "img"
       img.src = "data:image/svg+xml;base64," + btoa($(@).parent().html())
       jQuery(@).replaceWith(img)
+
+
+  get_csrf_token: () ->
+    ###
+     * Get the plone.protect CSRF token
+     * Note: The fields won't save w/o that token set
+    ###
+    return document.querySelector("#protect-script").dataset.token
 
 
 export default PublishAPI

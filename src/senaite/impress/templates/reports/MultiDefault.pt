@@ -62,7 +62,7 @@
      .report table th { border-bottom: 1px solid black; }
      .report table.range-table td { padding: 0 0.3rem 0 0; border: none; }
      .report .section-header h1 { font-size: 175%; }
-     .report .section-header img.logo { height: 100px; margin: 20px 0; }
+     .report .section-header img.logo { height: 35px; margin: 20px 0; }
      .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
      .report .section-footer table td { border: none; }
      .report .section-footer {
@@ -125,7 +125,7 @@
             <!-- Header Right -->
             <td class="align-middle text-right">
               <img class="logo"
-                   tal:attributes="src python:view.get_resource_url('logo_print.png')"/>
+                   tal:attributes="src string:++plone++senaite.core.static/images/senaite.svg"/>
             </td>
           </tr>
         </table>
@@ -506,13 +506,15 @@
     </tal:model>
   </tal:render>
 
-  <!--  REMARKS -->
+  <!-- REMARKS -->
   <tal:render condition="python:True">
     <tal:model repeat="model collection">
-      <div class="row section-remarks no-gutters" tal:condition="model/Remarks">
+      <div class="row section-remarks no-gutters"
+           tal:define="remarks model/getRemarks"
+           tal:condition="remarks">
         <div class="">
           <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
-          <div class="text-info" tal:content="structure model/Remarks"></div>
+          <div class="text-info" tal:content="structure remarks"></div>
         </div>
       </div>
     </tal:model>

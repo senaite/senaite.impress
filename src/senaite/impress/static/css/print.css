@@ -3,7 +3,7 @@
   position: relative;
   /* Includes padding and border in the element's total width and height */
   box-sizing: border-box;
-  font-family: Tahoma sans-serif;
+  font-family: sans-serif;
   font-size: 9pt;
 }
 

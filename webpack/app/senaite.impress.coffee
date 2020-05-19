@@ -4,7 +4,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 
-import PublishAPI from './api.coffee'
+import PublishAPI from "./api.coffee"
 
 import Button from "./components/Button.js"
 import ErrorBox from "./components/ErrorBox.js"

@@ -18,8 +18,9 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from zope.interface import Interface
 from bika.lims.interfaces import IBikaLIMS
+from zope.interface import Interface
+from zope.viewlet.interfaces import IViewletManager
 
 
 class ILayer(IBikaLIMS):
@@ -29,6 +30,11 @@ class ILayer(IBikaLIMS):
 
 class ISenaiteImpressLayer(ILayer):
     """Senaite Impress Browser Layer Interface
+    """
+
+
+class ISenaiteImpressHtmlHead(IViewletManager):
+    """A viewlet manager that sits in the <head> of the rendered page
     """
 
 

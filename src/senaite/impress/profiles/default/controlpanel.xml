@@ -9,7 +9,7 @@
       appId="senaite.impress"
       category="Products"
       condition_expr=""
-      icon_expr="string:++resource++senaite.impress.static/img/icon.png"
+      icon_expr="string:++plone++senaite.impress.static/assets/svg/impress.svg"
       url_expr="string:${portal_url}/@@impress-controlpanel"
       visible="True"
       i18n:domain="senaite.impress"
