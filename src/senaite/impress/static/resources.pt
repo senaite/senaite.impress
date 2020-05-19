@@ -21,7 +21,7 @@
 
 <!-- senaite.impress: main js/css -->
 
-<script tal:attributes="src string:${view/site_url}//++plone++senaite.impress.static/bundles/main-.js"></script>
+<script tal:attributes="src string:${view/site_url}//++plone++senaite.impress.static/bundles/main-6fb64c7.js"></script>
 
 
 <link href="#" rel="stylesheet" tal:attributes="href string:${view/site_url}//++plone++senaite.impress.static/bundles/main.css" />
