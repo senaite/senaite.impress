@@ -485,16 +485,14 @@
 
   <!-- REMARKS -->
   <tal:render condition="python:True">
-    <tal:model repeat="model collection">
-      <div class="row section-remarks no-gutters"
-           tal:define="remarks model/getRemarks"
-           tal:condition="remarks">
-        <div class="">
-          <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
-          <div class="text-info" tal:content="structure remarks"></div>
-        </div>
+    <div class="row section-remarks no-gutters"
+          tal:define="remarks model/getRemarks"
+          tal:condition="remarks">
+      <div class="">
+        <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
+        <div class="text-info" tal:content="structure remarks"></div>
       </div>
-    </tal:model>
+    </div>
   </tal:render>
 
   <!-- ATTACHMENTS -->
