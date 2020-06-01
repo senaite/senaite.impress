@@ -162,6 +162,15 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
+  <!-- Favicon Viewlet -->
+  <browser:viewlet
+      name="plone.links.favicon"
+      manager=".interfaces.ISenaiteImpressHtmlHead"
+      class="senaite.core.browser.viewlets.favicon.FaviconViewlet"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
   <!-- Generic Setup *INSTALL* Profile -->
   <genericsetup:registerProfile
       name="default"
