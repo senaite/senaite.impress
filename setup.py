@@ -47,6 +47,8 @@ setup(
         'WeasyPrint==0.42.3',
         # tinycss2 >= 1.0.0 does not support Python 2.x anymore
         "tinycss2<1.0.0",
+        # cssselect2 0.3.0 does not support Python 2.x anymore
+        "cssselect2<0.3.0",
     ],
     extras_require={
         "test": [
