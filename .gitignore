@@ -109,3 +109,5 @@ yarn-error.log
 
 # vim editor
 *.swp
+/include/
+/pyvenv.cfg
