@@ -32,7 +32,7 @@ from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
 from bika.lims import api
-from senaite.core.supermodel.interfaces import ISuperModel
+from senaite.app.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base

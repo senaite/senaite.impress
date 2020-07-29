@@ -91,7 +91,7 @@
   <!-- Generic Model -->
   <adapter
       for="*"
-      factory="senaite.core.supermodel.SuperModel"
+      factory="senaite.app.supermodel.SuperModel"
       />
 
   <!-- HTML/PDF Publisher Utility -->

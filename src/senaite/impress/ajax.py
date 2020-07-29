@@ -24,7 +24,7 @@ import json
 from bika.lims import _
 from bika.lims import api
 from DateTime import DateTime
-from senaite.core.supermodel import SuperModel
+from senaite.app.supermodel import SuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.decorators import timeit

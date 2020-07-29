@@ -29,7 +29,7 @@ from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from senaite.core.supermodel.interfaces import ISuperModel
+from senaite.app.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.config import PAPERFORMATS
 from senaite.impress.interfaces import IMultiReportView

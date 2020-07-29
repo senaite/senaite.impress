@@ -190,13 +190,13 @@ page headline in the previous reports:
 
 ### Super Model
 
-The [Super Model](https://github.com/senaite/senaite.core.supermodel#readme) is
+The [Super Model](https://github.com/senaite/senaite.app.supermodel#readme) is
 a special wrapper object for database objects in SENAITE.
 
 The advantage of Super Models is that they provide transparent access to all
 content schema fields in a preformance optimized way.
 
-Also see: https://github.com/senaite/senaite.core.supermodel#readme
+Also see: https://github.com/senaite/senaite.app.supermodel#readme
 
 For example the content type
 [Analysis Request](https://github.com/senaite/senaite.core/blob/master/bika/lims/content/analysisrequest.py)

@@ -24,7 +24,7 @@ import time
 from functools import wraps
 
 from bika.lims import api
-from senaite.core.supermodel.interfaces import ISuperModel
+from senaite.app.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from zope.component import queryAdapter
 
@@ -70,7 +70,7 @@ def returns_super_model(func):
 
     def to_super_model(obj):
         # avoid circular imports
-        from senaite.core.supermodel import SuperModel
+        from senaite.app.supermodel import SuperModel
 
         # Object is already a SuperModel, return immediately
         if isinstance(obj, SuperModel):
