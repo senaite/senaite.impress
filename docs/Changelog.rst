@@ -4,7 +4,7 @@
 - Compatibility with `senaite.core` 2.x
 
 
-1.2.4 (unreleased)
+1.2.4 (2020-08-05)
 ------------------
 
 - #96 Remove call to getObjectWorkflowStates (in `is_provisional` func)
