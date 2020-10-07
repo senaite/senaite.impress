@@ -88,7 +88,11 @@ module.exports = {
           // This CSS get hooked into WeasyPrint
           from: "../node_modules/bootstrap/dist/css/bootstrap.min.css",
           to: path.resolve(staticPath, "css")
-        }
+        },
+        {
+          from: "../node_modules/@fortawesome/fontawesome-free",
+          to: path.resolve(staticPath, "modules/fontawesome-free")
+        },
       ]
     }),
     // https://webpack.js.org/plugins/provide-plugin/
