@@ -1,7 +1,7 @@
-2.0.0rc2 (unreleased)
+2.0.0rc2 (2020-10-13)
 ---------------------
 
-- Updated resource links
+- Updated resources
 
 
 2.0.0rc1 (2020-08-05)
