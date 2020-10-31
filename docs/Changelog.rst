@@ -1,7 +1,7 @@
 2.0.0rc3 (unreleased)
 ---------------------
 
-- No changes yet
+- #101 Fix Traceback for CCEmails rendering in publish view
 
 
 2.0.0rc2 (2020-10-13)
