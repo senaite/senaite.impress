@@ -138,7 +138,9 @@
               </td>
               <!-- CC Emails -->
               <td>
-                <tal:ccemails repeat="ccemail python:model.CCEmails.split(',')">
+                <tal:ccemails define="ccemails model/CCEmails"
+                              condition="ccemails"
+                              repeat="ccemail python:model.CCEmails.split(',')">
                   <a href="#"
                      tal:attributes="href string:mailto:${ccemail}">
                     <div tal:content="ccemail" />
