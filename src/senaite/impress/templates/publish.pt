@@ -9,6 +9,14 @@
     <title i18n:translate="">SENAITE IMPRESS</title>
     <!-- SENAITE Impress HTML Head -->
     <div tal:replace="structure provider:senaite.impress.htmlhead" />
+    <!-- CUSTOM JS
+         N.B. we render the JS inline, because traversal seems to not work for plone:static resouces!
+    -->
+    <tal:custom_js repeat="script view/get_custom_javascripts">
+      <!-- <tal:t replace="script/filename"/> -->
+      <script type="text/javascript" tal:content="script/filecontents"></script>
+    </tal:custom_js>
+    <!-- /CUSTOM JS -->
   </head>
   <body>
     <div class="container">
