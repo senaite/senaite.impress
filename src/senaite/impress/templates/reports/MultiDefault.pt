@@ -8,6 +8,7 @@
           report_options python:options.get('report_options', {});
           attachments_per_row python:int(report_options.get('attachments_per_row', 2));
           attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
+          show_remarks python:bool(report_options.get('show_remarks', False));
           page_width options/page_width|nothing;
           page_height options/page_height|nothing;
           content_width options/content_width|nothing;
@@ -16,6 +17,20 @@
   <!-- Custom Report Controls -->
   <div id="controls" class="noprint">
     <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
+    <!-- Show Remarks -->
+    <div class="mb-3">
+      <div class="input-group">
+        <div class="custom-control custom-checkbox">
+          <input name="show_remarks" type="checkbox" class="custom-control-input" id="show-remarks">
+          <label class="custom-control-label" for="show-remarks">
+            Remarks
+          </label>
+        </div>
+      </div>
+      <small class="form-text text-muted" i18n:translate="">
+        Show Sample Remarks
+      </small>
+    </div>
     <!-- Attachments per row -->
     <div class="mb-3">
       <div class="input-group">
@@ -493,7 +508,7 @@
   </tal:render>
 
   <!-- QC RESULTS -->
-  <tal:render condition="python:True">
+  <tal:render condition="python:False">
     <tal:model repeat="model collection">
       <tal:qc define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
         <div class="row section-results no-gutters" tal:condition="qcanalyses">
@@ -507,14 +522,24 @@
   </tal:render>
 
   <!-- REMARKS -->
-  <tal:render condition="python:True">
+  <tal:render condition="show_remarks">
     <tal:model repeat="model collection">
       <div class="row section-remarks no-gutters"
            tal:define="remarks model/getRemarks"
            tal:condition="remarks">
-        <div class="">
+        <div class="remarks_history">
           <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
-          <div class="text-info" tal:content="structure remarks"></div>
+          <tal:record repeat="record remarks">
+            <div class="record" tal:attributes="id record/id;">
+              <div class="record-header border-bottom" tal:condition="record/user_id">
+                <span class="record-user" tal:content="record/user_id"/>
+                <span class="record-username" tal:content="record/user_name"/>
+                <span class="record-date" tal:content="record/created_ulocalized"/>
+              </div>
+              <div class="record-content"
+                   tal:content="structure record/html_content"></div>
+            </div>
+          </tal:record>
         </div>
       </div>
     </tal:model>

@@ -1,6 +1,7 @@
 2.0.0rc3 (unreleased)
 ---------------------
 
+- #103 Fix remarks rendering in reports
 - #101 Fix Traceback for CCEmails rendering in publish view
 
 
