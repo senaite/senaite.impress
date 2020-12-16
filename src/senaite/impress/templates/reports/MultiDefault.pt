@@ -353,7 +353,7 @@
           </tr>
           <tr>
             <td class="label" i18n:translate="">Date Verified</td>
-            <td tal:content="python:view.to_localized_time(model.get_transition_date('bika_ar_workflow', 'verified'))"></td>
+            <td tal:content="python:view.to_localized_time(model.getDateVerified())"></td>
           </tr>
           <tr>
             <td class="label" i18n:translate="">Date Published</td>
