@@ -1,6 +1,8 @@
-2.0.0rc3 (unreleased)
+2.0.0rc3 (2021-01-04)
 ---------------------
 
+- Updated resources
+- Updated build system to Webpack 5
 - #103 Fix remarks rendering in reports
 - #101 Fix Traceback for CCEmails rendering in publish view
 

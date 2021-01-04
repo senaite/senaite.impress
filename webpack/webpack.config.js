@@ -5,6 +5,7 @@ const childProcess = require("child_process");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const gitCmd = "git rev-list -1 HEAD -- `pwd`";
@@ -12,10 +13,15 @@ let gitHash = childProcess.execSync(gitCmd).toString().substring(0, 7);
 
 const staticPath = path.resolve(__dirname, "../src/senaite/impress/static");
 
-const devMode = process.env.NODE_ENV !== 'production';
+const devMode = process.env.mode == "development";
+const prodMode = process.env.mode == "production";
+const mode = process.env.mode;
+console.log(`RUNNING WEBPACK IN '${mode}' MODE`);
 
 
 module.exports = {
+  // https://webpack.js.org/configuration/mode/#usage
+  mode: mode,
   context: path.resolve(__dirname, "app"),
   entry: {
     main: [
@@ -24,7 +30,8 @@ module.exports = {
     ]
   },
   output: {
-    filename: `[name]-${gitHash}.js`,
+    // filename: `[name]-${gitHash}.js`,
+    filename: "[name].js",
     path: path.resolve(staticPath, "bundles"),
     publicPath: "/++plone++senaite.impress.static/bundles"
   },
@@ -51,9 +58,6 @@ module.exports = {
           {
             // https://webpack.js.org/plugins/mini-css-extract-plugin/
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: process.env.NODE_ENV === "development"
-            },
           },
           {
             // https://webpack.js.org/loaders/css-loader/
@@ -67,6 +71,26 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    minimize: prodMode,
+    minimizer: [
+      // https://v4.webpack.js.org/plugins/terser-webpack-plugin/
+      new TerserPlugin({
+        exclude: /\/modules/,
+        terserOptions: {
+          // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+          sourceMap: false, // Must be set to true if using source-maps in production
+          format: {
+            comments: false
+          },
+          compress: {
+            drop_console: true,
+            passes: 2,
+          },
+	      }
+      }),
+    ],
+  },
   plugins: [
     // https://github.com/johnagan/clean-webpack-plugin
     new CleanWebpackPlugin(),
@@ -78,8 +102,10 @@ module.exports = {
     }),
     // https://webpack.js.org/plugins/mini-css-extract-plugin/
     new MiniCssExtractPlugin({
-      filename: devMode ? "[name].css" : "[name].[hash].css",
-      chunkFilename: devMode ? "[id].css" : "[id].[hash].css",
+      // N.B. use stable CSS name, because it is used in tinyMCE content as well
+      //      -> see: `senaite.core.js`
+      // filename: devMode ? "[name].css" : `[name]-${gitHash}.css`,
+      filename: "[name].css"
     }),
     // https://webpack.js.org/plugins/copy-webpack-plugin/
     new CopyPlugin({
