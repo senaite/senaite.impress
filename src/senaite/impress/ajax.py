@@ -237,6 +237,9 @@ class AjaxPublishView(PublishView):
         # get the selected orientation
         orientation = data.get("orientation", "portrait")
 
+        # get a timestamp
+        timestamp = DateTime().ISO8601()
+
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
             paperformat=paperformat, orientation=orientation)
@@ -259,20 +262,21 @@ class AjaxPublishView(PublishView):
         report_uids = map(
             lambda report: report.get("uids", "").split(","), html_reports)
 
-        # prepare some metadata
-        metadata = {
-            "template": template,
-            "paperformat": paperformat,
-            "orientation": orientation,
-            "timestamp": DateTime().ISO8601(),
-        }
-
         # get the storage multi-adapter to save the generated PDFs
         storage = getMultiAdapter(
             (self.context, self.request), IPdfReportStorage)
 
         report_groups = []
         for pdf, html, uids in zip(pdf_reports, html_reports, report_uids):
+            # prepare some metadata
+            # NOTE: We are doing it in the loop to ensure a new dictionary is
+            #       created for each report.
+            metadata = {
+                "template": template,
+                "paperformat": paperformat,
+                "orientation": orientation,
+                "timestamp": timestamp,
+            }
             # ensure we have valid UIDs here
             uids = filter(api.is_uid, uids)
             # convert the bs4.Tag back to pure HTML
