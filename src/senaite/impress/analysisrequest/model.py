@@ -28,11 +28,123 @@ from bika.lims import api
 from senaite.app.supermodel import SuperModel as BaseModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
+from math import floor
+from math import log10
 
 
 class SuperModel(BaseModel):
     """Analysis Request SuperModel
     """
+
+#Start Custom Methods
+    def get_project_contact(self):
+        batch = api.get_object(self.getBatch())
+        project_contact = batch.getReferences(relationship="SDGProjectContact")[0]
+        project_contact_name = project_contact.Firstname + " " + project_contact.Surname
+        return project_contact_name
+
+    def get_attachment_file(self):
+        attachment = self.Attachment[0]
+        return attachment
+
+    def get_analyst_initials(self, analysis):
+        return analysis.getAnalystInitials()
+
+    def get_optimal_high_level(self, analysis):
+        specs = analysis.getResultsRange()
+        return specs.get('max', '')
+
+    def get_optimal_low_level(self, analysis):
+        specs = analysis.getResultsRange()
+        return specs.get('min', '')
+
+    def get_result_bar_percentage(self, analysis):
+        specs = analysis.getResultsRange()
+        perc = 0
+        if specs:
+            min_str = str(specs.get('min', 0)).strip()
+            max_str = str(specs.get('max', 99999)).strip()
+            result_str = str(analysis.getResult()).strip()
+            min = -1
+            max = -1
+            result = -1
+
+            try:
+                min = float(min_str)
+            except ValueError:
+                pass
+            try:
+                max = float(max_str)
+            except ValueError:
+                pass
+            try:
+                result = float(result_str)
+            except ValueError:
+                pass
+
+            if result < float(analysis.getLowerDetectionLimit()):
+                result = 0
+            if min != -1 and max != -1 and result != -1 and max != 0:
+                if result <= min:
+                    perc = (result/min)*(100/3)
+                elif result >= max:
+                    perc = (200/3) + ((100/3)-(100/3)/(result/max))
+                else:
+                    perc = (100/3) + (((result-min)/(max-min))*(100/3))
+        return perc
+
+    def get_formatted_result_or_NT(self, analysis, digits):
+        """Return formatted result or NT
+        """
+        result = analysis.getResult()
+        if analysis is None or result == "":
+            return "NT" #Only if Analysis Service is listed, but not filled out
+        elif float(result) < float(analysis.getLowerDetectionLimit()):
+            return "< " + "0.1"
+        else:
+            result = float(result)
+            result = round(result, digits-int(floor(log10(abs(result))))-1)
+            if result >= 10:
+                result = int(result)
+            return result
+
+    def get_hydro_sf(self, analysis, digits):
+        """Return formatted result or NT
+        """
+        result = analysis.getResult()
+        choices = analysis.getResultOptions()
+        if choices:
+            # Create a dict for easy mapping of result options
+            values_texts = dict(map(
+                lambda c: (str(c["ResultValue"]), c["ResultText"]), choices
+            ))
+
+            # Result might contain a single result option
+            match = values_texts.get(str(result))
+            if match:
+                return match
+
+        if analysis is None or result == "":
+            return "NT" #Only if Analysis Service is listed, but not filled out
+        elif float(result) < float(analysis.getLowerDetectionLimit()):
+            return "< " + str(analysis.getLowerDetectionLimit())
+        else:
+            result = float(result)
+            result = round(result, digits-int(floor(log10(abs(result))))-1)
+            if result >= 100:
+                result = int(result)
+            return result
+
+    def get_received_date(self):
+        """Returns the batch date formatted as [Month Day, Year]
+        """
+        batch = api.get_object(self.getBatch())
+        try:
+            received_date = batch.SDGDate.strftime("%b %d, %Y")
+            return received_date or ""
+        except TypeError:
+            raise TypeError("No SDG Recieved Date")
+#End Custom Methods
 
     def is_invalid(self):
         return self.isInvalid()
