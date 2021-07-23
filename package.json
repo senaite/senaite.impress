@@ -1,6 +1,6 @@
 {
   "name": "senaite.impress",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "",
   "main": "senaite.impress.printview.js",
   "scripts": {
