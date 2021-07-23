@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-03-01 12:58+0000\n"
+"POT-Creation-Date: 2021-07-23 20:44+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: Stefan Gruber <s.gruber@liscon.de>, 2019\n"
 "Language-Team: German (https://www.transifex.com/senaite/teams/87187/de/)\n"
@@ -242,7 +242,7 @@ msgstr "Eingegangen"
 
 #: senaite/impress/templates/reports/Default.pt:490
 msgid "Remarks"
-msgstr "Hinweise"
+msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:541
 #: senaite/impress/templates/reports/MultiDefault.pt:569

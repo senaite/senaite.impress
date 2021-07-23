@@ -1,240 +1,243 @@
 # --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
 # SOME DESCRIPTIVE TITLE.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translators:
+# trendspotter, 2020
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2021-07-23 20:44+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Lao (Laos) (https://www.transifex.com/senaite/teams/87187/lo_LA/)\n"
+"Last-Translator: trendspotter, 2020\n"
+"Language-Team: Czech (https://www.transifex.com/senaite/teams/87187/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: senaite.impress\n"
-"Language: lo_LA\n"
+"Language: cs\n"
 
 #: senaite/impress/templates/reports/Default.pt:125
 #: senaite/impress/templates/reports/MultiDefault.pt:123
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:123
 msgid "Analysis Report"
-msgstr ""
+msgstr "Zpráva o analýze"
 
 #: senaite/impress/templates/reports/Default.pt:613
 #: senaite/impress/templates/reports/MultiDefault.pt:641
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:562
 msgid "Analysis results relate only to the samples tested."
-msgstr ""
+msgstr "Výsledky analýzy se týkají pouze testovaných vzorků."
 
 #: senaite/impress/templates/reports/Default.pt:518
 #: senaite/impress/templates/reports/MultiDefault.pt:544
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:465
 msgid "Attachment for"
-msgstr ""
+msgstr "Příloha pro"
 
 #: senaite/impress/templates/reports/Default.pt:502
 #: senaite/impress/templates/reports/MultiDefault.pt:528
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:449
 msgid "Attachments for ${DYNAMIC_CONTENT}"
-msgstr ""
+msgstr "Příloha pro ${DYNAMIC_CONTENT}"
 
 #: senaite/impress/templates/reports/Default.pt:25
 #: senaite/impress/templates/reports/MultiDefault.pt:23
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:23
 msgid "Attachments per Row"
-msgstr ""
+msgstr "Přílohy na řádku"
 
 #: senaite/impress/templates/reports/Default.pt:294
 #: senaite/impress/templates/reports/MultiDefault.pt:305
 msgid "Batch ID"
-msgstr ""
+msgstr "ID Dávky"
 
 #: senaite/impress/templates/reports/Default.pt:348
 #: senaite/impress/templates/reports/MultiDefault.pt:359
 msgid "Batch Labels"
-msgstr ""
+msgstr "Štítky Dávky"
 
 #: senaite/impress/templates/publish.pt:130
 msgid "CC Contacts"
-msgstr ""
+msgstr "CC Kontakty"
 
 #: senaite/impress/templates/publish.pt:131
 msgid "CC Emails"
-msgstr ""
+msgstr "CC E-maily"
 
 #: senaite/impress/templates/publish.pt:128
 #: senaite/impress/templates/reports/Default.pt:306
 #: senaite/impress/templates/reports/MultiDefault.pt:317
 msgid "Client"
-msgstr ""
+msgstr "Klient"
 
 #: senaite/impress/templates/reports/Default.pt:302
 #: senaite/impress/templates/reports/MultiDefault.pt:313
 msgid "Client Batch ID"
-msgstr ""
+msgstr "ID Dávky klienta"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:182
 msgid "Client Order"
-msgstr ""
+msgstr "Objednávka klienta"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:173
 msgid "Client Reference"
-msgstr ""
+msgstr "Reference klienta"
 
 #: senaite/impress/templates/reports/Default.pt:313
 #: senaite/impress/templates/reports/MultiDefault.pt:324
 msgid "Client SID"
-msgstr ""
+msgstr "SID Klienta"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:191
 msgid "Client Sample ID"
-msgstr ""
+msgstr "ID vzorku klienta"
 
 #: senaite/impress/templates/publish.pt:129
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:164
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #: senaite/impress/templates/reports/Default.pt:20
 #: senaite/impress/templates/reports/MultiDefault.pt:18
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:18
 msgid "Custom Report Options"
-msgstr ""
+msgstr "Možnosti vlastních Zpráv"
 
 #: senaite/impress/templates/reports/Default.pt:333
 #: senaite/impress/templates/reports/MultiDefault.pt:344
 msgid "Date Published"
-msgstr ""
+msgstr "Datum publikování"
 
 #: senaite/impress/templates/reports/Default.pt:325
 #: senaite/impress/templates/reports/MultiDefault.pt:336
 msgid "Date Received"
-msgstr ""
+msgstr "Datum přijetí"
 
 #: senaite/impress/templates/reports/Default.pt:329
 #: senaite/impress/templates/reports/MultiDefault.pt:340
 msgid "Date Verified"
-msgstr ""
+msgstr "Datum ověření"
 
 #: senaite/impress/controlpanel.py:50
 msgid "Default Orientation"
-msgstr ""
+msgstr "Výchozí orientace"
 
 #: senaite/impress/controlpanel.py:42
 msgid "Default Paper Format"
-msgstr ""
+msgstr "Výchozí formát papíru"
 
 #: senaite/impress/controlpanel.py:34
 msgid "Default Template"
-msgstr ""
+msgstr "Výchozí šablona"
 
 #: senaite/impress/controlpanel.py:75
 msgid "Developer Mode"
-msgstr ""
+msgstr "Vývojářský mód"
 
 #: senaite/impress/templates/reports/Default.pt:658
 #: senaite/impress/templates/reports/MultiDefault.pt:686
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:607
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 #: senaite/impress/templates/reports/Default.pt:525
 #: senaite/impress/templates/reports/MultiDefault.pt:551
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:472
 msgid "Filename:"
-msgstr ""
+msgstr "Název souboru:"
 
 #: senaite/impress/controlpanel.py:67
 msgid "Footer Text"
-msgstr ""
+msgstr "Text zápatí"
 
 #: senaite/impress/ajax.py:324
 msgid "Generated reports for: {}, "
-msgstr ""
+msgstr "Generované zprávy pro: {},"
 
 #: senaite/impress/configure.zcml:163
 msgid "HTML to PDF report engine for SENAITE"
-msgstr ""
+msgstr "Nástroj pro export Zpráv z HTML do PDF pro SENAITE"
 
 #: senaite/impress/templates/publish.pt:126
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: senaite/impress/templates/publish.pt:110
 msgid "Impress Controlpanel"
-msgstr ""
+msgstr "Impress Ovládací panel"
 
 #: senaite/impress/profiles/default/actionicons.xml
 #: senaite/impress/profiles/default/controlpanel.xml
 msgid "Impress Settings"
-msgstr ""
+msgstr "Nastavení Impress"
 
 #: senaite/impress/controlpanel.py:51
 msgid "Initially loaded orientation"
-msgstr ""
+msgstr "Počáteční orientace"
 
 #: senaite/impress/controlpanel.py:43
 msgid "Initially loaded paper format"
-msgstr ""
+msgstr "Počáteční formát papíru"
 
 #: senaite/impress/controlpanel.py:35
 msgid "Initially loaded report template"
-msgstr ""
+msgstr "Počáteční šablona Zprávy"
 
 #: senaite/impress/templates/reports/Default.pt:608
 #: senaite/impress/templates/reports/MultiDefault.pt:636
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:557
 msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
-msgstr ""
+msgstr "Metody zahrnuté v harmonogramu akreditace pro tuto laboratoř ${accreditation_body}. Poznámky k analýze nejsou akreditovány"
 
 #: senaite/impress/templates/reports/Default.pt:595
 #: senaite/impress/templates/reports/MultiDefault.pt:623
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:544
 msgid "Not invoiced"
-msgstr ""
+msgstr "Není fakturováno"
 
 #: senaite/impress/templates/reports/Default.pt:35
 #: senaite/impress/templates/reports/MultiDefault.pt:33
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:33
 msgid "Number of attachments rendered within one row per Analysis Request"
-msgstr ""
+msgstr "Počet příloh vypsaných v jednom řádku na žádost o analýzu"
 
 #: senaite/impress/templates/reports/Default.pt:656
 #: senaite/impress/templates/reports/MultiDefault.pt:684
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:605
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #: senaite/impress/templates/reports/Default.pt:255
 #: senaite/impress/templates/reports/MultiDefault.pt:262
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:311
 msgid "Provisional report"
-msgstr ""
+msgstr "Prozatímní zpráva"
 
 #: senaite/impress/templates/reports/Default.pt:337
 #: senaite/impress/templates/reports/MultiDefault.pt:348
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:514
 msgid "Published by"
-msgstr ""
+msgstr "Publikováno od"
 
 #: senaite/impress/templates/reports/Default.pt:481
 #: senaite/impress/templates/reports/MultiDefault.pt:502
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:422
 msgid "QC Results"
-msgstr ""
+msgstr "QC výsledky"
 
 #: senaite/impress/templates/reports/Default.pt:396
 #: senaite/impress/templates/reports/MultiDefault.pt:409
 msgid "Range"
-msgstr ""
+msgstr "Rozsah"
 
 #: senaite/impress/templates/publish.pt:127
 msgid "Received"
-msgstr ""
+msgstr "Přijato"
 
 #: senaite/impress/templates/reports/Default.pt:490
 msgid "Remarks"
@@ -244,117 +247,117 @@ msgstr ""
 #: senaite/impress/templates/reports/MultiDefault.pt:569
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:490
 msgid "Responsibles"
-msgstr ""
+msgstr "Odpovědnosti"
 
 #: senaite/impress/templates/reports/Default.pt:390
 #: senaite/impress/templates/reports/MultiDefault.pt:403
 msgid "Result"
-msgstr ""
+msgstr "Výsledek"
 
 #: senaite/impress/templates/reports/Default.pt:593
 #: senaite/impress/templates/reports/MultiDefault.pt:621
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:542
 msgid "Result out of client specified range."
-msgstr ""
+msgstr "Výsledek mimo rozsah zadaný klientem."
 
 #: senaite/impress/templates/reports/Default.pt:360
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:324
 msgid "Results"
-msgstr ""
+msgstr "Výsledky"
 
 #: senaite/impress/templates/reports/Default.pt:466
 msgid "Results interpretation"
-msgstr ""
+msgstr "Interpretace výsledků"
 
 #: senaite/impress/controlpanel.py:76
 msgid "Returns the raw HTML in the report preview."
-msgstr ""
+msgstr "Vrátí jednoduché HTML v náhledu sestavy."
 
 #: senaite/impress/configure.zcml:163
 #: senaite/impress/templates/publish.pt:9
 msgid "SENAITE IMPRESS"
-msgstr ""
+msgstr "SENAITE IMPRESS"
 
 #: senaite/impress/controlpanel.py:85
 msgid "SENAITE IMPRESS Settings"
-msgstr ""
+msgstr "Nastavení SENAITE IMPRESS"
 
 #: senaite/impress/templates/reports/Default.pt:286
 #: senaite/impress/templates/reports/MultiDefault.pt:297
 msgid "Sample ID"
-msgstr ""
+msgstr "ID vzorku"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:210
 msgid "Sample Point"
-msgstr ""
+msgstr "Bod vzorku"
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:220
 msgid "Sample Remarks"
-msgstr ""
+msgstr "Poznámky vzorku"
 
 #: senaite/impress/templates/reports/Default.pt:317
 #: senaite/impress/templates/reports/MultiDefault.pt:328
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:200
 msgid "Sample Type"
-msgstr ""
+msgstr "Typ vzorku"
 
 #: senaite/impress/templates/reports/Default.pt:321
 #: senaite/impress/templates/reports/MultiDefault.pt:332
 msgid "Specification"
-msgstr ""
+msgstr "Specifikace"
 
 #: senaite/impress/templates/publish.pt:132
 msgid "State"
-msgstr ""
+msgstr "Stav"
 
 #: senaite/impress/controlpanel.py:58
 msgid "Store Multi-Report PDFs Individually"
-msgstr ""
+msgstr "Ukládat soubory Kombinovaných Zpráv PDF jednotlivě"
 
 #: senaite/impress/controlpanel.py:59
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
-msgstr ""
+msgstr "Uložte generované soubory s více zprávami jednotlivě. Vypněte, chcete-li ukládat soubory PDF s více zprávami pouze pro primární položku Zprávy"
 
 #: senaite/impress/templates/reports/Default.pt:283
 #: senaite/impress/templates/reports/MultiDefault.pt:293
 msgid "Summary"
-msgstr ""
+msgstr "Shrnutí"
 
 #: senaite/impress/templates/reports/Default.pt:193
 #: senaite/impress/templates/reports/MultiDefault.pt:196
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:241
 msgid "Supervisor"
-msgstr ""
+msgstr "Vedoucí"
 
 #: senaite/impress/templates/reports/Default.pt:624
 #: senaite/impress/templates/reports/MultiDefault.pt:652
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:573
 msgid "Test results are at a ${lab_confidence}% confidence level"
-msgstr ""
+msgstr "Výsledky testů jsou na úrovni spolehlivosti ${lab_confidence}%"
 
 #: senaite/impress/controlpanel.py:68
 msgid "The footer text will be rendered on every PDF page and may contain arbitrary HTML"
-msgstr ""
+msgstr "Text zápatí bude umístěn na každé stránce PDF a může obsahovat libovolné HTML"
 
 #: senaite/impress/templates/reports/Default.pt:246
 #: senaite/impress/templates/reports/MultiDefault.pt:251
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:300
 msgid "This Analysis Request has been invalidated due to erroneously published results"
-msgstr ""
+msgstr "Tento požadavek na analýzu byl zrušen z důvodu chybně zveřejněných výsledků"
 
 #: senaite/impress/templates/reports/Default.pt:249
 #: senaite/impress/templates/reports/MultiDefault.pt:254
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:303
 msgid "This Analysis request has been replaced by"
-msgstr ""
+msgstr "Tento požadavek na analýzu byl nahrazen"
 
 #: senaite/impress/templates/reports/Default.pt:620
 #: senaite/impress/templates/reports/MultiDefault.pt:648
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:569
 msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
-msgstr ""
+msgstr "Tento dokument smí být reprodukován pouze v plném rozsahu s písemným  souhlasem ${name_lab}"
 
 #: senaite/impress/templates/reports/Default.pt:393
 #: senaite/impress/templates/reports/MultiDefault.pt:406
 msgid "Unit"
-msgstr ""
+msgstr "Jednotka"
