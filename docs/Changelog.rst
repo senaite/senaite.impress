@@ -1,4 +1,4 @@
-2.0.0 (unreleased)
+2.0.0 (2021-07-26)
 ------------------
 
 - #108 Fix duplicate metadata in single reports
