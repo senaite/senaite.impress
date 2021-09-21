@@ -27,7 +27,7 @@ EDITS:
   <!-- BEGIN Custom Report Controls -->
   <div id="controls" class="noprint">
     <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
-    <div class="mb-3"> 
+    <div class="mb-3">
       <!-- BEGIN Attachments per row -->
       <div class="input-group">
         <div class="input-group-prepend">
@@ -324,17 +324,17 @@ EDITS:
                 </span>
               </div>
               <div class="client-street header-detail">
-                <div tal:replace="newmodel/Client/PostalAddress/address|nothing"></div>
+                <div tal:replace="newmodel/Client/PhysicalAddress/address|nothing"></div>
               </div>
               <div class="client-city header-detail">
-                <div tal:replace="newmodel/Client/PostalAddress/city|nothing"></div>
+                <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
               </div>
               <div class="header-detail">
                 <span class="client-state ">
-                  <div tal:replace="newmodel/Client/PostalAddress/state|nothing"></div>
+                  <div tal:replace="newmodel/Client/PhysicalAddress/state|nothing"></div>
                 </span>
                 <span class="client-zip">
-                  <div tal:replace="newmodel/Client/PostalAddress/zip|nothing"></div>
+                  <div tal:replace="newmodel/Client/PhysicalAddress/zip|nothing"></div>
                 </span>
               </div>
             </div>
