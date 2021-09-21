@@ -317,12 +317,6 @@ EDITS:
               <div class="client-name header-detail">
                 <div tal:replace="newmodel/Client/Name|nothing"></div>
               </div>
-              <div>
-                <span>
-                  <div class="header-label" tal:content="string:Acct #:"></div>
-                  <div class="header-detail" tal:content="newmodel/Client/ClientID|nothing"></div>
-                </span>
-              </div>
               <div class="client-street header-detail">
                 <div tal:replace="newmodel/Client/PhysicalAddress/address|nothing"></div>
               </div>
@@ -335,6 +329,12 @@ EDITS:
                 </span>
                 <span class="client-zip">
                   <div tal:replace="newmodel/Client/PhysicalAddress/zip|nothing"></div>
+                </span>
+              </div>
+              <div>
+                <span>
+                  <div class="header-label" tal:content="string:Acct #:"></div>
+                  <div class="header-detail" tal:content="newmodel/Client/ClientID|nothing"></div>
                 </span>
               </div>
             </div>
