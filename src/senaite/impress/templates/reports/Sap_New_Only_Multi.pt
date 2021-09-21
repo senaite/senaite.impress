@@ -1468,8 +1468,6 @@ EDITS:
           </table>
         </div>
       </div>
-    </tal:subcollection>
-  </tal:subgroup>
   <!--Attachment COC-->
   <tal:model repeat="model collection">
     <tal:check condition="model/Attachment">
