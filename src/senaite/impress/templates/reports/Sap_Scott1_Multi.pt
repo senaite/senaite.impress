@@ -161,7 +161,7 @@ EDITS:
           <span class="cover-subject-header">SUBJECT: </span>
           <span>Sample Delivery Group</span>
           <span tal:content="model/Batch/Title|nothing"></span>
-          <span tal:content="python:model.get_grower_contact()"></span>
+          <!-- <span tal:content="python:model.get_grower_contact()"></span> -->
           <!-- <span tal:content="model/Batch/Project|nothing"></span> -->
         </div>
         <br>
