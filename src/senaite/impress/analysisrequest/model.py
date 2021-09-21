@@ -43,13 +43,15 @@ class SuperModel(BaseModel):
         project_contact_name = project_contact.Firstname + " " + project_contact.Surname
         return project_contact_name
 
+    def get_grower_contact(self):
+        batch = api.get_object(self.getBatch())
+        project_contact = batch.getReferences(relationship="SDGGrowerContact")[0]
+        project_contact_name = project_contact.Firstname + " " + project_contact.Surname
+        return project_contact_name
+
     def get_attachment_file(self):
         attachment = self.Attachment[0]
         return attachment
-
-    def get_attachments(self):
-        attachment = self.Attachment
-        return self.Attachment
 
     def get_analyst_initials(self, analysis):
         return analysis.getAnalystInitials()
@@ -130,8 +132,47 @@ class SuperModel(BaseModel):
 
         if analysis is None or result == "":
             return "NT" #Only if Analysis Service is listed, but not filled out
+        #Common Citizen Hack
+        elif self.getClient().ClientID == "NAL20-004" and analysis.Keyword in ('hydro_nickel','hydro_copper'):
+            if float(result) < 0.02:
+                return "< 0.02"
+            else:
+                result = float(result)
+                result = round(result, digits-int(floor(log10(abs(result))))-1)
+                if result >= 100:
+                    result = int(result)
+                return result
+        elif self.getClient().ClientID == "NAL20-004" and analysis.Keyword == 'hydro_molybdenum':
+            if float(result) < 0.01:
+                return "< 0.01"
+            else:
+                result = float(result)
+                result = round(result, digits-int(floor(log10(abs(result))))-1)
+                if result >= 100:
+                    result = int(result)
+                return result
+        #End Common Citizen Hack
         elif float(result) < float(analysis.getLowerDetectionLimit()):
             return "< " + str(analysis.getLowerDetectionLimit())
+        elif float(result) > float(analysis.getUpperDetectionLimit()):
+            if analysis.getUpperDetectionLimit() >= 10000:
+                return "> " + str(int(analysis.getUpperDetectionLimit()))
+            else:
+                return "> " + str(analysis.getUpperDetectionLimit())
+        elif analysis.Keyword in ('surface_ecoli_mpn_10x','surface_coliform_mpn_10x','surface_ecoli_mpn_100x','surface_coliform_mpn_100x','surface_coliform_mpn','surface_ecoli_mpn'):
+            result = float(result)
+            if result < 100:
+                result = round(result, digits-int(floor(log10(abs(result))))-1)
+            if result >= 100 and result < 1000:
+                result = round(result, 4-int(floor(log10(abs(result))))-1)
+                intresult = int(result)
+                if intresult == result: result = intresult
+            if result >= 1000 and result < 10000:
+                result = round(result, 5-int(floor(log10(abs(result))))-1)
+            if result >= 10000:
+                result = round(result, 5-int(floor(log10(abs(result))))-1)
+                result = int(result)
+            return result
         else:
             result = float(result)
             result = round(result, digits-int(floor(log10(abs(result))))-1)
