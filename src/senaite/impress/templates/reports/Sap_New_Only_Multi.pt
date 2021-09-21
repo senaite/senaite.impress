@@ -366,7 +366,7 @@ EDITS:
                 </th>
               <tr>
             </thead>
-            <tbody tal:define="model subcollection">
+            <tbody tal:define="model python:view.get_one_model(collection)">
               <tr class="sugars">
                 <td style="vertical-align: text-top;">
                   <strong>Sugars, Total<tal:acc replace="accredited_symbol"/></strong>
