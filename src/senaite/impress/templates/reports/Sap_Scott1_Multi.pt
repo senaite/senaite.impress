@@ -1753,6 +1753,17 @@ EDITS:
       </div>
     </tal:subcollection>
   </tal:subgroup>
+  <!--Attachment COC-->
+  <tal:model repeat="model collection">
+    <tal:check condition="model/Attachment">
+      <tal:attachment define="attachment python:model.get_attachment_file()">
+        <figure class="figure">
+          <img class="coc figure-img img-fluid"
+              tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+        </figure>
+      </tal:attachment>
+    </tal:check>
+  </tal:model>
   <!-- <tal:render condition="python:True">
     <tal:model repeat="model collection">
       <tal:attachment tal:define="attachments python:model.get_sorted_attachments('r');">
