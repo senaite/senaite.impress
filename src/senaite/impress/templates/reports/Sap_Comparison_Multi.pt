@@ -121,7 +121,7 @@ EDITS:
   </tal:css>
   <!-- END CSS Styling -->
   <!-- BEING Cover Letter -->
-  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_sap_report_count(collection);">
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection);">
     <div class="cover-letter">
       <div class="cover-body">
         <div class="cover-date">
