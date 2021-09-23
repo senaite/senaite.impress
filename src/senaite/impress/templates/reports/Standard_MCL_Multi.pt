@@ -1,0 +1,546 @@
+<!--
+AUTHOR:   Paul VanderWeele
+DATE:     6/24/2019
+PURPOSE:  Initial report template for NEWAGE LIMS via Senaite
+EDITS:
+6/24/2019     Create report and begin cleaning out unused code.
+8/20/2019     Affix footer to the bottom of the report.
+ -->
+<tal:report
+  i18n:domain="senaite.impress"
+  define="collection view/collection;
+          laboratory view/laboratory;
+          reporter python:view.current_user;
+          accredited_symbol string:*;
+          outofrange_symbol string:⚠;
+          footer python:view.get_footer_text();
+          report_options python:options.get('report_options', {});
+          attachments_per_row python:int(report_options.get('attachments_per_row', 2));
+          attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
+          page_width options/page_width|nothing;
+          page_height options/page_height|nothing;
+          content_width options/content_width|nothing;
+          content_height options/content_height|nothing;
+          letterhead python:view.get_resource_url('++plone++nal.lims/images/default_letterhead.png')">
+
+  <!-- Custom Report Controls -->
+  <div id="controls" class="noprint">
+    <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
+    <!-- Attachments per row -->
+    <div class="mb-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="attachments_per_row" i18n:translate="">
+            Attachments per Row
+          </label>
+        </div>
+        <input tal:attributes="value attachments_per_row"
+               type="number"
+               class="form-control"
+               name="attachments_per_row"
+               min="1"/>
+      </div>
+      <small class="form-text text-muted" i18n:translate="">
+        Number of attachments rendered within one row per Analysis Request
+      </small>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+   console.info("######################################################################");
+   window.options = "<tal:t replace='options'/>";
+   console.log(window.options);
+   console.info("######################################################################");
+  </script>
+
+  <tal:css>
+    <style type="text/css">
+     .report h1 { font-size: 1.4em; font-weight: bold; line-height: normal;}
+     .report h2 { font-size: 120%; }
+     .report h3 { font-size: 110%; }
+     .report hr.blue {border-color: #003a5d; margin-bottom: -12px;}
+     .report hr.yellow {border-color: #f7b330; padding: 0;}
+     .report hr.blue-2 {border-color: #003a5d; margin-top: -12px;}
+     .report table.noborder td, .report table.noborder th { border: none;}
+     .report .whole-page {height: 792pt; width: 111%; margin-left: -10mm; padding: 0; margin-top: -40px;}
+     .report .sig-text {margin-left: 20px; padding-top: 5px; margin-top: -10px; border-top: solid black 2px;}
+     .report .results {margin-top: 30px; font-size: 7pt;}
+     .report .indented {padding-left: 8px;}
+     .report .center {text-align: center;}
+     .report .thead {font-size: 9pt;}
+     .report .result-bar {padding-bottom: 0; margin-bottom: -3px;}
+     .report .end-result-bar {padding-bottom: 0; margin-bottom: -10px; margin-top: -10px;}
+     .report .comments {font-weight: bold; padding: 4px;}
+     .report .comments p {padding-left: 10px;}
+     .report table td {vertical-align: top;}
+     .report table td.label { font-weight: bold;}
+     .report table td.detail { padding-left: 10px;}
+     .report .section-header {padding-top: 0px; margin-top: 0px;}
+     .report .section-header img.logo { width: 250px; padding-top: 25px; margin-right: 20px;}
+     .report .section-footer {
+       position: absolute;
+       width: 116%;
+       bottom: -10mm;
+       font-size: .8em;
+     }
+      div.cover-page {height: 792pt;}
+      div.cover-letter {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
+      div.cover-body {font-size: 8pt; padding-top: 140pt; padding-left: 40pt; width: 570pt;}
+      div.cover-date {font-weight: bold;}
+      div.cover-client {font-weight: bold;}
+      div.cover-client-contact {font-weight: bold;}
+      span.cover-subject-header {font-weight: bold;}
+      div.blank-page {height: 792pt;}
+      img.coc {height: 792pt; margin-left: -40pt; margin-top: -45pt;}
+      div.blank-page-background {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
+      h4.blank-text {margin-left: 150pt; padding-top: 370pt;}
+      td.president-sig img {width: 150pt;}
+      td.vp-sig img {width: 150pt;}
+      td.president-title {vertical-align: top;}
+      td.vp-title {vertical-align: top;}
+     @page {
+	@bottom-right {
+         vertical-align: top;
+         margin-top: 2mm;
+         font-size: 9pt;
+         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page + 1) " <tal:t i18n:translate=''>of</tal:t> " counter(pages + 2);
+       }
+
+     }
+    </style>
+  </tal:css>
+  <!-- BEING Cover Letter -->
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_hydro_report_count(collection);">
+    <div class="cover-letter">
+      <div class="cover-body">
+        <div class="cover-date">
+          <tal:date replace="python:view.get_today()"/>
+        </div>
+        <br>
+        <div class="cover-client">
+          <div class="cover-client-name">
+            <div tal:replace="model/Client/Name|nothing"></div>
+          </div>
+          <div class="cover-client-address">
+            <div tal:replace="model/Client/PostalAddress/address|nothing"></div>
+          </div>
+          <div class="cover-client-city">
+            <div tal:replace="model/Client/PostalAddress/city|nothing"></div>
+          </div>
+          <div class="cover-client-statezip">
+          <span class="client-state">
+            <div tal:replace="model/Client/PostalAddress/state|nothing"></div>
+          </span>
+          <span class="client-zip">
+            <div tal:replace="model/Client/PostalAddress/zip|nothing"></div>
+          </span>
+          </div>
+          <br>
+          <div class="cover-client-contact">
+            <span>ATTN: </span>
+            <span tal:content="python:model.get_project_contact()"></span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-subject">
+          <span class="cover-subject-header">SUBJECT: </span>
+          <span>Sample Delivery Group</span>
+          <span tal:content="model/Batch/Title|nothing"></span>
+          <!-- <span tal:content="model/Batch/Project|nothing"></span> -->
+        </div>
+        <br>
+        <div class="cover-salutation">
+          <div>
+            <span>Dear</span>
+            <span tal:replace="python:model.get_project_contact()"></span>
+            <span>,</span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-first-paragraph">
+          The following is the final report containing the analytical result for the samples delivered on <tal:date replace="python:model.get_received_date()"/>. The report is inclusive of all sample results, chain of custodies, and this cover letter.
+        </div>
+        <br>
+        <div class="cover-second-paragraph">
+          All samples were analyzed in accordance with the parameters outline on the chain of custody records and the oral and/or written correspondence between yourself and NEW AGE Laboratories. NEW AGE certifies that, to our best knowledge, this data package is in compliance with the terms and conditions of the contract, both technically and for completeness, and that test results meet all requirements of NEW AGE's Quality Assurance Manual. NEW AGE is an ISO/IEC 17025:2017 certified laboratory and meets the requiremnts of the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food and Pharmaceutical-2010 and APLAC TC 007 Guidelines for Food Testing Laboratories.
+        </div>
+        <br>
+        <div class="cover-third-paragraph">
+          Please review the report and contact our office if you have any questions or need additional information. Thank you for choosing NEW AGE Laboratories for this important project. We look forward to working with you again in the future.
+        </div>
+        <br>
+        <div class="cover-sincerely">
+          <div>Sincerely,</div>
+          <div><strong>NEW AGE Laboratories</strong></div>
+        </div>
+        <br>
+        <div class="cover-presidents">
+          <table>
+            <colgroup>
+              <col style="width: 65%;">
+            </colgroup>
+            <tr class="president-signatures">
+              <td class="president-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+              </td>
+              <td class="vp-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/vp_signature.png')"/>
+              </td>
+            </tr>
+            <tr class="president-names">
+              <td class="president-name">
+                <div>Scott D. Wall</div>
+              </td>
+              <td class="vp-name">
+                <div>Irish L. Gallagher</div>
+              </td>
+            </tr>
+            <tr class="president-titles">
+              <td class="president-title">
+                <div>President</div>
+              </td>
+              <td class="vp-title">
+                <div>Vice President of Laboratory Operations</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <br>
+        <div class="cover-pjla">
+          <div style="font-size: 6pt;">Parameters marked with an astrisk <tal:acc replace="accredited_symbol"/> are <strong>not</strong> accredited under our ISO/IEC 17025:2017 scope</div>
+          <img style="height: 120px;" tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pjla.png')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Cover Letter -->
+  <!-- BEGIN Blank Page-->
+  <div class="blank-page">
+    <div class="blank-page-background">
+      <h4 class="blank-text">This Page Is Intentionally Left Blank</h4>
+    </div>
+  </div>
+  <!-- END Blank Page-->
+        <!-- NEW HEADER -->
+<tal:model repeat="model collection">
+  <tal:render condition="python:True">
+    <tal:batch define="batch model/Batch">
+      <div class="whole-page">
+        <div class="row section-header no-gutters">
+            <table class="w-100 mb-0 noborder">
+              <colgroup>
+                <col style="width:30%"/>
+                <col style="width:70%"/>
+              </colgroup>
+              <tr>
+                <td class="align-left text-left">
+                  <img class="logo"
+                       tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/logo.png')"/>
+                </td>
+                <td class="align-middle">
+                  <table class="w-100 mb-0 noborder sample-info-table">
+                    <colgroup>
+                      <col style="width:34%"/>
+                      <col style="width:34%"/>
+                      <col style="width:32%"/>
+                    </colgroup>
+                    <tr>
+                      <td>
+                        <table class="w-100 mb-0 noborder">
+                          <tr>
+                            <td class="label">
+                              Client:
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="detail">
+                              <div class="client-name">
+                                <div tal:replace="model/Client/Name|nothing"></div>
+                              </div>
+                              <div class="client-street">
+                                <div tal:replace="model/Client/PostalAddress/address|nothing"></div>
+                              </div>
+                              <div class="client-city">
+                                <div tal:replace="model/Client/PostalAddress/city|nothing"></div>
+                              </div>
+                              <span class="client-state">
+                                <div tal:replace="model/Client/PostalAddress/state|nothing"></div>
+                              </span>
+                              <span class="client-zip">
+                                <div tal:replace="model/Client/PostalAddress/zip|nothing"></div>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td>
+                        <table class="w-100 mb-0 noborder">
+                          <tr>
+                            <td class="label">
+                              Data Reported For:
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="detail">
+                              <div tal:condition="model/Batch/ReportContact">
+                                <div tal:replace="model/Batch/ReportContact"></div>
+                              </div>
+                              <div tal:condition="python: not model.Batch.ReportContact">
+                                <div tal:replace="model/Batch/ProjectContact/Fullname|nothing"></div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="label">
+                              Sample Location:
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="detail">
+                              <div tal:replace="model/SamplePoint/title|nothing"></div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td>
+                        <table class="w-100 mb-0 noborder">
+                          <tr>
+                            <td class="nal-acct-id label">
+                              NAL ACCT ID:
+                            </td>
+                          </tr>
+                          <tr>
+                             <td class="detail">
+                               <div tal:replace="model/Client/ClientID|nothing"></div>
+                             </td>
+                          </tr>
+                          <tr>
+                            <td class="collected-by label">
+                              Collected By:
+                            </td>
+                          </tr>
+                            <tr>
+                            <td class="detail">
+                              <div tal:replace="model/Batch/SamplerContact/Fullname|nothing"></div>
+                            </td>
+                          </tr>
+                          <tr tal:condition="model/Client/MBGGrowerNumber">
+                            <td class="grower label">
+                              MBG Grower #:
+                            </td>
+                          </tr>
+                          <tr tal:condition="model/Client/MBGGrowerNumber">
+                            <td class="detail">
+                              <tal:span content="model/Client/MBGGrowerNumber"></tal:span>
+                            </td>
+                            </tr>
+                        </table>
+                      </td>
+                  </tr>
+                    <tr>
+                      <td class="label">
+                        Sample Name:
+                      </td>
+                      <td class="label">
+                        NAL Sample ID #:
+                      </td>
+                      <td class="label">
+                        NAL SDG ID:
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="detail">
+                        <div tal:replace="model/ClientSampleID|page_height|nothing"></div>
+                      </td>
+                      <td class="detail">
+                          <div tal:replace="model/getId|nothing"></div>
+                      </td>
+                      <td class="detail">
+                        <div tal:replace="model/Batch/title|nothing"></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="label">
+                        Date/Time Sampled:
+                      </td>
+                      <td class="label">
+                        Date/Time Received:
+                      </td>
+                      <td class="label">
+                        Matrix:
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="detail">
+                        <div tal:content="python:(model.DateOfSampling.strftime('%m-%d-%Y') + ' ' + model.TimeOfSampling)"></div>
+                      </td>
+                      <td class="detail">
+                        <div tal:content="python:(batch.SDGDate.strftime('%m-%d-%Y') + ' ' + batch.SDGTime)"></div>
+                      </td>
+                      <td class="detail">
+                        <div tal:replace="model/SampleType/title|nothing"></div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          <div class="row results">
+            <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
+                     repeat="poc analyses_by_poc">
+                <table class="w-100 mb-0 noborder">
+                  <colgroup>
+                    <col style="width:20%"/>
+                    <col style="width:10%"/>
+                    <col style="width:15%"/>
+                    <col style="width:8%"/>
+                    <col style="width:17%"/>
+                    <col style="width:15%"/>
+                    <col style="width:25%"/>
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <td class="label">
+                        TEST PERFORMED
+                      </td>
+                      <td class="label">
+                        RESULTS
+                      </td>
+                      <td class="label">
+                        UNITS
+                      </td>
+                      <td class="label">
+                        LOQ
+                      </td>
+                      <td class="label">
+                        DATE ANALYZED
+                      </td>
+                      <td class="label">
+                        ANALYST
+                      </td>
+                      <td class="label">
+                        METHOD
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+                <div class="result-bar">
+                  <hr class="blue">
+                  <hr class="yellow">
+                </div>
+              <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
+                                     repeat="category python:view.sort_items(categories_by_poc.get(poc))">
+                <table class="w-100 mb-0 noborder">
+                  <colgroup>
+                    <col style="width:20%"/>
+                    <col style="width:10%"/>
+                    <col style="width:15%"/>
+                    <col style="width:8%"/>
+                    <col style="width:17%"/>
+                    <col style="width:15%"/>
+                    <col style="width:25%"/>
+                  </colgroup>
+                  <tbody>
+                    <tal:analyses tal:repeat="analysis python:view.get_analyses_by(model, poc=poc, category=category)">
+                      <tr>
+                        <td>
+                          <span tal:replace="analysis/title"></span>
+                          <span tal:condition="python:not analysis.Accredited" tal:content="accredited_symbol"></span>
+                        </td>
+                        <td>
+                          <span tal:condition="python: not analysis.Inconclusive and analysis.Keyword != 'drinking_nitrate'" tal:content="python:model.get_hydro_sf(analysis,3)"></span>
+                          <span tal:condition="python: not analysis.Inconclusive and analysis.Keyword == 'drinking_nitrate'" tal:content="python:model.get_hydro_sf(analysis,2)"></span>
+                          <span tal:condition="python: analysis.Inconclusive" tal:content="string:INCONCLUSIVE"></span>
+                        </td>
+                        <td>
+                         <span tal:content="python:analysis.Unit"></span>
+                        </td>
+                        <td>
+                          <span tal:condition="python:analysis.getLowerDetectionLimit() != 0" tal:content="python:analysis.getLowerDetectionLimit()"></span>
+                          <span tal:condition="python:analysis.getLowerDetectionLimit() == 0" tal:content="analysis/ProtocolID"></span>
+                        </td>
+                        <td>
+                          <span tal:content="analysis/AnalysisDateTime|nothing"></span>
+                        </td>
+                        <td>
+                          <span tal:replace="python:model.get_analyst_initials(analysis)"></span>
+                        </td>
+                        <td>
+                          <span tal:replace="analysis/Method/title|nothing"></span>
+                        </td>
+                      </tr>
+                    </tal:analyses>
+                  </tbody>
+                </table>
+              </tal:categories_in_poc>
+            </tal:poc>
+          </div>
+          <div class="row section-footer">
+            <div>
+              <strong>The results reported apply solely to the sample analyzed.</strong>
+            </div>
+            <div>
+              <strong>This report may not be reporduced except in full without written permission of NEWAGE Laboratories.</strong>
+            </div>
+            <div>
+              <hr class="blue">
+              <hr class="yellow">
+              <hr class="blue-2">
+            </div>
+            <table class="noborder">
+              <colgroup>
+                <col style="width:80%"/>
+                <col style="width:20%"/>
+              </colgroup>
+              <tr>
+                <td>
+                  <div class="comments">
+                    <div>Comments:</div>
+		    <div>The U.S. EPA has set the following Maximum Contaminant Level (MCL) for safe drinking water:</div>
+		    <div style="margin-left: 20px;">
+			<p style="margin-top:10px;">E. coli/Coliform &emsp;&emsp;Absent or <1 MPN/100mL</p>
+			<p style="margin-top:-10px;">Nitrate, as (N) &nbsp;&emsp;&emsp;<10 mg/L (< = less than)</p>
+			<p style="margin-top:-10px;">Lead (Pb) &emsp;&emsp;&emsp;&emsp;&emsp;<15 ug/L (< = less than)</p>
+			<p style="margin-top:-10px;">Copper (Cu) &ensp;&emsp;&emsp;&emsp;<1300 ug/L (< = less than)</p>
+		    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div>- NAL holds certification under ISO 17025:2017 and meets the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food Standards</div>
+                </td>
+                <td>
+                  <div class="sig-text">
+                    <div>Scott D. Wall</div>
+                    <div>President/Technical Manager</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      </tal:batch>
+    </tal:render>
+  </tal:model>
+
+  <!-- END of Result Pages -->
+  <!--BEGIN Attachments -->
+  <tal:model repeat="model collection">
+    <tal:check condition="model/Attachment">
+      <tal:attachment define="attachment python:model.get_attachment_file()">
+        <figure class="figure">
+          <img class="coc figure-img img-fluid"
+              tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+        </figure>
+      </tal:attachment>
+    </tal:check>
+  </tal:model>
+  <!--END Attachments -->
+</tal:report>
