@@ -46,7 +46,9 @@ class SuperModel(BaseModel):
     def get_grower_contact(self):
         batch = api.get_object(self.getBatch())
         project_contact = batch.getReferences(relationship="SDGGrowerContact")[0]
-        project_contact_name = project_contact.Firstname + " " + project_contact.Surname
+        project_contact_name = ''
+        if project_contact:
+            project_contact_name = project_contact.Firstname + " " + project_contact.Surname
         return project_contact_name
 
     def get_attachment_file(self):
