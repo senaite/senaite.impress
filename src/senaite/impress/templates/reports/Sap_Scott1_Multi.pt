@@ -1632,10 +1632,10 @@ EDITS:
                   <div>
                     <tal:high>
                       <!-- <div tal:content="python:newmodel.get_optimal_high_level('sap_total_nitrogen')" class="high-spec"></div> -->
-                      <div tal:content="1000" class="high-spec"></div>
+                      <div tal:content="string:1000" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="2500" class="low-spec"></div>
+                      <div tal:content="string:2500" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
