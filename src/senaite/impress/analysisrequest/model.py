@@ -37,33 +37,36 @@ class SuperModel(BaseModel):
     """
 
 #Start Custom Methods
-    def get_nitrogen_conversion_ration(self):
+    def get_nitrogen_conversion_effeciency(self):
         total_n = 0
         no3 = 0
         nh4 = 0
         ncr = ''
 
         found = False
-        for i in range(10, 1, -1) and found==False:
-            if self[str('sap_total_nitrogen-'+i)] is not None:
-                found = True
-                total_n = self[str('sap_total_nitrogen-'+i)].Result
+        for i in range(10, 1, -1):
+            if found==False:
+                if self[str('sap_total_nitrogen-'+i)] is not None:
+                    found = True
+                    total_n = self[str('sap_total_nitrogen-'+i)].Result
         if found == False and self.sap_total_nitrogen is not None:
             total_n = self.sap_total_nitrogen.Result
 
         found = False
-        for i in range(10, 1, -1) and found==False:
-            if self[str('sap_nitrogen_as_nitrate-'+i)] is not None:
-                found = True
-                no3 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
+        for i in range(10, 1, -1):
+            if found==False:
+                if self[str('sap_nitrogen_as_nitrate-'+i)] is not None:
+                    found = True
+                    no3 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
         if found == False and self.sap_nitrogen_as_nitrate is not None:
                 no3 = self.sap_nitrogen_as_nitrate.Result
 
         found = False
-        for i in range(10, 1, -1) and found==False:
-            if self[str('sap_nitrogen_as_ammonium-'+i)] is not None:
-                found = True
-                nh4 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
+        for i in range(10, 1, -1):
+            if found==False:
+                if self[str('sap_nitrogen_as_ammonium-'+i)] is not None:
+                    found = True
+                    nh4 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
         if found == False and self.sap_nitrogen_as_ammonium is not None:
             nh4 = self.sap_nitrogen_as_ammonium.Result
 
