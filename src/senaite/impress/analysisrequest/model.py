@@ -46,27 +46,30 @@ class SuperModel(BaseModel):
         found = False
         for i in range(10, 1, -1):
             if found==False:
-                if self[str('sap_total_nitrogen-'+i)] is not None:
+                version = 'sap_total_nitrogen-'+str(i)
+                if self[version] is not None:
                     found = True
-                    total_n = self[str('sap_total_nitrogen-'+i)].Result
+                    total_n = self[version].Result
         if found == False and self.sap_total_nitrogen is not None:
             total_n = self.sap_total_nitrogen.Result
 
         found = False
         for i in range(10, 1, -1):
             if found==False:
-                if self[str('sap_nitrogen_as_nitrate-'+i)] is not None:
+                version = 'sap_nitrogen_as_nitrate-'+str(i)
+                if self[version] is not None:
                     found = True
-                    no3 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
+                    no3 = self[version].Result
         if found == False and self.sap_nitrogen_as_nitrate is not None:
                 no3 = self.sap_nitrogen_as_nitrate.Result
 
         found = False
         for i in range(10, 1, -1):
             if found==False:
-                if self[str('sap_nitrogen_as_ammonium-'+i)] is not None:
+                version = 'sap_nitrogen_as_ammonium-'+str(i)
+                if self[version] is not None:
                     found = True
-                    nh4 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
+                    nh4 = self[version].Result
         if found == False and self.sap_nitrogen_as_ammonium is not None:
             nh4 = self.sap_nitrogen_as_ammonium.Result
 
