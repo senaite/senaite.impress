@@ -1663,9 +1663,9 @@ EDITS:
                   </tal:oldbar>
                 </td>
               </tr>
-              <tr class="nitrogen_conversion_ratio">
+              <tr class="nitrogen_conversion_effeciency">
                 <td style="vertical-align: text-top;">
-                  <strong>Nitrogen Conversion Ratio</strong>
+                  <strong>Nitrogen Conversion Effeciency</strong>
                 </td>
                 <td>
                   <div>%</div>
