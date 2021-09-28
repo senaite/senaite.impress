@@ -326,9 +326,10 @@ EDITS:
                 <div tal:replace="newmodel/Client/PhysicalAddress/address|nothing"></div>
               </div>
               <div class="client-city header-detail">
-                <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
-              </div>
-              <div class="header-detail">
+                <span>
+                  <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
+                </span>
+                <span>, </span>
                 <span class="client-state" tal:define="state newmodel/Client/PhysicalAddress/state|nothing">
                   <div tal:replace="python:view.get_state(state)"></div>
                 </span>
