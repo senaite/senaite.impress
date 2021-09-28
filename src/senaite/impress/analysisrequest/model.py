@@ -84,6 +84,8 @@ class SuperModel(BaseModel):
                 no3 = 0
             ncr = float(1 - ((nh4 + no3)/total_n))
 
+            ncr = round(ncr, 3-int(floor(log10(abs(ncr))))-1)
+
         return ncr
 
     def get_project_contact(self):
@@ -121,8 +123,13 @@ class SuperModel(BaseModel):
                 min = i.get('min', '')
         return min
 
-    def get_result_bar_percentage(self, analysis):
-        specs = analysis.getResultsRange()
+    def get_result_bar_percentage(self, keyword):
+
+        specs = ''
+        for i in self.getResultsRange():
+            if i['keyword'] ==  keyword:
+                specs = i
+        
         perc = 0
         if specs:
             min_str = str(specs.get('min', 0)).strip()
@@ -155,6 +162,41 @@ class SuperModel(BaseModel):
                 else:
                     perc = (100/3) + (((result-min)/(max-min))*(100/3))
         return perc
+
+    # def get_result_bar_percentage(self, analysis):
+    #     specs = analysis.getResultsRange()
+    #     perc = 0
+    #     if specs:
+    #         min_str = str(specs.get('min', 0)).strip()
+    #         max_str = str(specs.get('max', 99999)).strip()
+    #         result_str = str(analysis.getResult()).strip()
+    #         min = -1
+    #         max = -1
+    #         result = -1
+    #
+    #         try:
+    #             min = float(min_str)
+    #         except ValueError:
+    #             pass
+    #         try:
+    #             max = float(max_str)
+    #         except ValueError:
+    #             pass
+    #         try:
+    #             result = float(result_str)
+    #         except ValueError:
+    #             pass
+    #
+    #         if result < float(analysis.getLowerDetectionLimit()):
+    #             result = 0
+    #         if min != -1 and max != -1 and result != -1 and max != 0:
+    #             if result <= min:
+    #                 perc = (result/min)*(100/3)
+    #             elif result >= max:
+    #                 perc = (200/3) + ((100/3)-(100/3)/(result/max))
+    #             else:
+    #                 perc = (100/3) + (((result-min)/(max-min))*(100/3))
+    #     return perc
 
     def get_formatted_result_or_NT(self, analysis, digits):
         """Return formatted result or NT
