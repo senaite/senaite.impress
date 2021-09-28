@@ -393,11 +393,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Sugars, Total');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_total_sugar')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Sugars, Total');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_total_sugar')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -440,11 +440,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Brix');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_brix')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Brix');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_brix')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -487,11 +487,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='pH');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_ph')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='pH');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_ph')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -534,11 +534,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='EC');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_ec')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='EC');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_ec')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -596,11 +596,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Chloride (Cl-)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Chloride (Cl-)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -643,11 +643,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Sulfur (S)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Sulfur (S)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -690,11 +690,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Phosphorous (P)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Phosphorous (P)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -752,11 +752,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Calcium (Ca)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Calcium (Ca)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -799,11 +799,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Potassium (K)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Potassium (K)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -844,11 +844,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='K/Ca Ratio');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='K/Ca Ratio');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -891,11 +891,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Magnesium (Mg)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Magnesium (Mg)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -938,11 +938,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Sodium (Na)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Sodium (Na)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1000,11 +1000,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Aluminum (Al)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Aluminum (Al)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1047,11 +1047,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Boron (B)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Boron (B)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1094,11 +1094,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Cobalt (Co)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Cobalt (Co)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1141,11 +1141,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Copper (Cu)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Copper (Cu)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1188,11 +1188,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Iron (Fe)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Iron (Fe)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1235,11 +1235,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Manganese (Mn)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Manganese (Mn)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1282,11 +1282,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Molybdenum (Mo)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Molybdenum (Mo)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1329,11 +1329,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Nickel (Ni)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Nickel (Ni)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1378,11 +1378,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Selenium (Se)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Selenium (Se)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1427,11 +1427,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Silica (Si)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Silica (Si)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1474,11 +1474,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Zinc (Zn)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Zinc (Zn)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1536,11 +1536,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1583,11 +1583,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1630,11 +1630,11 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_total_nitrogen')" class="high-spec"></div>
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_total_nitrogen')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1677,21 +1677,21 @@ EDITS:
                     <div class="low-ol">Low:</div>
                   </div>
                   <div>
-                    <!-- <tal:high repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrate (NO3)');">
-                      <div tal:content="python:newmodel.get_optimal_high_level(analysis)" class="high-spec"></div>
+                    <tal:high>
+                      <!-- <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div> -->
                     </tal:high>
-                    <tal:low repeat="analysis python:view.get_analyses_by(newmodel, title='Nitrate (NO3)');">
-                      <div tal:content="python:newmodel.get_optimal_low_level(analysis)" class="low-spec"></div>
-                    </tal:low> -->
+                    <tal:low>
+                      <!-- <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div> -->
+                    </tal:low>
                   </div>
                 </td>
                 <td style="text-align: center;">
-                  <!-- <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrate (NO3)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  <tal:newresult>
+                    <div tal:content="structure python:newmodel.get_nitrogen_conversion_ration()" style="font-weight: bold;">NT</div>
                   </tal:newresult>
-                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrate (NO3)');">
-                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,2)" style="font-weight: bold;">NT</div>
-                  </tal:oldresult> -->
+                  <tal:oldresult>
+                    <div tal:content="structure python:oldmodel.get_nitrogen_conversion_ration()" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
                   <div>New</div>

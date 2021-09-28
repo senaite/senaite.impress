@@ -37,6 +37,43 @@ class SuperModel(BaseModel):
     """
 
 #Start Custom Methods
+    def get_nitrogen_conversion_ration(self):
+        total_n = 0
+        no3 = 0
+        nh4 = 0
+        ncr = ''
+
+        found = False
+        for i in range(10, 1, -1) and found==False:
+            if self[str('sap_total_nitrogen-'+i)] is not None:
+                found = True
+                total_n = self[str('sap_total_nitrogen-'+i)].Result
+        if found == False and self.sap_total_nitrogen is not None:
+            total_n = self.sap_total_nitrogen.Result
+
+        found = False
+        for i in range(10, 1, -1) and found==False:
+            if self[str('sap_nitrogen_as_nitrate-'+i)] is not None:
+                found = True
+                no3 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
+        if found == False and self.sap_nitrogen_as_nitrate is not None:
+                no3 = self.sap_nitrogen_as_nitrate.Result
+
+        found = False
+        for i in range(10, 1, -1) and found==False:
+            if self[str('sap_nitrogen_as_ammonium-'+i)] is not None:
+                found = True
+                nh4 = self[str('sap_nitrogen_as_nitrate-'+i)].Result
+        if found == False and self.sap_nitrogen_as_ammonium is not None:
+            nh4 = self.sap_nitrogen_as_ammonium.Result
+
+        if total_n < 0.01:
+            ncr = '-'
+        else:
+            ncr = float(1 - ((nh4 + no3)/total_n))
+
+        return ncr
+
     def get_project_contact(self):
         batch = api.get_object(self.getBatch())
         project_contact = batch.getReferences(relationship="SDGProjectContact")[0]
@@ -58,13 +95,19 @@ class SuperModel(BaseModel):
     def get_analyst_initials(self, analysis):
         return analysis.getAnalystInitials()
 
-    def get_optimal_high_level(self, analysis):
-        specs = analysis.getResultsRange()
-        return specs.get('max', '')
+    def get_optimal_high_level(self, keyword):
+        max = ''
+        for i in self.getResultsRange():
+            if i['keyword'] ==  keyword:
+                max = i.get('max', '')
+        return max
 
-    def get_optimal_low_level(self, analysis):
-        specs = analysis.getResultsRange()
-        return specs.get('min', '')
+    def get_optimal_low_level(self, keyword):
+        min = ''
+        for i in self.getResultsRange():
+            if i['keyword'] ==  keyword:
+                min = i.get('min', '')
+        return min
 
     def get_result_bar_percentage(self, analysis):
         specs = analysis.getResultsRange()
