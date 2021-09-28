@@ -343,6 +343,8 @@ EDITS:
                   <div class="header-detail" tal:content="newmodel/Client/ClientID|nothing"></div>
                 </span>
               </div>
+              <div>
+              </div>
             </div>
           </div>
         </div>
