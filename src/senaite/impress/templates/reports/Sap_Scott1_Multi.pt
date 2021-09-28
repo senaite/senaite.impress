@@ -691,10 +691,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_phosphorous')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_phosphorous')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -712,12 +712,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_phosphorous')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_phosphorous')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -753,10 +753,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_calcium')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_calcium')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -774,12 +774,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_calcium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_calcium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -800,10 +800,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_potassium')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_potassium')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -821,12 +821,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_potassium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_potassium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -845,10 +845,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_kca_ratio')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_kca_ratio')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -866,12 +866,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_kca_ratio')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_kca_ratio')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -892,10 +892,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_magnesium')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_magnesium')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -913,12 +913,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_magnesium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_magnesium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -939,10 +939,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_sodium')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_sodium')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -960,12 +960,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sodium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sodium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1001,10 +1001,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_aluminum')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_aluminum')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1022,12 +1022,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_aluminum')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_aluminum')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1048,10 +1048,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_boron')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_boron')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1069,12 +1069,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_boron')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_boron')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1095,10 +1095,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_cobalt')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_cobalt')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1116,12 +1116,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_cobalt')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_cobalt')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1142,10 +1142,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_copper')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_copper')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1163,12 +1163,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_copper')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_copper')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1189,10 +1189,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_iron')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_iron')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1210,12 +1210,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_iron')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_iron')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1236,10 +1236,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_manganese')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_manganese')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1257,12 +1257,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_manganese')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_manganese')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1283,10 +1283,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_molybdenum')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_molybdenum')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1304,12 +1304,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_molybdenum')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_molybdenum')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1330,10 +1330,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nickel')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nickel')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1353,12 +1353,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nickel')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nickel')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1379,10 +1379,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_selenium')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_selenium')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1402,12 +1402,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_selenium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_selenium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1428,10 +1428,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_silica')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_silica')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1449,12 +1449,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_silica')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_silica')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1475,10 +1475,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_zinc')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_zinc')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1496,12 +1496,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_zinc')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_zinc')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1537,10 +1537,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_ammonium')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_ammonium')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1558,12 +1558,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nitrogen_as_ammonium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nitrogen_as_ammonium')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1584,10 +1584,10 @@ EDITS:
                   </div>
                   <div>
                     <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_nitrate')" class="high-spec"></div>
                     </tal:high>
                     <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_nitrate')" class="low-spec"></div>
                     </tal:low>
                   </div>
                 </td>
@@ -1605,12 +1605,12 @@ EDITS:
                 </td>
                 <td>
                   <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nitrogen_as_nitrate')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nitrogen_as_nitrate')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
