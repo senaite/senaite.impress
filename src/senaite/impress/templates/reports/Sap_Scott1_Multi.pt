@@ -329,8 +329,8 @@ EDITS:
                 <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
               </div>
               <div class="header-detail">
-                <span class="client-state ">
-                  <div tal:replace="newmodel/Client/PhysicalAddress/state|nothing"></div>
+                <span class="client-state" tal:define="state newmodel/Client/PhysicalAddress/state|nothing">
+                  <div tal:replace="python:view.get_state(state)"></div>
                 </span>
                 <span class="client-zip">
                   <div tal:replace="newmodel/Client/PhysicalAddress/zip|nothing"></div>

@@ -62,6 +62,17 @@ class ReportView(Base):
     """AR specific Report View
     """
 #Start Custom Methods
+    def get_state(self, state):
+        state_dict= {
+        'California':'CA',
+        'Michigan':'MI',
+        'Texas':'TX'
+        }
+        abbrev = state_dict[state]
+        if abbrev is not None:
+            state = abbrev
+        return state
+
     def get_IDs(self, model_or_collection):
         """Returns the IDs of all of the ARs
         """
