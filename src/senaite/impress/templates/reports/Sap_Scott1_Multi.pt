@@ -1162,13 +1162,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Copper (Cu)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Copper (Cu)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1209,13 +1209,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Iron (Fe)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Iron (Fe)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1256,13 +1256,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Manganese (Mn)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Manganese (Mn)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1303,13 +1303,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Molybdenum (Mo)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Molybdenum (Mo)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1352,13 +1352,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nickel (Ni)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nickel (Ni)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1401,13 +1401,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Selenium (Se)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Selenium (Se)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1448,13 +1448,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Silica (Si)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Silica (Si)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1495,13 +1495,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Zinc (Zn)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Zinc (Zn)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1557,13 +1557,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Ammonium (NH4)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1604,13 +1604,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Nitrate (NO3)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
@@ -1651,13 +1651,13 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen (N), Total');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
