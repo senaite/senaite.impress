@@ -47,7 +47,7 @@ class SuperModel(BaseModel):
         for i in range(10, 1, -1):
             if found==False:
                 version = 'sap_total_nitrogen-'+str(i)
-                if hasattr(i,version):
+                if hasattr(self,version):
                     found = True
                     total_n = self[version].Result
         if found == False and self.sap_total_nitrogen is not None:
@@ -57,7 +57,7 @@ class SuperModel(BaseModel):
         for i in range(10, 1, -1):
             if found==False:
                 version = 'sap_nitrogen_as_nitrate-'+str(i)
-                if hasattr(i,version):
+                if hasattr(self,version):
                     found = True
                     no3 = self[version].Result
         if found == False and self.sap_nitrogen_as_nitrate is not None:
@@ -67,7 +67,7 @@ class SuperModel(BaseModel):
         for i in range(10, 1, -1):
             if found==False:
                 version = 'sap_nitrogen_as_ammonium-'+str(i)
-                if hasattr(i,version):
+                if hasattr(self,version):
                     found = True
                     nh4 = self[version].Result
         if found == False and self.sap_nitrogen_as_ammonium is not None:
