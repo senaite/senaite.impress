@@ -315,7 +315,7 @@ EDITS:
               </tr>
             </table>
           </div>
-          <div style="min-width: 230px;">
+          <div style="min-width: 300px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
