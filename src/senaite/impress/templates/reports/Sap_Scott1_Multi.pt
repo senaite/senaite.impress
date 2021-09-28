@@ -1654,13 +1654,13 @@ EDITS:
                 <td>
                   <tal:newbar>
                     <!-- <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_total_nitrogen')"> -->
-                    <div tal:define="perc python:1000">
+                    <div tal:define="perc python:int(1000)">
                       <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
                     <!-- <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_total_nitrogen')"> -->
-                    <div tal:define="perc python:2500">
+                    <div tal:define="perc python:int(2500)">
                       <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
                   </tal:oldbar>
