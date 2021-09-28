@@ -135,12 +135,14 @@ class SuperModel(BaseModel):
             found = False
             for i in range(10, 1, -1):
                 if found==False:
-                    version = keyword+str(i)
+                    version = keyword+'-'+str(i)
                     if hasattr(self,version):
                         found = True
                         result_str = str(self[version].Result).strip()
+                        ldl = float(self[version].getLowerDetectionLimit())
             if found == False and self[keyword] is not None:
                 result_str = str(self[keyword].Result).strip()
+                ldl = float(self[keyword].getLowerDetectionLimit())
 
             min_str = str(specs.get('min', 0)).strip()
             max_str = str(specs.get('max', 99999)).strip()
@@ -161,7 +163,7 @@ class SuperModel(BaseModel):
             except ValueError:
                 pass
 
-            if result < float(analysis.getLowerDetectionLimit()):
+            if result < ldl:
                 result = 0
             if min != -1 and max != -1 and result != -1 and max != 0:
                 if result <= min:
