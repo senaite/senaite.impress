@@ -315,7 +315,7 @@ EDITS:
               </tr>
             </table>
           </div>
-          <div style="width: 400px; margin-right: 50px;">
+          <div style="flex: 0 0 auto; width:200px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
