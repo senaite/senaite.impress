@@ -70,7 +70,7 @@ EDITS:
       .report-image div.body {width: 118%; margin-left: -45pt}
       .report-image div.footer {margin-left: -35pt; height: 20pt; width: 115%; margin-top: 2pt;}
       img.nal-logo {width:125px;}
-      table.header-detail-table td {width: 24%; vertical-align: top;}
+      table.header-detail-table td {width: 28%; vertical-align: top;}
       div.header-label {font-weight: bold;}
       div.details {margin-top: 8px; width: 115%;}
 
