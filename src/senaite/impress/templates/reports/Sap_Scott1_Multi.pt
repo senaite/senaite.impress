@@ -247,7 +247,7 @@ EDITS:
             </div>
         </div>
         <div class="details row col-lg-12">
-          <div style="float: right; padding-left: 40px;">
+          <div style="float: right;">
             <table class="header-detail-table">
               <tr>
                 <td>
@@ -315,7 +315,7 @@ EDITS:
               </tr>
             </table>
           </div>
-          <div>
+          <div style="width: 200px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
