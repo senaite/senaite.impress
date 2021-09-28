@@ -78,9 +78,9 @@ class SuperModel(BaseModel):
         else:
             if total_n == '':
                 total_n = 0
-            if nh4 == '':
+            if nh4 == '' or nh4 < 0:
                 nh4 = 0
-            if no3 == '':
+            if no3 == '' or no3 < 0:
                 no3 = 0
             ncr = float(1 - ((nh4 + no3)/total_n))
 
