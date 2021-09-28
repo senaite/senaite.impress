@@ -70,7 +70,7 @@ EDITS:
       .report-image div.body {width: 118%; margin-left: -45pt}
       .report-image div.footer {margin-left: -35pt; height: 20pt; width: 115%; margin-top: 2pt;}
       img.nal-logo {width:125px;}
-      table.header-detail-table td {vertical-align: top;}
+      table.header-detail-table td {width: 24%; vertical-align: top;}
       div.header-label {font-weight: bold;}
       div.details {margin-top: 8px; width: 115%;}
 
@@ -250,16 +250,6 @@ EDITS:
           <div>
             <div style="float: right;">
               <table class="header-detail-table">
-                <colgroup>
-          		    <!-- Parameter -->
-          		    <col style="width: 20%;">
-          		    <!-- Unit -->
-          		    <col style="width: 31%">
-                  <!-- Optimal Range -->
-                  <col style="width: 20%">
-          		    <!-- Result -->
-          		    <col style="width: 20%;">
-                </colgroup>
                 <tr>
                   <td>
                     <div class="header-label">Data Reported To:</div>
