@@ -253,7 +253,7 @@ EDITS:
               <table class="header-detail-table">
                 <colgroup>
           		    <!-- Parameter -->
-          		    <col style="width: 25%;">
+          		    <col style="width: 30%;">
           		    <!-- Unit -->
           		    <col style="width: 20%">
                   <!-- Optimal Range -->
