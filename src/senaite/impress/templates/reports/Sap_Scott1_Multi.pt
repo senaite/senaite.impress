@@ -251,6 +251,16 @@ EDITS:
           <div>
             <div style="float: right;">
               <table class="header-detail-table">
+                <colgroup>
+          		    <!-- Parameter -->
+          		    <col style="width: 25%;">
+          		    <!-- Unit -->
+          		    <col style="width: 20%">
+                  <!-- Optimal Range -->
+                  <col style="width: 30%">
+          		    <!-- Result -->
+          		    <col style="width: 25%;">
+                </colgroup>
                 <tr>
                   <td>
                     <div class="header-label">Data Reported To:</div>
