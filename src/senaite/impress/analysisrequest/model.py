@@ -129,12 +129,21 @@ class SuperModel(BaseModel):
         for i in self.getResultsRange():
             if i['keyword'] ==  keyword:
                 specs = i
-        
+
         perc = 0
         if specs:
+            found = False
+            for i in range(10, 1, -1):
+                if found==False:
+                    version = keyword+str(i)
+                    if hasattr(self,version):
+                        found = True
+                        result_str = str(self[version].Result).strip()
+            if found == False and self[keyword] is not None:
+                result_str = str(self[keyword].Result).strip()
+
             min_str = str(specs.get('min', 0)).strip()
             max_str = str(specs.get('max', 99999)).strip()
-            result_str = str(analysis.getResult()).strip()
             min = -1
             max = -1
             result = -1
