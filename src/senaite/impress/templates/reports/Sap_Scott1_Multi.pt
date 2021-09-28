@@ -247,7 +247,7 @@ EDITS:
             </div>
         </div>
         <div class="details row col-lg-12">
-          <div style="float: right;">
+          <div style="float: right; margin-left: 50px;">
             <table class="header-detail-table">
               <tr>
                 <td>
