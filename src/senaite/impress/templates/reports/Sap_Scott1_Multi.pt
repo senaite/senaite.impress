@@ -250,7 +250,7 @@ EDITS:
         <div class="details row col-lg-12">
           <div>
             <div style="float: right;">
-              <table class="header-detail-table">
+              <table class="header-detail-table" style="margin-left: 5px;">
                 <colgroup>
           		    <col style="width: 15%;">
                   <col style="width: 30%;">
