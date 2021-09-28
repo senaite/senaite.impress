@@ -1687,10 +1687,10 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult>
-                    <div tal:content="structure python:newmodel.get_nitrogen_conversion_ration()" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_nitrogen_conversion_effeciency()" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure python:oldmodel.get_nitrogen_conversion_ration()" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:oldmodel.get_nitrogen_conversion_effeciency()" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
