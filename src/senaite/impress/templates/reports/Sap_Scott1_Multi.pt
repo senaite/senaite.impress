@@ -247,103 +247,101 @@ EDITS:
             </div>
         </div>
         <div class="details row col-lg-12">
-          <div>
-            <div style="float: right;">
-              <table class="header-detail-table">
-                <tr>
-                  <td>
-                    <div class="header-label">Data Reported To:</div>
-                    <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
-                  </td>
-                  <td>
-                    <div class="header-label">Date/Time Sampled:</div>
-                    <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
-                  </td>
-                  <td>
-                    <div class="header-label">Date/Time Received:</div>
-                    <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
-                  </td>
-                  <td>
-                    <div class="header-label">Plant Type:</div>
-                    <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="header-label">Collected By:</div>
-                    <div class="header-detail" tal:content="newmodel/Batch/SamplerContact/Fullname|nothing"></div>
-                  </td>
-                  <td>
-                    <div class="header-label">Sample Name:</div>
-                    <div class="header-detail" style="float: left; text-align: left;">
-                      <div style="font-weight: bold; margin-right: 2pt;">New: </div>
-                      <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
-                    </div>
-                    <div>
-                      <div tal:content="newmodel/ClientSampleID|nothing"></div>
-                      <div tal:content="oldmodel/ClientSampleID|nothing"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="header-label">NAL Sample ID:</div>
-                    <div class="header-detail" style="float: left; text-align: left;">
-                      <div style="font-weight: bold; margin-right: 2pt;">New: </div>
-                      <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
-                    </div>
-                    <div>
-                      <div tal:content="newmodel/getId|nothing"></div>
-                      <div tal:content="oldmodel/getId|nothing"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="header-label">Variety</div>
-                    <div class="header-detail" tal:content="newmodel/Variety|nothing"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="margin-top: -18px;" class="header-label">Sample Location:</div>
-                    <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                    <div style="margin-top: -18px;" class="header-label">Growth Stage:</div>
-                    <div class="header-detail" tal:content="newmodel/GrowthStage|nothing"></div>
-                  </td>
-                </tr>
-              </table>
+          <div style="float: right;">
+            <table class="header-detail-table">
+              <tr>
+                <td>
+                  <div class="header-label">Data Reported To:</div>
+                  <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
+                </td>
+                <td>
+                  <div class="header-label">Date/Time Sampled:</div>
+                  <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
+                </td>
+                <td>
+                  <div class="header-label">Date/Time Received:</div>
+                  <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
+                </td>
+                <td>
+                  <div class="header-label">Plant Type:</div>
+                  <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="header-label">Collected By:</div>
+                  <div class="header-detail" tal:content="newmodel/Batch/SamplerContact/Fullname|nothing"></div>
+                </td>
+                <td>
+                  <div class="header-label">Sample Name:</div>
+                  <div class="header-detail" style="float: left; text-align: left;">
+                    <div style="font-weight: bold; margin-right: 2pt;">New: </div>
+                    <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
+                  </div>
+                  <div>
+                    <div tal:content="newmodel/ClientSampleID|nothing"></div>
+                    <div tal:content="oldmodel/ClientSampleID|nothing"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="header-label">NAL Sample ID:</div>
+                  <div class="header-detail" style="float: left; text-align: left;">
+                    <div style="font-weight: bold; margin-right: 2pt;">New: </div>
+                    <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
+                  </div>
+                  <div>
+                    <div tal:content="newmodel/getId|nothing"></div>
+                    <div tal:content="oldmodel/getId|nothing"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="header-label">Variety</div>
+                  <div class="header-detail" tal:content="newmodel/Variety|nothing"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="margin-top: -18px;" class="header-label">Sample Location:</div>
+                  <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                  <div style="margin-top: -18px;" class="header-label">Growth Stage:</div>
+                  <div class="header-detail" tal:content="newmodel/GrowthStage|nothing"></div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div style="width: 400px;">
+            <div class="header-label">Client:</div>
+            <div class="client-name header-detail">
+              <div tal:replace="newmodel/Client/Name|nothing"></div>
             </div>
-            <div style="width: 400px;;">
-              <div class="header-label">Client:</div>
-              <div class="client-name header-detail">
-                <div tal:replace="newmodel/Client/Name|nothing"></div>
-              </div>
-              <div class="client-street header-detail">
-                <div tal:replace="newmodel/Client/PhysicalAddress/address|nothing"></div>
-              </div>
-              <div class="client-city header-detail">
-                <span>
-                  <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
-                </span>
-                <span>, </span>
-                <span class="client-state" tal:define="state newmodel/Client/PhysicalAddress/state|nothing">
-                  <div tal:replace="python:view.get_state(state)"></div>
-                </span>
-                <span class="client-zip">
-                  <div tal:replace="newmodel/Client/PhysicalAddress/zip|nothing"></div>
-                </span>
-              </div>
-              <div>
-                <span>
-                  <div class="header-label" tal:content="string:Acct #:"></div>
-                  <div class="header-detail" tal:content="newmodel/Client/ClientID|nothing"></div>
-                </span>
-              </div>
-              <div>
-              </div>
+            <div class="client-street header-detail">
+              <div tal:replace="newmodel/Client/PhysicalAddress/address|nothing"></div>
+            </div>
+            <div class="client-city header-detail">
+              <span>
+                <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
+              </span>
+              <span>, </span>
+              <span class="client-state" tal:define="state newmodel/Client/PhysicalAddress/state|nothing">
+                <div tal:replace="python:view.get_state(state)"></div>
+              </span>
+              <span class="client-zip">
+                <div tal:replace="newmodel/Client/PhysicalAddress/zip|nothing"></div>
+              </span>
+            </div>
+            <div>
+              <span>
+                <div class="header-label" tal:content="string:Acct #:"></div>
+                <div class="header-detail" tal:content="newmodel/Client/ClientID|nothing"></div>
+              </span>
+            </div>
+            <div>
             </div>
           </div>
         </div>
