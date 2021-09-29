@@ -82,6 +82,9 @@ class SuperModel(BaseModel):
                 nh4 = 0
             if no3 == '' or no3 < 0:
                 no3 = 0
+            print("total nitrogen is: " + str(total_n))
+            print("nitrogen as nitrate is: " + str(no3))
+            print("nitrogen as ammonium is: " + str(nh4))
             ncr = float(1 - ((nh4 + no3)/total_n))
 
             ncr = round(ncr, 3-int(floor(log10(abs(ncr))))-1)
