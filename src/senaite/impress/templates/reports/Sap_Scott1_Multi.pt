@@ -840,8 +840,8 @@ EDITS:
                 </td>
                 <td style="padding-left: 25px;">
                   <div style="float: left; margin-right: 2pt;">
-                    <div class="high-ol">High:</div>
-                    <div class="low-ol">Low:</div>
+                    <!-- <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div> -->
                   </div>
                   <div>
                     <tal:high>
@@ -1677,8 +1677,8 @@ EDITS:
                 </td>
                 <td style="padding-left: 25px;">
                   <div style="float: left; margin-right: 2pt;">
-                    <div class="high-ol">High:</div>
-                    <div class="low-ol">Low:</div>
+                    <!-- <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div> -->
                   </div>
                   <div>
                     <tal:high>
