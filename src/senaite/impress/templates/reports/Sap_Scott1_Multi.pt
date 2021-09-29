@@ -1524,7 +1524,7 @@ EDITS:
               </tr>
               <tr class="nitrogen-ammonium">
                 <td style="vertical-align: text-top;">
-                  <strong>Nitrogen as Ammonium (NH4)<tal:acc replace="accredited_symbol"/></strong>
+                  <strong>Nitrogen from Ammonium (NH4)<tal:acc replace="accredited_symbol"/></strong>
                 </td>
                 <td>
                   <div>ppm</div>
@@ -1571,7 +1571,7 @@ EDITS:
               </tr>
               <tr class="nitrogen-nitrate">
                 <td style="vertical-align: text-top;">
-                  <strong>Nitrogen as Nitrate (NO3)</strong>
+                  <strong>Nitrogen from Nitrate (NO3)</strong>
                 </td>
                 <td>
                   <div>ppm</div>
