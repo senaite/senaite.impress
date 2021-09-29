@@ -301,7 +301,7 @@ EDITS:
               </tr>
               <tr>
                 <td>
-                  <div style="margin-top: -18px;" class="header-label">Sample Location:</div>
+                  <div style="margin-top: -18px; width: 20%" class="header-label">Sample Location:</div>
                   <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
                 </td>
                 <td>
