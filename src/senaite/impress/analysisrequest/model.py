@@ -85,7 +85,7 @@ class SuperModel(BaseModel):
             print("total nitrogen is: " + str(total_n))
             print("nitrogen as nitrate is: " + str(no3))
             print("nitrogen as ammonium is: " + str(nh4))
-            ncr = float(1 - ((nh4 + no3)/total_n))
+            ncr = float(1 - ((nh4 + no3)/total_n))*100
 
             ncr = round(ncr, 3-int(floor(log10(abs(ncr))))-1)
 
