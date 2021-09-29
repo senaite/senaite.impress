@@ -44,7 +44,7 @@ class SuperModel(BaseModel):
         ncr = ''
 
         found = False
-        for i in range(20, 1, -1):
+        for i in range(20, 0, -1):
             if found==False:
                 version = 'sap_total_nitrogen-'+str(i)
                 if hasattr(self,version):
@@ -54,7 +54,7 @@ class SuperModel(BaseModel):
             total_n = float(self.sap_total_nitrogen.Result)
 
         found = False
-        for i in range(20, 1, -1):
+        for i in range(20, 0, -1):
             if found==False:
                 version = 'sap_nitrogen_as_nitrate-'+str(i)
                 if hasattr(self,version):
@@ -64,7 +64,7 @@ class SuperModel(BaseModel):
                 no3 = float(self.sap_nitrogen_as_nitrate.Result)
 
         found = False
-        for i in range(20, 1, -1):
+        for i in range(20, 0, -1):
             if found==False:
                 version = 'sap_nitrogen_as_ammonium-'+str(i)
                 if hasattr(self,version):
@@ -136,7 +136,7 @@ class SuperModel(BaseModel):
         perc = 0
         if specs:
             found = False
-            for i in range(10, 1, -1):
+            for i in range(10, 0, -1):
                 if found==False:
                     version = keyword+'-'+str(i)
                     if hasattr(self,version):
