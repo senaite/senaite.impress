@@ -264,6 +264,10 @@ EDITS:
               <div style="font-weight: bold; margin-right: 2pt;">New: </div>
               <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
             </div>
+            <div>
+              <div tal:content="newmodel/ClientSampleID|nothing"></div>
+              <div tal:content="oldmodel/ClientSampleID|nothing"></div>
+            </div>
           </div>
           <div style="float: right;">
             <div class="header-label">Date/Time Received:</div>
@@ -272,6 +276,10 @@ EDITS:
             <div class="header-detail" style="float: left; text-align: left;">
               <div style="font-weight: bold; margin-right: 2pt;">New: </div>
               <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
+            </div>
+            <div>
+              <div tal:content="newmodel/getId|nothing"></div>
+              <div tal:content="oldmodel/getId|nothing"></div>
             </div>
           </div>
           <div style="float: right;">
