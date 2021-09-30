@@ -247,8 +247,8 @@ EDITS:
               <img class="nal-logo" tal:attributes="src string:++plone++nal.lims/images/logo.png"/>
             </div>
         </div>
-        <div class="details row col-lg-12" style="overflow: hidden;">
-          <div style="float: right;">
+        <div class="details row col-lg-12">
+          <div style="float: right;min-width: 120px;">
             <div class="header-label">Data Reported To:</div>
             <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
             <div class="header-label">Collected By:</div>
@@ -256,7 +256,7 @@ EDITS:
             <div lass="header-label">Sample Location:</div>
             <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
           </div>
-          <div style="float: right;">
+          <div style="float: right;min-width: 120px;">
             <div class="header-label">Date/Time Sampled:</div>
             <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
             <div class="header-label">Sample Name:</div>
@@ -269,7 +269,7 @@ EDITS:
               <div tal:content="oldmodel/ClientSampleID|nothing"></div>
             </div>
           </div>
-          <div style="float: right;">
+          <div style="float: right;min-width: 120px;">
             <div class="header-label">Date/Time Received:</div>
             <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
             <div class="header-label">NAL Sample ID:</div>
@@ -282,7 +282,7 @@ EDITS:
               <div tal:content="oldmodel/getId|nothing"></div>
             </div>
           </div>
-          <div style="float: right;">
+          <div style="float: right;min-width: 120px;">
             <div class="header-label">Plant Type:</div>
             <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
             <div class="header-label">Variety</div>
@@ -357,7 +357,7 @@ EDITS:
               </tr>
             </table>
           </div> -->
-          <div style="width: 150px; min-width: 150px;">
+          <div style="min-width: 120px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
