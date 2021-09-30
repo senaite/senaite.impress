@@ -289,7 +289,7 @@ EDITS:
             <div class="header-label">Date/Time Sampled:</div>
             <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
             <div class="header-label">Sample Name:</div>
-            <div style="min-width: 120px;" class="header-detail">
+            <div style="min-width: 120px;">
               <div>
                 <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/ClientSampleID|nothing"></div>
@@ -304,7 +304,7 @@ EDITS:
             <div class="header-label">Date/Time Received:</div>
             <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
             <div class="header-label">NAL Sample ID:</div>
-            <div style="min-width: 120px;" class="header-detail">
+            <div style="min-width: 120px;">
               <div>
                 <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/getId|nothing"></div>
