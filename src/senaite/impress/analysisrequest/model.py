@@ -50,7 +50,7 @@ class SuperModel(BaseModel):
                 if hasattr(self,version):
                     found = True
                     total_n = float(self[version].Result)
-        if found == False and self.sap_total_nitrogen is not None:
+        if found == False and hasattr(self,'sap_total_nitrogen'):
             total_n = float(self.sap_total_nitrogen.Result)
 
         found = False
@@ -60,7 +60,7 @@ class SuperModel(BaseModel):
                 if hasattr(self,version):
                     found = True
                     no3 = float(self[version].Result)
-        if found == False and self.sap_nitrogen_as_nitrate is not None:
+        if found == False and hasattr(self,'sap_nitrogen_as_nitrate'):
                 no3 = float(self.sap_nitrogen_as_nitrate.Result)
 
         found = False
@@ -70,7 +70,7 @@ class SuperModel(BaseModel):
                 if hasattr(self,version):
                     found = True
                     nh4 = float(self[version].Result)
-        if found == False and self.sap_nitrogen_as_ammonium is not None:
+        if found == False and hasattr(self,'sap_nitrogen_as_ammonium'):
             nh4 = float(self.sap_nitrogen_as_ammonium.Result)
 
         if total_n < 0.01:
@@ -143,7 +143,7 @@ class SuperModel(BaseModel):
                         found = True
                         result_str = str(self[version].Result).strip()
                         ldl = float(self[version].getLowerDetectionLimit())
-            if found == False and self[keyword] is not None:
+            if found == False and hasattr(self,keyword):
                 result_str = str(self[keyword].Result).strip()
                 ldl = float(self[keyword].getLowerDetectionLimit())
 
