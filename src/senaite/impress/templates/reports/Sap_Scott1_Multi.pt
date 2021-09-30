@@ -290,12 +290,12 @@ EDITS:
             <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
             <div class="header-label">Sample Name:</div>
             <div>
-              <div style="float: left;">
-                <div style="font-weight: bold; margin-right: 2pt;">New: </div>
-                <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
-              </div>
-              <div style="float: left;">
+              <div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/ClientSampleID|nothing"></div>
+              </div>
+              <div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">Old: </div>
                 <div tal:content="oldmodel/ClientSampleID|nothing"></div>
               </div>
             </div>
