@@ -214,7 +214,7 @@ class ReportView(Base):
 
         if old_growth is None:
             return get_new_model(self,subcollection)
-        else
+        else:
             return old_growth[0]
 
     def get_one_model(self, collection):
