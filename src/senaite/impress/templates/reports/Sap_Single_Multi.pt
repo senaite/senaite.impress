@@ -1,0 +1,1892 @@
+<!--
+AUTHOR:   Paul VanderWeele
+DATE:     8/1/2019
+PURPOSE:  Comparison Sap Report for NEWAGE LIMS
+EDITS:
+ -->
+
+ <!-- BEGIN Variables -->
+<tal:report
+  condition="python:True"
+  i18n:domain="senaite.impress"
+  define="collection view/collection;
+          laboratory view/laboratory;
+          reporter python:view.current_user;
+          accredited_symbol string:*;
+          outofrange_symbol string:⚠;
+          footer python:view.get_footer_text();
+          report_options python:options.get('report_options', {});
+          attachments_per_row python:int(report_options.get('attachments_per_row', 2));
+          attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
+          page_width options/page_width|nothing;
+          page_height options/page_height|nothing;
+          content_width options/content_width|nothing;
+          content_height options/content_height|nothing;
+          letterhead python:view.get_resource_url('++plone++nal.lims/images/default_letterhead.png')">
+ <!-- END Variables -->
+  <!-- BEGIN Custom Report Controls -->
+  <div id="controls" class="noprint">
+    <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
+    <div class="mb-3">
+      <!-- BEGIN Attachments per row -->
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="attachments_per_row" i18n:translate="">
+            Attachments per Row
+          </label>
+        </div>
+        <input tal:attributes="value attachments_per_row"
+               type="number"
+               class="form-control"
+               name="attachments_per_row"
+               min="1"/>
+      </div>
+      <!-- END Attachments per row -->
+      <small class="form-text text-muted" i18n:translate="">
+        Number of attachments rendered within one row per Analysis Request
+      </small>
+    </div>
+  </div>
+  <!-- END Custom Report Controls -->
+  <!-- BEGIN Ensure custom report options are applied to rendering -->
+  <script type="text/javascript">
+   console.info("######################################################################");
+   window.options = "<tal:t replace='options'/>";
+   console.log(window.options);
+   console.info("######################################################################");
+  </script>
+  <!-- END Ensure custom report options are applied to rendering -->
+
+  <!-- BEGIN CSS Styling -->
+  <tal:css>
+    <style type="text/css">
+      .report-image {font-size: 8pt; height: auto; width: auto;}
+      .report-image div.body tr {border-top: 1pt black solid; border-bottom: 1pt black solid;}
+      .report-image div.body td {padding: 0; font-size: 6pt;}
+      .report-image div.body td div {font-size: 5.5pt;}
+      div.high-spec, div.low-spec, div.header-label, div.result {font-weight: bold;}
+      .report-image div.header {margin-left: -35pt; margin-top: -40pt; padding-left: 0; width: 102%;}
+      .report-image div.details {margin-left: -35pt; width: 102%;}
+      .report-image div.body {width: 118%; margin-left: -45pt}
+      .report-image div.footer {margin-left: -35pt; height: 20pt; width: 115%; margin-top: 2pt;}
+      img.nal-logo {width:125px;}
+      table.header-detail-table {padding-left: 100px;}
+      table.header-detail-table td {width: 28%; vertical-align: top;}
+      div.header-label {font-weight: bold;}
+      div.details {margin-top: 8px; width: 115%;}
+
+      .report-image td.logo-frame {height: 130pt;
+                                  width: 150pt;
+                                  padding: 0;
+                                  margin: 0;
+                                  vertical-align: middle;
+                                  text-align: center;
+                                  display: table-cell;}
+      .report-image img.logo {max-width: 100%;}
+      td.full-header-cell {height: 130pt; vertical-align: top; padding: 0 0 0 15pt; margin: 0 0 0 0;}
+      td.full-header-cell td {vertical-align: top; padding: 0; margin: 0;}
+      td.col1 {width: 136pt;}
+      td.col2 {width: 136pt;}
+      td.col3 {width: 136pt;}
+      tr.row1 {height: 60pt;}
+      tr.row2 {height: 30pt;}
+      tr.row3 {height: 30pt;}
+      div.subrow {height: 20pt;}
+      div.header {margin-top: -2px;}
+      div.header-detail {margin-left: 15pt;}
+      div.cover-page {height: 792pt;}
+      div.cover-letter {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
+      div.cover-body {font-size: 8pt; padding-top: 140pt; padding-left: 40pt; width: 570pt;}
+      div.cover-date {font-weight: bold;}
+      div.cover-client {font-weight: bold;}
+      div.cover-client-contact {font-weight: bold;}
+      span.cover-subject-header {font-weight: bold;}
+      div.blank-page {height: 792pt;}
+      img.coc {height: 792pt; margin-left: -40pt; margin-top: -45pt;}
+      div.blank-page-background {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
+      h4.blank-text {margin-left: 150pt; padding-top: 370pt;}
+      td.president-sig img {width: 150pt;}
+      td.vp-sig img {width: 150pt;}
+      td.president-title {vertical-align: top;}
+      td.vp-title {vertical-align: top;}
+      div.attachment_image {height: 792pt;}
+
+      @page {
+        @bottom-left {
+          font-size: 5pt;
+          margin-bottom: -20pt;
+          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+        }
+      }
+    </style>
+  </tal:css>
+  <!-- END CSS Styling -->
+  <!-- BEING Cover Letter -->
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_sap_report_count(collection);">
+    <div class="cover-letter">
+      <div class="cover-body">
+        <div class="cover-date">
+          <tal:date replace="python:view.get_today()"/>
+        </div>
+        <div>
+          <tal:replace="counter(page)"/>
+        </div>
+        <br>
+        <div class="cover-client">
+          <div class="cover-client-name">
+            <div tal:replace="model/Client/Name|nothing"></div>
+          </div>
+          <div class="cover-client-address">
+            <div tal:replace="model/Client/PostalAddress/address|nothing"></div>
+          </div>
+          <div class="cover-client-city">
+            <div tal:replace="model/Client/PostalAddress/city|nothing"></div>
+          </div>
+          <div class="cover-client-statezip">
+          <span class="client-state">
+            <div tal:replace="model/Client/PostalAddress/state|nothing"></div>
+          </span>
+          <span class="client-zip">
+            <div tal:replace="model/Client/PostalAddress/zip|nothing"></div>
+          </span>
+          </div>
+          <br>
+          <div class="cover-client-contact">
+            <span>ATTN: </span>
+            <span tal:content="python:model.get_project_contact()"></span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-subject">
+          <span class="cover-subject-header">SUBJECT: </span>
+          <span>Sample Delivery Group</span>
+          <span tal:content="model/Batch/Title|nothing"></span>
+          <span tal:condition="model/Batch/GrowerContact" tal:content="python:' - ' + model.get_grower_contact()"></span>
+          <!-- <span tal:content="model/Batch/Project|nothing"></span> -->
+        </div>
+        <br>
+        <div class="cover-salutation">
+          <div>
+            <span>Dear</span>
+            <span tal:replace="python:model.get_project_contact()"></span>
+            <span>,</span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-first-paragraph">
+          The following is the final report containing the analytical result for the plant sap samples delivered on <tal:date replace="python:model.get_received_date()"/>. The report consists of all sample results, chain of custodies, and this cover letter.
+        </div>
+        <br>
+        <div class="cover-second-paragraph">
+          All samples were analyzed in accordance with the parameters outline on the chain of custody records and the oral and/or written correspondence between yourself and NEW AGE Laboratories. NEW AGE certifies that, to our best knowledge, this data package is in compliance with the terms and conditions of the contract, both technically and for completeness, and that test results meet all requirements of NEW AGE's Quality Assurance Manual. NEW AGE is an ISO/IEC 17025:2017 certified laboratory and meets the requiremnts of the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food and Pharmaceutical-2010 and APLAC TC 007 Guidelines for Food Testing Laboratories.
+        </div>
+        <br>
+        <div class="cover-third-paragraph">
+          Please review the report and contact our office if you have any questions or need additional information. Thank you for choosing NEW AGE Laboratories for this important project. We look forward to working with you again in the future.
+        </div>
+        <br>
+        <div class="cover-sincerely">
+          <div>Sincerely,</div>
+          <div><strong>NEW AGE Laboratories</strong></div>
+        </div>
+        <br>
+        <div class="cover-presidents">
+          <table>
+            <colgroup>
+              <col style="width: 65%;">
+            </colgroup>
+            <tr class="president-signatures">
+              <td class="president-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+              </td>
+              <td class="vp-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/vp_signature.png')"/>
+              </td>
+            </tr>
+            <tr class="president-names">
+              <td class="president-name">
+                <div>Scott D. Wall</div>
+              </td>
+              <td class="vp-name">
+                <div>Irish L. Gallagher</div>
+              </td>
+            </tr>
+            <tr class="president-titles">
+              <td class="president-title">
+                <div>President</div>
+              </td>
+              <td class="vp-title">
+                <div>Vice President of Laboratory Operations</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <br>
+        <div class="cover-pjla">
+          <div style="font-size: 6pt;">Parameters marked with an astrisk <tal:acc replace="accredited_symbol"/> are <strong>not</strong> accredited under our ISO/IEC 17025:2017 scope</div>
+          <img style="height: 120px;" tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pjla.png')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Cover Letter -->
+  <!-- BEGIN Blank Page-->
+  <div class="blank-page">
+    <div class="blank-page-background">
+      <h4 class="blank-text">This Page Is Intentionally Left Blank</h4>
+    </div>
+  </div>
+  <!-- END Blank Page-->
+  <!-- BEGIN Result Pages-->
+  <tal:subgroup repeat="subgroup python:view.get_subgroups(collection);">
+    <tal:subcollection tal:define="subcollection python:view.get_subcollection(collection,subgroup);">
+      <div tal:define="newmodel python:view.get_new_model(subcollection);" class="report-image">
+        <div class="header row">
+            <div>
+              <img class="nal-logo" tal:attributes="src string:++plone++nal.lims/images/logo.png"/>
+            </div>
+        </div>
+        <div class="details row">
+          <div style="float: left; min-width: 120px; margin-right: 20px;">
+            <div class="header-label">Client:</div>
+            <div class="client-name header-detail">
+              <div tal:replace="newmodel/Client/Name|nothing"></div>
+            </div>
+            <div class="client-street header-detail">
+              <div tal:replace="newmodel/Client/PhysicalAddress/address|nothing"></div>
+            </div>
+            <div class="client-city header-detail">
+              <span>
+                <div tal:replace="newmodel/Client/PhysicalAddress/city|nothing"></div>
+              </span>
+              <span>, </span>
+              <span class="client-state" tal:define="state newmodel/Client/PhysicalAddress/state|nothing">
+                <div tal:replace="python:view.get_state(state)"></div>
+              </span>
+              <span class="client-zip">
+                <div tal:replace="newmodel/Client/PhysicalAddress/zip|nothing"></div>
+              </span>
+            </div>
+            <div>
+              <span>
+                <div class="header-label" tal:content="string:Acct #:"></div>
+                <div class="header-detail" tal:content="newmodel/Client/ClientID|nothing"></div>
+              </span>
+            </div>
+            <div>
+            </div>
+          </div>
+          <div style="float: left; min-width: 100px; margin-right: 10px;">
+            <div class="header-label">Data Reported To:</div>
+            <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
+            <div class="header-label">Collected By:</div>
+            <div class="header-detail" tal:content="newmodel/Batch/SamplerContact/Fullname|nothing"></div>
+            <div>
+              <div class="header-label">Sample Location:</div>
+              <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
+            </div>
+          </div>
+          <div style="float: left; min-width: 120px; margin-right: 10px;">
+            <div class="header-label">Date/Time Sampled:</div>
+            <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
+            <div class="header-label">Sample Name:</div>
+            <div style="min-width: 120px;">
+              <div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
+                <div tal:content="newmodel/ClientSampleID|nothing"></div>
+              </div>
+              <div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">Old: </div>
+                <div tal:content="oldmodel/ClientSampleID|nothing"></div>
+              </div>
+            </div>
+          </div>
+          <div style="float: left; min-width: 120px; margin-right: 10px;">
+            <div class="header-label">Date/Time Received:</div>
+            <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
+            <div class="header-label">NAL Sample ID:</div>
+            <div style="min-width: 120px;">
+              <div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
+                <div tal:content="newmodel/getId|nothing"></div>
+              <div>
+              </div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">Old: </div>
+                <div tal:content="oldmodel/getId|nothing"></div>
+              </div>
+            </div>
+          </div>
+          <div style="float: left; min-width: 100px;">
+            <div class="header-label">Plant Type:</div>
+            <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
+            <div class="header-label">Variety</div>
+            <div class="header-detail" tal:content="newmodel/Variety|nothing"></div>
+            <div class="header-label">Growth Stage:</div>
+            <div class="header-detail" tal:content="newmodel/GrowthStage|nothing"></div>
+          </div>
+            <!-- <table class="header-detail-table">
+              <tr>
+                <td>
+                  <div class="header-label">Data Reported To:</div>
+                  <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
+                </td>
+                <td>
+                  <div class="header-label">Date/Time Sampled:</div>
+                  <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
+                </td>
+                <td>
+                  <div class="header-label">Date/Time Received:</div>
+                  <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
+                </td>
+                <td>
+                  <div class="header-label">Plant Type:</div>
+                  <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="header-label">Collected By:</div>
+                  <div class="header-detail" tal:content="newmodel/Batch/SamplerContact/Fullname|nothing"></div>
+                </td>
+                <td>
+                  <div class="header-label">Sample Name:</div>
+                  <div style="float: left; text-align: left;">
+                    <div style="font-weight: bold; margin-right: 2pt;">New: </div>
+                    <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
+                  </div>
+                  <div>
+                    <div tal:content="newmodel/ClientSampleID|nothing"></div>
+                    <div tal:content="oldmodel/ClientSampleID|nothing"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="header-label">NAL Sample ID:</div>
+                  <div class="header-detail" style="float: left; text-align: left;">
+                    <div style="font-weight: bold; margin-right: 2pt;">New: </div>
+                    <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
+                  </div>
+                  <div>
+                    <div tal:content="newmodel/getId|nothing"></div>
+                    <div tal:content="oldmodel/getId|nothing"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="header-label">Variety</div>
+                  <div class="header-detail" tal:content="newmodel/Variety|nothing"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="margin-top: -18px;" class="header-label">Sample Location:</div>
+                  <div style="" class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                  <div style="margin-top: -18px;" class="header-label">Growth Stage:</div>
+                  <div class="header-detail" tal:content="newmodel/GrowthStage|nothing"></div>
+                </td>
+              </tr>
+            </table>
+          </div> -->
+        </div>
+        <!-- Results -->
+
+        <div class="body row col-lg-12">
+          <table>
+            <colgroup>
+      		    <!-- Parameter -->
+      		    <col style="width: 21%;">
+      		    <!-- Unit -->
+      		    <col style="width: 3%">
+              <!-- Optimal Range -->
+              <col style="width: 12%">
+      		    <!-- Result -->
+      		    <col style="width: 10%;">
+              <!-- Sample Order -->
+      		    <col style="width: 3%;">
+              <!-- Graph -->
+      		    <col style="width: 51%">
+            </colgroup>
+
+            <thead>
+              <tr style="background-color: #f7b330;" >
+                <th>Parameter</th>
+                <th style="text-align: center;">Units</th>
+                <th style="text-align: center;">OLs</th>
+                <th style="text-align: center;">Result</th>
+                <th></th>
+                <th style="text-align: center;">
+                  <span style="margin-right: 80px;">Low</span>
+                  <span style="margin-right: 80px;">Optimal</span>
+                  <span>High</span>
+                </th>
+              <tr>
+            </thead>
+            <tbody tal:define="model subcollection">
+              <tr class="sugars">
+                <td style="vertical-align: text-top;">
+                  <strong>Sugars, Total<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>%</div>
+                  <div>%</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_total_sugar')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_total_sugar')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sugars, Total');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Sugars, Total');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_total_sugar')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_total_sugar')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="brix">
+                <td style="vertical-align: text-top;">
+                  <strong>Brix<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>-</div>
+                  <div>-</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_brix')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_brix')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Brix');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Brix');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_brix')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_brix')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="ph">
+                <td style="vertical-align: text-top;">
+                  <strong>pH<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>-</div>
+                  <div>-</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_ph')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_ph')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='pH');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='pH');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_ph')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_ph')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="ec">
+                <td style="vertical-align: text-top;">
+                  <strong>EC<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>ms/cm</div>
+                  <div>ms/cm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_ec')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_ec')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='EC');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='EC');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_ec')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_ec')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="anions colored-row" style="background-color: #f7b330;">
+                <td>
+                  <strong style="font-size: 8pt;">Anions</strong>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="chloride">
+                <td style="vertical-align: text-top;">
+                  <strong>Chloride (Cl-)<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Chloride (Cl-)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Chloride (Cl-)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_chloride')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_chloride')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="sulfur">
+                <td style="vertical-align: text-top;">
+                  <strong>Sulfur (S)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_sulfur')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_sulfur')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sulfur (S)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Sulfur (S)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sulfur')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sulfur')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="phosphorous">
+                <td style="vertical-align: text-top;">
+                  <strong>Phosphorous (P)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_phosphorous')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_phosphorous')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Phosphorous (P)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Phosphorous (P)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_phosphorous')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_phosphorous')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="cations colored-row" style="background-color: #f7b330;">
+                <td>
+                  <strong style="font-size: 8pt;">Cations</strong>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="calcium">
+                <td style="vertical-align: text-top;">
+                  <strong>Calcium (Ca)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_calcium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_calcium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Calcium (Ca)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Calcium (Ca)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_calcium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_calcium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="potassium">
+                <td style="vertical-align: text-top;">
+                  <strong>Potassium (K)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_potassium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_potassium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Potassium (K)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Potassium (K)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_potassium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_potassium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="k-ca-ratio">
+                <td style="vertical-align: text-top;">
+                  <strong>K/Ca Ratio</strong>
+                </td>
+                <td>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <!-- <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div> -->
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_kca_ratio')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_kca_ratio')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='K/Ca Ratio');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='K/Ca Ratio');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_kca_ratio')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_kca_ratio')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="magnesium">
+                <td style="vertical-align: text-top;">
+                  <strong>Magnesium (Mg)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_magnesium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_magnesium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Magnesium (Mg)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Magnesium (Mg)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_magnesium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_magnesium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="sodium">
+                <td style="vertical-align: text-top;">
+                  <strong>Sodium (Na)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_sodium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_sodium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sodium (Na)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;"></div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Sodium (Na)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;"></div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_sodium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_sodium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="trace-elements colored-row" style="background-color: #f7b330;">
+                <td>
+                  <strong style="font-size: 8pt;">Trace Elements</strong>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="aluminum">
+                <td style="vertical-align: text-top;">
+                  <strong>Aluminum (Al)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_aluminum')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_aluminum')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Aluminum (Al)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Aluminum (Al)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_aluminum')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_aluminum')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="boron">
+                <td style="vertical-align: text-top;">
+                  <strong>Boron (B)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_boron')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_boron')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Boron (B)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Boron (B)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_boron')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_boron')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="cobalt">
+                <td style="vertical-align: text-top;">
+                  <strong>Cobalt (Co)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_cobalt')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_cobalt')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Cobalt (Co)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Cobalt (Co)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_cobalt')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_cobalt')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="copper">
+                <td style="vertical-align: text-top;">
+                  <strong>Copper (Cu)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_copper')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_copper')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Copper (Cu)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Copper (Cu)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_copper')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_copper')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="iron">
+                <td style="vertical-align: text-top;">
+                  <strong>Iron (Fe)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_iron')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_iron')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Iron (Fe)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Iron (Fe)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_iron')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_iron')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="manganese">
+                <td style="vertical-align: text-top;">
+                  <strong>Manganese (Mn)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_manganese')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_manganese')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Manganese (Mn)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Manganese (Mn)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_manganese')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_manganese')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="molybdenum">
+                <td style="vertical-align: text-top;">
+                  <strong>Molybdenum (Mo)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_molybdenum')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_molybdenum')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Molybdenum (Mo)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Molybdenum (Mo)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_molybdenum')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_molybdenum')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="nickel">
+                <td style="vertical-align: text-top;">
+                  <strong>Nickel (Ni)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nickel')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nickel')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Nickel (Ni)')" tal:content="string:NT" style="font-weight: bold;"></div>
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nickel (Ni)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Nickel (Ni)')" tal:content="string:NT" style="font-weight: bold;"></div>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nickel (Ni)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nickel')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nickel')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="selenium">
+                <td style="vertical-align: text-top;">
+                  <strong>Selenium (Se)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_selenium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_selenium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Selenium (Se)')" tal:content="string:NT" style="font-weight: bold;"></div>
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Selenium (Se)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Selenium (Se)')" tal:content="string:NT" style="font-weight: bold;"></div>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Selenium (Se)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_selenium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_selenium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="silica">
+                <td style="vertical-align: text-top;">
+                  <strong>Silica (Si)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_silica')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_silica')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Silica (Si)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Silica (Si)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_silica')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_silica')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="zinc">
+                <td style="vertical-align: text-top;">
+                  <strong>Zinc (Zn)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_zinc')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_zinc')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Zinc (Zn)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Zinc (Zn)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_zinc')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_zinc')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="nitrogen-parameters colored-row" style="background-color: #f7b330;">
+                <td>
+                  <strong style="font-size: 8pt;">Nitrogen Parameters</strong>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="nitrogen-ammonium">
+                <td style="vertical-align: text-top;">
+                  <strong>Nitrogen from Ammonium (NH4)<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_ammonium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_ammonium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Ammonium (NH4)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nitrogen_as_ammonium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nitrogen_as_ammonium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="nitrogen-nitrate">
+                <td style="vertical-align: text-top;">
+                  <strong>Nitrogen from Nitrate (NO3)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_nitrate')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_nitrate')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Nitrate (NO3)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nitrogen_as_nitrate')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nitrogen_as_nitrate')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="nitrogen-total">
+                <td style="vertical-align: text-top;">
+                  <strong>Nitrogen (N), Total<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_total_nitrogen')" class="high-spec"></div>
+                      <!-- <div tal:content="string:1000" class="high-spec"></div> -->
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_total_nitrogen')" class="low-spec"></div>
+                      <!-- <div tal:content="string:2500" class="low-spec"></div> -->
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen (N), Total');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_total_nitrogen')">
+                    <!-- <div tal:define="perc python:int(1000)"> -->
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_total_nitrogen')">
+                    <!-- <div tal:define="perc python:int(2500)"> -->
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="nitrogen_conversion_effeciency">
+                <td style="vertical-align: text-top;">
+                  <strong>Nitrogen Conversion Effeciency</strong>
+                </td>
+                <td>
+                  <div>%</div>
+                  <div>%</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <!-- <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div> -->
+                  </div>
+                  <div>
+                    <tal:high>
+                      <!-- <div tal:content="python:newmodel.get_optimal_high_level('sap_chloride')" class="high-spec"></div> -->
+                    </tal:high>
+                    <tal:low>
+                      <!-- <div tal:content="python:newmodel.get_optimal_low_level('sap_chloride')" class="low-spec"></div> -->
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult>
+                    <div tal:content="structure python:newmodel.get_nitrogen_conversion_effeciency()" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult>
+                    <div tal:content="structure python:oldmodel.get_nitrogen_conversion_effeciency()" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <!-- <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nitrate (NO3)');">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nitrate (NO3)');">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="footer row col-lg-12">
+          <table>
+            <colgroup>
+              <col style="width:67%;">
+              <col style="width:15%;">
+              <col style="width:33%;">
+            </colgroup>
+            <tr>
+              <td style="font-size: 5pt;">
+                <div>
+                  - NAL holds certification under ISO 17025:2017 and meets the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food Standards
+                </div>
+                <div>
+                  - The results reported apply only to the two (2) samples listed
+                </div>
+                <div>
+                  - This report may not be reproduced except in full without written permission of NEW AGE Laboratories
+                </div>
+                <div>
+                  <strong>DISCLAIMER:</strong>
+                  Results are based on analysis of the samples as received. Because of the variability of sampling procedures and environmental conditions, the company does <strong>not</strong> accept liability for lack of performance based on these recommendations. Recommendations are made based on the sample and information received.
+                </div>
+              </td>
+              <td>
+                  <div>
+                    <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+                  </div>
+              </td>
+              <td>
+                <div class="sig-text">
+                  <div>Scott D. Wall</div>
+                  <div>President/Technical Manager</div>
+                </div>
+              </td>
+          </tr>
+          </table>
+        </div>
+      </div>
+    </tal:subcollection>
+  </tal:subgroup>
+  <!--Attachment COC-->
+  <tal:model repeat="model collection">
+    <tal:check condition="model/Attachment">
+      <tal:attachment define="attachment python:model.get_attachment_file()">
+        <figure class="figure">
+          <img class="coc figure-img img-fluid"
+              tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+        </figure>
+      </tal:attachment>
+    </tal:check>
+  </tal:model>
+  <!-- <tal:render condition="python:True">
+    <tal:model repeat="model collection">
+      <tal:attachment tal:define="attachments python:model.get_sorted_attachments('r');">
+        <div tal:condition="python:len(attachments) > 1">
+          <div class="attachment_image" tal:repeat="chunk python:view.group_into_chunks(attachments)">
+            <figure class="figure" tal:repeat="attachment chunk">
+              <img class="figure-img img-fluid"
+                   tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"/>
+            </figure>
+          <div/>
+        </div>
+      </tal:attachment>
+    </tal:model>
+  </tal:render> -->
+
+
+
+
+  <!-- <tal:render condition="python:True">
+    <tal:model repeat="model collection">
+      <div class="row section-attachments no-gutters attchments">
+        <tal:attachment tal:define="attachments python:model.get_sorted_attachments('r');">
+          <h2 i18n:translate=""
+              tal:condition="attachments">
+            Attachments for <span tal:replace="model/getId"/>
+          </h2>
+          <table class="table w-100" tal:condition="attachments">
+            <colgroup tal:condition="python:len(attachments) > 1">
+              <col tal:repeat="col python:range(attachments_per_row)"
+                   tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+            </colgroup>
+            <tr tal:repeat="chunk python:view.group_into_chunks(attachments, attachments_per_row)">
+              <td class="align-bottom"
+                  style="border:none;padding-left:0;"
+                  tal:repeat="attachment chunk">
+                <figure class="figure">
+                  <img class="figure-img img-fluid"
+                       tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"/>
+                  <figcaption class="figure-caption pt-2">
+                    <div class="att_for">
+                      <span i18n:translate="">Attachment for</span>
+                      <span tal:content="attachment/getTextTitle|model/getId"/>
+                    </div>
+                    <div class="att_keys">
+                      <span tal:content="attachment/AttachmentKeys"/>
+                    </div>
+                    <div class="att_filename">
+                      <span i18n:translate="">Filename:</span>
+                      <span tal:content="attachment/AttachmentFile/filename"/>
+                    </div>
+                  </figcaption>
+                </figure>
+              </td>
+            </tr>
+          </table>
+        </tal:attachment>
+      </div>
+    </tal:model>
+  </tal:render> -->
+  <!-- Attachment COC -->
+  <!-- <tal:model repeat="model collection">
+    <tal:check condition="model/Attachment">
+      <tal:multiple define="attachments python:model.get_attachments()">
+        <tal:thing content='attachments'/>
+        <tal:attachment define="attachment python:model.get_attachment_file()">
+        <div tal:content='attachment'/>
+          <figure class="figure">
+            <img class="coc figure-img img-fluid"
+                tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+          </figure>
+        </tal:attachment>
+      <tal:multiple/>
+    </tal:check>
+  </tal:model> -->
+</tal:report>
