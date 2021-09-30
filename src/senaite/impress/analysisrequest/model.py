@@ -142,10 +142,10 @@ class SuperModel(BaseModel):
                     if hasattr(self,version):
                         found = True
                         result_str = str(self[version].Result).strip()
-                        ldl = float(self[version].getLowerDetectionLimit())
+                        ldl = 0.01
             if found == False and hasattr(self,keyword):
                 result_str = str(self[keyword].Result).strip()
-                ldl = float(self[keyword].getLowerDetectionLimit())
+                ldl = 0.01
 
             min_str = str(specs.get('min', 0)).strip()
             max_str = str(specs.get('max', 99999)).strip()
@@ -218,8 +218,8 @@ class SuperModel(BaseModel):
         result = analysis.getResult()
         if analysis is None or result == "":
             return "NT" #Only if Analysis Service is listed, but not filled out
-        elif float(result) < float(analysis.getLowerDetectionLimit()):
-            return "< " + "0.1"
+        elif float(result) < 0.01:
+            return "< " + "0.01"
         else:
             result = float(result)
             result = round(result, digits-int(floor(log10(abs(result))))-1)
