@@ -120,6 +120,8 @@ class ReportView(Base):
         'WEST VIRGINIA': 'WV',
         'WISCONSIN': 'WI',
         'WYOMING': 'WY',
+
+        'BRITISH COLUMBIA': 'BC',
         }
         abbrev = None
         if state is not None:
