@@ -293,7 +293,7 @@ EDITS:
               <div style="font-weight: bold; margin-right: 2pt;">New: </div>
               <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
             </div>
-            <div>
+            <div style="float: left;">
               <div tal:content="newmodel/ClientSampleID|nothing"></div>
               <div tal:content="oldmodel/ClientSampleID|nothing"></div>
             </div>
@@ -306,7 +306,7 @@ EDITS:
               <div style="font-weight: bold; margin-right: 2pt;">New: </div>
               <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
             </div>
-            <div>
+            <div style="float: left;">
               <div tal:content="newmodel/getId|nothing"></div>
               <div tal:content="oldmodel/getId|nothing"></div>
             </div>
