@@ -526,11 +526,11 @@ EDITS:
   <!--BEGIN Attachments -->
   <tal:model repeat="model collection">
     <tal:check condition="model/Attachment">
-      <tal:attachment define="attachment python:model.get_attachment_file()">
-        <figure class="figure">
-          <img class="coc figure-img img-fluid"
-              tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
-        </figure>
+      <tal:attachment define="attachments python:model.get_attachment_files()">
+          <figure tal:repeat="attachment attachments" class="figure">
+            <img class="coc figure-img img-fluid"
+                tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+          </figure>
       </tal:attachment>
     </tal:check>
   </tal:model>

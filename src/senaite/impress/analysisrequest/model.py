@@ -109,6 +109,12 @@ class SuperModel(BaseModel):
         attachment = self.Attachment[0]
         return attachment
 
+    def get_attachment_files(self):
+        attachments = []
+        for i in self.Attachment:
+            attachments.append(i)
+        return attachments
+
     def get_analyst_initials(self, analysis):
         return analysis.getAnalystInitials()
 
