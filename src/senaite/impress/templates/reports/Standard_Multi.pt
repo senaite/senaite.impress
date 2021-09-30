@@ -158,7 +158,7 @@ EDITS:
         </div>
         <br>
         <div class="cover-first-paragraph">
-          The following is the final report containing the analytical result for the plant sap samples delivered on <tal:date replace="python:model.get_received_date()"/>. The report consists of <tal:pages replace="pages"/> pages inclusive of all sample results, chain of custodies, and this cover letter.
+          The following is the final report containing the analytical result for the samples delivered on <tal:date replace="python:model.get_received_date()"/>. The report consists of <tal:pages replace="pages"/> pages inclusive of all sample results, chain of custodies, and this cover letter.
         </div>
         <br>
         <div class="cover-second-paragraph">
