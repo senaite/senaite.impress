@@ -282,7 +282,7 @@ EDITS:
             <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
             <div class="header-label">Collected By:</div>
             <div class="header-detail" tal:content="newmodel/Batch/SamplerContact/Fullname|nothing"></div>
-            <div style = "width: 120px;">
+            <div>
               <div class="header-label">Sample Location:</div>
               <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
             </div>
