@@ -303,13 +303,13 @@ EDITS:
             <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
             <div class="header-label">NAL Sample ID:</div>
             <div style="min-width: 120px;">
-              <div class="header-detail" style="float: left; text-align: left;">
-                <div style="font-weight: bold; margin-right: 2pt;">New: </div>
-                <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
+              <div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
+                <div style="float: left;" tal:content="newmodel/getId|nothing"></div>
+              <div>
               </div>
-              <div style="float: left;">
-                <div tal:content="newmodel/getId|nothing"></div>
-                <div tal:content="oldmodel/getId|nothing"></div>
+                <div style="font-weight: bold; float: left; margin-right: 2pt;">Old: </div>
+                <div style="float: left;" tal:content="oldmodel/getId|nothing"></div>
               </div>
             </div>
           </div>
