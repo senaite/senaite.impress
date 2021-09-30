@@ -121,7 +121,7 @@ class ReportView(Base):
         'WISCONSIN': 'WI',
         'WYOMING': 'WY',
         }
-        abbev = None
+        abbrev = None
         if state is not None:
             abbrev = state_dict[state.upper()]
         if abbrev is not None:
