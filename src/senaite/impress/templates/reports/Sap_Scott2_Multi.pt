@@ -235,12 +235,12 @@ EDITS:
     <tal:subcollection tal:define="subcollection python:view.get_subcollection(collection,subgroup);">
       <div tal:define="newmodel python:view.get_new_model(subcollection);
                       oldmodel python:view.get_old_model(subcollection);" class="report-image">
-        <div class="header row col-lg-12">
+        <div class="header row">
             <div>
               <img class="nal-logo" tal:attributes="src string:++plone++nal.lims/images/logo.png"/>
             </div>
         </div>
-        <div class="details row col-lg-12">
+        <div class="details row">
           <div style="float: left; min-width: 120px; margin-right: 20px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
@@ -275,7 +275,7 @@ EDITS:
             <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
             <div class="header-label">Collected By:</div>
             <div class="header-detail" tal:content="newmodel/Batch/SamplerContact/Fullname|nothing"></div>
-            <div style = "width: 120px;">
+            <div>
               <div class="header-label">Sample Location:</div>
               <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
             </div>
