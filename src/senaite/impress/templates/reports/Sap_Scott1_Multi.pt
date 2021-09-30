@@ -285,7 +285,7 @@ EDITS:
                 </td>
                 <td>
                   <div class="header-label">NAL Sample ID:</div>
-                  <div class="header-detail" style="float: left; text-align: left;">
+                  <div style="float: left; text-align: left;">
                     <div style="font-weight: bold; margin-right: 2pt;">New: </div>
                     <div style="font-weight: bold; margin-right: 2pt;">Old: </div>
                   </div>
