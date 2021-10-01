@@ -305,7 +305,7 @@ EDITS:
               <div>
                 <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/getId|nothing"></div>
-              <div>
+              </div>
             </div>
           </div>
           <div style="float: left; min-width: 100px;">
