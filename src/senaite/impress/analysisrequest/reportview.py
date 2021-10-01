@@ -202,7 +202,7 @@ class ReportView(Base):
             if x.NewLeaf == True:
                 new_growth.append(x)
 
-            if new_growth is None:
+            if new_growth == []:
                 return get_old_model(self,subcollection)
             else:
                 return new_growth[0]
