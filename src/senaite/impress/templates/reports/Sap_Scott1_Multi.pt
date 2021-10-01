@@ -247,8 +247,8 @@ EDITS:
               <img class="nal-logo" tal:attributes="src string:++plone++nal.lims/images/logo.png"/>
             </div>
         </div>
-        <div class="details row">
-          <div style="float: left; width: 160px; margin-right: 20px;">
+        <div class="details">
+          <div style="float: left; width: 150px; margin-right: 20px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
