@@ -98,17 +98,120 @@ EDITS:
       td.vp-sig img {width: 150pt;}
       td.president-title {vertical-align: top;}
       td.vp-title {vertical-align: top;}
-     @page {
-	@bottom-right {
-         vertical-align: top;
-         margin-top: 2mm;
-         font-size: 9pt;
-         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page + 1) " <tal:t i18n:translate=''>of</tal:t> " counter(pages + 2);
-       }
-
-     }
     </style>
   </tal:css>
+  <!-- BEING Cover Letter -->
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_hydro_report_count(collection);">
+    <div class="cover-letter">
+      <div class="cover-body">
+        <div class="cover-date">
+          <tal:date replace="python:view.get_today()"/>
+        </div>
+        <br>
+        <div class="cover-client">
+          <div class="cover-client-name">
+            <div tal:replace="model/Client/Name|nothing"></div>
+          </div>
+          <div class="cover-client-address">
+            <div tal:replace="model/Client/PostalAddress/address|nothing"></div>
+          </div>
+          <div class="cover-client-city">
+            <div tal:replace="model/Client/PostalAddress/city|nothing"></div>
+          </div>
+          <div class="cover-client-statezip">
+          <span class="client-state">
+            <div tal:replace="model/Client/PostalAddress/state|nothing"></div>
+          </span>
+          <span class="client-zip">
+            <div tal:replace="model/Client/PostalAddress/zip|nothing"></div>
+          </span>
+          </div>
+          <br>
+          <div class="cover-client-contact">
+            <span>ATTN: </span>
+            <span tal:content="python:model.get_project_contact()"></span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-subject">
+          <span class="cover-subject-header">SUBJECT: </span>
+          <span>Sample Delivery Group</span>
+          <span tal:content="model/Batch/Title|nothing"></span>
+          <!-- <span tal:content="model/Batch/Project|nothing"></span> -->
+        </div>
+        <br>
+        <div class="cover-salutation">
+          <div>
+            <span>Dear</span>
+            <span tal:replace="python:model.get_project_contact()"></span>
+            <span>,</span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-first-paragraph">
+          The following is the final report containing the analytical result for the samples delivered on <tal:date replace="python:model.get_received_date()"/>. The report is inclusive of all sample results, chain of custodies, and this cover letter.
+        </div>
+        <br>
+        <div class="cover-second-paragraph">
+          All samples were analyzed in accordance with the parameters outline on the chain of custody records and the oral and/or written correspondence between yourself and NEW AGE Laboratories. NEW AGE certifies that, to our best knowledge, this data package is in compliance with the terms and conditions of the contract, both technically and for completeness, and that test results meet all requirements of NEW AGE's Quality Assurance Manual. NEW AGE is an ISO/IEC 17025:2017 certified laboratory and meets the requiremnts of the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food and Pharmaceutical-2010 and APLAC TC 007 Guidelines for Food Testing Laboratories.
+        </div>
+        <br>
+        <div class="cover-third-paragraph">
+          Please review the report and contact our office if you have any questions or need additional information. Thank you for choosing NEW AGE Laboratories for this important project. We look forward to working with you again in the future.
+        </div>
+        <br>
+        <div class="cover-sincerely">
+          <div>Sincerely,</div>
+          <div><strong>NEW AGE Laboratories</strong></div>
+        </div>
+        <br>
+        <div class="cover-presidents">
+          <table>
+            <colgroup>
+              <col style="width: 65%;">
+            </colgroup>
+            <tr class="president-signatures">
+              <td class="president-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+              </td>
+              <td class="vp-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/vp_signature.png')"/>
+              </td>
+            </tr>
+            <tr class="president-names">
+              <td class="president-name">
+                <div>Scott D. Wall</div>
+              </td>
+              <td class="vp-name">
+                <div>Irish L. Gallagher</div>
+              </td>
+            </tr>
+            <tr class="president-titles">
+              <td class="president-title">
+                <div>President</div>
+              </td>
+              <td class="vp-title">
+                <div>Vice President of Laboratory Operations</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <br>
+        <div class="cover-pjla">
+          <div style="font-size: 6pt;">Parameters marked with an astrisk <tal:acc replace="accredited_symbol"/> are <strong>not</strong> accredited under our ISO/IEC 17025:2017 scope</div>
+          <img style="height: 120px;" tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pjla.png')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Cover Letter -->
+  <!-- BEGIN Blank Page-->
+  <div class="blank-page">
+    <div class="blank-page-background">
+      <h4 class="blank-text">This Page Is Intentionally Left Blank</h4>
+    </div>
+  </div>
+  <!-- END Blank Page-->
         <!-- NEW HEADER -->
 <tal:model repeat="model collection">
   <tal:render condition="python:True">
@@ -411,4 +514,16 @@ EDITS:
   </tal:model>
 
   <!-- END of Result Pages -->
+  <!--BEGIN Attachments -->
+  <tal:model repeat="model collection">
+    <tal:check condition="model/Attachment">
+      <tal:attachment define="attachments python:model.get_attachment_files()">
+          <figure tal:repeat="attachment attachments" class="figure">
+            <img class="coc figure-img img-fluid"
+                tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+          </figure>
+      </tal:attachment>
+    </tal:check>
+  </tal:model>
+  <!--END Attachments -->
 </tal:report>

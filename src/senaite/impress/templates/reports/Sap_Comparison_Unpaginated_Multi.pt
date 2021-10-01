@@ -111,6 +111,13 @@ EDITS:
       td.vp-title {vertical-align: top;}
       div.attachment_image {height: 792pt;}
 
+      @page {
+        @bottom-left {
+          font-size: 5pt;
+          margin-bottom: -20pt;
+          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+        }
+      }
     </style>
   </tal:css>
   <!-- END CSS Styling -->
@@ -240,8 +247,8 @@ EDITS:
               <img class="nal-logo" tal:attributes="src string:++plone++nal.lims/images/logo.png"/>
             </div>
         </div>
-        <div class="details row">
-          <div style="float: left; width: 160px; margin-right: 20px;">
+        <div class="details">
+          <div style="float: left; width: 150px; margin-right: 20px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
@@ -537,9 +544,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='pH')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='pH');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='pH')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='pH');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -584,9 +593,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='EC')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='EC');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='EC')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='EC');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>

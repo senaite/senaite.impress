@@ -98,15 +98,14 @@ EDITS:
       td.vp-sig img {width: 150pt;}
       td.president-title {vertical-align: top;}
       td.vp-title {vertical-align: top;}
-     @page {
-	@bottom-right {
-         vertical-align: top;
-         margin-top: 2mm;
-         font-size: 9pt;
-         content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page + 1) " <tal:t i18n:translate=''>of</tal:t> " counter(pages + 2);
-       }
-
-     }
+      
+      @page {
+        @bottom-left {
+          font-size: 5pt;
+          margin-bottom: -20pt;
+          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
+        }
+      }
     </style>
   </tal:css>
   <!-- BEING Cover Letter -->
