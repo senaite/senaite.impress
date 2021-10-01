@@ -203,7 +203,7 @@ class ReportView(Base):
                 new_growth.append(x)
 
             if new_growth == []:
-                return self.get_old_model(self,subcollection)
+                return self.get_old_model(subcollection)
             else:
                 return new_growth[0]
 
