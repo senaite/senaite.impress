@@ -544,9 +544,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='pH')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='pH');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='pH')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='pH');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -591,9 +593,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='EC')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='EC');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='EC')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='EC');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
