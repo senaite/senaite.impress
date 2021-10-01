@@ -453,7 +453,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -497,7 +497,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -541,7 +541,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -585,7 +585,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -644,7 +644,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -688,7 +688,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -732,7 +732,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -791,7 +791,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -835,7 +835,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -877,7 +877,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -921,7 +921,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -965,7 +965,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;"></div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1024,7 +1024,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1068,7 +1068,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1112,7 +1112,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1156,7 +1156,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1200,7 +1200,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1244,7 +1244,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1288,7 +1288,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1332,7 +1332,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1376,7 +1376,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1420,7 +1420,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1464,7 +1464,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1523,7 +1523,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1567,7 +1567,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1613,7 +1613,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
@@ -1657,7 +1657,7 @@ EDITS:
                     <div tal:content="structure python:newmodel.get_nitrogen_conversion_effeciency()" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult>
-                    <div tal:content="structure string:-" style="font-weight: bold;">NT</div>
+                    <div tal:content="" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
