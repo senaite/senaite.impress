@@ -295,10 +295,6 @@ EDITS:
                 <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/ClientSampleID|nothing"></div>
               </div>
-              <div>
-                <div style="font-weight: bold; float: left; margin-right: 2pt;">Old: </div>
-                <div tal:content="newmodel/ClientSampleID|nothing"></div>
-              </div>
             </div>
           </div>
           <div style="float: left; min-width: 120px; margin-right: 10px;">
@@ -310,10 +306,6 @@ EDITS:
                 <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/getId|nothing"></div>
               <div>
-              </div>
-                <div style="font-weight: bold; float: left; margin-right: 2pt;">Old: </div>
-                <div tal:content="newmodel/getId|nothing"></div>
-              </div>
             </div>
           </div>
           <div style="float: left; min-width: 100px;">
