@@ -487,7 +487,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -531,7 +531,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -575,7 +575,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -634,7 +634,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -678,7 +678,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -722,7 +722,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -781,7 +781,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -825,7 +825,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -867,7 +867,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -911,7 +911,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -955,7 +955,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1014,7 +1014,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1058,7 +1058,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1102,7 +1102,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1146,7 +1146,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1190,7 +1190,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1234,7 +1234,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1278,7 +1278,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1322,7 +1322,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1366,7 +1366,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1410,7 +1410,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1454,7 +1454,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1513,7 +1513,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1557,7 +1557,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1603,7 +1603,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
@@ -1647,7 +1647,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div tal:condition="newmodel.NewLeaf is True">New</div>
+                  <div tal:condition="struct python:newmodel.NewLeaf is True">New</div>
                   <div></div>
                 </td>
                 <td>
