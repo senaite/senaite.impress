@@ -317,7 +317,7 @@ EDITS:
               </div>
             </div>
           </div>
-          <div style="float: left; min-width: 100px;">
+          <div style="float: left; width: 100px;">
             <div class="header-label">Plant Type:</div>
             <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
             <div class="header-label">Variety</div>
