@@ -449,7 +449,7 @@ EDITS:
                   </tal:oldresult>
                 </td>
                 <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div>New</div>
+                  <div></div>
                   <div></div>
                 </td>
                 <td>

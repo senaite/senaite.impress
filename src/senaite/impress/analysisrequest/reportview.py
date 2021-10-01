@@ -192,6 +192,7 @@ class ReportView(Base):
                 subcollection.append(x)
         return subcollection
 
+
     def get_new_model(self, subcollection):
         """Returns only the model listed as *New Growth*
         """
@@ -200,10 +201,11 @@ class ReportView(Base):
         for x in id_list:
             if x.NewLeaf == True:
                 new_growth.append(x)
-        try:
-            return new_growth[0]
-        except IndexError:
-            raise NameError('No New-Leaf Samples Found')
+
+            if new_growth is None:
+                return get_old_model(self,subcollection)
+            else:
+                return new_growth[0]
 
     def get_old_model(self, subcollection):
         """Returns only the model listed as *Old Growth*
@@ -213,11 +215,10 @@ class ReportView(Base):
         for x in id_list:
             if x.NewLeaf == False:
                 old_growth.append(x)
-
-        if old_growth is None:
-            return get_new_model(self,subcollection)
-        else:
+        try:
             return old_growth[0]
+        except IndexError:
+            raise NameError('No Old-Leaf Samples Found')
 
     def get_one_model(self, collection):
         """Returns the first model of a collection
