@@ -247,7 +247,7 @@ EDITS:
             </div>
         </div>
         <div class="details row">
-          <div style="float: left; min-width: 120px; margin-right: 20px;">
+          <div style="float: left; width: 160px; margin-right: 20px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
@@ -291,10 +291,7 @@ EDITS:
             <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
             <div class="header-label">Sample Name:</div>
             <div style="min-width: 120px;">
-              <div>
-                <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/ClientSampleID|nothing"></div>
-              </div>
             </div>
           </div>
           <div style="float: left; min-width: 120px; margin-right: 10px;">
@@ -302,13 +299,10 @@ EDITS:
             <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
             <div class="header-label">NAL Sample ID:</div>
             <div style="min-width: 120px;">
-              <div>
-                <div style="font-weight: bold; float: left; margin-right: 2pt;">New: </div>
                 <div tal:content="newmodel/getId|nothing"></div>
-              </div>
             </div>
           </div>
-          <div style="float: left; min-width: 100px;">
+          <div style="float: left; width: 100px;">
             <div class="header-label">Plant Type:</div>
             <div class="header-detail" tal:content="newmodel/PlantType|nothing"></div>
             <div class="header-label">Variety</div>
