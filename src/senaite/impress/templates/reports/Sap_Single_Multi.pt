@@ -450,7 +450,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sugars, Total');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Sugars, Total');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -544,7 +544,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='pH');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='pH');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -591,7 +591,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='EC');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='EC');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -653,7 +653,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Chloride (Cl-)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Chloride (Cl-)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -700,7 +700,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sulfur (S)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Sulfur (S)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -747,7 +747,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Phosphorous (P)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Phosphorous (P)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -809,7 +809,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Calcium (Ca)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Calcium (Ca)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -856,7 +856,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Potassium (K)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Potassium (K)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -901,7 +901,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='K/Ca Ratio');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='K/Ca Ratio');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -948,7 +948,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Magnesium (Mg)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Magnesium (Mg)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -995,7 +995,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sodium (Na)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;"></div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;"></div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Sodium (Na)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;"></div>
@@ -1057,7 +1057,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Aluminum (Al)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Aluminum (Al)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1104,7 +1104,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Boron (B)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Boron (B)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1151,7 +1151,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Cobalt (Co)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Cobalt (Co)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1198,7 +1198,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Copper (Cu)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Copper (Cu)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1245,7 +1245,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Iron (Fe)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Iron (Fe)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1292,7 +1292,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Manganese (Mn)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Manganese (Mn)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1339,7 +1339,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Molybdenum (Mo)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Molybdenum (Mo)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1387,7 +1387,7 @@ EDITS:
                 <td style="text-align: center;">
                   <div tal:condition="python:not view.get_analyses_by(newmodel, title='Nickel (Ni)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nickel (Ni)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <div tal:condition="python:not view.get_analyses_by(newmodel, title='Nickel (Ni)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Nickel (Ni)');">
@@ -1436,7 +1436,7 @@ EDITS:
                 <td style="text-align: center;">
                   <div tal:condition="python:not view.get_analyses_by(newmodel, title='Selenium (Se)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Selenium (Se)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <div tal:condition="python:not view.get_analyses_by(newmodel, title='Selenium (Se)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Selenium (Se)');">
@@ -1484,7 +1484,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Silica (Si)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Silica (Si)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1531,7 +1531,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Zinc (Zn)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Zinc (Zn)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1593,7 +1593,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1640,7 +1640,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
@@ -1689,7 +1689,7 @@ EDITS:
                 </td>
                 <td style="text-align: center;">
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,2)" style="font-weight: bold;">NT</div>
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
                   <tal:oldresult repeat="old python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
