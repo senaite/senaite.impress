@@ -102,6 +102,7 @@ EDITS:
       div.cover-client-contact {font-weight: bold;}
       span.cover-subject-header {font-weight: bold;}
       div.blank-page {height: 792pt;}
+      div.full-page {height: 792pt;}
       img.coc {height: 792pt; margin-left: -40pt; margin-top: -45pt;}
       div.blank-page-background {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
       h4.blank-text {margin-left: 150pt; padding-top: 370pt;}
@@ -238,7 +239,7 @@ EDITS:
   </div>
   <!-- END Blank Page-->
   <!-- BEGIN Result Pages-->
-  <tal:subgroup repeat="subgroup python:view.get_subgroups(collection);">
+  <div class="full-page" tal:repeat="subgroup python:view.get_subgroups(collection);">
     <tal:subcollection tal:define="subcollection python:view.get_subcollection(collection,subgroup);">
       <div tal:define="newmodel python:view.get_new_model(subcollection);" class="report-image">
         <div class="header row">
@@ -1705,7 +1706,7 @@ EDITS:
         </div>
       </div>
     </tal:subcollection>
-  </tal:subgroup>
+  </div>
   <!--Attachment COC-->
   <tal:model repeat="model collection">
     <tal:check condition="model/Attachment">
