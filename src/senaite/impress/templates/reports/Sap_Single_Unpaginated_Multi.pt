@@ -240,7 +240,7 @@ EDITS:
             </div>
         </div>
         <div class="details">
-          <div style="float: left; width: 160px; margin-right: 20px;">
+          <div style="float: left; width: 150px; margin-right: 10px;">
             <div class="header-label">Client:</div>
             <div class="client-name header-detail">
               <div tal:replace="newmodel/Client/Name|nothing"></div>
