@@ -277,7 +277,7 @@ EDITS:
             <div>
             </div>
           </div>
-          <div style="float: left; width: 130px; margin-right: 10px;">
+          <div style="float: left; width: 120px; margin-right: 10px;">
             <div class="header-label">Data Reported To:</div>
             <div class="header-detail" tal:content="newmodel/Batch/ProjectContact/Fullname|nothing"></div>
             <div class="header-label">Collected By:</div>
@@ -287,7 +287,7 @@ EDITS:
               <div class="header-detail" tal:content="newmodel/SamplePoint/title|nothing"></div>
             </div>
           </div>
-          <div style="float: left; width: 140px; margin-right: 10px;">
+          <div style="float: left; width: 130px; margin-right: 10px;">
             <div class="header-label">Date/Time Sampled:</div>
             <div class="header-detail" tal:content="python:(newmodel.DateOfSampling.strftime('%m-%d-%Y') + ' ' + newmodel.TimeOfSampling)"></div>
             <div class="header-label">Sample Name:</div>
@@ -302,7 +302,7 @@ EDITS:
               </div>
             </div>
           </div>
-          <div style="float: left; width: 140px; margin-right: 10px;">
+          <div style="float: left; width: 130px; margin-right: 10px;">
             <div class="header-label">Date/Time Received:</div>
             <div class="header-detail" tal:content="python:(newmodel.Batch.SDGDate.strftime('%m-%d-%Y') + ' ' + newmodel.Batch.SDGTime)"></div>
             <div class="header-label">NAL Sample ID:</div>
