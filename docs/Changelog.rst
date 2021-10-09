@@ -1,6 +1,7 @@
 2.0.1 (unreleased)
 ------------------
 
+- Pin Beautiful Soup version to 4.9.3
 
 
 2.0.0 (2021-07-26)
