@@ -1,6 +1,7 @@
 2.0.1 (unreleased)
 ------------------
 
+- #111 Pin Beautiful Soup version to 4.9.3 to support Python2
 
 
 2.0.0 (2021-07-26)

@@ -40,7 +40,8 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
-        "beautifulsoup4",
+        # The final version of Beautiful Soup to support Python 2 was 4.9.3.
+        "beautifulsoup4==4.9.3",
         "CairoSVG==1.0.20",
         "cairocffi<1.0.0",
         # Python 2.x is not supported by WeasyPrint v43
