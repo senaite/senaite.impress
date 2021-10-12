@@ -183,40 +183,72 @@ class SuperModel(BaseModel):
                     perc = (100/3) + (((result-min)/(max-min))*(100/3))
         return perc
 
-    # def get_result_bar_percentage(self, analysis):
-    #     specs = analysis.getResultsRange()
-    #     perc = 0
-    #     if specs:
-    #         min_str = str(specs.get('min', 0)).strip()
-    #         max_str = str(specs.get('max', 99999)).strip()
-    #         result_str = str(analysis.getResult()).strip()
-    #         min = -1
-    #         max = -1
-    #         result = -1
-    #
-    #         try:
-    #             min = float(min_str)
-    #         except ValueError:
-    #             pass
-    #         try:
-    #             max = float(max_str)
-    #         except ValueError:
-    #             pass
-    #         try:
-    #             result = float(result_str)
-    #         except ValueError:
-    #             pass
-    #
-    #         if result < float(analysis.getLowerDetectionLimit()):
-    #             result = 0
-    #         if min != -1 and max != -1 and result != -1 and max != 0:
-    #             if result <= min:
-    #                 perc = (result/min)*(100/3)
-    #             elif result >= max:
-    #                 perc = (200/3) + ((100/3)-(100/3)/(result/max))
-    #             else:
-    #                 perc = (100/3) + (((result-min)/(max-min))*(100/3))
-    #     return perc
+    def get_conversion_effeciency_percentage(self):
+
+        found = False
+        n_as_ammonium = None
+        for j in range(20, 0, -1):
+            if found==False:
+                sap_version = 'sap_nitrogen_as_ammonium'+str(j)
+                if hasattr(i,sap_version):
+                    found = True
+                    n_as_ammonium = i[sap_version]
+        if found == False and hasattr(i,'sap_nitrogen_as_ammonium'):
+            n_as_ammonium = i.sap_nitrogen_as_ammonium
+
+        found = False
+        n_as_nitrate = None
+        for j in range(20, 0, -1):
+            if found==False:
+                sap_version = 'sap_nitrogen_as_nitrate'+str(j)
+                if hasattr(i,sap_version):
+                    found = True
+                    n_as_nitrate = i[sap_version]
+        if found == False and hasattr(i,'sap_nitrogen_as_nitrate'):
+            n_as_nitrate = i.sap_nitrogen_as_nitrate
+
+        found = False
+        total_n = None
+        for j in range(20, 0, -1):
+            if found==False:
+                sap_version = 'sap_total_nitrogen'+str(j)
+                if hasattr(i,sap_version):
+                    found = True
+                    total_n = i[sap_version]
+        if found == False and hasattr(i,'sap_total_nitrogen'):
+            n_as_nitrate = i.sap_total_nitrogen
+
+        no3 = None
+        nh4 = None
+        tn = None
+        perc = None
+
+        if n_as_ammonium is None:
+            nh4 = 0
+        else:
+            nh4 = n_as_ammonium.getResult()
+            # nh4_str = str(nh4).strip()
+
+        if n_as_nitrate is None:
+            no3 = 0
+        else:
+            no3 = n_as_nitrate.getResult()
+            # no3_str = str(no3).strip()
+
+        if total_n is None:
+            tn = 0
+        else:
+            tn = total_n.getResult()
+            # tn_str = str(tn).strip()
+
+        if tn is None or tn == 0:
+            perc = 0
+        elif (no3 is None or no3 == 0) and (nh4 is None or nh4 == 0):
+            perc = 0
+        else:
+            perc = (1 - ((no3+nh4)/tn))*100
+
+        return perc
 
     def get_formatted_result_or_NT(self, analysis, digits):
         """Return formatted result or NT
