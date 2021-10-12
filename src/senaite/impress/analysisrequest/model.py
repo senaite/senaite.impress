@@ -241,16 +241,16 @@ class SuperModel(BaseModel):
             tn = total_n.getResult()
             # tn_str = str(tn).strip()
 
-        if tn is None or tn == 0 or not tn.isdigit():
+        if tn is None or tn == 0 or not tn.replace('.', '', 1).isdigit():
             perc = 0
-        elif (no3 is None or no3 == 0 or not no3.isdigit()) and (nh4 is None or nh4 == 0 or not nh4.isdigit()):
+        elif (no3 is None or no3 == 0 or not no3.replace('.', '', 1).isdigit()) and (nh4 is None or nh4 == 0 or not nh4.replace('.', '', 1).isdigit()):
             perc = 0
         else:
             perc = (1 - ((float(no3)+float(nh4))/float(tn)))*100
 
-        print('no3 is: {0} and isdigit is {1}'.format(no3,no3.isdigit()))
-        print('nh4 is: {0} and isdigit is {1}'.format(nh4,nh4.isdigit()))
-        print('tn is: {0} and isdigit is {1}'.format(tn,tn.isdigit()))
+        print('no3 is: {0} and isdigit is {1}'.format(no3,no3.replace('.', '', 1).isdigit()))
+        print('nh4 is: {0} and isdigit is {1}'.format(nh4,nh4.replace('.', '', 1).isdigit()))
+        print('tn is: {0} and isdigit is {1}'.format(tn,tn.replace('.', '', 1).isdigit()))
         print('perc is: {0}'.format(perc))
         return perc
 
