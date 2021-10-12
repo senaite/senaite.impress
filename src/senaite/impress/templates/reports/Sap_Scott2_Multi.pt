@@ -1757,12 +1757,12 @@ EDITS:
                 <td>
                   <tal:newbar>
                     <div tal:define="perc python:newmodel.get_conversion_effeciency_percentage()">
-                      <div tal:attributes="style string:width:${perc}%;;text-align:center;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
                   <tal:oldbar>
                     <div tal:define="perc python:oldmodel.get_conversion_effeciency_percentage()">
-                      <div tal:attributes="style string:width:${perc}%;;text-align:center;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;"></div>
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;"></div>
                     </div>
                   </tal:oldbar>
                 </td>
