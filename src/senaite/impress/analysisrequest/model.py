@@ -248,9 +248,9 @@ class SuperModel(BaseModel):
         else:
             perc = (1 - ((float(no3)+float(nh4))/float(tn)))*100
 
-        print('no3 is: {0}'.format(no3))
-        print('nh4 is: {0}'.format(nh4))
-        print('tn is: {0}'.format(tn))
+        print('no3 is: {0} and isdigit is {1}'.format(no3,no3.isdigit()))
+        print('nh4 is: {0} and isdigit is {1}'.format(nh4,nh4.isdigit()))
+        print('tn is: {0} and isdigit is {1}'.format(tn,tn.isdigit()))
         print('perc is: {0}'.format(perc))
         return perc
 
