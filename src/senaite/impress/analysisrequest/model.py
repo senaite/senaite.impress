@@ -223,10 +223,10 @@ class SuperModel(BaseModel):
 
         if tn is None or tn == 0 or not tn.replace('.', '', 1).isdigit():
             perc = 0
-        elif (analyte is None or analyte == 0 or not analyte.replace('.', '', 1).isdigit()):
+        elif (result is None or result == 0 or not result.replace('.', '', 1).isdigit()):
             perc = 0
         else:
-            perc = (float(analyte)/float(tn))*100
+            perc = (float(result)/float(tn))*100
 
         return perc
 
