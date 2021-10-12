@@ -190,33 +190,33 @@ class SuperModel(BaseModel):
         for j in range(20, 0, -1):
             if found==False:
                 sap_version = 'sap_nitrogen_as_ammonium'+str(j)
-                if hasattr(i,sap_version):
+                if hasattr(self,sap_version):
                     found = True
-                    n_as_ammonium = i[sap_version]
-        if found == False and hasattr(i,'sap_nitrogen_as_ammonium'):
-            n_as_ammonium = i.sap_nitrogen_as_ammonium
+                    n_as_ammonium = self[sap_version]
+        if found == False and hasattr(self,'sap_nitrogen_as_ammonium'):
+            n_as_ammonium = self.sap_nitrogen_as_ammonium
 
         found = False
         n_as_nitrate = None
         for j in range(20, 0, -1):
             if found==False:
                 sap_version = 'sap_nitrogen_as_nitrate'+str(j)
-                if hasattr(i,sap_version):
+                if hasattr(self,sap_version):
                     found = True
-                    n_as_nitrate = i[sap_version]
-        if found == False and hasattr(i,'sap_nitrogen_as_nitrate'):
-            n_as_nitrate = i.sap_nitrogen_as_nitrate
+                    n_as_nitrate = self[sap_version]
+        if found == False and hasattr(self,'sap_nitrogen_as_nitrate'):
+            n_as_nitrate = self.sap_nitrogen_as_nitrate
 
         found = False
         total_n = None
         for j in range(20, 0, -1):
             if found==False:
                 sap_version = 'sap_total_nitrogen'+str(j)
-                if hasattr(i,sap_version):
+                if hasattr(self,sap_version):
                     found = True
-                    total_n = i[sap_version]
-        if found == False and hasattr(i,'sap_total_nitrogen'):
-            n_as_nitrate = i.sap_total_nitrogen
+                    total_n = self[sap_version]
+        if found == False and hasattr(self,'sap_total_nitrogen'):
+            n_as_nitrate = self.sap_total_nitrogen
 
         no3 = None
         nh4 = None
