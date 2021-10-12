@@ -241,9 +241,9 @@ class SuperModel(BaseModel):
             tn = total_n.getResult()
             # tn_str = str(tn).strip()
 
-        if tn is None or tn == 0 or isdigit(tn)==False:
+        if tn is None or tn == 0 or not tn.isdigit():
             perc = 0
-        elif (no3 is None or no3 == 0 or isdigit(no3)==False) and (nh4 is None or nh4 == 0 or isdigit(nh4)==False):
+        elif (no3 is None or no3 == 0 or not no3.isdigit()) and (nh4 is None or nh4 == 0 or not nh4.isdigit()):
             perc = 0
         else:
             perc = (1 - ((float(no3)+float(nh4))/float(tn)))*100
