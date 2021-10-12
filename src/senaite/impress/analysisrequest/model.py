@@ -241,12 +241,12 @@ class SuperModel(BaseModel):
             tn = total_n.getResult()
             # tn_str = str(tn).strip()
 
-        if tn is None or tn == 0:
+        if tn is None or tn == 0 or isdigit(tn)==False:
             perc = 0
-        elif (no3 is None or no3 == 0) and (nh4 is None or nh4 == 0):
+        elif (no3 is None or no3 == 0 or isdigit(no3)==False) and (nh4 is None or nh4 == 0 or isdigit(nh4)==False):
             perc = 0
         else:
-            perc = (1 - ((no3+nh4)/tn))*100
+            perc = (1 - ((float(no3)+float(nh4))/float(tn)))*100
 
         return perc
 
