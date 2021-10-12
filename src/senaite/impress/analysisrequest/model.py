@@ -216,7 +216,7 @@ class SuperModel(BaseModel):
                     found = True
                     total_n = self[sap_version]
         if found == False and hasattr(self,'sap_total_nitrogen'):
-            n_as_nitrate = self.sap_total_nitrogen
+            total_n = self.sap_total_nitrogen
 
         no3 = None
         nh4 = None
