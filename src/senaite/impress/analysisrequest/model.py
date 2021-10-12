@@ -183,6 +183,53 @@ class SuperModel(BaseModel):
                     perc = (100/3) + (((result-min)/(max-min))*(100/3))
         return perc
 
+    def get_effeciency_percentage(self, analysis):
+
+        found = False
+        analyte = None
+        for j in range(20, 0, -1):
+            if found==False:
+                sap_version = analysis+str(j)
+                if hasattr(self,sap_version):
+                    found = True
+                    analyte = self[sap_version]
+        if found == False and hasattr(self,analysis):
+            analyte = self[analysis]
+
+        found = False
+        total_n = None
+        for j in range(20, 0, -1):
+            if found==False:
+                sap_version = 'sap_total_nitrogen'+str(j)
+                if hasattr(self,sap_version):
+                    found = True
+                    total_n = self[sap_version]
+        if found == False and hasattr(self,'sap_total_nitrogen'):
+            total_n = self.sap_total_nitrogen
+
+        result = None
+        tn = None
+        perc = None
+
+        if analyte is None:
+            result = 0
+        else:
+            result = analyte.getResult()
+
+        if total_n is None:
+            tn = 0
+        else:
+            tn = total_n.getResult()
+
+        if tn is None or tn == 0 or not tn.replace('.', '', 1).isdigit():
+            perc = 0
+        elif (analyte is None or analyte == 0 or not analyte.replace('.', '', 1).isdigit()):
+            perc = 0
+        else:
+            perc = (float(analyte)/float(tn))*100
+
+        return perc
+
     def get_conversion_effeciency_percentage(self):
 
         found = False
