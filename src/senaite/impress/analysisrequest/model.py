@@ -248,6 +248,10 @@ class SuperModel(BaseModel):
         else:
             perc = (1 - ((float(no3)+float(nh4))/float(tn)))*100
 
+        print('no3 is: {0}'.format(no3))
+        print('nh4 is: {0}'.format(nh4))
+        print('tn is: {0}'.format(tn))
+        print('perc is: {0}'.format(perc))
         return perc
 
     def get_formatted_result_or_NT(self, analysis, digits):
