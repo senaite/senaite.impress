@@ -111,13 +111,6 @@ EDITS:
       td.vp-title {vertical-align: top;}
       div.attachment_image {height: 792pt;}
 
-      @page {
-        @bottom-left {
-          font-size: 5pt;
-          margin-bottom: -20pt;
-          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
-        }
-      }
     </style>
   </tal:css>
   <!-- END CSS Styling -->
