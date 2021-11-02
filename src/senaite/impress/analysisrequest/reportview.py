@@ -124,7 +124,7 @@ class ReportView(Base):
         'BRITISH COLUMBIA': 'BC',
         }
         abbrev = None
-        if state is not None:
+        if state is not None and state in state_dict:
             abbrev = state_dict[state.upper()]
         if abbrev is not None:
             state = abbrev
