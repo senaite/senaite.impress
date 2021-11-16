@@ -51,7 +51,10 @@ class SuperModel(BaseModel):
                     found = True
                     total_n = float(self[version].Result)
         if found == False and hasattr(self,'sap_total_nitrogen'):
-            total_n = float(self.sap_total_nitrogen.Result)
+            if self.sap_total_nitrogen.Result == '':
+                total_n = 'NT'
+            else:
+                total_n = float(self.sap_total_nitrogen.Result)
 
         found = False
         for i in range(20, 0, -1):
@@ -61,6 +64,9 @@ class SuperModel(BaseModel):
                     found = True
                     no3 = float(self[version].Result)
         if found == False and hasattr(self,'sap_nitrogen_as_nitrate'):
+            if self.sap_nitrogen_as_nitrate.Result == '':
+                no3 = 'NT'
+            else:
                 no3 = float(self.sap_nitrogen_as_nitrate.Result)
 
         found = False
@@ -71,9 +77,14 @@ class SuperModel(BaseModel):
                     found = True
                     nh4 = float(self[version].Result)
         if found == False and hasattr(self,'sap_nitrogen_as_ammonium'):
-            nh4 = float(self.sap_nitrogen_as_ammonium.Result)
+            if self.sap_nitrogen_as_ammonium.Result == '':
+                nh4 = 'NT'
+            else:
+                nh4 = float(self.sap_nitrogen_as_ammonium.Result)
 
-        if total_n < 0.01:
+        if total_n == 'NT' or no3 == 'NT' or nh4 == 'NT':
+            ncr = 'NT'
+        elif total_n < 0.01:
             ncr = '-'
         else:
             if total_n == '':
