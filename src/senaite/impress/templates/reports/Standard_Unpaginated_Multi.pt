@@ -101,7 +101,7 @@ EDITS:
     </style>
   </tal:css>
   <!-- BEING Cover Letter -->
-  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_hydro_report_count(collection);">
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection);">
     <div class="cover-letter">
       <div class="cover-body">
         <div class="cover-date">
@@ -440,7 +440,7 @@ EDITS:
                           <span tal:condition="python:not analysis.Accredited" tal:content="accredited_symbol"></span>
                         </td>
                         <td>
-                          <span tal:content="python:model.get_hydro_sf(analysis,3)"></span>
+                          <span tal:content="python:model.get_liqfert_sf(analysis,3)"></span>
                         </td>
                         <td>
                          <span tal:content="python:analysis.Unit"></span>
