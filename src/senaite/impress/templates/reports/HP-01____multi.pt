@@ -115,7 +115,7 @@ EDITS:
   </tal:css>
   <!-- END CSS Styling -->
   <!-- BEING Cover Letter -->
-  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_hydro_report_count(collection);">
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_liqfert_report_count(collection);">
     <div class="cover-letter">
       <div class="cover-body">
         <div class="cover-date">
@@ -435,13 +435,13 @@ EDITS:
                   <col style="width:28%;"/>
                 </colgroup>
                 <tbody class="tbody">
-                  <tr tal:define="soluablesalts python:view.get_analyses_by_keyword(model, 'hydro_soluablesalts');">
+                  <tr tal:define="soluablesalts python:view.get_analyses_by_keyword(model, 'liqfert_soluablesalts');">
                     <tal:soluablesalts condition="soluablesalts">
                       <td>
                         <strong><tal:soluablesalts_title replace="python:soluablesalts.title"></tal:soluablesalts_title></strong>
                       </td>
                       <td class="center">
-                        <tal:soluablesalts_result replace="python:model.get_hydro_sf(soluablesalts,3)"></tal:soluablesalts_result>
+                        <tal:soluablesalts_result replace="python:model.get_liqfert_sf(soluablesalts,3)"></tal:soluablesalts_result>
                       </td>
                       <td class="center">
                         <tal:soluablesalts_unit replace="python:soluablesalts.Unit"></tal:soluablesalts_unit>
@@ -462,13 +462,13 @@ EDITS:
                       </td>
                     </tal:soluablesalts>
                   </tr>
-                  <tr tal:define="tds python:view.get_analyses_by_keyword(model, 'hydro_tds');">
+                  <tr tal:define="tds python:view.get_analyses_by_keyword(model, 'liqfert_tds');">
                     <tal:tds condition="tds">
                       <td>
                         <strong><tal:tds_title replace="python:tds.title"></tal:tds_title></strong>
                       </td>
                       <td class="center">
-                        <tal:tds_result replace="python:model.get_hydro_sf(tds,3)"></tal:tds_result>
+                        <tal:tds_result replace="python:model.get_liqfert_sf(tds,3)"></tal:tds_result>
                       </td>
                       <td class="center">
                         <tal:tds_unit replace="python:tds.Unit"></tal:tds_unit>
@@ -489,13 +489,13 @@ EDITS:
                       </td>
                     </tal:tds>
                   </tr>
-                  <tr tal:define="ph python:view.get_analyses_by_keyword(model, 'hydro_ph');">
+                  <tr tal:define="ph python:view.get_analyses_by_keyword(model, 'liqfert_ph');">
                     <tal:ph condition="ph">
                       <td>
                         <strong><tal:ph_title replace="python:ph.title"></tal:ph_title></strong>
                       </td>
                       <td class="center">
-                        <tal:ph_result replace="python:model.get_hydro_sf(ph,2)"></tal:ph_result>
+                        <tal:ph_result replace="python:model.get_liqfert_sf(ph,2)"></tal:ph_result>
                       </td>
                       <td class="center">
                         <tal:ph_unit replace="python:ph.Unit"></tal:ph_unit>
@@ -526,13 +526,13 @@ EDITS:
                       <strong>ANIONS</strong>
                     </td>
                   </tr>
-                  <tr tal:define="chloride python:view.get_analyses_by_keyword(model, 'hydro_chloride');">
+                  <tr tal:define="chloride python:view.get_analyses_by_keyword(model, 'liqfert_chloride');">
                     <tal:chloride condition="chloride">
                       <td class="indented">
                         <tal:chloride_title replace="python:chloride.title"></tal:chloride_title>
                       </td>
                       <td class="center">
-                        <tal:chloride_result replace="python:model.get_hydro_sf(chloride,3)"></tal:chloride_result>
+                        <tal:chloride_result replace="python:model.get_liqfert_sf(chloride,3)"></tal:chloride_result>
                       </td>
                       <td class="center">
                         <tal:chloride_unit replace="python:chloride.Unit"></tal:chloride_unit>
@@ -553,13 +553,13 @@ EDITS:
                       </td>
                     </tal:chloride>
                   </tr>
-                  <tr tal:define="sulfur python:view.get_analyses_by_keyword(model, 'hydro_sulfur');">
+                  <tr tal:define="sulfur python:view.get_analyses_by_keyword(model, 'liqfert_sulfur');">
                     <tal:sulfur condition="sulfur">
                       <td class="indented">
                         <tal:sulfur_title replace="python:sulfur.title"></tal:sulfur_title>
                       </td>
                       <td class="center">
-                        <tal:sulfur_result replace="python:model.get_hydro_sf(sulfur,3)"></tal:sulfur_result>
+                        <tal:sulfur_result replace="python:model.get_liqfert_sf(sulfur,3)"></tal:sulfur_result>
                       </td>
                       <td class="center">
                         <tal:sulfur_unit replace="python:sulfur.Unit"></tal:sulfur_unit>
@@ -580,13 +580,13 @@ EDITS:
                       </td>
                     </tal:sulfur>
                   </tr>
-                  <tr tal:define="phosphorous python:view.get_analyses_by_keyword(model, 'hydro_phosphorous');">
+                  <tr tal:define="phosphorous python:view.get_analyses_by_keyword(model, 'liqfert_phosphorous');">
                     <tal:phosphorous condition="phosphorous">
                       <td class="indented">
                         <tal:phosphorous_title replace="python:phosphorous.title"></tal:phosphorous_title>
                       </td>
                       <td class="center">
-                        <tal:phosphorous_result replace="python:model.get_hydro_sf(phosphorous,3)"></tal:phosphorous_result>
+                        <tal:phosphorous_result replace="python:model.get_liqfert_sf(phosphorous,3)"></tal:phosphorous_result>
                       </td>
                       <td class="center">
                         <tal:phosphorous_unit replace="python:phosphorous.Unit"></tal:phosphorous_unit>
@@ -612,13 +612,13 @@ EDITS:
                       <strong>CATIONS</strong>
                     </td>
                   </tr>
-                  <tr tal:define="calcium python:view.get_analyses_by_keyword(model, 'hydro_calcium');">
+                  <tr tal:define="calcium python:view.get_analyses_by_keyword(model, 'liqfert_calcium');">
                     <tal:calcium condition="calcium">
                       <td class="indented">
                         <tal:calcium_title replace="python:calcium.title"></tal:calcium_title>
                       </td>
                       <td class="center">
-                        <tal:calcium_result replace="python:model.get_hydro_sf(calcium,3)"></tal:calcium_result>
+                        <tal:calcium_result replace="python:model.get_liqfert_sf(calcium,3)"></tal:calcium_result>
                       </td>
                       <td class="center">
                         <tal:calcium_unit replace="python:calcium.Unit"></tal:calcium_unit>
@@ -639,13 +639,13 @@ EDITS:
                       </td>
                     </tal:calcium>
                   </tr>
-                  <tr tal:define="potassium python:view.get_analyses_by_keyword(model, 'hydro_potassium');">
+                  <tr tal:define="potassium python:view.get_analyses_by_keyword(model, 'liqfert_potassium');">
                     <tal:potassium condition="potassium">
                       <td class="indented">
                         <tal:potassium_title replace="python:potassium.title"></tal:potassium_title>
                       </td>
                       <td class="center">
-                        <tal:potassium_result replace="python:model.get_hydro_sf(potassium,3)"></tal:potassium_result>
+                        <tal:potassium_result replace="python:model.get_liqfert_sf(potassium,3)"></tal:potassium_result>
                       </td>
                       <td class="center">
                         <tal:potassium_unit replace="python:potassium.Unit"></tal:potassium_unit>
@@ -666,13 +666,13 @@ EDITS:
                       </td>
                     </tal:potassium>
                   </tr>
-                  <tr tal:define="magnesium python:view.get_analyses_by_keyword(model, 'hydro_magnesium');">
+                  <tr tal:define="magnesium python:view.get_analyses_by_keyword(model, 'liqfert_magnesium');">
                     <tal:magnesium condition="magnesium">
                       <td class="indented">
                         <tal:magnesium_title replace="python:magnesium.title"></tal:magnesium_title>
                       </td>
                       <td class="center">
-                        <tal:magnesium_result replace="python:model.get_hydro_sf(magnesium,3)"></tal:magnesium_result>
+                        <tal:magnesium_result replace="python:model.get_liqfert_sf(magnesium,3)"></tal:magnesium_result>
                       </td>
                       <td class="center">
                         <tal:magnesium_unit replace="python:magnesium.Unit"></tal:magnesium_unit>
@@ -693,13 +693,13 @@ EDITS:
                       </td>
                     </tal:magnesium>
                   </tr>
-                  <tr tal:define="sodium python:view.get_analyses_by_keyword(model, 'hydro_sodium');">
+                  <tr tal:define="sodium python:view.get_analyses_by_keyword(model, 'liqfert_sodium');">
                     <tal:sodium condition="sodium">
                       <td class="indented">
                         <tal:sodium_title replace="python:sodium.title"></tal:sodium_title>
                       </td>
                       <td class="center">
-                        <tal:sodium_result replace="python:model.get_hydro_sf(sodium,3)"></tal:sodium_result>
+                        <tal:sodium_result replace="python:model.get_liqfert_sf(sodium,3)"></tal:sodium_result>
                       </td>
                       <td class="center">
                         <tal:sodium_unit replace="python:sodium.Unit"></tal:sodium_unit>
@@ -725,13 +725,13 @@ EDITS:
                       <strong>MICRONUTRIENTS</strong>
                     </td>
                   </tr>
-                  <tr tal:define="aluminum python:view.get_analyses_by_keyword(model, 'hydro_aluminum');">
+                  <tr tal:define="aluminum python:view.get_analyses_by_keyword(model, 'liqfert_aluminum');">
                     <tal:aluminum condition="aluminum">
                       <td class="indented">
                         <tal:aluminum_title replace="python:aluminum.title"></tal:aluminum_title>
                       </td>
                       <td class="center">
-                        <tal:aluminum_result replace="python:model.get_hydro_sf(aluminum,3)"></tal:aluminum_result>
+                        <tal:aluminum_result replace="python:model.get_liqfert_sf(aluminum,3)"></tal:aluminum_result>
                       </td>
                       <td class="center">
                         <tal:aluminum_unit replace="python:aluminum.Unit"></tal:aluminum_unit>
@@ -752,13 +752,13 @@ EDITS:
                       </td>
                     </tal:aluminum>
                   </tr>
-                  <tr tal:define="boron python:view.get_analyses_by_keyword(model, 'hydro_boron');">
+                  <tr tal:define="boron python:view.get_analyses_by_keyword(model, 'liqfert_boron');">
                     <tal:boron condition="boron">
                       <td class="indented">
                         <tal:boron_title replace="python:boron.title"></tal:boron_title>
                       </td>
                       <td class="center">
-                        <tal:boron_result replace="python:model.get_hydro_sf(boron,3)"></tal:boron_result>
+                        <tal:boron_result replace="python:model.get_liqfert_sf(boron,3)"></tal:boron_result>
                       </td>
                       <td class="center">
                         <tal:boron_unit replace="python:boron.Unit"></tal:boron_unit>
@@ -779,13 +779,13 @@ EDITS:
                       </td>
                     </tal:boron>
                   </tr>
-                  <tr tal:define="cobalt python:view.get_analyses_by_keyword(model, 'hydro_cobalt');">
+                  <tr tal:define="cobalt python:view.get_analyses_by_keyword(model, 'liqfert_cobalt');">
                     <tal:cobalt condition="cobalt">
                       <td class="indented">
                         <tal:cobalt_title replace="python:cobalt.title"></tal:cobalt_title>
                       </td>
                       <td class="center">
-                        <tal:cobalt_result replace="python:model.get_hydro_sf(cobalt,3)"></tal:cobalt_result>
+                        <tal:cobalt_result replace="python:model.get_liqfert_sf(cobalt,3)"></tal:cobalt_result>
                       </td>
                       <td class="center">
                         <tal:cobalt_unit replace="python:cobalt.Unit"></tal:cobalt_unit>
@@ -806,13 +806,13 @@ EDITS:
                       </td>
                     </tal:cobalt>
                   </tr>
-                  <tr tal:define="copper python:view.get_analyses_by_keyword(model, 'hydro_copper');">
+                  <tr tal:define="copper python:view.get_analyses_by_keyword(model, 'liqfert_copper');">
                     <tal:copper condition="copper">
                       <td class="indented">
                         <tal:copper_title replace="python:copper.title"></tal:copper_title>
                       </td>
                       <td class="center">
-                        <tal:copper_result replace="python:model.get_hydro_sf(copper,3)"></tal:copper_result>
+                        <tal:copper_result replace="python:model.get_liqfert_sf(copper,3)"></tal:copper_result>
                       </td>
                       <td class="center">
                         <tal:copper_unit replace="python:copper.Unit"></tal:copper_unit>
@@ -833,13 +833,13 @@ EDITS:
                       </td>
                     </tal:copper>
                   </tr>
-                  <tr tal:define="iron python:view.get_analyses_by_keyword(model, 'hydro_iron');">
+                  <tr tal:define="iron python:view.get_analyses_by_keyword(model, 'liqfert_iron');">
                     <tal:iron condition="iron">
                       <td class="indented">
                         <tal:iron_title replace="python:iron.title"></tal:iron_title>
                       </td>
                       <td class="center">
-                        <tal:iron_result replace="python:model.get_hydro_sf(iron,3)"></tal:iron_result>
+                        <tal:iron_result replace="python:model.get_liqfert_sf(iron,3)"></tal:iron_result>
                       </td>
                       <td class="center">
                         <tal:iron_unit replace="python:iron.Unit"></tal:iron_unit>
@@ -860,13 +860,13 @@ EDITS:
                       </td>
                     </tal:iron>
                   </tr>
-                  <tr tal:define="manganese python:view.get_analyses_by_keyword(model, 'hydro_manganese');">
+                  <tr tal:define="manganese python:view.get_analyses_by_keyword(model, 'liqfert_manganese');">
                     <tal:manganese condition="manganese">
                       <td class="indented">
                         <tal:manganese_title replace="python:manganese.title"></tal:manganese_title>
                       </td>
                       <td class="center">
-                        <tal:manganese_result replace="python:model.get_hydro_sf(manganese,3)"></tal:manganese_result>
+                        <tal:manganese_result replace="python:model.get_liqfert_sf(manganese,3)"></tal:manganese_result>
                       </td>
                       <td class="center">
                         <tal:manganese_unit replace="python:manganese.Unit"></tal:manganese_unit>
@@ -887,13 +887,13 @@ EDITS:
                       </td>
                     </tal:manganese>
                   </tr>
-                  <tr tal:define="molybdenum python:view.get_analyses_by_keyword(model, 'hydro_molybdenum');">
+                  <tr tal:define="molybdenum python:view.get_analyses_by_keyword(model, 'liqfert_molybdenum');">
                     <tal:molybdenum condition="molybdenum">
                       <td class="indented">
                         <tal:molybdenum_title replace="python:molybdenum.title"></tal:molybdenum_title>
                       </td>
                       <td class="center">
-                        <tal:molybdenum_result replace="python:model.get_hydro_sf(molybdenum,3)"></tal:molybdenum_result>
+                        <tal:molybdenum_result replace="python:model.get_liqfert_sf(molybdenum,3)"></tal:molybdenum_result>
                       </td>
                       <td class="center">
                         <tal:molybdenum_unit replace="python:molybdenum.Unit"></tal:molybdenum_unit>
@@ -914,13 +914,13 @@ EDITS:
                       </td>
                     </tal:molybdenum>
                   </tr>
-                  <tr tal:define="nickel python:view.get_analyses_by_keyword(model, 'hydro_nickel');">
+                  <tr tal:define="nickel python:view.get_analyses_by_keyword(model, 'liqfert_nickel');">
                     <tal:nickel condition="nickel">
                       <td class="indented">
                         <tal:nickel_title replace="python:nickel.title"></tal:nickel_title>
                       </td>
                       <td class="center">
-                        <tal:nickel_result replace="python:model.get_hydro_sf(nickel,3)"></tal:nickel_result>
+                        <tal:nickel_result replace="python:model.get_liqfert_sf(nickel,3)"></tal:nickel_result>
                       </td>
                       <td class="center">
                         <tal:nickel_unit replace="python:nickel.Unit"></tal:nickel_unit>
@@ -941,13 +941,13 @@ EDITS:
                       </td>
                     </tal:nickel>
                   </tr>
-                  <tr tal:define="selenium python:view.get_analyses_by_keyword(model, 'hydro_selenium');">
+                  <tr tal:define="selenium python:view.get_analyses_by_keyword(model, 'liqfert_selenium');">
                     <tal:selenium condition="selenium">
                       <td class="indented">
                         <tal:selenium_title replace="python:selenium.title"></tal:selenium_title>
                       </td>
                       <td class="center">
-                        <tal:selenium_result replace="python:model.get_hydro_sf(selenium,3)"></tal:selenium_result>
+                        <tal:selenium_result replace="python:model.get_liqfert_sf(selenium,3)"></tal:selenium_result>
                       </td>
                       <td class="center">
                         <tal:selenium_unit replace="python:selenium.Unit"></tal:selenium_unit>
@@ -968,13 +968,13 @@ EDITS:
                       </td>
                     </tal:selenium>
                   </tr>
-                  <tr tal:define="silica python:view.get_analyses_by_keyword(model, 'hydro_silica');">
+                  <tr tal:define="silica python:view.get_analyses_by_keyword(model, 'liqfert_silica');">
                     <tal:silica condition="silica">
                       <td class="indented">
                         <tal:silica_title replace="python:silica.title"></tal:silica_title>
                       </td>
                       <td class="center">
-                        <tal:silica_result replace="python:model.get_hydro_sf(silica,3)"></tal:silica_result>
+                        <tal:silica_result replace="python:model.get_liqfert_sf(silica,3)"></tal:silica_result>
                       </td>
                       <td class="center">
                         <tal:silica_unit replace="python:silica.Unit"></tal:silica_unit>
@@ -995,13 +995,13 @@ EDITS:
                       </td>
                     </tal:silica>
                   </tr>
-                  <tr tal:define="zinc python:view.get_analyses_by_keyword(model, 'hydro_zinc');">
+                  <tr tal:define="zinc python:view.get_analyses_by_keyword(model, 'liqfert_zinc');">
                     <tal:zinc condition="zinc">
                       <td class="indented">
                         <tal:zinc_title replace="python:zinc.title"></tal:zinc_title>
                       </td>
                       <td class="center">
-                        <tal:zinc_result replace="python:model.get_hydro_sf(zinc,3)"></tal:zinc_result>
+                        <tal:zinc_result replace="python:model.get_liqfert_sf(zinc,3)"></tal:zinc_result>
                       </td>
                       <td class="center">
                         <tal:zinc_unit replace="python:zinc.Unit"></tal:zinc_unit>
@@ -1027,13 +1027,13 @@ EDITS:
                       <strong>NITROGEN</strong>
                     </td>
                   </tr>
-                  <tr tal:define="ammonia python:view.get_analyses_by_keyword(model, 'hydro_ammonia');">
+                  <tr tal:define="ammonia python:view.get_analyses_by_keyword(model, 'liqfert_ammonia');">
                     <tal:ammonia condition="ammonia">
                       <td class="indented">
                         <tal:ammonia_title replace="python:ammonia.title"></tal:ammonia_title>
                       </td>
                       <td class="center">
-                        <tal:ammonia_result replace="python:model.get_hydro_sf(ammonia,3)"></tal:ammonia_result>
+                        <tal:ammonia_result replace="python:model.get_liqfert_sf(ammonia,3)"></tal:ammonia_result>
                       </td>
                       <td class="center">
                         <tal:ammonia_unit replace="python:ammonia.Unit"></tal:ammonia_unit>
@@ -1054,13 +1054,13 @@ EDITS:
                       </td>
                     </tal:ammonia>
                   </tr>
-                  <tr tal:define="nitrate python:view.get_analyses_by_keyword(model, 'hydro_nitrate');">
+                  <tr tal:define="nitrate python:view.get_analyses_by_keyword(model, 'liqfert_nitrate');">
                     <tal:nitrate condition="nitrate">
                       <td class="indented">
                         <tal:nitrate_title replace="python:nitrate.title"></tal:nitrate_title>
                       </td>
                       <td class="center">
-                        <tal:nitrate_result replace="python:model.get_hydro_sf(nitrate,3)"></tal:nitrate_result>
+                        <tal:nitrate_result replace="python:model.get_liqfert_sf(nitrate,3)"></tal:nitrate_result>
                       </td>
                       <td class="center">
                         <tal:nitrate_unit replace="python:nitrate.Unit"></tal:nitrate_unit>
