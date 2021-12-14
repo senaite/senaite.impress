@@ -327,7 +327,7 @@ class SuperModel(BaseModel):
                 result = int(result)
             return result
 
-    def get_hydro_sf(self, analysis, digits):
+    def get_liqfert__sf(self, analysis, digits):
         """Return formatted result or NT
         """
         result = analysis.getResult()
@@ -346,7 +346,7 @@ class SuperModel(BaseModel):
         if analysis is None or result == "":
             return "NT" #Only if Analysis Service is listed, but not filled out
         #Common Citizen Hack
-        elif self.getClient().ClientID == "NAL20-004" and analysis.Keyword in ('hydro_nickel','hydro_copper'):
+        elif self.getClient().ClientID == "NAL20-004" and analysis.Keyword in ('liqfert__nickel','liqfert__copper'):
             if float(result) < 0.02:
                 return "< 0.02"
             else:
@@ -355,7 +355,7 @@ class SuperModel(BaseModel):
                 if result >= 100:
                     result = int(result)
                 return result
-        elif self.getClient().ClientID == "NAL20-004" and analysis.Keyword == 'hydro_molybdenum':
+        elif self.getClient().ClientID == "NAL20-004" and analysis.Keyword == 'liqfert__molybdenum':
             if float(result) < 0.01:
                 return "< 0.01"
             else:

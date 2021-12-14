@@ -159,7 +159,7 @@ class ReportView(Base):
         count = sample_pages + cover_letter + blank_page + COC
         return count
 
-    def get_hydro_report_count(self, model_or_collection):
+    def get_liqfert__report_count(self, model_or_collection):
         """Returns the number of pages in a comparison sap report.
         """
         samples = self.get_sample_count(model_or_collection)
