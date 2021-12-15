@@ -1,0 +1,1141 @@
+<!--
+AUTHOR:   Paul VanderWeele
+DATE:     05/11/2021
+PURPOSE:  HP-01 Report for NEWAGE LIMS
+EDITS:
+ -->
+
+ <!-- BEGIN Variables -->
+<tal:report
+  condition="python:True"
+  i18n:domain="senaite.impress"
+  define="collection view/collection;
+          laboratory view/laboratory;
+          reporter python:view.current_user;
+          accredited_symbol string:*;
+          outofrange_symbol string:⚠;
+          footer python:view.get_footer_text();
+          report_options python:options.get('report_options', {});
+          attachments_per_row python:int(report_options.get('attachments_per_row', 2));
+          attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
+          page_width options/page_width|nothing;
+          page_height options/page_height|nothing;
+          content_width options/content_width|nothing;
+          content_height options/content_height|nothing;
+          letterhead python:view.get_resource_url('++plone++nal.lims/images/default_letterhead.png')">
+ <!-- END Variables -->
+  <!-- BEGIN Custom Report Controls -->
+  <div id="controls" class="noprint">
+    <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
+    <div class="mb-3">
+      <!-- BEGIN Attachments per row -->
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="attachments_per_row" i18n:translate="">
+            Attachments per Row
+          </label>
+        </div>
+        <input tal:attributes="value attachments_per_row"
+               type="number"
+               class="form-control"
+               name="attachments_per_row"
+               min="1"/>
+      </div>
+      <!-- END Attachments per row -->
+      <small class="form-text text-muted" i18n:translate="">
+        Number of attachments rendered within one row per Analysis Request
+      </small>
+    </div>
+  </div>
+  <!-- END Custom Report Controls -->
+  <!-- BEGIN Ensure custom report options are applied to rendering -->
+  <script type="text/javascript">
+   console.info("######################################################################");
+   window.options = "<tal:t replace='options'/>";
+   console.log(window.options);
+   console.info("######################################################################");
+  </script>
+  <!-- END Ensure custom report options are applied to rendering -->
+
+  <!-- BEGIN CSS Styling -->
+  <tal:css>
+    <style type="text/css">
+     .report h1 { font-size: 1.4em; font-weight: bold; line-height: normal;}
+     .report h2 { font-size: 120%; }
+     .report h3 { font-size: 110%; }
+     .report hr.blue {border-color: #003a5d; margin-bottom: -12px;}
+     .report hr.yellow {border-color: #f7b330; padding: 0;}
+     .report hr.blue-2 {border-color: #003a5d; margin-top: -12px;}
+     .report table.noborder td, .report table.noborder th { border: none;}
+     .report .whole-page {height: 792pt; width: 111%; margin-left: -10mm; padding: 0; margin-top: -40px;}
+     .report .sig-text {margin-left: 20px; padding-top: 5px; margin-top: -10px; border-top: solid black 2px;}
+     .report .results {margin-top: 30px; font-size: 7pt;}
+     .report .indented {padding-left: 8px;}
+     .report .center {text-align: center;}
+     .report .thead {font-size: 9pt;}
+     .report .result-bar {padding-bottom: 0; margin-bottom: -3px;}
+     .report .end-result-bar {padding-bottom: 0; margin-bottom: -10px; margin-top: -10px;}
+     .report .comments {font-weight: bold; padding: 4px;}
+     .report .comments p {padding-left: 10px;}
+     .report table td {vertical-align: top;}
+     .report table td.label { font-weight: bold;}
+     .report table td.detail { padding-left: 10px;}
+     .report .section-header {padding-top: 0px; margin-top: 0px;}
+     .report .section-header img.logo { width: 250px; padding-top: 25px; margin-right: 20px;}
+     .report .section-footer {
+       position: absolute;
+       width: 116%;
+       bottom: -10mm;
+       font-size: .8em;
+     }
+      div.cover-page {height: 792pt;}
+      div.cover-letter {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
+      div.cover-body {font-size: 8pt; padding-top: 140pt; padding-left: 40pt; width: 570pt;}
+      div.cover-date {font-weight: bold;}
+      div.cover-client {font-weight: bold;}
+      div.cover-client-contact {font-weight: bold;}
+      span.cover-subject-header {font-weight: bold;}
+      div.blank-page {height: 792pt;}
+      img.coc {height: 792pt; margin-left: -40pt; margin-top: -45pt;}
+      div.blank-page-background {margin-left: -60pt; margin-top: -60pt; height: 792pt; width: 612pt; background-size: 100% 100%; background-image: url(<tal:bg replace="letterhead"/>);}
+      h4.blank-text {margin-left: 150pt; padding-top: 370pt;}
+      td.president-sig img {width: 150pt;}
+      td.vp-sig img {width: 150pt;}
+      td.president-title {vertical-align: top;}
+      td.vp-title {vertical-align: top;}
+
+    </style>
+  </tal:css>
+  <!-- END CSS Styling -->
+  <!-- BEING Cover Letter -->
+  <div class="cover-page" tal:define="model python:view.get_one_model(collection); pages python:view.get_liqfert_report_count(collection);">
+    <div class="cover-letter">
+      <div class="cover-body">
+        <div class="cover-date">
+          <tal:date replace="python:view.get_today()"/>
+        </div>
+        <br>
+        <div class="cover-client">
+          <div class="cover-client-name">
+            <div tal:replace="model/Client/Name|nothing"></div>
+          </div>
+          <div class="cover-client-address">
+            <div tal:replace="model/Client/PostalAddress/address|nothing"></div>
+          </div>
+          <div class="cover-client-city">
+            <div tal:replace="model/Client/PostalAddress/city|nothing"></div>
+          </div>
+          <div class="cover-client-statezip">
+          <span class="client-state">
+            <div tal:replace="model/Client/PostalAddress/state|nothing"></div>
+          </span>
+          <span class="client-zip">
+            <div tal:replace="model/Client/PostalAddress/zip|nothing"></div>
+          </span>
+          </div>
+          <br>
+          <div class="cover-client-contact">
+            <span>ATTN: </span>
+            <span tal:content="python:model.get_project_contact()"></span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-subject">
+          <span class="cover-subject-header">SUBJECT: </span>
+          <span>Sample Delivery Group</span>
+          <span tal:content="model/Batch/Title|nothing"></span>
+          <!-- <span tal:content="model/Batch/Project|nothing"></span> -->
+        </div>
+        <br>
+        <div class="cover-salutation">
+          <div>
+            <span>Dear</span>
+            <span tal:replace="python:model.get_project_contact()"></span>
+            <span>,</span>
+          </div>
+        </div>
+        <br>
+        <div class="cover-first-paragraph">
+          The following is the final report containing the analytical result for the plant sap samples delivered on <tal:date replace="python:model.get_received_date()"/>. The report is inclusive of all sample results, chain of custodies, and this cover letter.
+        </div>
+        <br>
+        <div class="cover-second-paragraph">
+          All samples were analyzed in accordance with the parameters outline on the chain of custody records and the oral and/or written correspondence between yourself and NEW AGE Laboratories. NEW AGE certifies that, to our best knowledge, this data package is in compliance with the terms and conditions of the contract, both technically and for completeness, and that test results meet all requirements of NEW AGE's Quality Assurance Manual. NEW AGE is an ISO/IEC 17025:2017 certified laboratory and meets the requiremnts of the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food and Pharmaceutical-2010 and APLAC TC 007 Guidelines for Food Testing Laboratories.
+        </div>
+        <br>
+        <div class="cover-third-paragraph">
+          Please review the report and contact our office if you have any questions or need additional information. Thank you for choosing NEW AGE Laboratories for this important project. We look forward to working with you again in the future.
+        </div>
+        <br>
+        <div class="cover-sincerely">
+          <div>Sincerely,</div>
+          <div><strong>NEW AGE Laboratories</strong></div>
+        </div>
+        <br>
+        <div class="cover-presidents">
+          <table>
+            <colgroup>
+              <col style="width: 65%;">
+            </colgroup>
+            <tr class="president-signatures">
+              <td class="president-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+              </td>
+              <td class="vp-sig">
+                <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/vp_signature.png')"/>
+              </td>
+            </tr>
+            <tr class="president-names">
+              <td class="president-name">
+                <div>Scott D. Wall</div>
+              </td>
+              <td class="vp-name">
+                <div>Irish L. Gallagher</div>
+              </td>
+            </tr>
+            <tr class="president-titles">
+              <td class="president-title">
+                <div>President</div>
+              </td>
+              <td class="vp-title">
+                <div>Vice President of Laboratory Operations</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <br>
+        <div class="cover-pjla">
+          <div style="font-size: 6pt;">Parameters marked with an astrisk <tal:acc replace="accredited_symbol"/> are <strong>not</strong> accredited under our ISO/IEC 17025:2017 scope</div>
+          <img style="height: 120px;" tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pjla.png')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Cover Letter -->
+  <!-- BEGIN Blank Page-->
+  <div class="blank-page">
+    <div class="blank-page-background">
+      <h4 class="blank-text">This Page Is Intentionally Left Blank</h4>
+    </div>
+  </div>
+  <!-- END Blank Page-->
+  <!-- BEGIN Result Pages-->
+
+    <!-- NEW HEADER -->
+  <tal:model repeat="model collection">
+    <tal:render condition="python:True">
+      <div tal:define="batch model/Batch">
+        <div class="whole-page">
+          <div class="row section-header no-gutters">
+            <h1>LABORATORY ANALYTICAL REPORT</h1>
+              <table class="w-100 mb-0 noborder">
+                <colgroup>
+                  <col style="width:30%"/>
+                  <col style="width:70%"/>
+                </colgroup>
+                <tr>
+                  <td class="align-left text-left">
+                    <img class="logo"
+                         tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/logo.png')"/>
+                  </td>
+                  <td class="align-middle">
+                    <table class="w-100 mb-0 noborder sample-info-table">
+                      <colgroup>
+                        <col style="width:34%"/>
+                        <col style="width:34%"/>
+                        <col style="width:32%"/>
+                      </colgroup>
+                      <tr>
+                        <td>
+                          <table class="w-100 mb-0 noborder">
+                            <tr>
+                              <td class="label">
+                                Client:
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="detail">
+                                <div class="client-name">
+                                  <div tal:replace="model/Client/Name|nothing"></div>
+                                </div>
+                                <div class="client-street">
+                                  <div tal:replace="model/Client/PostalAddress/address|nothing"></div>
+                                </div>
+                                <div class="client-city">
+                                  <div tal:replace="model/Client/PostalAddress/city|nothing"></div>
+                                </div>
+                                <span class="client-state">
+                                  <div tal:replace="model/Client/PostalAddress/state|nothing"></div>
+                                </span>
+                                <span class="client-zip">
+                                  <div tal:replace="model/Client/PostalAddress/zip|nothing"></div>
+                                </span>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td>
+                          <table class="w-100 mb-0 noborder">
+                            <tr>
+                              <td class="label">
+                                Data Reported For:
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="detail">
+                                <div tal:condition="model/Batch/ReportContact">
+                                  <div tal:replace="model/Batch/ReportContact"></div>
+                                </div>
+                                <div tal:condition="python: not model.Batch.ReportContact">
+                                  <div tal:replace="model/Batch/ProjectContact/Fullname|nothing"></div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="label">
+                                Sample Location:
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="detail">
+                                <div tal:replace="model/SamplePoint/title|nothing"></div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td>
+                          <table class="w-100 mb-0 noborder">
+                            <tr>
+                              <td class="nal-acct-id label">
+                                NAL ACCT ID:
+                              </td>
+                            </tr>
+                            <tr>
+                               <td class="detail">
+                                 <div tal:replace="model/Client/ClientID|nothing"></div>
+                               </td>
+                            </tr>
+                            <tr>
+                              <td class="collected-by label">
+                                Collected By:
+                              </td>
+                            </tr>
+                              <tr>
+                              <td class="detail">
+                                <div tal:replace="model/Batch/SamplerContact/Fullname|nothing"></div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                    </tr>
+                      <tr>
+                        <td class="label">
+                          Sample Name:
+                        </td>
+                        <td class="label">
+                          NAL Sample ID #:
+                        </td>
+                        <td class="label">
+                          NAL SDG ID:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="detail">
+                          <div tal:replace="model/ClientSampleID|page_height|nothing"></div>
+                        </td>
+                        <td class="detail">
+                            <div tal:replace="model/getId|nothing"></div>
+                        </td>
+                        <td class="detail">
+                          <div tal:replace="model/Batch/title|nothing"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="label">
+                          Date/Time Sampled:
+                        </td>
+                        <td class="label">
+                          Date/Time Received:
+                        </td>
+                        <td class="label">
+                          Matrix:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="detail">
+                          <div tal:content="python:(model.DateOfSampling.strftime('%m-%d-%Y') + ' ' + model.TimeOfSampling)"></div>
+                        </td>
+                        <td class="detail">
+                          <div tal:replace="python:(batch.SDGDate.strftime('%m-%d-%Y') + ' ' + batch.SDGTime)"></div>
+                        </td>
+                        <td class="detail">
+                          <div tal:replace="string:LIQ. FERT"></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            <div class="row results">
+              <table class="w-100 mb-0 noborder">
+                <colgroup>
+                  <col style="width:30%"/>
+                  <col style="width:11%"/>
+                  <col style="width:8%"/>
+                  <col style="width:5%"/>
+                  <col style="width:19%"/>
+                  <col style="width:9%"/>
+                  <col style="width:28%"/>
+                </colgroup>
+                <thead class="thead">
+                  <tr>
+                    <td class="label">
+                      TEST PERFORMED
+                    </td>
+                    <td class="label center">
+                      RESULTS
+                    </td>
+                    <td class="label center">
+                      UNITS
+                    </td>
+                    <td class="label center">
+                      LOQ
+                    </td>
+                    <td class="label center">
+                      DATE ANALYZED
+                    </td>
+                    <td class="label center">
+                      ANALYST
+                    </td>
+                    <td class="label center">
+                      METHOD
+                    </td>
+                  </tr>
+                </thead>
+              </table>
+              <div class="result-bar">
+                <hr class="blue">
+                <hr class="yellow">
+              </div>
+              <table class="w-100 mb-0 noborder">
+                <colgroup>
+                  <col style="width:30%;"/>
+                  <col style="width:11%;"/>
+                  <col style="width:8%;"/>
+                  <col style="width:5%;"/>
+                  <col style="width:19%;"/>
+                  <col style="width:9%;"/>
+                  <col style="width:28%;"/>
+                </colgroup>
+                <tbody class="tbody">
+                  <tr tal:define="soluablesalts python:view.get_analyses_by_keyword(model, 'liqfert_soluablesalts');">
+                    <tal:soluablesalts condition="soluablesalts">
+                      <td>
+                        <strong><tal:soluablesalts_title replace="python:soluablesalts.title"></tal:soluablesalts_title></strong>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_result replace="python:model.get_liqfert_sf(soluablesalts,3)"></tal:soluablesalts_result>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_unit replace="python:soluablesalts.Unit"></tal:soluablesalts_unit>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_loq replace="python:soluablesalts.getLowerDetectionLimit()"></tal:soluablesalts_loq>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_title replace="python:soluablesalts.AnalysisDateTime"></tal:soluablesalts_title>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(soluablesalts)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="soluablesalts/Method">
+                          <tal:soluablesalts_title replace="python:soluablesalts.Method.title"></tal:soluablesalts_title>
+                        </div>
+                      </td>
+                    </tal:soluablesalts>
+                  </tr>
+                  <tr tal:define="tds python:view.get_analyses_by_keyword(model, 'liqfert_tds');">
+                    <tal:tds condition="tds">
+                      <td>
+                        <strong><tal:tds_title replace="python:tds.title"></tal:tds_title></strong>
+                      </td>
+                      <td class="center">
+                        <tal:tds_result replace="python:model.get_liqfert_sf(tds,3)"></tal:tds_result>
+                      </td>
+                      <td class="center">
+                        <tal:tds_unit replace="python:tds.Unit"></tal:tds_unit>
+                      </td>
+                      <td class="center">
+                        <tal:tds_loq replace="python:tds.getLowerDetectionLimit()"></tal:tds_loq>
+                      </td>
+                      <td class="center">
+                        <tal:tds_title replace="python:tds.AnalysisDateTime"></tal:tds_title>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(tds)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="tds/Method">
+                          <tal:tds_title replace="python:tds.Method.title"></tal:tds_title>
+                        </div>
+                      </td>
+                    </tal:tds>
+                  </tr>
+                  <tr tal:define="ph python:view.get_analyses_by_keyword(model, 'liqfert_ph');">
+                    <tal:ph condition="ph">
+                      <td>
+                        <strong><tal:ph_title replace="python:ph.title"></tal:ph_title></strong>
+                      </td>
+                      <td class="center">
+                        <tal:ph_result replace="python:model.get_liqfert_sf(ph,2)"></tal:ph_result>
+                      </td>
+                      <td class="center">
+                        <tal:ph_unit replace="python:ph.Unit"></tal:ph_unit>
+                      </td>
+                      <td class="center">
+                        <tal:ph_loq replace="python:ph.getLowerDetectionLimit()"></tal:ph_loq>
+                      </td>
+                      <td class="center">
+                        <tal:ph_title replace="python:ph.AnalysisDateTime"></tal:ph_title>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(ph)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="ph/Method">
+                          <tal:ph_title replace="python:ph.Method.title"></tal:ph_title>
+                        </div>
+                      </td>
+                    </tal:ph>
+                  </tr>
+                  <tr>
+                    <td>
+                      <br>
+                    </td>
+                  </tr>
+                  <tr style="font-size: 9pt;">
+                    <td>
+                      <strong>ANIONS</strong>
+                    </td>
+                  </tr>
+                  <tr tal:define="chloride python:view.get_analyses_by_keyword(model, 'liqfert_chloride');">
+                    <tal:chloride condition="chloride">
+                      <td class="indented">
+                        <tal:chloride_title replace="python:chloride.title"></tal:chloride_title>
+                      </td>
+                      <td class="center">
+                        <tal:chloride_result replace="python:model.get_liqfert_sf(chloride,3)"></tal:chloride_result>
+                      </td>
+                      <td class="center">
+                        <tal:chloride_unit replace="python:chloride.Unit"></tal:chloride_unit>
+                      </td>
+                      <td class="center">
+                        <tal:chloride_loq replace="python:chloride.getLowerDetectionLimit()"></tal:chloride_loq>
+                      </td>
+                      <td class="center">
+                        <tal:chloride_datetime replace="python:chloride.AnalysisDateTime"></tal:chloride_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(chloride)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="chloride/Method">
+                          <tal:chloride_method replace="python:chloride.Method.title"></tal:chloride_method>
+                        </div>
+                      </td>
+                    </tal:chloride>
+                  </tr>
+                  <tr tal:define="sulfur python:view.get_analyses_by_keyword(model, 'liqfert_sulfur');">
+                    <tal:sulfur condition="sulfur">
+                      <td class="indented">
+                        <tal:sulfur_title replace="python:sulfur.title"></tal:sulfur_title>
+                      </td>
+                      <td class="center">
+                        <tal:sulfur_result replace="python:model.get_liqfert_sf(sulfur,3)"></tal:sulfur_result>
+                      </td>
+                      <td class="center">
+                        <tal:sulfur_unit replace="python:sulfur.Unit"></tal:sulfur_unit>
+                      </td>
+                      <td class="center">
+                        <tal:sulfur_loq replace="python:sulfur.getLowerDetectionLimit()"></tal:sulfur_loq>
+                      </td>
+                      <td class="center">
+                        <tal:sulfur_datetime replace="python:sulfur.AnalysisDateTime"></tal:sulfur_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(sulfur)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="sulfur/Method">
+                          <tal:sulfur_method replace="python:sulfur.Method.title"></tal:sulfur_method>
+                        </div>
+                      </td>
+                    </tal:sulfur>
+                  </tr>
+                  <tr tal:define="phosphorous python:view.get_analyses_by_keyword(model, 'liqfert_phosphorous');">
+                    <tal:phosphorous condition="phosphorous">
+                      <td class="indented">
+                        <tal:phosphorous_title replace="python:phosphorous.title"></tal:phosphorous_title>
+                      </td>
+                      <td class="center">
+                        <tal:phosphorous_result replace="python:model.get_liqfert_sf(phosphorous,3)"></tal:phosphorous_result>
+                      </td>
+                      <td class="center">
+                        <tal:phosphorous_unit replace="python:phosphorous.Unit"></tal:phosphorous_unit>
+                      </td>
+                      <td class="center">
+                        <tal:phosphorous_loq replace="python:phosphorous.getLowerDetectionLimit()"></tal:phosphorous_loq>
+                      </td>
+                      <td class="center">
+                        <tal:phosphorous_datetime replace="python:phosphorous.AnalysisDateTime"></tal:phosphorous_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(phosphorous)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="phosphorous/Method">
+                          <tal:phosphorous_method replace="python:phosphorous.Method.title"></tal:phosphorous_method>
+                        </div>
+                      </td>
+                    </tal:phosphorous>
+                  </tr>
+                  <tr style="font-size: 9pt;">
+                    <td>
+                      <strong>CATIONS</strong>
+                    </td>
+                  </tr>
+                  <tr tal:define="calcium python:view.get_analyses_by_keyword(model, 'liqfert_calcium');">
+                    <tal:calcium condition="calcium">
+                      <td class="indented">
+                        <tal:calcium_title replace="python:calcium.title"></tal:calcium_title>
+                      </td>
+                      <td class="center">
+                        <tal:calcium_result replace="python:model.get_liqfert_sf(calcium,3)"></tal:calcium_result>
+                      </td>
+                      <td class="center">
+                        <tal:calcium_unit replace="python:calcium.Unit"></tal:calcium_unit>
+                      </td>
+                      <td class="center">
+                        <tal:calcium_loq replace="python:calcium.getLowerDetectionLimit()"></tal:calcium_loq>
+                      </td>
+                      <td class="center">
+                        <tal:calcium_datetime replace="python:calcium.AnalysisDateTime"></tal:calcium_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(calcium)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="calcium/Method">
+                          <tal:calcium_method replace="python:calcium.Method.title"></tal:calcium_method>
+                        </div>
+                      </td>
+                    </tal:calcium>
+                  </tr>
+                  <tr tal:define="potassium python:view.get_analyses_by_keyword(model, 'liqfert_potassium');">
+                    <tal:potassium condition="potassium">
+                      <td class="indented">
+                        <tal:potassium_title replace="python:potassium.title"></tal:potassium_title>
+                      </td>
+                      <td class="center">
+                        <tal:potassium_result replace="python:model.get_liqfert_sf(potassium,3)"></tal:potassium_result>
+                      </td>
+                      <td class="center">
+                        <tal:potassium_unit replace="python:potassium.Unit"></tal:potassium_unit>
+                      </td>
+                      <td class="center">
+                        <tal:potassium_loq replace="python:potassium.getLowerDetectionLimit()"></tal:potassium_loq>
+                      </td>
+                      <td class="center">
+                        <tal:potassium_datetime replace="python:potassium.AnalysisDateTime"></tal:potassium_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(potassium)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="potassium/Method">
+                          <tal:potassium_method replace="python:potassium.Method.title"></tal:potassium_method>
+                        </div>
+                      </td>
+                    </tal:potassium>
+                  </tr>
+                  <tr tal:define="magnesium python:view.get_analyses_by_keyword(model, 'liqfert_magnesium');">
+                    <tal:magnesium condition="magnesium">
+                      <td class="indented">
+                        <tal:magnesium_title replace="python:magnesium.title"></tal:magnesium_title>
+                      </td>
+                      <td class="center">
+                        <tal:magnesium_result replace="python:model.get_liqfert_sf(magnesium,3)"></tal:magnesium_result>
+                      </td>
+                      <td class="center">
+                        <tal:magnesium_unit replace="python:magnesium.Unit"></tal:magnesium_unit>
+                      </td>
+                      <td class="center">
+                        <tal:magnesium_loq replace="python:magnesium.getLowerDetectionLimit()"></tal:magnesium_loq>
+                      </td>
+                      <td class="center">
+                        <tal:magnesium_datetime replace="python:magnesium.AnalysisDateTime"></tal:magnesium_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:soluablesalts_initials replace="python:model.get_analyst_initials(magnesium)"></tal:soluablesalts_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="magnesium/Method">
+                          <tal:magnesium_method replace="python:magnesium.Method.title"></tal:magnesium_method>
+                        </div>
+                      </td>
+                    </tal:magnesium>
+                  </tr>
+                  <tr tal:define="sodium python:view.get_analyses_by_keyword(model, 'liqfert_sodium');">
+                    <tal:sodium condition="sodium">
+                      <td class="indented">
+                        <tal:sodium_title replace="python:sodium.title"></tal:sodium_title>
+                      </td>
+                      <td class="center">
+                        <tal:sodium_result replace="python:model.get_liqfert_sf(sodium,3)"></tal:sodium_result>
+                      </td>
+                      <td class="center">
+                        <tal:sodium_unit replace="python:sodium.Unit"></tal:sodium_unit>
+                      </td>
+                      <td class="center">
+                        <tal:sodium_loq replace="python:sodium.getLowerDetectionLimit()"></tal:sodium_loq>
+                      </td>
+                      <td class="center">
+                        <tal:sodium_datetime replace="python:sodium.AnalysisDateTime"></tal:sodium_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:sodium_initials replace="python:model.get_analyst_initials(sodium)"></tal:sodium_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="sodium/Method">
+                          <tal:sodium_method replace="python:sodium.Method.title"></tal:sodium_method>
+                        </div>
+                      </td>
+                    </tal:sodium>
+                  </tr>
+                  <tr style="font-size: 9pt;">
+                    <td>
+                      <strong>MICRONUTRIENTS</strong>
+                    </td>
+                  </tr>
+                  <tr tal:define="aluminum python:view.get_analyses_by_keyword(model, 'liqfert_aluminum');">
+                    <tal:aluminum condition="aluminum">
+                      <td class="indented">
+                        <tal:aluminum_title replace="python:aluminum.title"></tal:aluminum_title>
+                      </td>
+                      <td class="center">
+                        <tal:aluminum_result replace="python:model.get_liqfert_sf(aluminum,3)"></tal:aluminum_result>
+                      </td>
+                      <td class="center">
+                        <tal:aluminum_unit replace="python:aluminum.Unit"></tal:aluminum_unit>
+                      </td>
+                      <td class="center">
+                        <tal:aluminum_loq replace="python:aluminum.getLowerDetectionLimit()"></tal:aluminum_loq>
+                      </td>
+                      <td class="center">
+                        <tal:aluminum_datetime replace="python:aluminum.AnalysisDateTime"></tal:aluminum_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:aluminum_initials replace="python:model.get_analyst_initials(aluminum)"></tal:aluminum_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="aluminum/Method">
+                          <tal:aluminum_method replace="python:aluminum.Method.title"></tal:aluminum_method>
+                        </div>
+                      </td>
+                    </tal:aluminum>
+                  </tr>
+                  <tr tal:define="boron python:view.get_analyses_by_keyword(model, 'liqfert_boron');">
+                    <tal:boron condition="boron">
+                      <td class="indented">
+                        <tal:boron_title replace="python:boron.title"></tal:boron_title>
+                      </td>
+                      <td class="center">
+                        <tal:boron_result replace="python:model.get_liqfert_sf(boron,3)"></tal:boron_result>
+                      </td>
+                      <td class="center">
+                        <tal:boron_unit replace="python:boron.Unit"></tal:boron_unit>
+                      </td>
+                      <td class="center">
+                        <tal:boron_loq replace="python:boron.getLowerDetectionLimit()"></tal:boron_loq>
+                      </td>
+                      <td class="center">
+                        <tal:boron_datetime replace="python:boron.AnalysisDateTime"></tal:boron_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:boron_initials replace="python:model.get_analyst_initials(boron)"></tal:boron_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="boron/Method">
+                          <tal:boron_method replace="python:boron.Method.title"></tal:boron_method>
+                        </div>
+                      </td>
+                    </tal:boron>
+                  </tr>
+                  <tr tal:define="cobalt python:view.get_analyses_by_keyword(model, 'liqfert_cobalt');">
+                    <tal:cobalt condition="cobalt">
+                      <td class="indented">
+                        <tal:cobalt_title replace="python:cobalt.title"></tal:cobalt_title>
+                      </td>
+                      <td class="center">
+                        <tal:cobalt_result replace="python:model.get_liqfert_sf(cobalt,3)"></tal:cobalt_result>
+                      </td>
+                      <td class="center">
+                        <tal:cobalt_unit replace="python:cobalt.Unit"></tal:cobalt_unit>
+                      </td>
+                      <td class="center">
+                        <tal:cobalt_loq replace="python:cobalt.getLowerDetectionLimit()"></tal:cobalt_loq>
+                      </td>
+                      <td class="center">
+                        <tal:cobalt_datetime replace="python:cobalt.AnalysisDateTime"></tal:cobalt_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:cobalt_initials replace="python:model.get_analyst_initials(cobalt)"></tal:cobalt_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="cobalt/Method">
+                          <tal:cobalt_method replace="python:cobalt.Method.title"></tal:cobalt_method>
+                        </div>
+                      </td>
+                    </tal:cobalt>
+                  </tr>
+                  <tr tal:define="copper python:view.get_analyses_by_keyword(model, 'liqfert_copper');">
+                    <tal:copper condition="copper">
+                      <td class="indented">
+                        <tal:copper_title replace="python:copper.title"></tal:copper_title>
+                      </td>
+                      <td class="center">
+                        <tal:copper_result replace="python:model.get_liqfert_sf(copper,3)"></tal:copper_result>
+                      </td>
+                      <td class="center">
+                        <tal:copper_unit replace="python:copper.Unit"></tal:copper_unit>
+                      </td>
+                      <td class="center">
+                        <tal:copper_loq replace="python:copper.getLowerDetectionLimit()"></tal:copper_loq>
+                      </td>
+                      <td class="center">
+                        <tal:copper_datetime replace="python:copper.AnalysisDateTime"></tal:copper_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:copper_initials replace="python:model.get_analyst_initials(copper)"></tal:copper_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="copper/Method">
+                          <tal:copper_method replace="python:copper.Method.title"></tal:copper_method>
+                        </div>
+                      </td>
+                    </tal:copper>
+                  </tr>
+                  <tr tal:define="iron python:view.get_analyses_by_keyword(model, 'liqfert_iron');">
+                    <tal:iron condition="iron">
+                      <td class="indented">
+                        <tal:iron_title replace="python:iron.title"></tal:iron_title>
+                      </td>
+                      <td class="center">
+                        <tal:iron_result replace="python:model.get_liqfert_sf(iron,3)"></tal:iron_result>
+                      </td>
+                      <td class="center">
+                        <tal:iron_unit replace="python:iron.Unit"></tal:iron_unit>
+                      </td>
+                      <td class="center">
+                        <tal:iron_loq replace="python:iron.getLowerDetectionLimit()"></tal:iron_loq>
+                      </td>
+                      <td class="center">
+                        <tal:iron_datetime replace="python:iron.AnalysisDateTime"></tal:iron_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:iron_initials replace="python:model.get_analyst_initials(iron)"></tal:iron_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="iron/Method">
+                          <tal:iron_method replace="python:iron.Method.title"></tal:iron_method>
+                        </div>
+                      </td>
+                    </tal:iron>
+                  </tr>
+                  <tr tal:define="manganese python:view.get_analyses_by_keyword(model, 'liqfert_manganese');">
+                    <tal:manganese condition="manganese">
+                      <td class="indented">
+                        <tal:manganese_title replace="python:manganese.title"></tal:manganese_title>
+                      </td>
+                      <td class="center">
+                        <tal:manganese_result replace="python:model.get_liqfert_sf(manganese,3)"></tal:manganese_result>
+                      </td>
+                      <td class="center">
+                        <tal:manganese_unit replace="python:manganese.Unit"></tal:manganese_unit>
+                      </td>
+                      <td class="center">
+                        <tal:manganese_loq replace="python:manganese.getLowerDetectionLimit()"></tal:manganese_loq>
+                      </td>
+                      <td class="center">
+                        <tal:manganese_datetime replace="python:manganese.AnalysisDateTime"></tal:manganese_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:manganese_initials replace="python:model.get_analyst_initials(manganese)"></tal:manganese_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="manganese/Method">
+                          <tal:manganese_method replace="python:manganese.Method.title"></tal:manganese_method>
+                        </div>
+                      </td>
+                    </tal:manganese>
+                  </tr>
+                  <tr tal:define="molybdenum python:view.get_analyses_by_keyword(model, 'liqfert_molybdenum');">
+                    <tal:molybdenum condition="molybdenum">
+                      <td class="indented">
+                        <tal:molybdenum_title replace="python:molybdenum.title"></tal:molybdenum_title>
+                      </td>
+                      <td class="center">
+                        <tal:molybdenum_result replace="python:model.get_liqfert_sf(molybdenum,3)"></tal:molybdenum_result>
+                      </td>
+                      <td class="center">
+                        <tal:molybdenum_unit replace="python:molybdenum.Unit"></tal:molybdenum_unit>
+                      </td>
+                      <td class="center">
+                        <tal:molybdenum_loq replace="python:molybdenum.getLowerDetectionLimit()"></tal:molybdenum_loq>
+                      </td>
+                      <td class="center">
+                        <tal:molybdenum_datetime replace="python:molybdenum.AnalysisDateTime"></tal:molybdenum_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:molybdenum_initials replace="python:model.get_analyst_initials(molybdenum)"></tal:molybdenum_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="molybdenum/Method">
+                          <tal:molybdenum_method replace="python:molybdenum.Method.title"></tal:molybdenum_method>
+                        </div>
+                      </td>
+                    </tal:molybdenum>
+                  </tr>
+                  <tr tal:define="nickel python:view.get_analyses_by_keyword(model, 'liqfert_nickel');">
+                    <tal:nickel condition="nickel">
+                      <td class="indented">
+                        <tal:nickel_title replace="python:nickel.title"></tal:nickel_title>
+                      </td>
+                      <td class="center">
+                        <tal:nickel_result replace="python:model.get_liqfert_sf(nickel,3)"></tal:nickel_result>
+                      </td>
+                      <td class="center">
+                        <tal:nickel_unit replace="python:nickel.Unit"></tal:nickel_unit>
+                      </td>
+                      <td class="center">
+                        <tal:nickel_loq replace="python:nickel.getLowerDetectionLimit()"></tal:nickel_loq>
+                      </td>
+                      <td class="center">
+                        <tal:nickel_datetime replace="python:nickel.AnalysisDateTime"></tal:nickel_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:nickel_initials replace="python:model.get_analyst_initials(nickel)"></tal:nickel_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="nickel/Method">
+                          <tal:nickel_method replace="python:nickel.Method.title"></tal:nickel_method>
+                        </div>
+                      </td>
+                    </tal:nickel>
+                  </tr>
+                  <tr tal:define="selenium python:view.get_analyses_by_keyword(model, 'liqfert_selenium');">
+                    <tal:selenium condition="selenium">
+                      <td class="indented">
+                        <tal:selenium_title replace="python:selenium.title"></tal:selenium_title>
+                      </td>
+                      <td class="center">
+                        <tal:selenium_result replace="python:model.get_liqfert_sf(selenium,3)"></tal:selenium_result>
+                      </td>
+                      <td class="center">
+                        <tal:selenium_unit replace="python:selenium.Unit"></tal:selenium_unit>
+                      </td>
+                      <td class="center">
+                        <tal:selenium_loq replace="python:selenium.getLowerDetectionLimit()"></tal:selenium_loq>
+                      </td>
+                      <td class="center">
+                        <tal:selenium_datetime replace="python:selenium.AnalysisDateTime"></tal:selenium_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:selenium_initials replace="python:model.get_analyst_initials(selenium)"></tal:selenium_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="selenium/Method">
+                          <tal:selenium_method replace="python:selenium.Method.title"></tal:selenium_method>
+                        </div>
+                      </td>
+                    </tal:selenium>
+                  </tr>
+                  <tr tal:define="silica python:view.get_analyses_by_keyword(model, 'liqfert_silica');">
+                    <tal:silica condition="silica">
+                      <td class="indented">
+                        <tal:silica_title replace="python:silica.title"></tal:silica_title>
+                      </td>
+                      <td class="center">
+                        <tal:silica_result replace="python:model.get_liqfert_sf(silica,3)"></tal:silica_result>
+                      </td>
+                      <td class="center">
+                        <tal:silica_unit replace="python:silica.Unit"></tal:silica_unit>
+                      </td>
+                      <td class="center">
+                        <tal:silica_loq replace="python:silica.getLowerDetectionLimit()"></tal:silica_loq>
+                      </td>
+                      <td class="center">
+                        <tal:silica_datetime replace="python:silica.AnalysisDateTime"></tal:silica_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:silica_initials replace="python:model.get_analyst_initials(silica)"></tal:silica_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="silica/Method">
+                          <tal:silica_method replace="python:silica.Method.title"></tal:silica_method>
+                        </div>
+                      </td>
+                    </tal:silica>
+                  </tr>
+                  <tr tal:define="zinc python:view.get_analyses_by_keyword(model, 'liqfert_zinc');">
+                    <tal:zinc condition="zinc">
+                      <td class="indented">
+                        <tal:zinc_title replace="python:zinc.title"></tal:zinc_title>
+                      </td>
+                      <td class="center">
+                        <tal:zinc_result replace="python:model.get_liqfert_sf(zinc,3)"></tal:zinc_result>
+                      </td>
+                      <td class="center">
+                        <tal:zinc_unit replace="python:zinc.Unit"></tal:zinc_unit>
+                      </td>
+                      <td class="center">
+                        <tal:zinc_loq replace="python:zinc.getLowerDetectionLimit()"></tal:zinc_loq>
+                      </td>
+                      <td class="center">
+                        <tal:zinc_datetime replace="python:zinc.AnalysisDateTime"></tal:zinc_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:zinc_initials replace="python:model.get_analyst_initials(zinc)"></tal:zinc_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="zinc/Method">
+                          <tal:zinc_method replace="python:zinc.Method.title"></tal:zinc_method>
+                        </div>
+                      </td>
+                    </tal:zinc>
+                  </tr>
+                  <tr style="font-size: 9pt;">
+                    <td>
+                      <strong>NITROGEN</strong>
+                    </td>
+                  </tr>
+                  <tr tal:define="ammonia python:view.get_analyses_by_keyword(model, 'liqfert_ammonia');">
+                    <tal:ammonia condition="ammonia">
+                      <td class="indented">
+                        <tal:ammonia_title replace="python:ammonia.title"></tal:ammonia_title>
+                      </td>
+                      <td class="center">
+                        <tal:ammonia_result replace="python:model.get_liqfert_sf(ammonia,3)"></tal:ammonia_result>
+                      </td>
+                      <td class="center">
+                        <tal:ammonia_unit replace="python:ammonia.Unit"></tal:ammonia_unit>
+                      </td>
+                      <td class="center">
+                        <tal:ammonia_loq replace="python:ammonia.getLowerDetectionLimit()"></tal:ammonia_loq>
+                      </td>
+                      <td class="center">
+                        <tal:ammonia_datetime replace="python:ammonia.AnalysisDateTime"></tal:ammonia_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:ammonia_initials replace="python:model.get_analyst_initials(ammonia)"></tal:ammonia_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="ammonia/Method">
+                          <tal:ammonia_method replace="python:ammonia.Method.title"></tal:ammonia_method>
+                        </div>
+                      </td>
+                    </tal:ammonia>
+                  </tr>
+                  <tr tal:define="nitrate python:view.get_analyses_by_keyword(model, 'liqfert_nitrate');">
+                    <tal:nitrate condition="nitrate">
+                      <td class="indented">
+                        <tal:nitrate_title replace="python:nitrate.title"></tal:nitrate_title>
+                      </td>
+                      <td class="center">
+                        <tal:nitrate_result replace="python:model.get_liqfert_sf(nitrate,3)"></tal:nitrate_result>
+                      </td>
+                      <td class="center">
+                        <tal:nitrate_unit replace="python:nitrate.Unit"></tal:nitrate_unit>
+                      </td>
+                      <td class="center">
+                        <tal:nitrate_loq replace="python:nitrate.getLowerDetectionLimit()"></tal:nitrate_loq>
+                      </td>
+                      <td class="center">
+                        <tal:nitrate_datetime replace="python:nitrate.AnalysisDateTime"></tal:nitrate_datetime>
+                      </td>
+                      <td class="center">
+                        <tal:nitrate_initials replace="python:model.get_analyst_initials(nitrate)"></tal:nitrate_initials>
+                      </td>
+                      <td class="center">
+                        <div tal:condition="nitrate/Method">
+                          <tal:nitrate_method replace="python:nitrate.Method.title"></tal:nitrate_method>
+                        </div>
+                      </td>
+                    </tal:nitrate>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row section-footer">
+              <div>
+                <strong>The results reported apply solely to the sample analyzed.</strong>
+              </div>
+              <div>
+                <strong>This report may not be reporduced except in full without written permission of NEWAGE Laboratories.</strong>
+              </div>
+              <div class="end-result-bar">
+                <hr class="blue">
+                <hr class="yellow">
+                <hr class="blue-2">
+              </div>
+              <table class="noborder">
+                <colgroup>
+                  <col style="width:80%"/>
+                  <col style="width:20%"/>
+                </colgroup>
+                <tr>
+                  <td>
+                    <div class="comments">
+                      <div>Comments:</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <img tal:attributes="src python:view.get_resource_url('++plone++nal.lims/images/pres_signature.png')"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>- NAL holds certification under ISO 17025:2017 and meets the AOAC International Guidelines for Laboratories Performing Microbiological and Chemical Analyses of Food Standards</div>
+                  </td>
+                  <td>
+                    <div class="sig-text">
+                      <div>Scott D. Wall</div>
+                      <div>President/Technical Manager</div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tal:render>
+  </tal:model>
+
+  <!-- END of Result Pages -->
+  <!--BEGIN Attachments -->
+  <tal:model repeat="model collection">
+    <tal:check condition="model/Attachment">
+      <tal:attachment define="attachment python:model.get_attachment_file()">
+        <figure class="figure">
+          <img class="coc figure-img img-fluid"
+              tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"></img>
+        </figure>
+      </tal:attachment>
+    </tal:check>
+  </tal:model>
+  <!--END Attachments -->
+</tal:report>
