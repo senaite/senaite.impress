@@ -240,7 +240,7 @@ class ReportView(Base):
 
         if len(analyses) > 0:
             for i in analyses:
-                if api.get_workflow_status_of(i) == 'unassigned':
+                if api.get_workflow_status_of(api.get_object(i)) == 'unassigned':
                     return i
         else:
             return None
