@@ -242,12 +242,8 @@ class ReportView(Base):
 
         test = None
         if len(analyses) > 0:
-            for i in analyses:
-                obj = api.get_object(i)
-                print("Checking Analysis: {0}".format(obj))
-                if api.get_workflow_status_of(obj) == 'assigned':
-                    test = i
-
+            indx = len(analyses)-1
+            test = analyses[indx]
         return test
 #End Custom Methods
 
