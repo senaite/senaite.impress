@@ -238,11 +238,13 @@ class ReportView(Base):
         if keyword is not None:
             analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
 
-        print("Analyses:")
-        for i in analyses:
-            print(i)
-
         if len(analyses) > 0:
+            for i in analyses:
+                obj = api.get_object(i)
+                print("Checking Analysis: {0}".format(obj))
+                if api.get_workflow_status_of(obj) == 'assigned':
+                    return i
+
             return analyses[0]
         else:
             return None
