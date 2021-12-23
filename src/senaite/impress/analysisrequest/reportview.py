@@ -239,7 +239,9 @@ class ReportView(Base):
             analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
 
         if len(analyses) > 0:
-            return analyses[0]
+            for i in analyses:
+                if api.get_workflow_status_of(i) == 'unassigned':
+                    return i
         else:
             return None
 #End Custom Methods
