@@ -5,6 +5,15 @@
 
   <genericsetup:upgradeStep
       title="Upgrade SENAITE IMPRESS"
+      description=""
+      sortkey="3"
+      source="1200"
+      destination="2000"
+      handler="senaite.impress.upgrades.handlers.to_2000"
+      profile="senaite.impress:default" />
+
+  <genericsetup:upgradeStep
+      title="Upgrade SENAITE IMPRESS"
       description="Initial Profile"
       sortkey="2"
       source="1000"
