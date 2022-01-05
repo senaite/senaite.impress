@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-13 20:34+0000\n"
+"POT-Creation-Date: 2022-01-05 11:50+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian (https://www.transifex.com/senaite/teams/87187/hu/)\n"
@@ -18,105 +18,105 @@ msgstr ""
 "Domain: senaite.impress\n"
 "Language: hu\n"
 
-#: senaite/impress/templates/reports/Default.pt:125
-#: senaite/impress/templates/reports/MultiDefault.pt:123
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:123
+#: senaite/impress/templates/reports/Default.pt:140
+#: senaite/impress/templates/reports/MultiDefault.pt:138
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:138
 msgid "Analysis Report"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:615
-#: senaite/impress/templates/reports/MultiDefault.pt:643
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:564
+#: senaite/impress/templates/reports/Default.pt:640
+#: senaite/impress/templates/reports/MultiDefault.pt:668
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:589
 msgid "Analysis results relate only to the samples tested."
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:520
-#: senaite/impress/templates/reports/MultiDefault.pt:546
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:467
+#: senaite/impress/templates/reports/Default.pt:545
+#: senaite/impress/templates/reports/MultiDefault.pt:571
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:492
 msgid "Attachment for"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:504
-#: senaite/impress/templates/reports/MultiDefault.pt:530
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:451
+#: senaite/impress/templates/reports/Default.pt:529
+#: senaite/impress/templates/reports/MultiDefault.pt:555
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:476
 msgid "Attachments for ${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:25
-#: senaite/impress/templates/reports/MultiDefault.pt:23
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:23
+#: senaite/impress/templates/reports/Default.pt:40
+#: senaite/impress/templates/reports/MultiDefault.pt:38
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:38
 msgid "Attachments per Row"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:294
-#: senaite/impress/templates/reports/MultiDefault.pt:305
+#: senaite/impress/templates/reports/Default.pt:309
+#: senaite/impress/templates/reports/MultiDefault.pt:320
 msgid "Batch ID"
+msgstr ""
+
+#: senaite/impress/templates/reports/Default.pt:363
+#: senaite/impress/templates/reports/MultiDefault.pt:374
+msgid "Batch Labels"
+msgstr ""
+
+#: senaite/impress/templates/publish.pt:90
+msgid "CC Contacts"
+msgstr ""
+
+#: senaite/impress/templates/publish.pt:91
+msgid "CC Emails"
+msgstr ""
+
+#: senaite/impress/templates/publish.pt:88
+#: senaite/impress/templates/reports/Default.pt:321
+#: senaite/impress/templates/reports/MultiDefault.pt:332
+msgid "Client"
+msgstr ""
+
+#: senaite/impress/templates/reports/Default.pt:317
+#: senaite/impress/templates/reports/MultiDefault.pt:328
+msgid "Client Batch ID"
+msgstr ""
+
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:197
+msgid "Client Order"
+msgstr ""
+
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:188
+msgid "Client Reference"
+msgstr ""
+
+#: senaite/impress/templates/reports/Default.pt:328
+#: senaite/impress/templates/reports/MultiDefault.pt:339
+msgid "Client SID"
+msgstr ""
+
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:206
+msgid "Client Sample ID"
+msgstr ""
+
+#: senaite/impress/templates/publish.pt:89
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:179
+msgid "Contact"
+msgstr ""
+
+#: senaite/impress/templates/reports/Default.pt:21
+#: senaite/impress/templates/reports/MultiDefault.pt:19
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:19
+msgid "Custom Report Options"
 msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:348
 #: senaite/impress/templates/reports/MultiDefault.pt:359
-msgid "Batch Labels"
-msgstr ""
-
-#: senaite/impress/templates/publish.pt:82
-msgid "CC Contacts"
-msgstr ""
-
-#: senaite/impress/templates/publish.pt:83
-msgid "CC Emails"
-msgstr ""
-
-#: senaite/impress/templates/publish.pt:80
-#: senaite/impress/templates/reports/Default.pt:306
-#: senaite/impress/templates/reports/MultiDefault.pt:317
-msgid "Client"
-msgstr ""
-
-#: senaite/impress/templates/reports/Default.pt:302
-#: senaite/impress/templates/reports/MultiDefault.pt:313
-msgid "Client Batch ID"
-msgstr ""
-
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:182
-msgid "Client Order"
-msgstr ""
-
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:173
-msgid "Client Reference"
-msgstr ""
-
-#: senaite/impress/templates/reports/Default.pt:313
-#: senaite/impress/templates/reports/MultiDefault.pt:324
-msgid "Client SID"
-msgstr ""
-
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:191
-msgid "Client Sample ID"
-msgstr ""
-
-#: senaite/impress/templates/publish.pt:81
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:164
-msgid "Contact"
-msgstr ""
-
-#: senaite/impress/templates/reports/Default.pt:20
-#: senaite/impress/templates/reports/MultiDefault.pt:18
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:18
-msgid "Custom Report Options"
-msgstr ""
-
-#: senaite/impress/templates/reports/Default.pt:333
-#: senaite/impress/templates/reports/MultiDefault.pt:344
 msgid "Date Published"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:325
-#: senaite/impress/templates/reports/MultiDefault.pt:336
+#: senaite/impress/templates/reports/Default.pt:340
+#: senaite/impress/templates/reports/MultiDefault.pt:351
 msgid "Date Received"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:329
-#: senaite/impress/templates/reports/MultiDefault.pt:340
+#: senaite/impress/templates/reports/Default.pt:344
+#: senaite/impress/templates/reports/MultiDefault.pt:355
 msgid "Date Verified"
 msgstr ""
 
@@ -136,15 +136,15 @@ msgstr ""
 msgid "Developer Mode"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:660
-#: senaite/impress/templates/reports/MultiDefault.pt:688
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:609
+#: senaite/impress/templates/reports/Default.pt:685
+#: senaite/impress/templates/reports/MultiDefault.pt:713
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:634
 msgid "Fax"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:527
-#: senaite/impress/templates/reports/MultiDefault.pt:553
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:474
+#: senaite/impress/templates/reports/Default.pt:552
+#: senaite/impress/templates/reports/MultiDefault.pt:578
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:499
 msgid "Filename:"
 msgstr ""
 
@@ -152,7 +152,7 @@ msgstr ""
 msgid "Footer Text"
 msgstr ""
 
-#: senaite/impress/ajax.py:324
+#: senaite/impress/ajax.py:328
 msgid "Generated reports for: {}, "
 msgstr ""
 
@@ -160,11 +160,11 @@ msgstr ""
 msgid "HTML to PDF report engine for SENAITE"
 msgstr ""
 
-#: senaite/impress/templates/publish.pt:78
+#: senaite/impress/templates/publish.pt:86
 msgid "ID"
 msgstr ""
 
-#: senaite/impress/templates/publish.pt:62
+#: senaite/impress/templates/publish.pt:70
 msgid "Impress Controlpanel"
 msgstr ""
 
@@ -185,80 +185,80 @@ msgstr ""
 msgid "Initially loaded report template"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:610
-#: senaite/impress/templates/reports/MultiDefault.pt:638
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:559
+#: senaite/impress/templates/reports/Default.pt:635
+#: senaite/impress/templates/reports/MultiDefault.pt:663
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:584
 msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:597
-#: senaite/impress/templates/reports/MultiDefault.pt:625
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:546
+#: senaite/impress/templates/reports/Default.pt:622
+#: senaite/impress/templates/reports/MultiDefault.pt:650
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:571
 msgid "Not invoiced"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:35
-#: senaite/impress/templates/reports/MultiDefault.pt:33
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:33
+#: senaite/impress/templates/reports/Default.pt:50
+#: senaite/impress/templates/reports/MultiDefault.pt:48
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:48
 msgid "Number of attachments rendered within one row per Analysis Request"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:658
-#: senaite/impress/templates/reports/MultiDefault.pt:686
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:607
+#: senaite/impress/templates/reports/Default.pt:683
+#: senaite/impress/templates/reports/MultiDefault.pt:711
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:632
 msgid "Phone"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:255
-#: senaite/impress/templates/reports/MultiDefault.pt:262
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:311
+#: senaite/impress/templates/reports/Default.pt:270
+#: senaite/impress/templates/reports/MultiDefault.pt:277
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:326
 msgid "Provisional report"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:337
-#: senaite/impress/templates/reports/MultiDefault.pt:348
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:516
+#: senaite/impress/templates/reports/Default.pt:352
+#: senaite/impress/templates/reports/MultiDefault.pt:363
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:541
 msgid "Published by"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:481
-#: senaite/impress/templates/reports/MultiDefault.pt:502
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:422
+#: senaite/impress/templates/reports/Default.pt:496
+#: senaite/impress/templates/reports/MultiDefault.pt:517
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:437
 msgid "QC Results"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:396
-#: senaite/impress/templates/reports/MultiDefault.pt:409
+#: senaite/impress/templates/reports/Default.pt:411
+#: senaite/impress/templates/reports/MultiDefault.pt:424
 msgid "Range"
 msgstr ""
 
-#: senaite/impress/templates/publish.pt:79
+#: senaite/impress/templates/publish.pt:87
 msgid "Received"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:543
-#: senaite/impress/templates/reports/MultiDefault.pt:571
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:492
+#: senaite/impress/templates/reports/Default.pt:568
+#: senaite/impress/templates/reports/MultiDefault.pt:596
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:517
 msgid "Responsibles"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:390
-#: senaite/impress/templates/reports/MultiDefault.pt:403
+#: senaite/impress/templates/reports/Default.pt:405
+#: senaite/impress/templates/reports/MultiDefault.pt:418
 msgid "Result"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:595
-#: senaite/impress/templates/reports/MultiDefault.pt:623
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:544
+#: senaite/impress/templates/reports/Default.pt:620
+#: senaite/impress/templates/reports/MultiDefault.pt:648
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:569
 msgid "Result out of client specified range."
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:360
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:324
+#: senaite/impress/templates/reports/Default.pt:375
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:339
 msgid "Results"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:466
+#: senaite/impress/templates/reports/Default.pt:481
 msgid "Results interpretation"
 msgstr ""
 
@@ -275,31 +275,37 @@ msgstr ""
 msgid "SENAITE IMPRESS Settings"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:286
-#: senaite/impress/templates/reports/MultiDefault.pt:297
+#: senaite/impress/templates/reports/Default.pt:301
+#: senaite/impress/templates/reports/MultiDefault.pt:312
 msgid "Sample ID"
 msgstr ""
 
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:210
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:225
 msgid "Sample Point"
 msgstr ""
 
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:220
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:235
 msgid "Sample Remarks"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:317
-#: senaite/impress/templates/reports/MultiDefault.pt:328
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:200
+#: senaite/impress/templates/reports/Default.pt:332
+#: senaite/impress/templates/reports/MultiDefault.pt:343
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:215
 msgid "Sample Type"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:321
-#: senaite/impress/templates/reports/MultiDefault.pt:332
+#: senaite/impress/templates/reports/Default.pt:32
+#: senaite/impress/templates/reports/MultiDefault.pt:30
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:30
+msgid "Show Sample Remarks"
+msgstr ""
+
+#: senaite/impress/templates/reports/Default.pt:336
+#: senaite/impress/templates/reports/MultiDefault.pt:347
 msgid "Specification"
 msgstr ""
 
-#: senaite/impress/templates/publish.pt:84
+#: senaite/impress/templates/publish.pt:92
 msgid "State"
 msgstr ""
 
@@ -311,20 +317,20 @@ msgstr ""
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:283
-#: senaite/impress/templates/reports/MultiDefault.pt:293
+#: senaite/impress/templates/reports/Default.pt:298
+#: senaite/impress/templates/reports/MultiDefault.pt:308
 msgid "Summary"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:193
-#: senaite/impress/templates/reports/MultiDefault.pt:196
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:241
+#: senaite/impress/templates/reports/Default.pt:208
+#: senaite/impress/templates/reports/MultiDefault.pt:211
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:256
 msgid "Supervisor"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:626
-#: senaite/impress/templates/reports/MultiDefault.pt:654
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:575
+#: senaite/impress/templates/reports/Default.pt:651
+#: senaite/impress/templates/reports/MultiDefault.pt:679
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:600
 msgid "Test results are at a ${lab_confidence}% confidence level"
 msgstr ""
 
@@ -332,25 +338,25 @@ msgstr ""
 msgid "The footer text will be rendered on every PDF page and may contain arbitrary HTML"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:246
-#: senaite/impress/templates/reports/MultiDefault.pt:251
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:300
+#: senaite/impress/templates/reports/Default.pt:261
+#: senaite/impress/templates/reports/MultiDefault.pt:266
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:315
 msgid "This Analysis Request has been invalidated due to erroneously published results"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:249
-#: senaite/impress/templates/reports/MultiDefault.pt:254
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:303
+#: senaite/impress/templates/reports/Default.pt:264
+#: senaite/impress/templates/reports/MultiDefault.pt:269
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:318
 msgid "This Analysis request has been replaced by"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:622
-#: senaite/impress/templates/reports/MultiDefault.pt:650
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:571
+#: senaite/impress/templates/reports/Default.pt:647
+#: senaite/impress/templates/reports/MultiDefault.pt:675
+#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:596
 msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:393
-#: senaite/impress/templates/reports/MultiDefault.pt:406
+#: senaite/impress/templates/reports/Default.pt:408
+#: senaite/impress/templates/reports/MultiDefault.pt:421
 msgid "Unit"
 msgstr ""
