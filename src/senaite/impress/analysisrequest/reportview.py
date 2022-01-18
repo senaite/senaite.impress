@@ -238,7 +238,8 @@ class ReportView(Base):
         if keyword is not None:
             analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
 
-        print("{0}".format(analyses[0].review_state))
+        for i in analyses:
+            print("{0}".format(analyses[i].review_state))
 
         test = None
         if len(analyses) > 0:
