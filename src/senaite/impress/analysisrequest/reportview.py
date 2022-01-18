@@ -236,14 +236,13 @@ class ReportView(Base):
         """
         analyses = self.get_analyses(model_or_collection)
         if keyword is not None:
-            analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
+            analyses = filter(lambda an: an.getKeyword() == keyword and api.get_workflow_status_of(an) not in ['invalid','cancelled','retracted','rejected'], analyses)
 
         print("length of {0} analyses are: {1}".format(keyword,len(analyses)))
 
         test = None
         if len(analyses) > 0:
-            indx = len(analyses)-1
-            test = analyses[indx]
+            test = analyses[-1]
         return test
 #End Custom Methods
 
