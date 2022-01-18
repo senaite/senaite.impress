@@ -236,10 +236,7 @@ class ReportView(Base):
         """
         analyses = self.get_analyses(model_or_collection)
         if keyword is not None:
-            analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
-
-        for i in analyses:
-            print("{0}".format(i.review_state))
+            analyses = filter(lambda an: an.getKeyword() == keyword and an.review_state not in ['rejected','retracted','cancelled','invalid'], analyses)
 
         test = None
         if len(analyses) > 0:
