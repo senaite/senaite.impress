@@ -234,7 +234,7 @@ class ReportView(Base):
     def get_analyses_by_keyword(self, model_or_collection, keyword=None):
         """Groups the given analyses by their point of capture
         """
-        analyses = self.get_analyses(model_or_collection)
+        analyses = map(api.get_object,self.get_analyses(model_or_collection))
         if keyword is not None:
             analyses = filter(lambda an: an.getKeyword() == keyword and api.get_workflow_status_of(an) not in ['invalid','cancelled','retracted','rejected'], analyses)
 
