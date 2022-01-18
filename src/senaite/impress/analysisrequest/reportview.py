@@ -242,8 +242,7 @@ class ReportView(Base):
 
         test = None
         if len(analyses) > 0:
-            indx = len(analyses)-1
-            test = analyses[indx]
+            test = analyses[-1]
         return test
 #End Custom Methods
 
