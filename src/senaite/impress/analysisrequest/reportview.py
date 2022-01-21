@@ -130,6 +130,20 @@ class ReportView(Base):
             state = abbrev
         return state
 
+    def get_nce_bar(self, perc):
+        color = 'rgb(0,0,0)'
+        if perc < 60:
+            color = 'rgb(136, 8, 8)' #Blood Red
+        elif perc < 70:
+            color = 'rgb(204, 85, 0)' #Rusty Orange
+        elif perc < 80:
+            color = 'rgb(255, 195, 0)' #Yellow
+        elif color < 90:
+            color = 'rgb(135, 221, 80)' #Light Green
+        elif color < 101:
+            color = 'rgb(45, 90, 39)' #Dark Leaf Green
+        return color
+
     def get_IDs(self, model_or_collection):
         """Returns the IDs of all of the ARs
         """

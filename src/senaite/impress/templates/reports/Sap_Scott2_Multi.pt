@@ -728,9 +728,9 @@ EDITS:
                   </tal:oldbar>
                 </td>
               </tr>
-              <tr class="phosphorous">
+              <tr class="phosphorus">
                 <td style="vertical-align: text-top;">
-                  <strong>Phosphorous (P)</strong>
+                  <strong>Phosphorus (P)</strong>
                 </td>
                 <td>
                   <div>ppm</div>
@@ -1574,6 +1574,100 @@ EDITS:
                 <td>
                 </td>
               </tr>
+              <tr class="nitrogen-ammonium">
+                <td style="vertical-align: text-top;">
+                  <strong>Nitrogen from Ammonium (NH4)<tal:acc replace="accredited_symbol"/></strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_ammonium')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_ammonium')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Ammonium (NH4)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nitrogen_as_ammonium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nitrogen_as_ammonium')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
+              <tr class="nitrogen-nitrate">
+                <td style="vertical-align: text-top;">
+                  <strong>Nitrogen from Nitrate (NO3)</strong>
+                </td>
+                <td>
+                  <div>ppm</div>
+                  <div>ppm</div>
+                </td>
+                <td style="padding-left: 25px;">
+                  <div style="float: left; margin-right: 2pt;">
+                    <div class="high-ol">High:</div>
+                    <div class="low-ol">Low:</div>
+                  </div>
+                  <div>
+                    <tal:high>
+                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_nitrate')" class="high-spec"></div>
+                    </tal:high>
+                    <tal:low>
+                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_nitrate')" class="low-spec"></div>
+                    </tal:low>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
+                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
+                  </tal:newresult>
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Nitrate (NO3)');">
+                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
+                  </tal:oldresult>
+                </td>
+                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
+                  <div>New</div>
+                  <div>Old</div>
+                </td>
+                <td>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage('sap_nitrogen_as_nitrate')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                    </div>
+                  </tal:newbar>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage('sap_nitrogen_as_nitrate')">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                    </div>
+                  </tal:oldbar>
+                </td>
+              </tr>
               <tr class="nitrogen-total">
                 <td style="vertical-align: text-top;">
                   <strong>Nitrogen (N), Total<tal:acc replace="accredited_symbol"/></strong>
@@ -1659,111 +1753,17 @@ EDITS:
                   <div>New</div>
                   <div>Old</div>
                 </td>
-                <td style="text-align: center;">
-                  <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_conversion_effeciency_percentage()">
-                      <div tal:attributes="style string:width:${perc}%;;margin:0 auto 3px auto;;height:5pt;;background: rgb(100,212,70);;"></div>
+                <td>
+                  <!-- <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nitrate (NO3)');">
+                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_conversion_effeciency_percentage()">
-                      <div tal:attributes="style string:width:${perc}%;;margin:3px auto 0 auto;;height:5pt;;background: rgb(46,99,29);;"></div>
+                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nitrate (NO3)');">
+                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
                     </div>
-                  </tal:oldbar>
-                </td>
-              </tr>
-              <tr class="nitrogen-ammonium">
-                <td style="vertical-align: text-top;">
-                  <strong>Nitrogen from Ammonium (NH4)<tal:acc replace="accredited_symbol"/></strong>
-                </td>
-                <td>
-                  <div>ppm</div>
-                  <div>ppm</div>
-                </td>
-                <td style="padding-left: 25px;">
-                  <div style="float: left; margin-right: 2pt;">
-                    <div class="high-ol">High:</div>
-                    <div class="low-ol">Low:</div>
-                  </div>
-                  <div>
-                    <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_ammonium')" class="high-spec"></div>
-                    </tal:high>
-                    <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_ammonium')" class="low-spec"></div>
-                    </tal:low>
-                  </div>
-                </td>
-                <td style="text-align: center;">
-                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
-                  </tal:newresult>
-                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Ammonium (NH4)');">
-                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
-                  </tal:oldresult>
-                </td>
-                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div>New</div>
-                  <div>Old</div>
-                </td>
-                <td>
-                  <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_effeciency_percentage('sap_nitrogen_as_ammonium')">
-                      <div tal:attributes="style string:width:${perc}%;;margin:3px auto 0 auto;;height:5pt;;background: rgb(100,212,70);;"></div>
-                    </div>
-                  </tal:newbar>
-                  <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_effeciency_percentage('sap_nitrogen_as_ammonium')">
-                      <div tal:attributes="style string:width:${perc}%;;margin:3px auto 0 auto;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
-                    </div>
-                  </tal:oldbar>
-                </td>
-              </tr>
-              <tr class="nitrogen-nitrate">
-                <td style="vertical-align: text-top;">
-                  <strong>Nitrogen from Nitrate (NO3)</strong>
-                </td>
-                <td>
-                  <div>ppm</div>
-                  <div>ppm</div>
-                </td>
-                <td style="padding-left: 25px;">
-                  <div style="float: left; margin-right: 2pt;">
-                    <div class="high-ol">High:</div>
-                    <div class="low-ol">Low:</div>
-                  </div>
-                  <div>
-                    <tal:high>
-                      <div tal:content="python:newmodel.get_optimal_high_level('sap_nitrogen_as_nitrate')" class="high-spec"></div>
-                    </tal:high>
-                    <tal:low>
-                      <div tal:content="python:newmodel.get_optimal_low_level('sap_nitrogen_as_nitrate')" class="low-spec"></div>
-                    </tal:low>
-                  </div>
-                </td>
-                <td style="text-align: center;">
-                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
-                    <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
-                  </tal:newresult>
-                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Nitrate (NO3)');">
-                    <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
-                  </tal:oldresult>
-                </td>
-                <td style="border-right: 1pt black solid; text-align: Right; padding-right: 5pt;">
-                  <div>New</div>
-                  <div>Old</div>
-                </td>
-                <td>
-                  <tal:newbar>
-                    <div tal:define="perc python:newmodel.get_effeciency_percentage('sap_nitrogen_as_nitrate')">
-                      <div tal:attributes="style string:width:${perc}%;;margin:3px auto 0 auto;;height:5pt;;background: rgb(100,212,70);;"></div>
-                    </div>
-                  </tal:newbar>
-                  <tal:oldbar>
-                    <div tal:define="perc python:oldmodel.get_effeciency_percentage('sap_nitrogen_as_nitrate')">
-                      <div tal:attributes="style string:width:${perc}%;;margin:3px auto 0 auto;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
-                    </div>
-                  </tal:oldbar>
+                  </tal:oldbar> -->
                 </td>
               </tr>
             </tbody>

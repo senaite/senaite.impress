@@ -728,9 +728,9 @@ EDITS:
                   </tal:oldbar>
                 </td>
               </tr>
-              <tr class="phosphorous">
+              <tr class="phosphorus">
                 <td style="vertical-align: text-top;">
-                  <strong>Phosphorous (P)</strong>
+                  <strong>Phosphorus (P)</strong>
                 </td>
                 <td>
                   <div>ppm</div>
@@ -1754,16 +1754,16 @@ EDITS:
                   <div>Old</div>
                 </td>
                 <td>
-                  <!-- <tal:newbar repeat="new python:view.get_analyses_by(newmodel, title='Nitrate (NO3)');">
-                    <div tal:define="perc python:newmodel.get_result_bar_percentage(new)">
-                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: rgb(100,212,70);;"></div>
+                  <tal:newbar>
+                    <div tal:define="perc python:newmodel.get_nitrogen_conversion_effeciency(); color python:view.get_nce_bar(perc)">
+                      <div tal:attributes="style string:width:${perc}%;;margin-bottom:3px;;height:5pt;;background: ${color};;"></div>
                     </div>
                   </tal:newbar>
-                  <tal:oldbar repeat="old python:view.get_analyses_by(oldmodel, title='Nitrate (NO3)');">
-                    <div tal:define="perc python:oldmodel.get_result_bar_percentage(old)">
-                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: rgb(46,99,29);;padding-left: 1;;"></div>
+                  <tal:oldbar>
+                    <div tal:define="perc python:oldmodel.get_nitrogen_conversion_effeciency(); color python:view.get_nce_bar(perc)">
+                      <div tal:attributes="style string:width:${perc}%;;margin-top:3px;;height:5pt;;background: ${color};;padding-left: 1;;"></div>
                     </div>
-                  </tal:oldbar> -->
+                  </tal:oldbar>
                 </td>
               </tr>
             </tbody>
