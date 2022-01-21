@@ -751,10 +751,10 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
-                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Phosphorous (P)');">
+                  <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Phosphorus (P)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
-                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Phosphorous (P)');">
+                  <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Phosphorus (P)');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
                 </td>
