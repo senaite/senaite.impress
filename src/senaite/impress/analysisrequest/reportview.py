@@ -131,7 +131,7 @@ class ReportView(Base):
         return state
 
     def get_nce_bar(self, perc):
-        print("Percent = {0]}".format(perc))
+        print("Percent = {0}".format(perc))
         color = 'rgb(0,0,0)'
         if perc <= 60:
             color = 'rgb(136, 8, 8)' #Blood Red
