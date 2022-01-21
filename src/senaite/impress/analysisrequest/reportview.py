@@ -139,9 +139,9 @@ class ReportView(Base):
             color = 'rgb(204, 85, 0)' #Rusty Orange
         elif perc <= 80:
             color = 'rgb(255, 195, 0)' #Yellow
-        elif color <= 90:
+        elif perc <= 90:
             color = 'rgb(135, 221, 80)' #Light Green
-        elif color <= 100:
+        elif perc <= 100:
             color = 'rgb(45, 90, 39)' #Dark Leaf Green
         return color
 
