@@ -140,9 +140,9 @@ class ReportView(Base):
         elif perc <= 80:
             color = 'rgb(255, 195, 0)' #Yellow
         elif perc <= 90:
-            color = 'rgb(135, 221, 80)' #Light Green
+            color = 'rgb(100, 212, 70)' #Light Green
         elif perc <= 100:
-            color = 'rgb(45, 90, 39)' #Dark Leaf Green
+            color = 'rgb(46, 99, 29)' #Dark Leaf Green
         return color
 
     def get_IDs(self, model_or_collection):
