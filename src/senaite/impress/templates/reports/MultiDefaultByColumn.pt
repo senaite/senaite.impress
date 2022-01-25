@@ -367,10 +367,16 @@
                 </tr>
                 <tr tal:define="analyses python:view.get_analyses_by(collection, poc=poc, category=category);
                                 analyses_by_title python:map(lambda a: a.Title(), analyses);
+                                methods_by_title python:dict(zip(analyses_by_title, map(lambda a: a.getMethodTitle(), analyses)));
                                 analyses_titles python:view.uniquify_items(analyses_by_title)"
                     tal:repeat="analysis_title python:analyses_titles">
                   <td class="text-secondary">
                     <span tal:content="analysis_title"/>
+                    <!-- Method -->
+                    <div class="text-secondary methodtitle"
+                         i18n:translate=""
+                         tal:define="method_title python:methods_by_title.get(analysis_title, '');"
+                         tal:content="structure python:view.hyphenize(method_title)"/>
                   </td>
                   <tal:results repeat="model collection">
                     <tal:analyses tal:define="analyses python:view.get_analyses_by(model, title=analysis_title);">
