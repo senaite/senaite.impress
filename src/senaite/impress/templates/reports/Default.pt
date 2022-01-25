@@ -81,6 +81,7 @@
      .report .section-header h1 { font-size: 175%; }
      .report .section-header img.logo { height: 35px; margin: 20px 0; }
      .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
+     .report .section-results .methodtitle { font-size: 85%; }
      .report .section-footer table td { border: none; }
      .report .section-footer {
        position: fixed;
@@ -430,6 +431,11 @@
                       <span tal:condition="analysis/ScientificName">
                         <span class="font-italic" tal:content="analysis/title"></span>
                       </span>
+                      <!-- Method -->
+                      <div class="text-secondary methodtitle"
+                           i18n:translate=""
+                           tal:define="method_title python:analysis and analysis.getMethodTitle() or '';"
+                           tal:content="structure python:view.hyphenize(method_title)"/>
                     </td>
                     <td class="text-right">
                       <span class="result" tal:content="structure python:model.get_formatted_result(analysis)">23</span>
