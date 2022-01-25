@@ -1,7 +1,7 @@
 2.2.0 (unreleased)
 ------------------
 
-- no changes yet
+- #115 ISO17025: Added method title to reports
 
 
 2.1.0 (2022-01-05)
