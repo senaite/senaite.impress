@@ -22,13 +22,35 @@ from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 from plone.app.registry.browser.controlpanel import RegistryEditForm
 from plone.z3cform import layout
 from senaite.impress import senaiteMessageFactory as _
+from senaite.impress.interfaces import ITemplateFinder
 from zope import schema
+from zope.component import getUtility
 from zope.interface import Interface
+from zope.interface import provider
+from zope.schema.interfaces import IContextAwareDefaultFactory
+
+
+@provider(IContextAwareDefaultFactory)
+def default_templates(context):
+    finder = getUtility(ITemplateFinder)
+    templates = finder.get_templates()
+    return [t[0] for t in templates]
 
 
 class IImpressControlPanel(Interface):
     """Controlpanel Settings
     """
+
+    templates = schema.List(
+        title=_(u"Available Templates"),
+        description=_("Please choose the templates that can be selected"),
+        required=True,
+        defaultFactory=default_templates,
+        value_type=schema.Choice(
+            title=_(u"Active templates"),
+            source="senaite.impress.vocabularies.Templates",
+        )
+    )
 
     default_template = schema.Choice(
         title=_(u"Default Template"),
