@@ -325,12 +325,12 @@ class PublishView(BrowserView):
         # Todo: Implement cascading lookup: client->registry->config
         return PAPERFORMATS
 
-    def get_report_templates(self, extensions=[".pt", ".html"]):
-        """Returns a sorted list of template/path pairs
+    def get_report_templates(self):
+        """Returns selected templates
         """
-        finder = getUtility(ITemplateFinder)
-        templates = finder.get_templates(extensions=extensions)
-        return sorted(map(lambda item: item[0], templates))
+        templates = api.get_registry_record(
+            "senaite.impress.templates")
+        return templates or []
 
     def get_default_template(self, default="senaite.lims:Default.pt"):
         """Returns the configured default template from the registry
