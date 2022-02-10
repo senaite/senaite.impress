@@ -27,16 +27,16 @@ from string import Template
 
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
+from bika.lims import api
 from bika.lims.interfaces import IInternalUse
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
-from bika.lims import api
 from senaite.app.supermodel.interfaces import ISuperModel
+from senaite.core.api import dtime
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base
-
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
 <div class="report" uids="${uids}" client_uid="${client_uid}">
@@ -113,6 +113,15 @@ class ReportView(Base):
         """
         if date is None:
             return ""
+        if dtime.is_DT(date):
+            # this interestingly fixes time offsets, e.g.:
+            # >>> time
+            # DateTime('2022/02/10 19:46:45.394387 GMT-1')
+            # >>> time.strftime("%H")
+            # '17'
+            # >>> DateTime(time.ISO()).strftime("%H")
+            # '19'
+            date = date.ISO()
         # default options
         options = {
             "long_format": True,
