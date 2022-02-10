@@ -113,15 +113,12 @@ class ReportView(Base):
         """
         if date is None:
             return ""
+
         if dtime.is_DT(date):
-            # this interestingly fixes time offsets, e.g.:
-            # >>> time
-            # DateTime('2022/02/10 19:46:45.394387 GMT-1')
-            # >>> time.strftime("%H")
-            # '17'
-            # >>> DateTime(time.ISO()).strftime("%H")
-            # '19'
+            # this is a work around for time offsets!
+            # https://github.com/senaite/senaite.impress/pull/118
             date = date.ISO()
+
         # default options
         options = {
             "long_format": True,
