@@ -450,9 +450,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Sugars, Total')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Sugars, Total');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Sugars, Total')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Sugars, Total');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -497,9 +499,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Brix')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Brix');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Brix')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Brix');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -657,9 +661,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Chloride (Cl-)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Chloride (Cl-)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Chloride (Cl-)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Chloride (Cl-)');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -1597,9 +1603,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Ammonium (NH4)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Nitrogen as Ammonium (NH4)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Ammonium (NH4)');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -1644,9 +1652,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen as Nitrate (NO3)');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Nitrogen as Nitrate (NO3)')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen as Nitrate (NO3)');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
@@ -1693,9 +1703,11 @@ EDITS:
                   </div>
                 </td>
                 <td style="text-align: center;">
+                  <div tal:condition="python:not view.get_analyses_by(newmodel, title='Nitrogen (N), Total')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:newresult repeat="new python:view.get_analyses_by(newmodel, title='Nitrogen (N), Total');">
                     <div tal:content="structure python:newmodel.get_formatted_result_or_NT(new,3)" style="font-weight: bold;">NT</div>
                   </tal:newresult>
+                  <div tal:condition="python:not view.get_analyses_by(oldmodel, title='Nitrogen (N), Total')" tal:content="string:NT" style="font-weight: bold;"></div>
                   <tal:oldresult repeat="old python:view.get_analyses_by(oldmodel, title='Nitrogen (N), Total');">
                     <div tal:content="structure python:oldmodel.get_formatted_result_or_NT(old,3)" style="font-weight: bold;">NT</div>
                   </tal:oldresult>
