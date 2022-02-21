@@ -436,7 +436,7 @@ class PublishView(BrowserView):
             raise TypeError("Items must be iterable")
         results = OrderedDict()
         for item in items:
-            group_key = item.get(key)
+            group_key = item.get(key, key)
             if callable(group_key):
                 group_key = group_key()
             if group_key in results:
