@@ -19,10 +19,11 @@
 # Some rights reserved, see README and LICENSE.
 
 import os
-from collections import Iterable
 from collections import OrderedDict
 from functools import reduce
 from string import Template
+
+from six.moves.collections_abc import Iterable
 
 from bika.lims import api
 from bika.lims.permissions import ManageBika
