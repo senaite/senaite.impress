@@ -97,7 +97,7 @@ class PublishView(BrowserView):
         return self.template()
 
     def download(self):
-        """Generate PDF and send it fot download
+        """Generate PDF and send it for download
         """
         form = self.request.form
         # This is the html after it was rendered by the client browser and
