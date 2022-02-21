@@ -19,6 +19,7 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.lims.interfaces import IBikaLIMS
+from zope.interface import Attribute
 from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
 
@@ -71,3 +72,11 @@ class IPdfReportStorage(Interface):
         """Stores the generated PDF for the given UIDs in a location and
         returns a list of generated report objects.
         """
+
+
+class IReportWrapper(Interface):
+    """Wrapper class for reports
+    """
+    pdf = Attribute("PDF data")
+    png = Attribute("PNG image data")
+    metadata = Attribute("Report metadata")
