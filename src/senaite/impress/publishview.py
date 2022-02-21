@@ -25,6 +25,8 @@ from functools import reduce
 from string import Template
 
 from bika.lims import api
+from bika.lims.permissions import ManageBika
+from bika.lims.permissions import TransitionPublishResults
 from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
@@ -158,15 +160,13 @@ class PublishView(BrowserView):
     def is_manager(self):
         """Checks if the current user has manager rights
         """
-        from bika.lims.permissions import ManageBika
         roles = api.get_roles_for_permission(ManageBika, self.context)
         return self.user.has_role(roles)
 
     def is_publisher(self):
         """Checks if the current user has publisher rights
         """
-        from bika.lims.permissions import Publish
-        roles = api.get_roles_for_permission(Publish, self.context)
+        roles = api.get_roles_for_permission(TransitionPublishResults, self.context)
         return self.user.has_role(roles)
 
     def get_uids(self):
