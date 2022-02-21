@@ -77,5 +77,8 @@ class IPdfReportStorage(Interface):
 class IReportWrapper(Interface):
     """Wrapper class for reports
     """
-    pdf = Attribute("PDF data")
-    metadata = Attribute("Report metadata")
+    pdf = Attribute("Generate PDF data")
+
+    def get_metadata(**kw):
+        """Generate metadata for the report
+        """
