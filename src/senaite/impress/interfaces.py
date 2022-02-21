@@ -78,5 +78,4 @@ class IReportWrapper(Interface):
     """Wrapper class for reports
     """
     pdf = Attribute("PDF data")
-    png = Attribute("PNG image data")
     metadata = Attribute("Report metadata")

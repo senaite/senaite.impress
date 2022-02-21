@@ -8,7 +8,7 @@ from zope.interface import implementer
 
 @implementer(IReportWrapper)
 class ReportWrapper(object):
-    """Report wrapper to generate PDF/PNG
+    """Report wrapper to generate PDF
     """
     def __init__(self,
                  html,
