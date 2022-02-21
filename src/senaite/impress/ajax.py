@@ -29,6 +29,7 @@ from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.decorators import timeit
 from senaite.impress.interfaces import IPdfReportStorage
+from senaite.impress.interfaces import IReportWrapper
 from senaite.impress.publishview import PublishView
 from zope.component import getMultiAdapter
 from zope.interface import implements
@@ -216,7 +217,7 @@ class AjaxPublishView(PublishView):
         orientation = data.get("orientation", "portrait")
 
         # get a timestamp
-        timestamp = DateTime().ISO8601()
+        timestamp = DateTime().ISO()
 
         # Generate the print CSS with the set format/orientation
         css = self.get_print_css(
@@ -232,9 +233,6 @@ class AjaxPublishView(PublishView):
         # NOTE: each report is an instance of <bs4.Tag>
         html_reports = publisher.parse_reports(html)
 
-        # generate a PDF for each HTML report
-        pdf_reports = map(publisher.write_pdf, html_reports)
-
         # extract the UIDs of each HTML report
         # NOTE: UIDs are injected in `.analysisrequest.reportview.render`
         report_uids = map(
@@ -245,24 +243,25 @@ class AjaxPublishView(PublishView):
             (self.context, self.request), IPdfReportStorage)
 
         report_groups = []
-        for pdf, html, uids in zip(pdf_reports, html_reports, report_uids):
-            # prepare some metadata
-            # NOTE: We are doing it in the loop to ensure a new dictionary is
-            #       created for each report.
-            metadata = {
-                "template": template,
-                "paperformat": paperformat,
-                "orientation": orientation,
-                "timestamp": timestamp,
-            }
+        for html, uids in zip(html_reports, report_uids):
             # ensure we have valid UIDs here
             uids = filter(api.is_uid, uids)
             # convert the bs4.Tag back to pure HTML
             html = publisher.to_html(html)
+            # wrap the report
+            report = getMultiAdapter((html,
+                                      map(self.to_model, uids),
+                                      template,
+                                      paperformat,
+                                      orientation,
+                                      None,
+                                      publisher), interface=IReportWrapper)
+
             # BBB: inject contained UIDs into metadata
-            metadata["contained_requests"] = uids
+            metadata = report.get_metadata(
+                contained_requests=uids, timestamp=timestamp)
             # store the report(s)
-            objs = storage.store(pdf, html, uids, metadata=metadata)
+            objs = storage.store(report.pdf, html, uids, metadata=metadata)
             # append the generated reports to the list
             report_groups.append(objs)
 

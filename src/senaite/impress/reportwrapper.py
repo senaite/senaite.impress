@@ -37,16 +37,27 @@ class ReportWrapper(object):
             self._pdf = self.publisher.write_pdf(self.html)
         return self._pdf
 
-    @property
-    def metadata(self):
+    def get_metadata(self, **kw):
         """Returns the report metadata as a dictionary
         """
-        return {
+        metadata = {
             "template": self.template,
             "paperformat": self.paperformat,
             "orientation": self.orientation,
             "timestamp": self.created.ISO(),
         }
+        metadata.update(kw)
+        return metadata
+
+    def get_uids(self):
+        """Returns the UIDs of the collection
+        """
+        return list(map(api.get_uid, self.collection))
+
+    def get_ids(self):
+        """Returns the IDs of the collection
+        """
+        return list(map(api.get_id, self.collection))
 
     def __repr__(self):
-        return "<ReportWrapper for %s>" % ",".join(map(api.get_id, self.collection))
+        return "<ReportWrapper for %s>" % ",".join(self.get_ids())
