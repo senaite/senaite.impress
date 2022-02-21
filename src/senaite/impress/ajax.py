@@ -174,44 +174,22 @@ class AjaxPublishView(PublishView):
         # update the request form with the parsed json data
         data = self.get_json()
 
+        uids = data.get("items", [])
+        template = data.get("template")
         paperformat = data.get("format", "A4")
         orientation = data.get("orientation", "portrait")
         # custom report options
         report_options = data.get("report_options", {})
 
-        # Create a collection of the requested UIDs
-        collection = self.get_collection(data.get("items"))
+        # generate the reports
+        reports = self.generate_reports_for(uids,
+                                            group_by="getClientUID",
+                                            template=template,
+                                            paperformat=paperformat,
+                                            orientation=orientation,
+                                            report_options=report_options)
 
-        # Lookup the requested template
-        template = self.get_report_template(data.get("template"))
-        is_multi_template = self.is_multi_template(template)
-
-        htmls = []
-
-        # always group ARs by client
-        grouped_by_client = self.group_items_by("getClientUID", collection)
-
-        # iterate over the ARs of each client
-        for client_uid, collection in grouped_by_client.items():
-            # render multi report
-            if is_multi_template:
-                html = self.render_multi_report(collection,
-                                                template,
-                                                paperformat=paperformat,
-                                                orientation=orientation,
-                                                report_options=report_options)
-                htmls.append(html)
-            else:
-                # render single report
-                for model in collection:
-                    html = self.render_report(model,
-                                              template,
-                                              paperformat=paperformat,
-                                              orientation=orientation,
-                                              report_options=report_options)
-                    htmls.append(html)
-
-        return "\n".join(htmls)
+        return "\n".join(map(lambda r: r.html, reports))
 
     @timeit()
     def ajax_save_reports(self):
