@@ -19,12 +19,15 @@
 # Some rights reserved, see README and LICENSE.
 
 import os
-from collections import Iterable
 from collections import OrderedDict
 from functools import reduce
 from string import Template
 
+from six.moves.collections_abc import Iterable
+
 from bika.lims import api
+from bika.lims.permissions import ManageBika
+from bika.lims.permissions import TransitionPublishResults
 from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
@@ -36,6 +39,7 @@ from senaite.impress.interfaces import IMultiReportView
 from senaite.impress.interfaces import IPublisher
 from senaite.impress.interfaces import IPublishView
 from senaite.impress.interfaces import IReportView
+from senaite.impress.interfaces import IReportWrapper
 from senaite.impress.interfaces import ITemplateFinder
 from zope.component import ComponentLookupError
 from zope.component import getAdapter
@@ -94,8 +98,87 @@ class PublishView(BrowserView):
             return self.download()
         return self.template()
 
+    def generate_reports_for(self,
+                             uids,
+                             group_by=None,
+                             template=None,
+                             paperformat=None,
+                             orientation=None,
+                             report_options=None):
+        """Generate reports for the given UIDs
+
+        :param uids: List of object UIDs to generate reports for
+        :param group_by: Grouping attribute/callable, e.g. getClientUID
+        :param template: Template, e.g. `senaite.impress:Default.pt`
+        :param paperformat: Paperformat, e.g. A4
+        :param orientation: Orientation, e.g. horizontal
+        :param report_options: Dictionary with custom report options
+
+        If any of the keyword arguments is not set, the default value of the
+        registry is used.
+
+        :returns: List of `IReportWrapper` objects
+        """
+        if template is None:
+            template = self.get_default_template()
+        report_template = self.get_report_template(template)
+
+        if paperformat is None:
+            paperformat = self.get_default_paperformat()
+
+        if orientation is None:
+            orientation = self.get_default_orientation()
+
+        if report_options is None:
+            report_options = {}
+
+        collection = self.get_collection(uids)
+        group_key = group_by if group_by else "_nogroup_"
+        grouped_collection = self.group_items_by(group_key, collection)
+        is_multi_template = self.is_multi_template(report_template)
+
+        htmls = []
+
+        for key, collection in grouped_collection.items():
+            # render multi report
+            if is_multi_template:
+                html = self.render_multi_report(collection,
+                                                report_template,
+                                                paperformat=paperformat,
+                                                orientation=orientation,
+                                                report_options=report_options)
+                htmls.append(html)
+            else:
+                # render single report
+                for model in collection:
+                    html = self.render_report(model,
+                                              report_template,
+                                              paperformat=paperformat,
+                                              orientation=orientation,
+                                              report_options=report_options)
+                    htmls.append(html)
+
+        # generate a PDF for each HTML report
+        publisher = self.publisher
+        report_css = self.get_print_css(
+            paperformat=paperformat, orientation=orientation)
+        publisher.add_inline_css(report_css)
+
+        # wrap the reports for further processing
+        reports = []
+        for html, collection in zip(htmls, grouped_collection.values()):
+            report = getMultiAdapter((html,
+                                      collection,
+                                      template,
+                                      paperformat,
+                                      orientation,
+                                      report_options,
+                                      publisher), interface=IReportWrapper)
+            reports.append(report)
+        return reports
+
     def download(self):
-        """Generate PDF and send it fot download
+        """Generate PDF and send it for download
         """
         form = self.request.form
         # This is the html after it was rendered by the client browser and
@@ -158,15 +241,13 @@ class PublishView(BrowserView):
     def is_manager(self):
         """Checks if the current user has manager rights
         """
-        from bika.lims.permissions import ManageBika
         roles = api.get_roles_for_permission(ManageBika, self.context)
         return self.user.has_role(roles)
 
     def is_publisher(self):
         """Checks if the current user has publisher rights
         """
-        from bika.lims.permissions import Publish
-        roles = api.get_roles_for_permission(Publish, self.context)
+        roles = api.get_roles_for_permission(TransitionPublishResults, self.context)
         return self.user.has_role(roles)
 
     def get_uids(self):
@@ -436,7 +517,7 @@ class PublishView(BrowserView):
             raise TypeError("Items must be iterable")
         results = OrderedDict()
         for item in items:
-            group_key = item.get(key)
+            group_key = item.get(key, key)
             if callable(group_key):
                 group_key = group_key()
             if group_key in results:

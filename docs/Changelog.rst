@@ -1,6 +1,7 @@
 2.2.0 (unreleased)
 ------------------
 
+- #119 Simplified report creation API
 - #117 Allow to filter selectable impress templates
 - #115 ISO17025: Added method title to reports
 
