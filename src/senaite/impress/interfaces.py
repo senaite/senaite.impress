@@ -15,10 +15,11 @@
 # this program; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2018-2021 by it's authors.
+# Copyright 2018-2022 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
 from bika.lims.interfaces import IBikaLIMS
+from zope.interface import Attribute
 from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
 
@@ -70,4 +71,14 @@ class IPdfReportStorage(Interface):
     def store(pdf, html, uids, metadata):
         """Stores the generated PDF for the given UIDs in a location and
         returns a list of generated report objects.
+        """
+
+
+class IReportWrapper(Interface):
+    """Wrapper class for reports
+    """
+    pdf = Attribute("Generate PDF data")
+
+    def get_metadata(**kw):
+        """Generate metadata for the report
         """

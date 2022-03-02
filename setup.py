@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = "2.0.0"
+version = "2.2.0"
 
 with open("docs/About.rst", "r") as fh:
     long_description = fh.read()
@@ -40,7 +40,8 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
-        "beautifulsoup4",
+        # The final version of Beautiful Soup to support Python 2 was 4.9.3.
+        "beautifulsoup4==4.9.3",
         "CairoSVG==1.0.20",
         "cairocffi<1.0.0",
         # Python 2.x is not supported by WeasyPrint v43
@@ -49,6 +50,8 @@ setup(
         "tinycss2<1.0.0",
         # cssselect2 0.3.0 does not support Python 2.x anymore
         "cssselect2<0.3.0",
+        # pyphen 0.12.0 does not support Python 2.x anymore
+        "pyphen==0.11.0",
     ],
     extras_require={
         "test": [

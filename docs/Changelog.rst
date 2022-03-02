@@ -1,4 +1,20 @@
-2.0.0 (unreleased)
+2.2.0 (unreleased)
+------------------
+
+- #119 Simplified report creation API
+- #117 Allow to filter selectable impress templates
+- #115 ISO17025: Added method title to reports
+
+
+2.1.0 (2022-01-05)
+------------------
+
+- Updated JS/CSS resources
+- #114 Pin pyphen to version 0.11.0 to support Python2
+- #111 Pin Beautiful Soup version to 4.9.3 to support Python2
+
+
+2.0.0 (2021-07-26)
 ------------------
 
 - #108 Fix duplicate metadata in single reports
