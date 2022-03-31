@@ -1,6 +1,7 @@
 1.2.6 (unreleased)
 ------------------
 
+- #122 Pin pyphen version to 0.11.0 to support Python2
 - #112 Pin Beautiful Soup version to 4.9.3 to support Python2
 
 
