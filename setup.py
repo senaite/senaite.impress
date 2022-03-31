@@ -50,6 +50,8 @@ setup(
         "tinycss2<1.0.0",
         # cssselect2 0.3.0 does not support Python 2.x anymore
         "cssselect2<0.3.0",
+        # pyphen 0.12.0 does not support Python 2.x anymore
+        "pyphen==0.11.0",
     ],
     extras_require={
         "test": [
