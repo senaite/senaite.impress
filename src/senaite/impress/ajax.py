@@ -319,9 +319,10 @@ class AjaxPublishView(PublishView):
         # generate exit URL
         exit_url = self.context.absolute_url()
         if clients:
-            exit_url = "{}/{}?uids={}".format(
-                api.get_url(clients[0]), endpoint, ",".join(report_uids))
+            exit_url = api.get_url(clients[0])
 
+        exit_url = "{}/{}?uids={}".format(exit_url, endpoint,
+                                          ",".join(report_uids))
         return exit_url
 
     def ajax_get_reports(self, *args):
