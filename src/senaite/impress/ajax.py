@@ -23,6 +23,7 @@ import json
 
 from bika.lims import _
 from bika.lims import api
+from collections import OrderedDict
 from DateTime import DateTime
 from senaite.app.supermodel import SuperModel
 from senaite.impress import logger
@@ -274,7 +275,17 @@ class AjaxPublishView(PublishView):
         if not exit_urls:
             return api.get_url(self.context)
 
-        return exit_urls[0]
+        # Group the urls by path. This makes possible to at least return a
+        # single url for multiple uids when the base path (e.g. client) is the
+        # same. This is required for Single Reports, for which there are as many
+        # report groups as samples, regardless of clients
+        import pdb;pdb.set_trace()
+        groups = OrderedDict()
+        for url in exit_urls:
+            base_path, uids = url.split("?uids=")
+            path_uids = groups.get(base_path, "")
+            groups[base_path] = ",".join(filter(None, [path_uids, uids]))
+        return "?uids=".join(groups.items()[0])
 
     def get_exit_url_for(self, reports, action="save"):
         """Handle the response for the generated reports
