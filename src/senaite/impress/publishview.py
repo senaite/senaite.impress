@@ -137,8 +137,7 @@ class PublishView(BrowserView):
         grouped_collection = self.group_items_by(group_key, collection)
         is_multi_template = self.is_multi_template(report_template)
 
-        htmls = []
-
+        html_collections = []
         for key, collection in grouped_collection.items():
             # render multi report
             if is_multi_template:
@@ -147,7 +146,7 @@ class PublishView(BrowserView):
                                                 paperformat=paperformat,
                                                 orientation=orientation,
                                                 report_options=report_options)
-                htmls.append(html)
+                html_collections.append((html, collection))
             else:
                 # render single report
                 for model in collection:
@@ -156,7 +155,7 @@ class PublishView(BrowserView):
                                               paperformat=paperformat,
                                               orientation=orientation,
                                               report_options=report_options)
-                    htmls.append(html)
+                    html_collections.append((html, collection))
 
         # generate a PDF for each HTML report
         publisher = self.publisher
@@ -166,7 +165,7 @@ class PublishView(BrowserView):
 
         # wrap the reports for further processing
         reports = []
-        for html, collection in zip(htmls, grouped_collection.values()):
+        for html, collection in html_collections:
             report = getMultiAdapter((html,
                                       collection,
                                       template,
