@@ -5,10 +5,10 @@
 
   <genericsetup:upgradeStep
       title="Upgrade SENAITE IMPRESS"
-      description="Upgrade to version 2.2.0"
+      description="Upgrade to version 2.3.0"
       sortkey="1"
       source="*"
-      destination="2.2.0"
+      destination="2.3.0"
       handler="senaite.impress.upgrades.handlers.run_all_importsteps"
       profile="senaite.impress:default" />
 
