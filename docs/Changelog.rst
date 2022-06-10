@@ -1,4 +1,4 @@
-2.2.0 (unreleased)
+2.2.0 (2022-06-10)
 ------------------
 
 - #119 Simplified report creation API
