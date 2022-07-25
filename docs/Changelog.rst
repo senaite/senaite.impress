@@ -1,7 +1,7 @@
 2.3.0 (unreleased)
 ------------------
 
-- no changes yet
+- #124 Fix mixed sorted PoC groups depending on the sample analyses
 
 
 2.2.0 (2022-06-10)

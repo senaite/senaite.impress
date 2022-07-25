@@ -185,7 +185,12 @@ class ReportView(Base):
         """Groups the given analyses by their point of capture
         """
         analyses = self.get_analyses(model_or_collection)
-        return self.group_items_by("PointOfCapture", analyses)
+        groups = self.group_items_by("PointOfCapture", analyses)
+        # Ensure always alphabetic sorting of PoC
+        by_poc = OrderedDict()
+        for key in sorted(groups):
+            by_poc[key] = groups[key]
+        return by_poc
 
     def get_analyses_by_category(self, model_or_collection):
         """Groups the Analyses by their Category
