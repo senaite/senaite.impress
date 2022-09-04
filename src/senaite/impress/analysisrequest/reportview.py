@@ -147,6 +147,8 @@ class ReportView(Base):
         # Boil out analyses meant to be used for internal use only
         analyses = filter(lambda an: not IInternalUse.providedBy(an.instance),
                           analyses)
+        # Do not display multi-component analyses, but their analytes
+        analyses = filter(lambda an: not an.isMultiComponent(), analyses)
         return self.sort_items(analyses)
 
     def get_analyses_by(self, model_or_collection,
