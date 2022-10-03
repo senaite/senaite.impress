@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-06-10 21:21+0000\n"
+"POT-Creation-Date: 2022-10-03 08:44+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2022\n"
 "Language-Team: Czech (https://www.transifex.com/senaite/teams/87187/cs/)\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: senaite/impress/controlpanel.py:50
 msgid "Active templates"
-msgstr ""
+msgstr "Aktivní šablony"
 
 #: senaite/impress/templates/reports/Default.pt:141
 #: senaite/impress/templates/reports/MultiDefault.pt:139
@@ -57,7 +57,7 @@ msgstr "Přílohy na řádku"
 
 #: senaite/impress/controlpanel.py:45
 msgid "Available Templates"
-msgstr ""
+msgstr "Dostupné šablony"
 
 #: senaite/impress/templates/reports/Default.pt:310
 #: senaite/impress/templates/reports/MultiDefault.pt:321
@@ -222,7 +222,7 @@ msgstr "Telefon"
 
 #: senaite/impress/controlpanel.py:46
 msgid "Please choose the templates that can be selected"
-msgstr ""
+msgstr "Vyberte šablony, které lze vybrat."
 
 #: senaite/impress/templates/reports/Default.pt:271
 #: senaite/impress/templates/reports/MultiDefault.pt:278
