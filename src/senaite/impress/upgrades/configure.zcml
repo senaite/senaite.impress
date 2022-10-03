@@ -9,7 +9,7 @@
       sortkey="1"
       source="*"
       destination="2.3.0"
-      handler="senaite.impress.upgrades.handlers.run_all_importsteps"
+      handler="senaite.impress.upgrades.handlers.to_2300"
       profile="senaite.impress:default" />
 
 </configure>
