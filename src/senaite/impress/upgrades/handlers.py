@@ -23,6 +23,17 @@ from senaite.impress import logger
 PROFILE_ID = "profile-senaite.impress:default"
 
 
+def to_2400(portal_setup):
+    """Update to version 2.4.0
+
+    :param portal_setup: The portal_setup tool
+    """
+
+    logger.info("Run all import steps from SENAITE IMPRESS ...")
+    portal_setup.runAllImportStepsFromProfile(PROFILE_ID)
+    logger.info("Run all import steps from SENAITE IMPRESS [DONE]")
+
+
 def to_2300(portal_setup):
     """Update to version 2.3.0
 
