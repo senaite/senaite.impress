@@ -1,7 +1,7 @@
 2.4.0 (unreleased)
 ------------------
 
-- no changes yet
+- #127 Support textarea change events for report options
 
 
 2.3.0 (2022-10-03)

@@ -18,6 +18,12 @@ class ReportOptions extends React.Component {
         node.addEventListener("change", this.props.onChange);
       }
 
+      // Bind change event to textarea fields
+      controls = form.context.getElementsByTagName("textarea");
+      for (let [index, node] of Object.entries(controls)) {
+        node.addEventListener("change", this.props.onChange);
+      }
+
       // Bind change event to select fields
       controls = form.context.getElementsByTagName("select");
       for (let [index, node] of Object.entries(controls)) {
