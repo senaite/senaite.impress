@@ -236,9 +236,13 @@ class SuperModel(BaseModel):
         """Returns a list of user objects
         """
         out = []
-        userids = reduce(lambda v1, v2: v1+v2,
-                         map(lambda v: v.Verificators.split(","),
-                             self.Analyses))
+        # extract the ids of the verifiers from all analyses
+        userids = [analysis.getVerificators() for analysis in self.Analyses]
+        # flatten the list
+        userids = list(itertools.chain.from_iterable(userids))
+        # remove empties
+        userids = filter(None, userids)
+        # get the users
         for userid in set(userids):
             user = api.get_user(userid)
             if user is None:
