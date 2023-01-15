@@ -240,10 +240,10 @@ class SuperModel(BaseModel):
         userids = [analysis.getVerificators() for analysis in self.Analyses]
         # flatten the list
         userids = list(itertools.chain.from_iterable(userids))
-        # remove empties
-        userids = filter(None, userids)
         # get the users
         for userid in set(userids):
+            if not userid:
+                continue
             user = api.get_user(userid)
             if user is None:
                 logger.warn("Could not find user '{}'".format(userid))
