@@ -1,6 +1,7 @@
 2.4.0 (unreleased)
 ------------------
 
+- #129 Fix template error when the report contains invalidated samples
 - #128 Fix AttributeError 'Verificators' on model.verifiers call
 - #127 Support textarea change events for report options
 
