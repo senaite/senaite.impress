@@ -23,6 +23,7 @@ from plone.app.registry.browser.controlpanel import RegistryEditForm
 from plone.z3cform import layout
 from senaite.impress import senaiteMessageFactory as _
 from senaite.impress.interfaces import ITemplateFinder
+from plone.supermodel import model
 from zope import schema
 from zope.component import getUtility
 from zope.interface import Interface
@@ -76,6 +77,14 @@ class IImpressControlPanel(Interface):
         required=True,
     )
 
+    footer = schema.Text(
+        title=_(u"Footer Text"),
+        description=_("The footer text will be rendered on every PDF page "
+                      "and may contain arbitrary HTML"),
+        default=u"",
+        required=False,
+    )
+
     store_multireports_individually = schema.Bool(
         title=_(u"Store Multi-Report PDFs Individually"),
         description=_("Store generated multi-report PDFs individually. "
@@ -85,19 +94,41 @@ class IImpressControlPanel(Interface):
         required=False,
     )
 
-    footer = schema.Text(
-        title=_(u"Footer Text"),
-        description=_("The footer text will be rendered on every PDF page "
-                      "and may contain arbitrary HTML"),
-        default=u"",
-        required=False,
-    )
-
     developer_mode = schema.Bool(
         title=_(u"Developer Mode"),
         description=_("Returns the raw HTML in the report preview."),
         default=False,
         required=False,
+    )
+
+    allow_pdf_download = schema.Bool(
+        title=_(u"Allow PDF download"),
+        description=_(u"Allow direct download of the generated report"),
+        default=False,
+        required=False,
+    )
+
+    ###
+    # Fieldsets
+    ###
+    model.fieldset(
+        "report_settings",
+        label=_(u"Report Settings"),
+        # description=_(""),
+        fields=[
+            "footer",
+        ],
+    )
+
+    model.fieldset(
+        "advanced",
+        label=_(u"Advanced"),
+        # description=_(""),
+        fields=[
+            "allow_pdf_download",
+            "store_multireports_individually",
+            "developer_mode",
+        ],
     )
 
 
