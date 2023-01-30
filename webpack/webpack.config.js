@@ -87,13 +87,18 @@ module.exports = {
             drop_console: true,
             passes: 2,
           },
-	      }
+        }
       }),
     ],
   },
   plugins: [
     // https://github.com/johnagan/clean-webpack-plugin
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      verbose: false,
+      // Workaround in `watch` mode when trying to remove the `resources.pt` in the parent folder:
+      // Error: clean-webpack-plugin: Cannot delete files/folders outside the current working directory.
+      cleanAfterEveryBuildPatterns: ["!../*"],
+    }),
     // https://webpack.js.org/plugins/html-webpack-plugin/
     new HtmlWebpackPlugin({
       inject: false,
