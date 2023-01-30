@@ -24,8 +24,10 @@ module.exports = {
   mode: mode,
   context: path.resolve(__dirname, "app"),
   entry: {
-    main: [
+    "senaite.impress": [
+      // scripts
       "./senaite.impress.coffee",
+      // styles
       "./senaite.impress.scss"
     ]
   },
