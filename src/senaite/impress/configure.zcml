@@ -21,11 +21,7 @@
   <!-- Upgrade Steps -->
   <include package=".upgrades" />
 
-  <!-- Publish Controller View
-
-       TODO: Rename to `publish` for drop-in replacement as soon as this package
-             is ready for production
-  -->
+  <!-- General Purpose Print View -->
   <browser:page
       for="*"
       name="printview"
@@ -34,7 +30,7 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Analysis Requests Folder Publish -->
+  <!-- Publish View -->
   <browser:page
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
       name="publish"
@@ -43,7 +39,7 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Client Publish -->
+  <!-- Client Publish View -->
   <browser:page
       for="bika.lims.interfaces.IClient"
       name="publish"
@@ -52,7 +48,7 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Analysis Request Publish -->
+  <!-- Sample Publish View -->
   <browser:page
       for="bika.lims.interfaces.IAnalysisRequest"
       name="publish"
@@ -61,7 +57,7 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Batch Publish -->
+  <!-- Batch Publish View -->
   <browser:page
       for="bika.lims.interfaces.IBatch"
       name="publish"
