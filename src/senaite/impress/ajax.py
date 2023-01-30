@@ -165,6 +165,9 @@ class AjaxPublishView(PublishView):
             "format": self.get_default_paperformat(),
             "orientation": self.get_default_orientation(),
             "template": self.get_default_template(),
+            "allow_pdf": self.get_allow_pdf_download(),
+            "allow_save": self.get_allow_publish_save(),
+            "allow_email": self.get_allow_publish_email(),
         }
         return config
 

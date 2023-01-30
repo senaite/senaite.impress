@@ -54,6 +54,9 @@ class PublishController extends React.Component
       error: ""
       controls: ""
       report_options: {}
+      allow_pdf: no
+      allow_save: yes
+      allow_email: yes
 
 
   getRequestOptions: ->
@@ -285,17 +288,7 @@ class PublishController extends React.Component
     @setState option, @loadReports
 
 
-  isMultiReport: ->
-    return @state.template.search("Multi") > -1
-
   render: ->
-    ###
-     * Publication UI
-    ###
-
-    print_mode = location.pathname.endsWith "printview"
-    publish_mode =  location.pathname.endsWith "publish"
-
     <div className="col-sm-12">
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
@@ -305,9 +298,9 @@ class PublishController extends React.Component
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
             <div className="input-group-append">
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
-              {publish_mode and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
-              {publish_mode and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
-              {print_mode and <Button name="" title="PDF" onClick={@printReports} className="btn btn-outline-secondary" />}
+              {@state.allow_pdf and <Button name="" title="PDF" onClick={@printReports} className="btn btn-outline-secondary" />}
+              {@state.allow_email and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
+              {@state.allow_save and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
             </div>
           </div>
         </div>
