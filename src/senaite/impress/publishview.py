@@ -48,6 +48,9 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.interface import implements
 
+# additional registered view for printing purposes
+PRINTVIEW = "printview"
+
 CSS = Template("""/** Paper Format CSS **/
 @page {
   /* width/height according to the format */
@@ -411,6 +414,39 @@ class PublishView(BrowserView):
         templates = api.get_registry_record(
             "senaite.impress.templates")
         return templates or []
+
+    def is_printview(self):
+        """Checks if the current report is rendered in the printview
+        """
+        if self.__name__ == PRINTVIEW:
+            return True
+        referer = self.request.get_header("referer")
+        if PRINTVIEW in referer:
+            return True
+        return False
+
+    def get_allow_pdf_download(self, default=False):
+        """Check if the
+        """
+        # Always allow in printview
+        if self.is_printview():
+            return True
+        # lookup configuration settings
+        allow_pdf_download = api.get_registry_record(
+            "senaite.impress.allow_pdf_download")
+        if allow_pdf_download is None:
+            return default
+        return allow_pdf_download
+
+    def get_allow_publish_save(self, default=True):
+        """Allow publish save
+        """
+        return not self.is_printview()
+
+    def get_allow_publish_email(self, default=True):
+        """Allow publish email
+        """
+        return not self.is_printview()
 
     def get_default_template(self, default="senaite.lims:Default.pt"):
         """Returns the configured default template from the registry
