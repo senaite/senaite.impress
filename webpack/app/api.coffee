@@ -123,11 +123,7 @@ class PublishAPI
     return @get_json("save_reports", options)
 
 
-  print_pdf: (options) ->
-    ###
-     * Send an async request to the server and download the file
-    ###
-
+  create_pdf: (options) ->
     # wrap all options into form data
     formData = new FormData()
     formData.set("download", "1")
@@ -145,7 +141,14 @@ class PublishAPI
     # submit the POST and display the PDF in a new window
     return fetch(request).then (response) ->
       return response.blob()
-    .then (blob) ->
+
+
+  print_pdf: (options) ->
+    ###
+     * Send an async request to the server and download the file
+    ###
+
+    @create_pdf(options).then (blob) ->
       # open the PDF in a separate window
       url= window.URL.createObjectURL(blob)
       window.open(url, "_blank")

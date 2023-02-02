@@ -9,7 +9,7 @@ class Button extends React.Component {
 
   render() {
     return (
-      <button uid={this.props.uid} name={this.props.name} onClick={this.props.onClick} className={this.props.className}>
+      <button uid={this.props.uid} name={this.props.name} url={this.props.url} onClick={this.props.onClick} className={this.props.className}>
         {this.props.title}
       </button>
     );

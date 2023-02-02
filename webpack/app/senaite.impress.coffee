@@ -15,6 +15,7 @@ import Preview from "./components/Preview.js"
 import ReportHTML from "./components/ReportHTML.js"
 import ReportOptions from "./components/ReportOptions.js"
 import TemplateSelection from "./components/TemplateSelection.js"
+import Modal from "./components/Modal.js"
 
 
 # DOCUMENT READY ENTRY POINT
@@ -38,6 +39,7 @@ class PublishController extends React.Component
     # Bind `this` in methods
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
+    @handleCustomAction = @handleCustomAction.bind(this)
     @loadReports = @loadReports.bind(this)
     @saveReports = @saveReports.bind(this)
     @printReports = @printReports.bind(this)
@@ -54,9 +56,34 @@ class PublishController extends React.Component
       error: ""
       controls: ""
       report_options: {}
-      allow_pdf: no
       allow_save: yes
       allow_email: yes
+      custom_actions: []
+
+
+  componentDidUpdate: ->
+    ###
+     * ReactJS event handler when the component did update
+     *
+     * That looks like the right place to process the "raw" HTML from the server
+     * with JavaScript, like barcode rendering etc.
+    ###
+    console.debug "PublishController::componentDidUpdate"
+
+    # render the barcodes
+    @api.render_barcodes()
+
+    # render range graphs
+    @api.render_ranges()
+
+
+  componentDidMount: ->
+    console.debug "PublishController::componentDidMount"
+
+    @api.fetch_config().then (
+      (config) ->
+        @setState config, @loadReports
+      ).bind(this)
 
 
   getRequestOptions: ->
@@ -183,6 +210,26 @@ class PublishController extends React.Component
         error: error.toString()
 
 
+  toggleLoader: (toggle, options) ->
+    options ?= {}
+    state = Object.assign {loading: toggle}, options
+    @setState state
+
+
+  createPDF: () ->
+    # Set the loader
+    @toggleLoader yes, loadtext: "Generating PDF ..."
+
+    options = @getRequestOptions()
+    promise = @api.create_pdf options
+
+    promise.then =>
+      # toggle the loader off
+      @toggleLoader off
+
+    return promise
+
+
   printReports: (event) ->
     ###
      * Print all PDFs
@@ -241,29 +288,64 @@ class PublishController extends React.Component
         error: error.toString()
 
 
-  componentDidUpdate: ->
-    ###
-     * ReactJS event handler when the component did update
-     *
-     * That looks like the right place to process the "raw" HTML from the server
-     * with JavaScript, like barcode rendering etc.
-    ###
-    console.debug "PublishController::componentDidUpdate"
+  loadModal: (url, pdf, action) ->
+    el = $("#impress_modal")
+    action ?= {}
 
-    # render the barcodes
-    @api.render_barcodes()
+    url = new URL(url)
+    url.searchParams.append("uids", @state.items)
 
-    # render range graphs
-    @api.render_ranges()
+    # submit callback
+    on_submit = (event) =>
+      event.preventDefault()
+      # hide the modal on submit
+      el.modal("hide")
 
+      # prepare formdata of the modal form
+      form = event.target
+      formdata = new FormData(form)
 
-  componentDidMount: ->
-    console.debug "PublishController::componentDidMount"
+      if not form.action
+        console.error "Modal form has no action defined"
+        return
 
-    @api.fetch_config().then (
-      (config) ->
-        @setState config, @loadReports
-      ).bind(this)
+      # Append some useful data for the action handler
+      formdata.append("pdf", pdf)
+      formdata.append("html", @state.html)
+      formdata.append("format", @state.format)
+      formdata.append("orientation", @state.orientation)
+      formdata.append("template", @state.template)
+
+      # process the modal form submit
+      fetch form.action,
+        method: "POST",
+        body: formdata
+      .then (response) =>
+        if not response.ok
+          return Promise.reject(response)
+        return response.blob().then (blob) =>
+          if not blob.type.startsWith("text")
+            url= window.URL.createObjectURL(blob)
+            return window.open(url, "_blank")
+          return blob.text().then (text) =>
+            # allow redirects when the modal form returns an URL
+            if text.startsWith("http")
+              window.location = text
+            return
+      .catch (error) =>
+        console.error(error)
+
+    request = new Request(url)
+    fetch(request)
+    .then (response) ->
+      return response.text().then (text) ->
+        el.empty()
+        el.append(text)
+        el.one "submit", on_submit
+        # submit directly
+        if action.direct_submit
+          return $("form", el).submit()
+        return el.modal("show")
 
 
   handleSubmit: (event) ->
@@ -288,8 +370,39 @@ class PublishController extends React.Component
     @setState option, @loadReports
 
 
+  handleCustomAction: (event) ->
+    event.preventDefault()
+    target = event.target
+
+    action = {}
+    name = target.getAttribute("name")
+    # get the action by its name
+    for item in @state.custom_actions
+      if item.name == name
+        action = item
+        break
+
+    if not action
+      console.error "No action found for #{name}"
+      return
+
+    # get the URL from the action
+    url = action.url
+
+    if not url
+      console.error "Custom action has no URL defined!"
+      return
+
+    # Always create the PDF
+    promise = @createPDF()
+
+    promise.then (pdf) =>
+      # load the URL in the modal
+      @loadModal url, pdf, action
+
   render: ->
     <div className="col-sm-12">
+      <Modal className="modal fade" id="impress_modal" />
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
           <div className="input-group">
@@ -298,9 +411,9 @@ class PublishController extends React.Component
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
             <div className="input-group-append">
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
-              {@state.allow_pdf and <Button name="" title="PDF" onClick={@printReports} className="btn btn-outline-secondary" />}
               {@state.allow_email and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
               {@state.allow_save and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
+              {@state.custom_actions.map((action, index) => <Button onClick={@handleCustomAction} key={action.name | index} title={action.title} name={action.name} className={action.css_class || "btn btn-outline-secondary"} />)}
             </div>
           </div>
         </div>
