@@ -82,3 +82,12 @@ class IReportWrapper(Interface):
     def get_metadata(**kw):
         """Generate metadata for the report
         """
+
+
+class ICustomActionProvider(Interface):
+    """Provide additional action buttons in report preview
+    """
+
+    def get_action_data():
+        """return the action data as dict
+        """

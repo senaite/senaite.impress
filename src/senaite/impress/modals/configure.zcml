@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      name="impress_download_pdf"
+      for="*"
+      class=".actions.DownloadPDF"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+</configure>

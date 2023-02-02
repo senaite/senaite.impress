@@ -20,18 +20,20 @@
 
 import inspect
 import json
+from collections import OrderedDict
 
 from bika.lims import _
 from bika.lims import api
-from collections import OrderedDict
 from DateTime import DateTime
 from senaite.app.supermodel import SuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_json
 from senaite.impress.decorators import timeit
+from senaite.impress.interfaces import ICustomActionProvider
 from senaite.impress.interfaces import IPdfReportStorage
 from senaite.impress.interfaces import IReportWrapper
 from senaite.impress.publishview import PublishView
+from zope.component import getAdapters
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
@@ -161,13 +163,24 @@ class AjaxPublishView(PublishView):
     def ajax_config(self):
         """Returns the default publisher config
         """
+        custom_actions = []
+
+        # Query custom action providers
+        adapters = getAdapters(
+            (self, self.context, self.request), ICustomActionProvider)
+        for name, adapter in adapters:
+            # skip the adapter if it is not available
+            if not adapter.available:
+                continue
+            custom_actions.append(adapter.get_action_data())
+
         config = {
             "format": self.get_default_paperformat(),
             "orientation": self.get_default_orientation(),
             "template": self.get_default_template(),
-            "allow_pdf": self.get_allow_pdf_download(),
             "allow_save": self.get_allow_publish_save(),
             "allow_email": self.get_allow_publish_email(),
+            "custom_actions": custom_actions,
         }
         return config
 
