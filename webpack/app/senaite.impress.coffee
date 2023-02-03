@@ -309,31 +309,8 @@ class PublishController extends React.Component
         console.error "Modal form has no action defined"
         return
 
-      # Append some useful data for the action handler
-      formdata.append("pdf", pdf)
-      formdata.append("html", @state.html)
-      formdata.append("format", @state.format)
-      formdata.append("orientation", @state.orientation)
-      formdata.append("template", @state.template)
-
-      # process the modal form submit
-      fetch form.action,
-        method: "POST",
-        body: formdata
-      .then (response) =>
-        if not response.ok
-          return Promise.reject(response)
-        return response.blob().then (blob) =>
-          if not blob.type.startsWith("text")
-            url= window.URL.createObjectURL(blob)
-            return window.open(url, "_blank")
-          return blob.text().then (text) =>
-            # allow redirects when the modal form returns an URL
-            if text.startsWith("http")
-              window.location = text
-            return
-      .catch (error) =>
-        console.error(error)
+      # post the action
+      @postAction form.action, pdf, formdata
 
     request = new Request(url)
     fetch(request)
@@ -342,10 +319,38 @@ class PublishController extends React.Component
         el.empty()
         el.append(text)
         el.one "submit", on_submit
-        # submit directly
-        if action.direct_submit
-          return $("form", el).submit()
         return el.modal("show")
+
+
+  postAction: (url, pdf, formdata) ->
+    formdata ?= new FormData()
+    # Append the generated PDF for the action handler
+    formdata.append("pdf", pdf)
+    # Append more useful data for the action handler
+    formdata.append("html", @state.html)
+    formdata.append("format", @state.format)
+    formdata.append("orientation", @state.orientation)
+    formdata.append("template", @state.template)
+    formdata.append("uids", @state.items.join(","))
+
+    # process the modal form submit
+    fetch url,
+      method: "POST",
+      body: formdata
+    .then (response) =>
+      if not response.ok
+        return Promise.reject(response)
+      return response.blob().then (blob) =>
+        if not blob.type.startsWith("text")
+          url = window.URL.createObjectURL(blob)
+          return window.open(url, "_blank")
+        return blob.text().then (text) =>
+          # allow redirects when the modal form returns an URL
+          if text.startsWith("http")
+            window.location = text
+          return
+    .catch (error) =>
+      console.error(error)
 
 
   handleSubmit: (event) ->
@@ -376,7 +381,8 @@ class PublishController extends React.Component
 
     action = {}
     name = target.getAttribute("name")
-    # get the action by its name
+
+    # find the action data by name
     for item in @state.custom_actions
       if item.name == name
         action = item
@@ -397,8 +403,11 @@ class PublishController extends React.Component
     promise = @createPDF()
 
     promise.then (pdf) =>
-      # load the URL in the modal
-      @loadModal url, pdf, action
+      if action.modal isnt false
+        # load the action modal
+        return @loadModal url, pdf, action
+      # post data directls to the URL
+      return @postAction url, pdf
 
   render: ->
     <div className="col-sm-12">

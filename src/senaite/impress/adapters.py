@@ -25,5 +25,5 @@ class DownloadPDFActionProvider(object):
             "name": self.name,
             "title": self.title,
             "url": self.url,
-            "direct_submit": True,
+            "modal": False,
         }
