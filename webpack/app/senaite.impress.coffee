@@ -406,7 +406,7 @@ class PublishController extends React.Component
       if action.modal isnt false
         # load the action modal
         return @loadModal url, pdf, action
-      # post data directls to the URL
+      # post data directly to the URL
       return @postAction url, pdf
 
 
