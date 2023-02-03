@@ -409,6 +409,7 @@ class PublishController extends React.Component
       # post data directls to the URL
       return @postAction url, pdf
 
+
   render: ->
     <div className="col-sm-12">
       <Modal className="modal fade" id="impress_modal" />
