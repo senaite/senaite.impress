@@ -87,7 +87,12 @@ class IReportWrapper(Interface):
 class ICustomActionProvider(Interface):
     """Provide additional action buttons in report preview
     """
+    available = Attribute("Boolean to control if the action is available")
+    title = Attribute("Button title of the action")
+    name = Attribute("Button name of the action")
+    url = Attribute("Form action or modal URL")
+    modal = Attribute("Boolean to control if the action opens a new modal")
 
     def get_action_data():
-        """return the action data as dict
+        """Returns the known attributes to the ReactJS component
         """

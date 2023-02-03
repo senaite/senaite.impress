@@ -19,7 +19,7 @@
   <include package=".analysisrequest" />
 
   <!-- Upgrade Steps -->
-  <include package=".modals" />
+  <include package=".actions" />
   <include package=".upgrades" />
 
   <!-- General Purpose Print View -->

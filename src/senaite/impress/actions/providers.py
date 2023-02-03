@@ -11,7 +11,6 @@ from Products.Five.browser import BrowserView
 class CustomAction(BrowserView):
     """Base class for custom actions
     """
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -30,7 +29,6 @@ class CustomAction(BrowserView):
 class DownloadPDF(CustomAction):
     """Download Action
     """
-
     def __init__(self, context, request):
         super(DownloadPDF, self).__init__(context, request)
 
