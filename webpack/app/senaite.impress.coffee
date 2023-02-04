@@ -321,7 +321,21 @@ class PublishController extends React.Component
         el.one "submit", on_submit
         return el.modal("show")
 
+  ###
+   * Lookup action config by name
+  ###
+  getActionByName: (name) ->
+    action = {}
+    for item in @state.custom_actions
+      if item.name == name
+        action = item
+        break
+    return action
 
+
+  ###
+    * Send asynchronous HTTP POST request to the given URL
+  ###
   postAction: (url, pdf, formdata) ->
     formdata ?= new FormData()
     # Append the generated PDF for the action handler
@@ -384,14 +398,8 @@ class PublishController extends React.Component
     event.preventDefault()
     target = event.currentTarget
 
-    action = {}
     name = target.getAttribute("name")
-
-    #  the action data by name
-    for item in @state.custom_actions
-      if item.name == name
-        action = item
-        break
+    action = @getActionByName(name)
 
     if not action
       console.error "No action found for #{name}"
@@ -411,7 +419,7 @@ class PublishController extends React.Component
       if action.modal isnt false
         # load the action modal
         return @loadModal url, pdf, action
-      # post data directly to the URL
+      # post data directly to the action URL
       return @postAction url, pdf
 
 
