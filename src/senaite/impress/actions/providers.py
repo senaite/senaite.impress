@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import collections
+from datetime import datetime
 
 import six
 
 from bika.lims import api
 from bika.lims.api import mail as mailapi
+from bika.lims.interfaces import IAnalysisRequest
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite.impress import senaiteMessageFactory as _
@@ -59,12 +61,12 @@ class SendPDF(CustomAction):
 
     def __init__(self, context, request):
         super(SendPDF, self).__init__(context, request)
-        self.samples = map(api.get_object_by_uid, self.uids)
+        self.objects = map(api.get_object, self.uids)
         self.action_url = "{}/{}".format(api.get_url(context), self.__name__)
 
     def __call__(self):
         if self.request.form.get("submitted", False):
-            return self.handle_submit(REQUEST=self.request)
+            self.send(REQUEST=self.request)
         return self.template()
 
     def add_status_message(self, message, level="info"):
@@ -78,6 +80,11 @@ class SendPDF(CustomAction):
         """
         return api.get_setup().laboratory
 
+    def is_sample(self, obj):
+        """Check if the given object is a sample
+        """
+        return IAnalysisRequest.providedBy(obj)
+
     def get_email_sender_address(self):
         """Sender email is either the lab email or portal email "from" address
         """
@@ -85,13 +92,67 @@ class SendPDF(CustomAction):
         portal_email = api.get_registry_record("plone.email_from_address")
         return lab_email or portal_email or ""
 
-    def handle_submit(self, REQUEST=None):
+    def get_default_recipient_emails(self):
+        """Return the default recipient emails
+        """
+        emails = []
+        for obj in self.objects:
+            if not self.is_sample(obj):
+                continue
+            contact = obj.getContact()
+            if not contact:
+                continue
+            email = contact.getEmailAddress()
+            if email not in emails:
+                emails.append(email)
+        return ", ".join(filter(mailapi.is_valid_email_address, emails))
+
+    def get_default_cc_emails(self):
+        """Return the default CC emails
+        """
+        emails = []
+        for obj in self.objects:
+            if not self.is_sample(obj):
+                continue
+            for contact in obj.getCCContact():
+                if not contact:
+                    continue
+                email = contact.getEmailAddress()
+                if email not in emails:
+                    emails.append(email)
+            for email in obj.getCCEmails().split(","):
+                if email not in emails:
+                    emails.append(email)
+        return ", ".join(filter(mailapi.is_valid_email_address, emails))
+
+    def get_default_subject(self):
+        """Return the default subject
+        """
+        return ", ".join(map(api.get_id, self.objects))
+
+    def get_default_body(self):
+        """Return the default body text
+        """
+        return ""
+
+    def get_default_pdf_filename(self):
+        """Return the default filename of the attached PDF
+        """
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        return "Report-{}.pdf".format(timestamp)
+
+    def send(self, REQUEST=None):
         email_to = self.request.get("email_to", "")
         email_cc = self.request.get("email_cc", "")
         email_subject = self.request.get("email_subject", "")
         email_body = self.request.get("email_body", "")
 
         pdf = self.request.get("pdf")
+        if not pdf:
+            message = _("PDF attachment is missing")
+            self.add_status_message(message, level="error")
+            return False
+
         pdf_filename = self.request.get("pdf_filename")
         # workaround for ZPublisher.HTTPRequest.FileUpload object
         pdf_data = "".join(pdf.xreadlines())
@@ -110,47 +171,8 @@ class SendPDF(CustomAction):
         if not sent:
             message = _("Failed to send Email")
             self.add_status_message(message, level="error")
-        else:
-            message = _("Email sent")
-            self.add_status_message(message, level="info")
+            return False
 
-        return self.template()
-
-    def get_contact_emails(self):
-        """Extract all contact emails of the reports
-        """
-        emails = []
-        for sample in self.samples:
-            contact = sample.getContact()
-            if not contact:
-                continue
-            email = contact.getEmailAddress()
-            if email not in emails:
-                emails.append(email)
-        return ", ".join(filter(mailapi.is_valid_email_address, emails))
-
-    def get_cccontact_emails(self):
-        """Extract all the cc contact emails of the reports
-        """
-        emails = []
-        for sample in self.samples:
-            for contact in sample.getCCContact():
-                if not contact:
-                    continue
-                email = contact.getEmailAddress()
-                if email not in emails:
-                    emails.append(email)
-            for email in sample.getCCEmails().split(","):
-                if email not in emails:
-                    emails.append(email)
-        return ", ".join(filter(mailapi.is_valid_email_address, emails))
-
-    def get_subject(self):
-        """Return the default subject
-        """
-        return ", ".join(map(api.get_id, self.samples))
-
-    def get_body(self):
-        """Return the default body text
-        """
-        return ""
+        message = _("Email sent")
+        self.add_status_message(message, level="info")
+        return True

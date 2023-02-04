@@ -26,7 +26,7 @@
           <div class="col-sm-9">
             <input type="email" multiple
                    required
-                   tal:attributes="value python:request.get('email_to') or view.get_contact_emails()"
+                   tal:attributes="value python:request.get('email_to') or view.get_default_recipient_emails()"
                    name="email_to" autocomplete="off" class="form-control form-control-sm" id="input-to" />
           </div>
         </div>
@@ -40,7 +40,7 @@
           </label>
           <div class="col-sm-9">
             <input type="email" multiple
-                   tal:attributes="value python:request.get('email_cc') or view.get_cccontact_emails()"
+                   tal:attributes="value python:request.get('email_cc') or view.get_default_cc_emails()"
                    name="email_cc" autocomplete="off" class="form-control form-control-sm" id="input-email" />
           </div>
         </div>
@@ -54,7 +54,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text"
-                   tal:attributes="value python:request.get('email_subject') or view.get_subject()"
+                   tal:attributes="value python:request.get('email_subject') or view.get_default_subject()"
                    name="email_subject" class="form-control form-control-sm" id="input-subject" />
           </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="form-group form-group-sm row">
           <div class="col-sm-12">
             <textarea name="email_body"
-                      tal:content="python:request.get('email_body') or view.get_body()"
+                      tal:content="python:request.get('email_body') or view.get_default_body()"
                       rows="5" class="form-control form-control-sm" id="input-body">
             </textarea>
           </div>
@@ -79,7 +79,7 @@
           <div class="col-sm-9">
             <input type="text"
                    value="Report.pdf"
-                   tal:attributes="value python:request.get('pdf_filename') or default"
+                   tal:attributes="value python:request.get('pdf_filename') or view.get_default_pdf_filename()"
                    name="pdf_filename" class="form-control form-control-sm" id="input-filename" />
           </div>
         </div>
