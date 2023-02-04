@@ -56,9 +56,9 @@ class SendPDFActionProvider(ActionProvider):
     """
     def __init__(self, view, context, request):
         super(SendPDFActionProvider, self).__init__(view, context, request)
-        self.available = view.get_allow_pdf_download()
-        self.title = _("Send generated report via email")
-        self.text = "<i class='fas fa-paper-plane'></i>"
+        self.available = view.get_allow_pdf_email_share()
+        self.title = _("Share PDF via email")
+        self.text = "<i class='fas fa-share-square'></i>"
         self.name = "impress_send_pdf"
         self.context_url = api.get_url(self.context)
         self.url = "{}/{}".format(self.context_url, self.name)

@@ -345,8 +345,8 @@ class PublishController extends React.Component
     * Open blob in new window
   ###
   handleActionBlobResponse: (blob) ->
-    url = window.URL.createObjectURL(blob)
-    return window.open(url, "_blank")
+    url= window.URL.createObjectURL(blob)
+    window.open(url, "_blank")
 
 
   ###

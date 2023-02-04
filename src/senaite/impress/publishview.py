@@ -426,7 +426,7 @@ class PublishView(BrowserView):
         return False
 
     def get_allow_pdf_download(self, default=False):
-        """Check if the
+        """Check if direct PDF download is allowed
         """
         # Always allow in printview
         if self.is_printview():
@@ -437,6 +437,19 @@ class PublishView(BrowserView):
         if allow_pdf_download is None:
             return default
         return allow_pdf_download
+
+    def get_allow_pdf_email_share(self, default=False):
+        """Check if PDF email sharing is allowed
+        """
+        # Always allow in printview
+        if self.is_printview():
+            return True
+        # lookup configuration settings
+        allow_pdf_share = api.get_registry_record(
+            "senaite.impress.allow_pdf_email_share")
+        if allow_pdf_share is None:
+            return default
+        return allow_pdf_share
 
     def get_allow_publish_save(self, default=True):
         """Allow publish save
