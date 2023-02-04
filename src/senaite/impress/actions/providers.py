@@ -6,9 +6,9 @@ import six
 
 from bika.lims import api
 from bika.lims.api import mail as mailapi
-from senaite.impress.decorators import returns_json
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from senaite.impress import senaiteMessageFactory as _
 
 
 class CustomAction(BrowserView):
@@ -60,11 +60,11 @@ class SendPDF(CustomAction):
     def __init__(self, context, request):
         super(SendPDF, self).__init__(context, request)
         self.samples = map(api.get_object_by_uid, self.uids)
+        self.action_url = "{}/{}".format(api.get_url(context), self.__name__)
 
     def __call__(self):
         if self.request.form.get("submitted", False):
-            self.handle_submit(REQUEST=self.request)
-            return self.request.get_header("referer")
+            return self.handle_submit(REQUEST=self.request)
         return self.template()
 
     def add_status_message(self, message, level="info"):
@@ -85,7 +85,6 @@ class SendPDF(CustomAction):
         portal_email = api.get_registry_record("plone.email_from_address")
         return lab_email or portal_email or ""
 
-    @returns_json
     def handle_submit(self, REQUEST=None):
         email_to = self.request.get("email_to", "")
         email_cc = self.request.get("email_cc", "")
@@ -107,8 +106,15 @@ class SendPDF(CustomAction):
         mime_msg["CC"] = mailapi.to_email_address(email_cc)
 
         sent = mailapi.send_email(mime_msg)
+
         if not sent:
-            import pdb; pdb.set_trace()
+            message = _("Failed to send Email")
+            self.add_status_message(message, level="error")
+        else:
+            message = _("Email sent")
+            self.add_status_message(message, level="info")
+
+        return self.template()
 
     def get_contact_emails(self):
         """Extract all contact emails of the reports
@@ -143,3 +149,8 @@ class SendPDF(CustomAction):
         """Return the default subject
         """
         return ", ".join(map(api.get_id, self.samples))
+
+    def get_body(self):
+        """Return the default body text
+        """
+        return ""

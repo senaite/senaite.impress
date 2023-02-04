@@ -1,17 +1,20 @@
 <div class="send-pdf-modal modal-dialog modal-dialog-centered">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title" i18n:translate="">Send PDF</h5>
+      <h5 class="modal-title" i18n:translate="">Send PDF by Email</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
+      <!-- Show status messages inside the modal -->
+      <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
       <form name="send-pdf-form"
             class="form"
             method="POST"
             enctype="multipart/form-data"
-            tal:attributes="action string:${here/absolute_url}/impress_send_pdf">
+            action="."
+            tal:attributes="action python:view.action_url">
 
         <!-- TO -->
         <div class="form-group row">
@@ -22,7 +25,8 @@
           </label>
           <div class="col-sm-9">
             <input type="email" multiple
-                   tal:attributes="value python:view.get_contact_emails()"
+                   required
+                   tal:attributes="value python:request.get('email_to') or view.get_contact_emails()"
                    name="email_to" autocomplete="off" class="form-control form-control-sm" id="input-to" />
           </div>
         </div>
@@ -36,7 +40,7 @@
           </label>
           <div class="col-sm-9">
             <input type="email" multiple
-                   tal:attributes="value python:view.get_cccontact_emails()"
+                   tal:attributes="value python:request.get('email_cc') or view.get_cccontact_emails()"
                    name="email_cc" autocomplete="off" class="form-control form-control-sm" id="input-email" />
           </div>
         </div>
@@ -50,7 +54,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text"
-                   tal:attributes="value python:view.get_subject()"
+                   tal:attributes="value python:request.get('email_subject') or view.get_subject()"
                    name="email_subject" class="form-control form-control-sm" id="input-subject" />
           </div>
         </div>
@@ -58,7 +62,10 @@
         <!-- BODY -->
         <div class="form-group form-group-sm row">
           <div class="col-sm-12">
-            <textarea name="email_body" rows="5" class="form-control form-control-sm" id="input-body" />
+            <textarea name="email_body"
+                      tal:content="python:request.get('email_body') or view.get_body()"
+                      rows="5" class="form-control form-control-sm" id="input-body">
+            </textarea>
           </div>
         </div>
 
@@ -72,6 +79,7 @@
           <div class="col-sm-9">
             <input type="text"
                    value="Report.pdf"
+                   tal:attributes="value python:request.get('pdf_filename') or default"
                    name="pdf_filename" class="form-control form-control-sm" id="input-filename" />
           </div>
         </div>

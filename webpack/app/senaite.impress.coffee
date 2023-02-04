@@ -40,9 +40,9 @@ class PublishController extends React.Component
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
     @handleCustomAction = @handleCustomAction.bind(this)
+    @handleModalSubmit = @handleModalSubmit.bind(this)
     @loadReports = @loadReports.bind(this)
     @saveReports = @saveReports.bind(this)
-    @printReports = @printReports.bind(this)
 
     @state =
       items: @api.get_items()
@@ -211,15 +211,21 @@ class PublishController extends React.Component
         error: error.toString()
 
 
+  ###
+    * Toggle the loader on or off
+  ###
   toggleLoader: (toggle, options) ->
     options ?= {}
     state = Object.assign {loading: toggle}, options
     @setState state
 
 
+  ###
+    * Generate PDF and return it as a blob
+  ###
   createPDF: () ->
     # Set the loader
-    @toggleLoader yes, loadtext: "Generating PDF ..."
+    @toggleLoader on, loadtext: "Generating PDF ..."
 
     options = @getRequestOptions()
     promise = @api.create_pdf options
@@ -231,45 +237,14 @@ class PublishController extends React.Component
     return promise
 
 
-  printReports: (event) ->
-    ###
-     * Print all PDFs
-    ###
-    event.preventDefault()
-
-    target = event.currentTarget
-
-    # Set the loader
-    @setState
-      loading: yes
-      loadtext: "Generating PDF..."
-
-    options = @getRequestOptions()
-
-    # print the PDF
-    promise = @api.print_pdf options
-
-    me = this
-    promise.then ->
-      # toggle the loader off
-      me.setState
-        loading: no
-    .catch (error) ->
-      me.setState
-        loading: no
-        error: error.toString()
-
-
+  ###
+    * Save all PDFs to the Server
+  ###
   saveReports: (event) ->
-    ###
-     * Save all PDFs to the Server
-    ###
     event.preventDefault()
 
     # Set the loader
-    @setState
-      loading: yes
-      loadtext: "Generating PDFs..."
+    @toggleLoader on, loadtext: "Generating PDF ..."
 
     # generate the reports via the API asynchronously
     request_data = @getRequestOptions()
@@ -279,8 +254,7 @@ class PublishController extends React.Component
     me = this
     promise.then (redirect_url) ->
       # toggle the loader off
-      me.setState
-        loading: no
+      @toggleLoader off
       window.location.href = redirect_url
     .catch (error) ->
       me.setState
@@ -289,47 +263,34 @@ class PublishController extends React.Component
         error: error.toString()
 
 
-  loadModal: (url, pdf, action) ->
+  ###
+   * Fetch the HTML of the given URL and render it in a Modal
+  ###
+  loadModal: (url) ->
     el = $("#impress_modal")
-    action ?= {}
+    action = @getActionByURL url
 
+    # add the UIDs of the reports as request parameters
     url = new URL(url)
     url.searchParams.append("uids", @state.items)
 
-    # submit callback
-    on_submit = (event) =>
-      event.preventDefault()
-
-      if action.close_after_submit is not false
-        el.modal("hide")
-
-      # prepare formdata of the modal form
-      form = event.currentTarget
-      formdata = new FormData(form)
-
-      if not form.action
-        console.error "Modal form has no action defined"
-        return
-
-      # post the action
-      @postAction form.action, pdf, formdata
-
+    # load the modal HTML with a GET request
     request = new Request(url)
-    fetch(request)
-    .then (response) ->
-      return response.text().then (text) ->
+    fetch(request).then (response) =>
+      return response.text().then (text) =>
         el.empty()
         el.append(text)
-        el.one "submit", on_submit
+        el.one "submit", @handleModalSubmit
         return el.modal("show")
 
+
   ###
-   * Lookup action config by name
+   * Lookup action config by URL
   ###
-  getActionByName: (name) ->
+  getActionByURL: (url) ->
     action = {}
     for item in @state.custom_actions
-      if item.name == name
+      if item.url == url
         action = item
         break
     return action
@@ -338,41 +299,105 @@ class PublishController extends React.Component
   ###
     * Send asynchronous HTTP POST request to the given URL
   ###
-  postAction: (url, pdf, formdata) ->
-    formdata ?= new FormData()
-    # Append the generated PDF for the action handler
-    formdata.append("pdf", pdf)
-    # Append more useful data for the action handler
-    formdata.append("html", @state.html)
-    formdata.append("format", @state.format)
-    formdata.append("orientation", @state.orientation)
-    formdata.append("template", @state.template)
-    formdata.append("uids", @state.items.join(","))
+  postAction: (url, formdata) ->
+    # Always generate the PDF first and attach it to the POST payload
+    promise = @createPDF().then (pdf) =>
+      formdata ?= new FormData()
+      # Append the generated PDF for the action handler
+      formdata.append("pdf", pdf)
+      # Append more useful data for the action handler
+      formdata.append("html", @state.html)
+      formdata.append("format", @state.format)
+      formdata.append("orientation", @state.orientation)
+      formdata.append("template", @state.template)
+      formdata.append("uids", @state.items.join(","))
 
-    # process the modal form submit
-    fetch url,
-      method: "POST",
-      body: formdata
-    .then (response) =>
-      if not response.ok
-        return Promise.reject(response)
-      return response.blob().then (blob) =>
-        if not blob.type.startsWith("text")
-          url = window.URL.createObjectURL(blob)
-          return window.open(url, "_blank")
-        return blob.text().then (text) =>
-          # allow redirects when the modal form returns an URL
-          if text.startsWith("http")
-            window.location = text
-          return
-    .catch (error) =>
-      console.error(error)
+      fetch url,
+        method: "POST",
+        body: formdata
+      .then (response) =>
+        @handleActionResponse response
+      .catch (error) =>
+        @handleActionError error
+
+
+  ###
+    * Handle the response data of an action provider
+  ###
+  handleActionResponse: (response) ->
+    if not response.ok
+      return @handleActionError response.statusText
+    response.blob().then (blob) =>
+      type = blob.type
+      # handle PDF responses
+      if type == "application/pdf"
+        return @handleActionBlobResponse blob
+      # handle all other types as text
+      return blob.text().then (text) =>
+        if type == "application/json"
+          # XXX currently not handled any further
+          return @handleActionJSONResponse JSON.parse(text)
+        if type == "text/html"
+          return @handleActionHTMLResponse text
+
+
+  ###
+    * Open blob in new window
+  ###
+  handleActionBlobResponse: (blob) ->
+    url = window.URL.createObjectURL(blob)
+    return window.open(url, "_blank")
+
+
+  ###
+    * Reload the HTML into the modal to support statusmessages
+  ###
+  handleActionHTMLResponse: (html) ->
+    modal = $("#impress_modal")
+    modal.empty()
+    modal.append(html)
+    modal.one "submit", @handleModalSubmit
+    modal.modal("show")
+
+
+  handleActionJSONResponse: (json) ->
+    console.warn "Action returned JSON object, which is currently not handled! => ", json
+
+
+  handleActionError: (error) ->
+    console.error error
+
+
+  ###
+    * Event handler when the form inside the Modal was submitted
+  ###
+  handleModalSubmit: (event) ->
+    event.preventDefault()
+
+    # use event.target to get the form instead of the modal
+    form = event.target
+    modal = event.currentTarget
+    url = form.action
+    action = @getActionByURL(url)
+    formdata = new FormData(form)
+
+    # check if the modal should stay open or be closed
+    if action.close_after_submit is not false
+      modal.modal("hide")
+
+    # post the action
+    @postAction url, formdata
 
 
   handleSubmit: (event) ->
     event.preventDefault()
 
 
+  ###
+    * Event handler when one of the report controls changed
+    *
+    * This will regenerate the PDF previews
+  ###
   handleChange: (event) ->
     target = event.currentTarget
     value = if target.type is "checkbox" then target.checked else target.value
@@ -400,29 +425,14 @@ class PublishController extends React.Component
     event.preventDefault()
     target = event.currentTarget
 
-    name = target.getAttribute("name")
-    action = @getActionByName(name)
+    url = target.getAttribute("url")
+    action = @getActionByURL(url)
 
-    if not action
-      console.error "No action found for #{name}"
-      return
-
-    # get the URL from the action
-    url = action.url
-
-    if not url
-      console.error "Custom action has no URL defined!"
-      return
-
-    # Always create the PDF
-    promise = @createPDF()
-
-    promise.then (pdf) =>
-      if action.modal isnt false
-        # load the action modal
-        return @loadModal url, pdf, action
-      # post data directly to the action URL
-      return @postAction url, pdf
+    if action.modal isnt false
+      # load the action modal
+      return @loadModal url
+    # post data directly to the action URL
+    return @postAction url
 
 
   render: ->
@@ -438,7 +448,7 @@ class PublishController extends React.Component
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
               {@state.allow_email and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
               {@state.allow_save and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
-              {@state.custom_actions.map((action, index) => <Button onClick={@handleCustomAction} key={action.name | index} title={action.title} text={action.text} name={action.name} className={action.css_class || "btn btn-outline-secondary"} />)}
+              {@state.custom_actions.map((action, index) => <Button onClick={@handleCustomAction} key={action.name | index} title={action.title} text={action.text} name={action.name} className={action.css_class || "btn btn-outline-secondary"} {...action} />)}
             </div>
           </div>
         </div>
