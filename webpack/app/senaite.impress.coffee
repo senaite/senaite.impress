@@ -375,6 +375,11 @@ class PublishController extends React.Component
     @setState option, @loadReports
 
 
+  ###
+    * Event handler for custom action providers
+    *
+    * Custom action providers are loaded when the config is fetched in componentDidMount
+  ###
   handleCustomAction: (event) ->
     event.preventDefault()
     target = event.target
@@ -382,7 +387,7 @@ class PublishController extends React.Component
     action = {}
     name = target.getAttribute("name")
 
-    # find the action data by name
+    #  the action data by name
     for item in @state.custom_actions
       if item.name == name
         action = item
@@ -423,7 +428,7 @@ class PublishController extends React.Component
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
               {@state.allow_email and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
               {@state.allow_save and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
-              {@state.custom_actions.map((action, index) => <Button onClick={@handleCustomAction} key={action.name | index} title={action.title} name={action.name} className={action.css_class || "btn btn-outline-secondary"} />)}
+              {@state.custom_actions.map((action, index) => <Button onClick={@handleCustomAction} key={action.name | index} title={action.title} text={action.text} name={action.name} className={action.css_class || "btn btn-outline-secondary"} />)}
             </div>
           </div>
         </div>
