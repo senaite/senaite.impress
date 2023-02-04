@@ -60,6 +60,7 @@ class PublishController extends React.Component
       allow_email: yes
       custom_actions: []
 
+    window.impress = @
 
   componentDidUpdate: ->
     ###
