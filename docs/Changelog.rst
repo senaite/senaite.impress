@@ -1,6 +1,7 @@
 2.4.0 (unreleased)
 ------------------
 
+- #132 Add custom action provider for direct PDF sharing via email
 - #131 Hookable action providers
 - #130 Allow direct PDF download of generated report
 - #129 Fix template error when the report contains invalidated samples
