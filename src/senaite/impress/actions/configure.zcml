@@ -12,4 +12,13 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
+  <!-- Send report PDF Action Provider -->
+  <browser:page
+      name="impress_send_pdf"
+      for="*"
+      class=".providers.SendPDF"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
 </configure>
