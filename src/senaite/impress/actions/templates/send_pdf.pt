@@ -101,9 +101,14 @@
     </div>
   </div>
 
-  <!-- Initialize multi select -->
+  <!-- Modal helper JS -->
   <script type="text/javascript">
-   $(function() {
-   });
+    console.info("*** SEND PDF Modal Loaded ***");
+    let form = document.querySelector("form[name='send-pdf-form']");
+    let button = form.querySelector("input[name='send']");
+    form.addEventListener("submit", (event) => {
+      // avoid double click
+      button.disabled = true;
+    });
   </script>
 </div>
