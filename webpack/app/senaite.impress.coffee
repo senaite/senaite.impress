@@ -298,8 +298,9 @@ class PublishController extends React.Component
     # submit callback
     on_submit = (event) =>
       event.preventDefault()
-      # hide the modal on submit
-      el.modal("hide")
+
+      if action.close_after_submit is not false
+        el.modal("hide")
 
       # prepare formdata of the modal form
       form = event.currentTarget
