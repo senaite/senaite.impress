@@ -236,7 +236,7 @@ class PublishController extends React.Component
     ###
     event.preventDefault()
 
-    target = event.target
+    target = event.currentTarget
 
     # Set the loader
     @setState
@@ -302,7 +302,7 @@ class PublishController extends React.Component
       el.modal("hide")
 
       # prepare formdata of the modal form
-      form = event.target
+      form = event.currentTarget
       formdata = new FormData(form)
 
       if not form.action
@@ -358,7 +358,7 @@ class PublishController extends React.Component
 
 
   handleChange: (event) ->
-    target = event.target
+    target = event.currentTarget
     value = if target.type is "checkbox" then target.checked else target.value
     name = target.name
     option =
@@ -382,7 +382,7 @@ class PublishController extends React.Component
   ###
   handleCustomAction: (event) ->
     event.preventDefault()
-    target = event.target
+    target = event.currentTarget
 
     action = {}
     name = target.getAttribute("name")
