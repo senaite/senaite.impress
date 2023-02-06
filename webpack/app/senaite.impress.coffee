@@ -328,16 +328,19 @@ class PublishController extends React.Component
     if not response.ok
       return @handleActionError response.statusText
     response.blob().then (blob) =>
+      # NOTE: type is different per browser, e.g.:
+      #       -> FireFox: "text/html; charset=utf-8"
+      #       -> Chrome:  "text/html"
       type = blob.type
       # handle PDF responses
-      if type == "application/pdf"
+      if type.startsWith("application/pdf")
         return @handleActionBlobResponse blob
       # handle all other types as text
       return blob.text().then (text) =>
-        if type == "application/json"
+        if type.startsWith("application/json")
           # XXX currently not handled any further
           return @handleActionJSONResponse JSON.parse(text)
-        if type == "text/html"
+        if type.startsWith("text/html")
           return @handleActionHTMLResponse text
 
 
