@@ -252,7 +252,7 @@ class PublishController extends React.Component
     promise = @api.save_reports request_data
 
     me = this
-    promise.then (redirect_url) ->
+    promise.then (redirect_url) =>
       # toggle the loader off
       @toggleLoader off
       window.location.href = redirect_url
