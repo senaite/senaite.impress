@@ -44,7 +44,6 @@ class DownloadPDFActionProvider(ActionProvider):
     """
     def __init__(self, view, context, request):
         super(DownloadPDFActionProvider, self).__init__(view, context, request)
-        self.available = view.get_allow_pdf_download()
         self.title = _("Download the generated PDF to your computer")
         self.text = "<i class='fas fa-file-download'></i>"
         self.name = "impress_download_pdf"
