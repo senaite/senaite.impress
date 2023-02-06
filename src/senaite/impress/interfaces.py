@@ -87,8 +87,6 @@ class IReportWrapper(Interface):
 class ICustomActionProvider(Interface):
     """Provide additional action buttons in report preview
     """
-    available = Attribute(
-        "Boolean to control if the action should be rendered")
     title = Attribute(
         "Action title that will be rendered for the button")
     text = Attribute(
@@ -103,6 +101,10 @@ class ICustomActionProvider(Interface):
         "Boolean to control if the modal should be closed after submit")
     css_class = Attribute(
         "CSS class of the action button")
+
+    def available():
+        """Controls if the action should be rendered or not
+        """
 
     def get_action_data():
         """Returns the known attributes to the ReactJS component

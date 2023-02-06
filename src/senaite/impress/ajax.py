@@ -170,7 +170,7 @@ class AjaxPublishView(PublishView):
             (self, self.context, self.request), ICustomActionProvider)
         for name, adapter in adapters:
             # skip the adapter if it is not available
-            if not adapter.available:
+            if not adapter.available():
                 continue
             custom_actions.append(adapter.get_action_data())
 

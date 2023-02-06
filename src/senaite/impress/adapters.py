@@ -15,7 +15,6 @@ class ActionProvider(object):
         self.context = context
         self.request = request
         # see senaite.impress.interfaces.ICustomFormProvider
-        self.available = False
         self.title = ""
         self.text = "<i class='fas fa-wave-square'></i>"
         self.name = ""
@@ -24,6 +23,9 @@ class ActionProvider(object):
         self.modal = False
         self.close_after_submit = False
         self.css_class = ""
+
+    def available(self):
+        return False
 
     def get_action_data(self):
         return {
@@ -50,13 +52,15 @@ class DownloadPDFActionProvider(ActionProvider):
         self.url = "{}/{}".format(self.context_url, self.name)
         self.modal = False  # bypass modal and POST directly to the URL
 
+    def available(self):
+        return self.view.get_allow_pdf_download()
+
 
 class SendPDFActionProvider(ActionProvider):
     """Custom action provider to send the generated PDF via email
     """
     def __init__(self, view, context, request):
         super(SendPDFActionProvider, self).__init__(view, context, request)
-        self.available = view.get_allow_pdf_email_share()
         self.title = _("Share PDF via email")
         self.text = "<i class='fas fa-share-square'></i>"
         self.name = "impress_send_pdf"
@@ -64,3 +68,6 @@ class SendPDFActionProvider(ActionProvider):
         self.url = "{}/{}".format(self.context_url, self.name)
         self.modal = True
         self.close_after_submit = False
+
+    def available(self):
+        return self.view.get_allow_pdf_email_share()
