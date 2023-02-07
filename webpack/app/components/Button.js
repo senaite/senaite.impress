@@ -9,8 +9,8 @@ class Button extends React.Component {
 
   render() {
     return (
-      <button uid={this.props.uid} name={this.props.name} onClick={this.props.onClick} className={this.props.className}>
-        {this.props.title}
+      <button uid={this.props.uid} name={this.props.name} title={this.props.title} url={this.props.url} onClick={this.props.onClick} className={this.props.className}>
+        <span dangerouslySetInnerHTML={{__html: this.props.text || this.props.title}}></span>
       </button>
     );
   }

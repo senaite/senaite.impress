@@ -15,6 +15,7 @@ import Preview from "./components/Preview.js"
 import ReportHTML from "./components/ReportHTML.js"
 import ReportOptions from "./components/ReportOptions.js"
 import TemplateSelection from "./components/TemplateSelection.js"
+import Modal from "./components/Modal.js"
 
 
 # DOCUMENT READY ENTRY POINT
@@ -38,9 +39,10 @@ class PublishController extends React.Component
     # Bind `this` in methods
     @handleSubmit = @handleSubmit.bind(this)
     @handleChange = @handleChange.bind(this)
+    @handleCustomAction = @handleCustomAction.bind(this)
+    @handleModalSubmit = @handleModalSubmit.bind(this)
     @loadReports = @loadReports.bind(this)
     @saveReports = @saveReports.bind(this)
-    @printReports = @printReports.bind(this)
 
     @state =
       items: @api.get_items()
@@ -54,9 +56,35 @@ class PublishController extends React.Component
       error: ""
       controls: ""
       report_options: {}
-      allow_pdf: no
       allow_save: yes
       allow_email: yes
+      custom_actions: []
+
+    window.impress = @
+
+  componentDidUpdate: ->
+    ###
+     * ReactJS event handler when the component did update
+     *
+     * That looks like the right place to process the "raw" HTML from the server
+     * with JavaScript, like barcode rendering etc.
+    ###
+    console.debug "PublishController::componentDidUpdate"
+
+    # render the barcodes
+    @api.render_barcodes()
+
+    # render range graphs
+    @api.render_ranges()
+
+
+  componentDidMount: ->
+    console.debug "PublishController::componentDidMount"
+
+    @api.fetch_config().then (
+      (config) ->
+        @setState config, @loadReports
+      ).bind(this)
 
 
   getRequestOptions: ->
@@ -183,45 +211,40 @@ class PublishController extends React.Component
         error: error.toString()
 
 
-  printReports: (event) ->
-    ###
-     * Print all PDFs
-    ###
-    event.preventDefault()
+  ###
+    * Toggle the loader on or off
+  ###
+  toggleLoader: (toggle, options) ->
+    options ?= {}
+    state = Object.assign {loading: toggle}, options
+    @setState state
 
-    target = event.target
 
+  ###
+    * Generate PDF and return it as a blob
+  ###
+  createPDF: () ->
     # Set the loader
-    @setState
-      loading: yes
-      loadtext: "Generating PDF..."
+    @toggleLoader on, loadtext: "Generating PDF ..."
 
     options = @getRequestOptions()
+    promise = @api.create_pdf options
 
-    # print the PDF
-    promise = @api.print_pdf options
-
-    me = this
-    promise.then ->
+    promise.then =>
       # toggle the loader off
-      me.setState
-        loading: no
-    .catch (error) ->
-      me.setState
-        loading: no
-        error: error.toString()
+      @toggleLoader off
+
+    return promise
 
 
+  ###
+    * Save all PDFs to the Server
+  ###
   saveReports: (event) ->
-    ###
-     * Save all PDFs to the Server
-    ###
     event.preventDefault()
 
     # Set the loader
-    @setState
-      loading: yes
-      loadtext: "Generating PDFs..."
+    @toggleLoader on, loadtext: "Generating PDF ..."
 
     # generate the reports via the API asynchronously
     request_data = @getRequestOptions()
@@ -229,10 +252,9 @@ class PublishController extends React.Component
     promise = @api.save_reports request_data
 
     me = this
-    promise.then (redirect_url) ->
+    promise.then (redirect_url) =>
       # toggle the loader off
-      me.setState
-        loading: no
+      @toggleLoader off
       window.location.href = redirect_url
     .catch (error) ->
       me.setState
@@ -241,37 +263,146 @@ class PublishController extends React.Component
         error: error.toString()
 
 
-  componentDidUpdate: ->
-    ###
-     * ReactJS event handler when the component did update
-     *
-     * That looks like the right place to process the "raw" HTML from the server
-     * with JavaScript, like barcode rendering etc.
-    ###
-    console.debug "PublishController::componentDidUpdate"
+  ###
+   * Fetch the HTML of the given URL and render it in a Modal
+  ###
+  loadModal: (url) ->
+    el = $("#impress_modal")
+    action = @getActionByURL url
 
-    # render the barcodes
-    @api.render_barcodes()
+    # add the UIDs of the reports as request parameters
+    url = new URL(url)
+    url.searchParams.append("uids", @state.items)
 
-    # render range graphs
-    @api.render_ranges()
+    # load the modal HTML with a GET request
+    request = new Request(url)
+    fetch(request).then (response) =>
+      return response.text().then (text) =>
+        el.empty()
+        el.append(text)
+        el.one "submit", @handleModalSubmit
+        return el.modal("show")
 
 
-  componentDidMount: ->
-    console.debug "PublishController::componentDidMount"
+  ###
+   * Lookup action config by URL
+  ###
+  getActionByURL: (url) ->
+    action = {}
+    for item in @state.custom_actions
+      if item.url == url
+        action = item
+        break
+    return action
 
-    @api.fetch_config().then (
-      (config) ->
-        @setState config, @loadReports
-      ).bind(this)
+
+  ###
+    * Send asynchronous HTTP POST request to the given URL
+  ###
+  postAction: (url, formdata) ->
+    # Always generate the PDF first and attach it to the POST payload
+    promise = @createPDF().then (pdf) =>
+      formdata ?= new FormData()
+      # Append the generated PDF for the action handler
+      formdata.append("pdf", pdf)
+      # Append more useful data for the action handler
+      formdata.append("html", @state.html)
+      formdata.append("format", @state.format)
+      formdata.append("orientation", @state.orientation)
+      formdata.append("template", @state.template)
+      formdata.append("uids", @state.items.join(","))
+
+      fetch url,
+        method: "POST",
+        body: formdata
+      .then (response) =>
+        @handleActionResponse response
+      .catch (error) =>
+        @handleActionError error
+
+
+  ###
+    * Handle the response data of an action provider
+  ###
+  handleActionResponse: (response) ->
+    if not response.ok
+      return @handleActionError response.statusText
+    response.blob().then (blob) =>
+      # NOTE: type is different per browser, e.g.:
+      #       -> FireFox: "text/html; charset=utf-8"
+      #       -> Chrome:  "text/html"
+      type = blob.type
+      # handle PDF responses
+      if type.startsWith("application/pdf")
+        return @handleActionBlobResponse blob
+      # handle all other types as text
+      return blob.text().then (text) =>
+        if type.startsWith("application/json")
+          # XXX currently not handled any further
+          return @handleActionJSONResponse JSON.parse(text)
+        if type.startsWith("text/html")
+          return @handleActionHTMLResponse text
+
+
+  ###
+    * Open blob in new window
+  ###
+  handleActionBlobResponse: (blob) ->
+    url= window.URL.createObjectURL(blob)
+    window.open(url, "_blank")
+
+
+  ###
+    * Reload the HTML into the modal to support statusmessages
+  ###
+  handleActionHTMLResponse: (html) ->
+    modal = $("#impress_modal")
+    modal.empty()
+    modal.append(html)
+    modal.one "submit", @handleModalSubmit
+    modal.modal("show")
+
+
+  handleActionJSONResponse: (json) ->
+    console.warn "Action returned JSON object, which is currently not handled! => ", json
+
+
+  handleActionError: (error) ->
+    console.error error
+
+
+  ###
+    * Event handler when the form inside the Modal was submitted
+  ###
+  handleModalSubmit: (event) ->
+    event.preventDefault()
+
+    # use event.target to get the form instead of the modal
+    form = event.target
+    modal = event.currentTarget
+    url = form.action
+    action = @getActionByURL(url)
+    formdata = new FormData(form)
+
+    # check if the modal should stay open or be closed
+    if action.close_after_submit is not false
+      modal.modal("hide")
+
+    # post the action
+    @postAction url, formdata
 
 
   handleSubmit: (event) ->
     event.preventDefault()
 
 
+  ###
+    * Event handler when one of the report controls changed
+    *
+    * This will regenerate the PDF previews
+  ###
   handleChange: (event) ->
-    target = event.target
+    target = event.currentTarget
     value = if target.type is "checkbox" then target.checked else target.value
     name = target.name
     option =
@@ -288,8 +419,28 @@ class PublishController extends React.Component
     @setState option, @loadReports
 
 
+  ###
+    * Event handler for custom action providers
+    *
+    * Custom action providers are loaded when the config is fetched in componentDidMount
+  ###
+  handleCustomAction: (event) ->
+    event.preventDefault()
+    target = event.currentTarget
+
+    url = target.getAttribute("url")
+    action = @getActionByURL(url)
+
+    if action.modal isnt false
+      # load the action modal
+      return @loadModal url
+    # post data directly to the action URL
+    return @postAction url
+
+
   render: ->
     <div className="col-sm-12">
+      <Modal className="modal fade" id="impress_modal" />
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
           <div className="input-group">
@@ -298,7 +449,7 @@ class PublishController extends React.Component
             <OrientationSelection api={@api} onChange={@handleChange} value={@state.orientation} className="custom-select" name="orientation" />
             <div className="input-group-append">
               <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-outline-success"/>
-              {@state.allow_pdf and <Button name="" title="PDF" onClick={@printReports} className="btn btn-outline-secondary" />}
+              {@state.custom_actions.map((action, index) => <Button onClick={@handleCustomAction} key={action.name | index} title={action.title} text={action.text} name={action.name} className={action.css_class || "btn btn-outline-secondary"} {...action} />)}
               {@state.allow_email and <Button name="email" title="Email" onClick={@saveReports} className="btn btn-outline-secondary" />}
               {@state.allow_save and <Button name="save" title="Save" onClick={@saveReports} className="btn btn-outline-secondary" />}
             </div>

@@ -82,3 +82,30 @@ class IReportWrapper(Interface):
     def get_metadata(**kw):
         """Generate metadata for the report
         """
+
+
+class ICustomActionProvider(Interface):
+    """Provide additional action buttons in report preview
+    """
+    title = Attribute(
+        "Action title that will be rendered for the button")
+    text = Attribute(
+        "Help text that should be displayed inside the button")
+    name = Attribute(
+        "Uniqe button name of the action")
+    url = Attribute(
+        "Form action or modal view URL")
+    modal = Attribute(
+        "Boolean to control if the action should open a new modal")
+    close_after_submit = Attribute(
+        "Boolean to control if the modal should be closed after submit")
+    css_class = Attribute(
+        "CSS class of the action button")
+
+    def available():
+        """Controls if the action should be rendered or not
+        """
+
+    def get_action_data():
+        """Returns the known attributes to the ReactJS component
+        """

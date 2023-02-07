@@ -108,6 +108,13 @@ class IImpressControlPanel(Interface):
         required=False,
     )
 
+    allow_pdf_email_share = schema.Bool(
+        title=_(u"Allow PDF email share"),
+        description=_(u"Allow to share the generated PDF directly via email"),
+        default=False,
+        required=False,
+    )
+
     ###
     # Fieldsets
     ###
@@ -126,6 +133,7 @@ class IImpressControlPanel(Interface):
         # description=_(""),
         fields=[
             "allow_pdf_download",
+            "allow_pdf_email_share",
             "store_multireports_individually",
             "developer_mode",
         ],

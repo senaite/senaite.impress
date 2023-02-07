@@ -19,6 +19,7 @@
   <include package=".analysisrequest" />
 
   <!-- Upgrade Steps -->
+  <include package=".actions" />
   <include package=".upgrades" />
 
   <!-- General Purpose Print View -->
@@ -131,6 +132,24 @@
            zope.publisher.interfaces.browser.IBrowserRequest"
       factory=".storage.PdfReportStorageAdapter"
       permission="zope2.View"/>
+
+  <!-- Download PDF Action Adapter -->
+  <adapter
+      for="senaite.impress.interfaces.IPublishView
+           *
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      name="download_pdf"
+      factory=".adapters.DownloadPDFActionProvider"
+      />
+
+  <!-- Send PDF Action Adapter -->
+  <adapter
+      for="senaite.impress.interfaces.IPublishView
+           *
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      name="send_pdf"
+      factory=".adapters.SendPDFActionProvider"
+      />
 
   <!-- Report resource directory -->
   <plone:static

@@ -1,0 +1,114 @@
+<div class="send-pdf-modal modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" i18n:translate="">Send PDF by Email</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Show status messages inside the modal -->
+      <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
+      <form name="send-pdf-form"
+            class="form"
+            method="POST"
+            enctype="multipart/form-data"
+            action="."
+            tal:attributes="action python:view.action_url">
+
+        <!-- TO -->
+        <div class="form-group row">
+          <label i18n:translate="label_email_to"
+                 for="input-to"
+                 class="col-sm-3 col-form-label">
+            To
+          </label>
+          <div class="col-sm-9">
+            <input type="email" multiple
+                   required
+                   tal:attributes="value python:request.get('email_to') or view.get_default_recipient_emails()"
+                   name="email_to" autocomplete="off" class="form-control form-control-sm" id="input-to" />
+          </div>
+        </div>
+
+        <!-- CC -->
+        <div class="form-group row">
+          <label i18n:translate="label_email_cc"
+                 for="input-cc"
+                 class="col-sm-3 col-form-label">
+            CC
+          </label>
+          <div class="col-sm-9">
+            <input type="email" multiple
+                   tal:attributes="value python:request.get('email_cc') or view.get_default_cc_emails()"
+                   name="email_cc" autocomplete="off" class="form-control form-control-sm" id="input-email" />
+          </div>
+        </div>
+
+        <!-- SUBJECT -->
+        <div class="form-group form-group-sm row">
+          <label i18n:translate="label_email_subject"
+                 for="input-subject"
+                 class="col-sm-3 col-form-label">
+            Subject
+          </label>
+          <div class="col-sm-9">
+            <input type="text"
+                   tal:attributes="value python:request.get('email_subject') or view.get_default_subject()"
+                   name="email_subject" class="form-control form-control-sm" id="input-subject" />
+          </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="form-group form-group-sm row">
+          <div class="col-sm-12">
+            <textarea name="email_body"
+                      tal:content="python:request.get('email_body') or view.get_default_body()"
+                      rows="5" class="form-control form-control-sm" id="input-body">
+            </textarea>
+          </div>
+        </div>
+
+        <!-- PDF Filename -->
+        <div class="form-group form-group-sm row">
+          <label i18n:translate="label_email_pdf_filename"
+                 for="input-subject"
+                 class="col-sm-3 col-form-label">
+            Filename
+          </label>
+          <div class="col-sm-9">
+            <input type="text"
+                   value="Report.pdf"
+                   tal:attributes="value python:request.get('pdf_filename') or view.get_default_pdf_filename()"
+                   name="pdf_filename" class="form-control form-control-sm" id="input-filename" />
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <input class="btn btn-sm btn-primary"
+                 type="submit"
+                 name="send"
+                 i18n:attributes="value"
+                 value="Send Email" />
+        </div>
+
+        <!-- hidden fields -->
+        <input type="hidden" name="submitted" value="1" />
+        <input tal:replace="structure context/@@authenticator/authenticator"/>
+        <input type="hidden" name="uids" value="" tal:attributes="value request/uids|nothing" />
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal helper JS -->
+  <script type="text/javascript">
+    console.info("*** SEND PDF Modal Loaded ***");
+    let form = document.querySelector("form[name='send-pdf-form']");
+    let button = form.querySelector("input[name='send']");
+    form.addEventListener("submit", (event) => {
+      // avoid double click
+      button.disabled = true;
+    });
+  </script>
+</div>
