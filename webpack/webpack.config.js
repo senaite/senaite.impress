@@ -11,7 +11,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const gitCmd = "git rev-list -1 HEAD -- `pwd`";
 let gitHash = childProcess.execSync(gitCmd).toString().substring(0, 7);
 
-const staticPath = path.resolve(__dirname, "../src/senaite/impress/static");
+const staticPath = path.resolve(__dirname, "../src/senaite/impress/browser/static");
 
 const devMode = process.env.mode == "development";
 const prodMode = process.env.mode == "production";
