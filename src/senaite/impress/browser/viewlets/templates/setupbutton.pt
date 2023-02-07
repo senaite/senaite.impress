@@ -1,0 +1,9 @@
+<div class="d-inline-block" tal:condition="python:view.is_manager()">
+  <a href="#"
+     class="btn btn-outline-dark btn-sm"
+     tal:attributes="href string:${view/portal/absolute_url}/impress-controlpanel"
+     target="_blank"
+     title="Impress Controlpanel" i18n:attributes="title">
+    <i class="fas fa-cogs"></i>
+  </a>
+</div>

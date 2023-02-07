@@ -1,0 +1,39 @@
+<div class="d-inline-block">
+  <div class="dropdown"
+       tal:define="lang_info view/get_language_info"
+       tal:condition="lang_info/available"
+       i18n:domain="plone">
+    <button class="btn btn-outline-dark btn-sm dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+      <span class="fas fa-globe" aria-hidden="true"></span>
+      <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right"
+         tal:define="languages lang_info/languages;
+                base_url  context/@@plone_context_state/current_base_url;">
+      <tal:language repeat="lang languages">
+        <div tal:define="code       lang/code;
+                         qs         request/QUERY_STRING;
+                         params     python:filter(lambda x: x and not x.startswith('set_language'), qs.split('&'));
+                         lang_param string:set_language=${code};
+                         new_params python:'&'.join(params + [lang_param]);
+                         selected   lang/selected;
+                         codeclass  string:language-${code};
+                         current    python: selected and 'currentLanguage active ' or '';"
+             tal:attributes="class string:${current}${codeclass}">
+
+          <a href=""
+             tal:define="name lang/native|lang/name;"
+             tal:attributes="href string:${base_url}?${new_params};
+                   class string:${current} dropdown-item;
+                   title name">
+            <span tal:content="name"/>
+          </a>
+        </div>
+      </tal:language>
+    </div>
+  </div>
+</div>

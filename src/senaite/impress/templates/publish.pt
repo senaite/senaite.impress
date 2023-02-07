@@ -7,8 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title i18n:translate="">SENAITE IMPRESS</title>
-    <!-- SENAITE Impress HTML Head -->
-    <div tal:replace="structure provider:senaite.impress.htmlhead" />
+    <!-- SENAITE IMPRESS HTML head -->
+    <div tal:replace="structure provider:senaite.impress.publishhead" />
+    <!-- SENANITE IMPRESS Custom HTML head (after impress core resources)  -->
+    <div tal:replace="structure provider:senaite.impress.publishcustomhead" />
+    <!-- /END -->
+
     <!-- CUSTOM JS
          N.B. we render the JS inline, because traversal seems to not work for plone:static resouces!
     -->
@@ -20,151 +24,21 @@
   </head>
   <body>
     <div class="container">
-      <div class="card row my-4 p-4">
-        <div class="text-right">
+      <div class="card my-4 p-4">
 
-          <!-- Language Button -->
-          <div class="d-inline-block">
-            <div class="dropdown"
-                 tal:define="lang_info view/get_language_info"
-                 tal:condition="lang_info/available"
-                 i18n:domain="plone">
-              <button class="btn btn-outline-dark btn-sm dropdown-toggle"
-                      type="button"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false">
-                <span class="fas fa-globe" aria-hidden="true"></span>
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right"
-                  tal:define="languages lang_info/languages;
-                              base_url  context/@@plone_context_state/current_base_url;">
-                <tal:language repeat="lang languages">
-                  <div tal:define="code       lang/code;
-                                   qs         request/QUERY_STRING;
-                                   params     python:filter(lambda x: x and not x.startswith('set_language'), qs.split('&'));
-                                   lang_param string:set_language=${code};
-                                   new_params python:'&'.join(params + [lang_param]);
-                                   selected   lang/selected;
-                                   codeclass  string:language-${code};
-                                   current    python: selected and 'currentLanguage active ' or '';"
-                      tal:attributes="class string:${current}${codeclass}">
-
-                    <a href=""
-                       tal:define="name lang/native|lang/name;"
-                       tal:attributes="href string:${base_url}?${new_params};
-                                       class string:${current} dropdown-item;
-                                       title name">
-                      <span tal:content="name"/>
-                    </a>
-                  </div>
-                </tal:language>
-              </div>
-            </div>
+        <div class="row">
+          <div class="col-sm-12 text-right">
+            <!-- Viewlet manager: publish top -->
+            <div tal:replace="structure provider:senaite.impress.publishtop" />
           </div>
-          <!-- Language Button -->
-
-          <!-- Setup Button -->
-          <div class="d-inline-block" tal:condition="python:view.is_manager()">
-            <a href="#"
-               class="btn btn-outline-dark btn-sm"
-               tal:attributes="href string:${view/portal/absolute_url}/impress-controlpanel"
-               target="_blank"
-               title="Impress Controlpanel" i18n:attributes="title">
-              <i class="fas fa-cogs"></i>
-            </a>
-          </div>
-
         </div>
-        <!-- settings -->
 
-        <!-- Report Info -->
-        <table class="table table-sm table-condensed small my-4">
-          <thead>
-            <tr>
-              <th i18n:translate="">ID</th>
-              <th i18n:translate="">Received</th>
-              <th i18n:translate="">Client</th>
-              <th i18n:translate="">Contact</th>
-              <th i18n:translate="">CC Contacts</th>
-              <th i18n:translate="">CC Emails</th>
-              <th i18n:translate="">State</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="report-row"
-                tal:define="uids python:view.get_uids()"
-                tal:repeat="model python:view.get_collection(uids=uids, group_by='getClientUID')"
-                tal:attributes="uid model/UID;">
-              <!-- ID -->
-              <td>
-                <a href="#"
-                   tal:attributes="href string:${model/absolute_url}">
-                  <span tal:content="model/getId"/>
-                </a>
-              </td>
-              <!-- Date Received -->
-              <td>
-                <span tal:content="python:here.toLocalizedTime(model.DateReceived)"/>
-              </td>
-              <!-- Client -->
-              <td>
-                <a href="#"
-                   tal:attributes="href string:${model/Client/absolute_url}">
-                  <span tal:content="model/Client/Name"/>
-                </a>
-              </td>
-              <!-- Contact Fullname/Email -->
-              <td>
-                <tal:contact define="contact model/Contact"
-                             condition="contact">
-                  <tal:email condition="contact/EmailAddress">
-                    <a href="#"
-                       tal:attributes="href string:mailto:${contact/EmailAddress}">
-                      <span tal:content="contact/Fullname|nothing" />
-                    </a>
-                  </tal:email>
-                  <tal:noemail condition="not: contact/EmailAddress">
-                    <span tal:content="contact/Fullname|nothing" />
-                  </tal:noemail>
-                </tal:contact>
-              </td>
-              <!-- CC Contacts Fullname/Email -->
-              <td>
-                <tal:cccontact repeat="cccontact model/CCContact">
-                  <tal:email condition="cccontact/EmailAddress">
-                    <a href="#"
-                       tal:attributes="href string:mailto:${cccontact/EmailAddress}">
-                      <div tal:content="cccontact/Fullname|nothing" />
-                    </a>
-                  </tal:email>
-                  <tal:noemail condition="not: cccontact/EmailAddress">
-                    <div tal:content="cccontact/Fullname|nothing" />
-                  </tal:noemail>
-                </tal:cccontact>
-              </td>
-              <!-- CC Emails -->
-              <td>
-                <tal:ccemails define="ccemails model/CCEmails"
-                              condition="ccemails"
-                              repeat="ccemail python:model.CCEmails.split(',')">
-                  <a href="#"
-                     tal:attributes="href string:mailto:${ccemail}">
-                    <div tal:content="ccemail" />
-                  </a>
-                </tal:ccemails>
-              </td>
-              <!-- State -->
-              <td tal:define="state model/review_state|nothing">
-                <span tal:condition="state"
-                      i18n:translate=""
-                      i18n:domain="bika"
-                      tal:content="python:state.capitalize().replace('_', ' ')"/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="row">
+          <div class="col-sm-12">
+            <!-- Viewlet manager: report header -->
+            <div tal:replace="structure provider:senaite.impress.publishcontent" />
+          </div>
+        </div>
 
         <!-- ReactJS controlled component -->
         <div class="row" id="publish_controller"></div>

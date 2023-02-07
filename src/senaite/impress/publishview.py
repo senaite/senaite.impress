@@ -26,9 +26,7 @@ from string import Template
 from six.moves.collections_abc import Iterable
 
 from bika.lims import api
-from bika.lims.permissions import ManageBika
 from bika.lims.permissions import TransitionPublishResults
-from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -224,10 +222,6 @@ class PublishView(BrowserView):
         return api.get_portal()
 
     @property
-    def user(self):
-        return api.get_current_user()
-
-    @property
     def publisher(self):
         """Provides a configured publisher instance
         """
@@ -239,18 +233,6 @@ class PublishView(BrowserView):
         publisher.link_css_file("bootstrap-print.css")
         publisher.link_css_file("print.css")
         return publisher
-
-    def is_manager(self):
-        """Checks if the current user has manager rights
-        """
-        roles = api.get_roles_for_permission(ManageBika, self.context)
-        return self.user.has_role(roles)
-
-    def is_publisher(self):
-        """Checks if the current user has publisher rights
-        """
-        roles = api.get_roles_for_permission(TransitionPublishResults, self.context)
-        return self.user.has_role(roles)
 
     def get_uids(self):
         """Parse the UIDs from the request `items` parameter
@@ -573,19 +555,6 @@ class PublishView(BrowserView):
             else:
                 results[group_key] = [item]
         return results
-
-    def get_language_info(self):
-        """Returns the current configured languages
-        """
-
-        # Use the language selector viewlet
-        viewlet = LanguageSelector(self.context, self.request, None, None)
-        viewlet.update()
-
-        return {
-            "available": viewlet.available(),
-            "languages": viewlet.languages(),
-        }
 
     def get_custom_javascripts(self):
         """Load custom JavaScript resouces
