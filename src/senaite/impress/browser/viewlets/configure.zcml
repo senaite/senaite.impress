@@ -10,15 +10,6 @@
       layer="senaite.impress.interfaces.ILayer"
       />
 
-  <!-- Static Resources for senaite.app.listing -->
-  <browser:viewlet
-      name="senaite.app.listing.static"
-      manager=".interfaces.IPublishCustomHtmlHeadViewlets"
-      class="senaite.app.listing.browser.viewlets.resources.ResourcesViewlet"
-      permission="zope2.View"
-      layer="senaite.impress.interfaces.ILayer"
-      />
-
   <!-- Favicon viewlet -->
   <browser:viewlet
       name="plone.links.favicon"
