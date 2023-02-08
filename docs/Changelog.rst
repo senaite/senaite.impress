@@ -1,6 +1,7 @@
 2.4.0 (unreleased)
 ------------------
 
+- #134 Convert impress header table to senaite.app.listing
 - #133 Refactor publish view controls and content table to viewlets
 - #132 Add custom action provider for direct PDF sharing via email
 - #131 Hookable action providers
