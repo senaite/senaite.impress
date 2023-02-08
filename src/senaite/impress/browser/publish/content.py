@@ -11,6 +11,7 @@ from bika.lims.utils import get_link
 from bika.lims.utils import get_link_for
 from bika.lims.utils import t
 from senaite.app.listing import ListingView
+from senaite.core.api import dtime
 
 
 class ContentListingView(ListingView):
@@ -22,9 +23,15 @@ class ContentListingView(ListingView):
         self.pagesize = 9999
         self.context_actions = {}
         self.show_search = False
-        self.show_select_column = True
+        self.show_select_column = False
         self.show_workflow_action_buttons = False
         self.show_table_footer = False
+        self.omit_form = True
+
+        # Show categories
+        self.categories = []
+        self.show_categories = True
+        self.expand_all_categories = False
 
         self.columns = OrderedDict((
             # Although 'created' column is not displayed in the list (see
@@ -42,6 +49,10 @@ class ContentListingView(ListingView):
                 "title": _("Sample Type"),
                 "sortable": False,
                 "toggle": True}),
+            ("created", {
+                "title": _("Registered"),
+                "sortable": False,
+                "toggle": False}),
             ("DateSampled", {
                 "title": _("Date Sampled"),
                 "sortable": False,
@@ -54,8 +65,16 @@ class ContentListingView(ListingView):
                 "title": _("Client ID"),
                 "sortable": False,
                 "toggle": True}),
+            ("Contact", {
+                "title": _("Contact"),
+                "sortable": False,
+                "toggle": True}),
+            ("BatchID", {
+                "title": _("Batch ID"),
+                "sortable": False,
+                "toggle": True}),
             ("review_state", {
-                "title": _("State ID"),
+                "title": _("Workflow State ID"),
                 "sortable": False,
                 "toggle": False}),
             ("state", {
@@ -125,6 +144,7 @@ class ContentListingView(ListingView):
                     "id": get_link_for(obj),
                 }
             })
+
             # append workflow info
             self._folder_item_workflow(obj, item)
             # append sample specific info
@@ -156,6 +176,7 @@ class ContentListingView(ListingView):
 
         item["state"] = t(state)
         item["review_state"] = review_state
+        item["state_class"] = "state-{}".format(review_state)
 
     def _folder_item_sample(self, obj, item):
         """Add sample specific information
@@ -169,10 +190,45 @@ class ContentListingView(ListingView):
         client_id = client.getClientID()
         client_name = client.getName()
 
+        # Categorize objects by client name
+        item["category"] = client_name
+        if client_name not in self.categories:
+            self.categories.append(client_name)
+
         # Client Name
         item["Client"] = client_name
-        item["replace"]["Client"] = get_link(client_url, value=client_name)
+        item["replace"]["Client"] = get_link(
+            client_url, value=client_name, target="_blank")
 
         # Client ID
         item["ClientID"] = client.getClientID()
-        item["replace"]["ClientID"] = get_link(client_url, value=client_id)
+        item["replace"]["ClientID"] = get_link(
+            client_url, value=client_id, target="_blank")
+
+        # Client Contact
+        contact = obj.getContact()
+        if contact:
+            contact_url = api.get_url(contact)
+            contact_name = contact.getFullname()
+            item["Contact"] = contact.getFullname()
+            item["replace"]["Contact"] = get_link(
+                contact_url, value=contact_name, target="_blank")
+
+        # Date Sampled
+        date_created = obj.created()
+        date_sampled = obj.getDateSampled()
+        item["created"] = dtime.to_localized_time(
+            date_created, long_format=True,
+            context=self.context, request=self.request)
+        item["DateSampled"] = dtime.to_localized_time(
+            date_sampled, long_format=True,
+            context=self.context, request=self.request)
+
+        # Batch
+        batch = obj.getBatch()
+        if batch:
+            batch_id = batch.getId()
+            batch_url = api.get_url(batch)
+            item["BatchID"] = batch.getId()
+            item["replace"]["BatchID"] = get_link(
+                batch_url, value=batch_id, target="_blank")
