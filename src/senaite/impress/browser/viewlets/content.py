@@ -6,7 +6,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
 class PublishContentViewlet(ViewletBase):
-    """Viewlet that is displayed when the Auditlog is disabled
+    """Viewlet that shows a listing of the selected impress objects
     """
     index = ViewPageTemplateFile("templates/content.pt")
 

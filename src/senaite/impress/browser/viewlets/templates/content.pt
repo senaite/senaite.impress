@@ -87,8 +87,6 @@
       <!-- State -->
       <td tal:define="state model/review_state|nothing">
         <span tal:condition="state"
-              i18n:translate=""
-              i18n:domain="bika"
               tal:content="python:state.capitalize().replace('_', ' ')"/>
       </td>
     </tr>
