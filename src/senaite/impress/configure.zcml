@@ -20,6 +20,7 @@
 
   <!-- Upgrade Steps -->
   <include package=".actions" />
+  <include package=".browser" />
   <include package=".upgrades" />
 
   <!-- General Purpose Print View -->
@@ -155,40 +156,6 @@
   <plone:static
       directory="templates/reports"
       type="senaite.impress.reports"
-      />
-
-  <!-- Static directory for js, css and image resources -->
-  <plone:static
-      directory="static"
-      type="plone"
-      name="senaite.impress.static"
-      />
-
-  <!-- Viewlet Manager -->
-  <browser:viewletManager
-      name="senaite.impress.htmlhead"
-      provides=".interfaces.ISenaiteImpressHtmlHead"
-      permission="zope2.View"
-      class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
-      />
-
-  <!-- Static Resources Viewlet -->
-  <browser:viewlet
-      name="senaite.impress.static"
-      manager=".interfaces.ISenaiteImpressHtmlHead"
-      class=".resources.ResourcesViewlet"
-      permission="zope2.View"
-      template="static/resources.pt"
-      layer="senaite.impress.interfaces.ILayer"
-      />
-
-  <!-- Favicon Viewlet -->
-  <browser:viewlet
-      name="plone.links.favicon"
-      manager=".interfaces.ISenaiteImpressHtmlHead"
-      class="senaite.core.browser.viewlets.favicon.FaviconViewlet"
-      permission="zope2.View"
-      layer="senaite.impress.interfaces.ILayer"
       />
 
   <!-- Generic Setup *INSTALL* Profile -->

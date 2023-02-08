@@ -1,0 +1,81 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+  <!-- Static resources for senaite.impress -->
+  <browser:viewlet
+      name="senaite.impress.static"
+      manager=".interfaces.IPublishHtmlHeadViewlets"
+      class=".resources.ResourcesViewlet"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
+      />
+
+  <!-- Favicon viewlet -->
+  <browser:viewlet
+      name="plone.links.favicon"
+      manager=".interfaces.IPublishHtmlHeadViewlets"
+      class="senaite.core.browser.viewlets.favicon.FaviconViewlet"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
+      />
+
+  <!-- Language selector viewlet: Renders a language selector dropdown button -->
+  <browser:viewlet
+      name="senaite.impress.publish.languageselector"
+      manager=".interfaces.IPublishTopViewlets"
+      class=".languageselector.LanguageSelectorViewlet"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
+      />
+
+  <!-- Setup button viewlet: Renders the setup button -->
+  <browser:viewlet
+      name="senaite.impress.publish.setupbutton"
+      manager=".interfaces.IPublishTopViewlets"
+      class=".setupbutton.SetupButtonViewlet"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
+      />
+
+  <!-- Content listing viewlet: Renders the selected UIDs in a listing table -->
+  <browser:viewlet
+      name="senaite.impress.publish.content"
+      manager=".interfaces.IPublishContentViewlets"
+      class=".content.PublishContentViewlet"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
+      />
+
+  <!-- Viewlet manager for impress viewlets inside the <head> section of the publish view -->
+  <browser:viewletManager
+      name="senaite.impress.publishhead"
+      provides=".interfaces.IPublishHtmlHeadViewlets"
+      permission="zope2.View"
+      class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+      />
+
+  <!-- Viewlet manager for custom viewlets inside the <head> section of the publish view -->
+  <browser:viewletManager
+      name="senaite.impress.publishcustomhead"
+      provides=".interfaces.IPublishCustomHtmlHeadViewlets"
+      permission="zope2.View"
+      class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+      />
+
+  <!-- Viewlet manager for publish top viewlets -->
+  <browser:viewletManager
+      name="senaite.impress.publishtop"
+      provides=".interfaces.IPublishTopViewlets"
+      permission="zope2.View"
+      class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+      />
+
+  <!-- Viewlet manager for publish content viewlets -->
+  <browser:viewletManager
+      name="senaite.impress.publishcontent"
+      provides=".interfaces.IPublishContentViewlets"
+      permission="zope2.View"
+      class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+      />
+
+  </configure>

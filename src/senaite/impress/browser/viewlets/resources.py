@@ -23,6 +23,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
 class ResourcesViewlet(ViewletBase):
-    """This viewlet inserts static resources on page header.
-    """
-    index = ViewPageTemplateFile("static/resources.pt")
+    template = ViewPageTemplateFile("../static/resources.pt")
+
+    def index(self):
+        return self.template()
