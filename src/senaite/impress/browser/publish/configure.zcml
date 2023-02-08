@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <!-- Listing view for publish contents -->
+  <browser:page
+      for="*"
+      name="publish_content_listing"
+      class=".content.ContentListingView"
+      permission="zope2.View"
+      layer="senaite.impress.interfaces.ILayer"
+      />
+
+</configure>

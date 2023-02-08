@@ -17,17 +17,14 @@ class PublishContentViewlet(ViewletBase):
         self.request = request
         self.view = view
 
-    @property
-    def publishview(self):
-        return api.get_view(
-            "publish", context=self.context, request=self.request)
+    def get_listing_view(self):
+        request = api.get_request()
+        view_name = "publish_content_listing"
+        view = api.get_view(view_name, context=self.context, request=request)
+        return view
 
-    def get_uids(self):
-        """Parse the UIDs from the request `items` parameter
-        """
-        return self.publishview.get_uids()
-
-    def get_collection(self, uids, group_by=None):
-        """Wraps the given UIDs into a collection of SuperModels
-        """
-        return self.publishview.get_collection(uids, group_by=group_by)
+    def contents_table(self):
+        view = self.get_listing_view()
+        view.update()
+        view.before_render()
+        return view.ajax_contents_table()
