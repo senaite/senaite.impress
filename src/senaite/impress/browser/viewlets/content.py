@@ -17,16 +17,6 @@ class PublishContentViewlet(ViewletBase):
         self.request = request
         self.view = view
 
-    @property
-    def publishview(self):
-        return api.get_view(
-            "publish", context=self.context, request=self.request)
-
-    def get_uids(self):
-        """Parse the UIDs from the request `items` parameter
-        """
-        return self.publishview.get_uids()
-
     def get_listing_view(self):
         request = api.get_request()
         view_name = "publish_content_listing"
