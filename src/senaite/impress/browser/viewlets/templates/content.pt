@@ -1,4 +1,15 @@
-<table class="table table-sm table-condensed small my-4">
+<!-- CONTENTS -->
+<div class="col-sm-12">
+  <div class="mt-3 listing-table">
+    <div id="impress-content-table"
+         tal:content="structure view/contents_table">
+    </div>
+  </div>
+</div>
+
+
+
+<table tal:condition="python:False" class="table table-sm table-condensed small my-4">
   <thead>
     <tr>
       <th i18n:translate="">ID</th>
