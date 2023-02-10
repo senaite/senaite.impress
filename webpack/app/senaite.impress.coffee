@@ -44,6 +44,8 @@ class PublishController extends React.Component
     @loadReports = @loadReports.bind(this)
     @saveReports = @saveReports.bind(this)
     @on_row_order_change = @on_row_order_change.bind(this)
+    # Rendered by the listing viewlet
+    @listing_el = document.getElementById("impress-contents-table")
 
     @state =
       items: @api.get_items()
@@ -83,7 +85,7 @@ class PublishController extends React.Component
 
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
-    window.addEventListener("listing:row_order_change", @on_row_order_change, false);
+    @listing_el.addEventListener("listing:row_order_change", @on_row_order_change, false);
 
     @api.fetch_config().then (
       (config) ->
@@ -92,7 +94,7 @@ class PublishController extends React.Component
 
 
   componentWillUnmount: ->
-    window.removeEventListener("listing:row_order_change", @on_row_order_change, false);
+     @listing_el.removeEventListener("listing:row_order_change", @on_row_order_change, false);
 
 
   getRequestOptions: ->
