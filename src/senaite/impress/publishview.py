@@ -26,7 +26,6 @@ from string import Template
 from six.moves.collections_abc import Iterable
 
 from bika.lims import api
-from bika.lims.permissions import TransitionPublishResults
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
