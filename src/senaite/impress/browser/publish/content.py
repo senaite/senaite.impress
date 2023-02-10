@@ -27,6 +27,7 @@ class ContentListingView(ListingView):
         self.show_workflow_action_buttons = False
         self.show_table_footer = False
         self.omit_form = True
+        self.allow_reorder = True
 
         # Show categories
         self.categories = []
