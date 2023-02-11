@@ -50,6 +50,10 @@ class ContentListingView(ListingView):
                 "title": _("Sample Type"),
                 "sortable": False,
                 "toggle": True}),
+            ("SamplePoint", {
+                "title": _("Sample Point"),
+                "sortable": False,
+                "toggle": True}),
             ("created", {
                 "title": _("Registered"),
                 "sortable": False,
@@ -185,6 +189,15 @@ class ContentListingView(ListingView):
         if not IAnalysisRequest.providedBy(obj):
             return
         item["SampleType"] = obj.getSampleTypeTitle()
+
+        # sample point
+        sp = obj.getSamplePoint()
+        if sp:
+            sp_title = api.get_title(sp)
+            sp_url = api.get_url(sp)
+            item["SamplePoint"] = api.get_title(sp)
+            item["replace"]["SamplePoint"] = get_link(
+                sp_url, value=sp_title, target="_blank")
 
         client = obj.getClient()
         client_url = api.get_url(client)
