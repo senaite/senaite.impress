@@ -115,6 +115,13 @@ class IImpressControlPanel(Interface):
         required=False,
     )
 
+    reload_after_reorder = schema.Bool(
+        title=_(u"Reload after reorder"),
+        description=_(u"Reload report automatically when items order changed"),
+        default=False,
+        required=False,
+    )
+
     ###
     # Fieldsets
     ###
@@ -132,6 +139,7 @@ class IImpressControlPanel(Interface):
         label=_(u"Advanced"),
         # description=_(""),
         fields=[
+            "reload_after_reorder",
             "allow_pdf_download",
             "allow_pdf_email_share",
             "store_multireports_individually",

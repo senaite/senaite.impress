@@ -26,7 +26,6 @@ from string import Template
 from six.moves.collections_abc import Iterable
 
 from bika.lims import api
-from bika.lims.permissions import TransitionPublishResults
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -406,6 +405,16 @@ class PublishView(BrowserView):
         if PRINTVIEW in referer:
             return True
         return False
+
+    def get_reload_after_reorder(self, default=False):
+        """Check if auto reloading after reordering is enabled
+        """
+        # lookup configuration settings
+        reload_after_reorder = api.get_registry_record(
+            "senaite.impress.reload_after_reorder")
+        if reload_after_reorder is None:
+            return default
+        return reload_after_reorder
 
     def get_allow_pdf_download(self, default=False):
         """Check if direct PDF download is allowed

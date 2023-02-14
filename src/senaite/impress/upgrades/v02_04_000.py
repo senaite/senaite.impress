@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from plone.browserlayer.utils import unregister_layer
 from senaite.impress import logger
 
 PROFILE_ID = "profile-senaite.impress:default"
@@ -32,5 +33,15 @@ def import_browserlayer(tool):
     :param tool: portal_setup tool
     """
     logger.info("Import SENAITE IMPRESS browser layer ...")
+
+    # ensure the old layer is removed first to make room for the new one
+    try:
+        unregister_layer("senaite.impress")
+    except KeyError:
+        # KeyError: 'No browser layer with name senaite.impress is registered
+        pass
+
+    # reimport browser layer to register ISenaiteImpressLayer
     tool.runImportStepFromProfile(PROFILE_ID, "browserlayer")
+
     logger.info("Import SENAITE IMPRESS browser layer [DONE]")

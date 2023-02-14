@@ -178,6 +178,7 @@ class AjaxPublishView(PublishView):
             "format": self.get_default_paperformat(),
             "orientation": self.get_default_orientation(),
             "template": self.get_default_template(),
+            "reload_after_reorder": self.get_reload_after_reorder(),
             "allow_save": self.get_allow_publish_save(),
             "allow_email": self.get_allow_publish_email(),
             "custom_actions": custom_actions,

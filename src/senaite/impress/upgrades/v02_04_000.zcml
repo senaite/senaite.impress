@@ -28,4 +28,12 @@
       handler="senaite.impress.upgrades.v02_04_000.import_browserlayer"
       profile="senaite.impress:default"/>
 
+  <genericsetup:upgradeStep
+      title="SENAITE IMPRESS 2.4.0: Import registry"
+      description="Import registry profile for controlpanel settings"
+      source="2403"
+      destination="2404"
+      handler="senaite.impress.upgrades.v02_04_000.import_registry"
+      profile="senaite.impress:default"/>
+
 </configure>

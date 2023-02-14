@@ -43,6 +43,9 @@ class PublishController extends React.Component
     @handleModalSubmit = @handleModalSubmit.bind(this)
     @loadReports = @loadReports.bind(this)
     @saveReports = @saveReports.bind(this)
+    @on_row_order_change = @on_row_order_change.bind(this)
+    # Rendered by the listing viewlet
+    @listing_el = document.getElementById("impress-contents-table")
 
     @state =
       items: @api.get_items()
@@ -59,6 +62,8 @@ class PublishController extends React.Component
       allow_save: yes
       allow_email: yes
       custom_actions: []
+      reload_after_reorder: no
+      reload_required: no
 
     window.impress = @
 
@@ -80,11 +85,16 @@ class PublishController extends React.Component
 
   componentDidMount: ->
     console.debug "PublishController::componentDidMount"
+    @listing_el.addEventListener("listing:row_order_change", @on_row_order_change, false);
 
     @api.fetch_config().then (
       (config) ->
         @setState config, @loadReports
       ).bind(this)
+
+
+  componentWillUnmount: ->
+     @listing_el.removeEventListener("listing:row_order_change", @on_row_order_change, false);
 
 
   getRequestOptions: ->
@@ -134,6 +144,7 @@ class PublishController extends React.Component
       error: ""
       loading: yes
       loadtext: "Loading Reports..."
+      reload_required: no
 
     # fetch the rendered reports via the API asynchronously
     promise = @api.render_reports @getRequestOptions()
@@ -438,9 +449,30 @@ class PublishController extends React.Component
     return @postAction url
 
 
+  ###
+    * Event handler when the object order was changed in the listing table
+    *
+    * @param {CustomEvent} event: provides the current `folderitems` of the listing
+  ###
+  on_row_order_change: (event) ->
+    uids = event.detail.folderitems.map (item) => item.uid
+
+    if @state.reload_after_reorder
+      @setState items: uids, @loadReports
+    else
+      @setState items: uids, reload_required: yes
+
+
   render: ->
     <div className="col-sm-12">
       <Modal className="modal fade" id="impress_modal" />
+      {@state.reload_required and
+      <div className="alert alert-warning">
+        <h4 className="alert-heading">
+        <span className="mr-2">Reload is required</span>
+        <Button name="reload" title="↺" onClick={@loadReports} className="btn btn-sm btn-outline-success" />
+        </h4>
+      </div>}
       <form name="publishform" onSubmit={this.handleSubmit}>
         <div className="form-group">
           <div className="input-group">

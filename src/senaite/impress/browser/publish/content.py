@@ -27,6 +27,7 @@ class ContentListingView(ListingView):
         self.show_workflow_action_buttons = False
         self.show_table_footer = False
         self.omit_form = True
+        self.allow_row_reorder = True
 
         # Show categories
         self.categories = []
@@ -47,6 +48,10 @@ class ContentListingView(ListingView):
                 "toggle": True}),
             ("SampleType", {
                 "title": _("Sample Type"),
+                "sortable": False,
+                "toggle": True}),
+            ("SamplePoint", {
+                "title": _("Sample Point"),
                 "sortable": False,
                 "toggle": True}),
             ("created", {
@@ -184,6 +189,16 @@ class ContentListingView(ListingView):
         if not IAnalysisRequest.providedBy(obj):
             return
         item["SampleType"] = obj.getSampleTypeTitle()
+
+        # sample point
+        sp = obj.getSamplePoint()
+        if sp:
+            sp_id = api.get_id(sp)
+            sp_title = api.get_title(sp)
+            sp_url = api.get_url(sp)
+            item["SamplePoint"] = api.get_title(sp)
+            item["replace"]["SamplePoint"] = get_link(
+                sp_url, value=sp_title or sp_id, target="_blank")
 
         client = obj.getClient()
         client_url = api.get_url(client)
