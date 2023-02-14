@@ -140,7 +140,6 @@ class SuperModel(BaseModel):
     def get_formatted_uncertainty(self, analysis):
         uncertainty = format_uncertainty(
             analysis.instance,
-            analysis.getResult(),
             decimalmark=self.decimal_mark,
             sciformat=self.scientific_notation)
         return "[&plusmn; {}]".format(uncertainty)
