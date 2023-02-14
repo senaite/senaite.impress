@@ -24,3 +24,13 @@ def import_registry(tool):
     logger.info("Import SENAITE IMPRESS registry ...")
     tool.runImportStepFromProfile(PROFILE_ID, "plone.app.registry")
     logger.info("Import SENAITE IMPRESS registry [DONE]")
+
+
+def import_browserlayer(tool):
+    """Import browser layer
+
+    :param tool: portal_setup tool
+    """
+    logger.info("Import SENAITE IMPRESS browser layer ...")
+    tool.runImportStepFromProfile(PROFILE_ID, "browserlayer")
+    logger.info("Import SENAITE IMPRESS browser layer [DONE]")

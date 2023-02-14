@@ -29,7 +29,7 @@
       name="printview"
       class="senaite.impress.publishview.PublishView"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Publish View -->
@@ -38,7 +38,7 @@
       name="publish"
       class="senaite.impress.publishview.PublishView"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Client Publish View -->
@@ -47,7 +47,7 @@
       name="publish"
       class="senaite.impress.publishview.PublishView"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Sample Publish View -->
@@ -56,7 +56,7 @@
       name="publish"
       class="senaite.impress.publishview.PublishView"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Batch Publish View -->
@@ -65,7 +65,7 @@
       name="publish"
       class="senaite.impress.publishview.PublishView"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Ajax Publish Controller View -->
@@ -74,7 +74,7 @@
       name="ajax_publish"
       class="senaite.impress.ajax.AjaxPublishView"
       permission="zope.Public"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Publisher Controlpanel -->
@@ -83,7 +83,7 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".controlpanel.ImpressControlPanelView"
       permission="senaite.core.permissions.ManageBika"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Generic Model -->

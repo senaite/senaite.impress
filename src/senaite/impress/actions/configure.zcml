@@ -9,7 +9,7 @@
       for="*"
       class=".providers.DownloadPDF"
       permission="zope2.View"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
   <!-- Send report PDF Action Provider -->
@@ -18,7 +18,7 @@
       for="*"
       class=".providers.SendPDF"
       permission="zope2.View"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
 </configure>
