@@ -8,7 +8,7 @@
       name="publish_content_listing"
       class=".content.ContentListingView"
       permission="zope2.View"
-      layer="senaite.impress.interfaces.ILayer"
+      layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
 </configure>

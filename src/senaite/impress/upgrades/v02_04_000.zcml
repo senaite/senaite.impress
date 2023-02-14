@@ -21,10 +21,18 @@
       profile="senaite.impress:default"/>
 
   <genericsetup:upgradeStep
-      title="SENAITE IMPRESS 2.4.0: Import registry"
-      description="Import registry profile for controlpanel settings"
+      title="SENAITE IMPRESS 2.4.0: Change default browser layer"
+      description="Change default browser layer from ILayer -> ISenaiteImpressLayer"
       source="2402"
       destination="2403"
+      handler="senaite.impress.upgrades.v02_04_000.import_browserlayer"
+      profile="senaite.impress:default"/>
+
+  <genericsetup:upgradeStep
+      title="SENAITE IMPRESS 2.4.0: Import registry"
+      description="Import registry profile for controlpanel settings"
+      source="2403"
+      destination="2404"
       handler="senaite.impress.upgrades.v02_04_000.import_registry"
       profile="senaite.impress:default"/>
 

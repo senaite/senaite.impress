@@ -1,6 +1,7 @@
 2.4.0 (unreleased)
 ------------------
 
+- #136 Change default browserlayer
 - #135 Allow manual reordering of report samples
 - #134 Convert impress header table to senaite.app.listing
 - #133 Refactor publish view controls and content table to viewlets
