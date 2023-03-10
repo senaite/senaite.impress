@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="senaite.impress">
+
+  <genericsetup:upgradeStep
+      title="SENAITE IMPRESS 2.5.0: Update SENAITE IMPRESS to 2.5.0"
+      description="Run all import steps for profile"
+      source="2404"
+      destination="2500"
+      handler="senaite.impress.upgrades.v02_05_000.upgrade"
+      profile="senaite.impress:default"/>
+
+</configure>
