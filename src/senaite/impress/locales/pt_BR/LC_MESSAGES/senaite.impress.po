@@ -1,13 +1,11 @@
-# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
-# SOME DESCRIPTIVE TITLE.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 # Translators:
 # Fabiano Solari, 2022
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-10-03 08:44+0000\n"
+"POT-Creation-Date: 2023-03-10 14:50+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: Fabiano Solari, 2022\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/senaite/teams/87187/pt_BR/)\n"
@@ -18,11 +16,35 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: senaite.impress\n"
+"Domain: DOMAIN\n"
 "Language: pt_BR\n"
 
-#: senaite/impress/controlpanel.py:50
+#: senaite/impress/controlpanel.py:51
 msgid "Active templates"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:139
+msgid "Advanced"
+msgstr ""
+
+#: senaite/impress/browser/publish/content.py:112
+msgid "All"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:105
+msgid "Allow PDF download"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:112
+msgid "Allow PDF email share"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:106
+msgid "Allow direct download of the generated report"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:113
+msgid "Allow to share the generated PDF directly via email"
 msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:141
@@ -55,10 +77,11 @@ msgstr "Anexo para ${DYNAMIC_CONTENT}"
 msgid "Attachments per Row"
 msgstr "Anexos por linhas"
 
-#: senaite/impress/controlpanel.py:45
+#: senaite/impress/controlpanel.py:46
 msgid "Available Templates"
 msgstr ""
 
+#: senaite/impress/browser/publish/content.py:96
 #: senaite/impress/templates/reports/Default.pt:310
 #: senaite/impress/templates/reports/MultiDefault.pt:321
 msgid "Batch ID"
@@ -69,15 +92,7 @@ msgstr "ID lote"
 msgid "Batch Labels"
 msgstr "Rótulos do lote"
 
-#: senaite/impress/templates/publish.pt:90
-msgid "CC Contacts"
-msgstr "CC Contatos"
-
-#: senaite/impress/templates/publish.pt:91
-msgid "CC Emails"
-msgstr "CC Emails"
-
-#: senaite/impress/templates/publish.pt:88
+#: senaite/impress/browser/publish/content.py:84
 #: senaite/impress/templates/reports/Default.pt:322
 #: senaite/impress/templates/reports/MultiDefault.pt:333
 msgid "Client"
@@ -87,6 +102,10 @@ msgstr "Cliente"
 #: senaite/impress/templates/reports/MultiDefault.pt:329
 msgid "Client Batch ID"
 msgstr "ID do Cliente do lote"
+
+#: senaite/impress/browser/publish/content.py:88
+msgid "Client ID"
+msgstr ""
 
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:197
 msgid "Client Order"
@@ -105,7 +124,7 @@ msgstr "ID amostra Cliente"
 msgid "Client Sample ID"
 msgstr "ID Amostra do cliente"
 
-#: senaite/impress/templates/publish.pt:89
+#: senaite/impress/browser/publish/content.py:92
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:179
 msgid "Contact"
 msgstr "Contato"
@@ -126,26 +145,42 @@ msgstr "Data da publicação"
 msgid "Date Received"
 msgstr "Data recebimento"
 
+#: senaite/impress/browser/publish/content.py:80
+msgid "Date Sampled"
+msgstr ""
+
 #: senaite/impress/templates/reports/Default.pt:345
 #: senaite/impress/templates/reports/MultiDefault.pt:356
 msgid "Date Verified"
 msgstr "Data verificação"
 
-#: senaite/impress/controlpanel.py:72
+#: senaite/impress/controlpanel.py:73
 msgid "Default Orientation"
 msgstr "Orientação padrão"
 
-#: senaite/impress/controlpanel.py:64
+#: senaite/impress/controlpanel.py:65
 msgid "Default Paper Format"
 msgstr "Formato do papel padrão"
 
-#: senaite/impress/controlpanel.py:56
+#: senaite/impress/controlpanel.py:57
 msgid "Default Template"
 msgstr "Modelo padrão"
 
-#: senaite/impress/controlpanel.py:97
+#: senaite/impress/controlpanel.py:98
 msgid "Developer Mode"
 msgstr "Mode desenvolvedor"
+
+#: senaite/impress/adapters.py:65
+msgid "Download the generated PDF to your computer"
+msgstr ""
+
+#: senaite/impress/actions/providers.py:194
+msgid "Email sent"
+msgstr ""
+
+#: senaite/impress/actions/providers.py:190
+msgid "Failed to send Email"
+msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:691
 #: senaite/impress/templates/reports/MultiDefault.pt:719
@@ -159,40 +194,36 @@ msgstr "Fax"
 msgid "Filename:"
 msgstr "Nome do arquivo:"
 
-#: senaite/impress/controlpanel.py:89
+#: senaite/impress/controlpanel.py:81
 msgid "Footer Text"
 msgstr "Texto rodapé"
 
-#: senaite/impress/ajax.py:315
+#: senaite/impress/ajax.py:332
 msgid "Generated reports for: {}, "
 msgstr "Relatórios gerados para: {},"
 
-#: senaite/impress/configure.zcml:187
+#: senaite/impress/configure.zcml:169
 msgid "HTML to PDF report engine for SENAITE"
 msgstr "Conversor de  HTML para PDF no SENAITE"
 
-#: senaite/impress/templates/publish.pt:86
+#: senaite/impress/browser/publish/content.py:60
 msgid "ID"
 msgstr "Identificação"
-
-#: senaite/impress/templates/publish.pt:70
-msgid "Impress Controlpanel"
-msgstr "Painel de controle de impressão"
 
 #: senaite/impress/profiles/default/actionicons.xml
 #: senaite/impress/profiles/default/controlpanel.xml
 msgid "Impress Settings"
 msgstr "Definições de impressões"
 
-#: senaite/impress/controlpanel.py:73
+#: senaite/impress/controlpanel.py:74
 msgid "Initially loaded orientation"
 msgstr "Orientação inicial carregada"
 
-#: senaite/impress/controlpanel.py:65
+#: senaite/impress/controlpanel.py:66
 msgid "Initially loaded paper format"
 msgstr "Formato do papel inicial carregado"
 
-#: senaite/impress/controlpanel.py:57
+#: senaite/impress/controlpanel.py:58
 msgid "Initially loaded report template"
 msgstr "Modelo de relatório inicial carregado"
 
@@ -214,13 +245,17 @@ msgstr "Não faturado"
 msgid "Number of attachments rendered within one row per Analysis Request"
 msgstr "Número de anexos renderizados em uma linha por solicitação de análise"
 
+#: senaite/impress/actions/providers.py:170
+msgid "PDF attachment is missing"
+msgstr ""
+
 #: senaite/impress/templates/reports/Default.pt:689
 #: senaite/impress/templates/reports/MultiDefault.pt:717
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:638
 msgid "Phone"
 msgstr "Telefone"
 
-#: senaite/impress/controlpanel.py:46
+#: senaite/impress/controlpanel.py:47
 msgid "Please choose the templates that can be selected"
 msgstr ""
 
@@ -247,9 +282,21 @@ msgstr "Resultados de CQ "
 msgid "Range"
 msgstr "Variação"
 
-#: senaite/impress/templates/publish.pt:87
-msgid "Received"
-msgstr "Recebido"
+#: senaite/impress/browser/publish/content.py:76
+msgid "Registered"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:119
+msgid "Reload after reorder"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:120
+msgid "Reload report automatically when items order changed"
+msgstr ""
+
+#: senaite/impress/controlpanel.py:130
+msgid "Report Settings"
+msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:574
 #: senaite/impress/templates/reports/MultiDefault.pt:602
@@ -277,16 +324,16 @@ msgstr "Resultados"
 msgid "Results interpretation"
 msgstr "Interpretação dos resultados"
 
-#: senaite/impress/controlpanel.py:98
+#: senaite/impress/controlpanel.py:99
 msgid "Returns the raw HTML in the report preview."
 msgstr "Retorna o HTML bruto na visualização do relatório."
 
-#: senaite/impress/configure.zcml:187
+#: senaite/impress/configure.zcml:169
 #: senaite/impress/templates/publish.pt:9
 msgid "SENAITE IMPRESS"
 msgstr "IMPRESSÃO SENAITE"
 
-#: senaite/impress/controlpanel.py:107
+#: senaite/impress/controlpanel.py:154
 msgid "SENAITE IMPRESS Settings"
 msgstr "Definissões de IMPRESSÃO SENAITE"
 
@@ -295,6 +342,7 @@ msgstr "Definissões de IMPRESSÃO SENAITE"
 msgid "Sample ID"
 msgstr "ID Amostra"
 
+#: senaite/impress/browser/publish/content.py:72
 #: senaite/impress/templates/reports/MultiDefaultByColumn.pt:225
 msgid "Sample Point"
 msgstr "Ponto de Amostragem"
@@ -303,11 +351,15 @@ msgstr "Ponto de Amostragem"
 msgid "Sample Remarks"
 msgstr "Obeservações da amostra"
 
+#: senaite/impress/browser/publish/content.py:68
 #: senaite/impress/templates/reports/Default.pt:333
 #: senaite/impress/templates/reports/MultiDefault.pt:344
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:215
 msgid "Sample Type"
 msgstr "Tipo de amostra"
+
+#: senaite/impress/adapters.py:81
+msgid "Share PDF via email"
+msgstr ""
 
 #: senaite/impress/templates/reports/Default.pt:32
 #: senaite/impress/templates/reports/MultiDefault.pt:30
@@ -320,15 +372,11 @@ msgstr "Mostrar observações da amostra"
 msgid "Specification"
 msgstr "Especificações"
 
-#: senaite/impress/templates/publish.pt:92
-msgid "State"
-msgstr "Estado"
-
-#: senaite/impress/controlpanel.py:80
+#: senaite/impress/controlpanel.py:89
 msgid "Store Multi-Report PDFs Individually"
 msgstr "Armazenar PDF de Multi-Relatórios individualmente"
 
-#: senaite/impress/controlpanel.py:81
+#: senaite/impress/controlpanel.py:90
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
 msgstr "Armazene PDFs de vários relatórios gerados individualmente. Desative para armazenar o PDF de vários relatórios apenas para o item principal do relatório"
 
@@ -349,7 +397,7 @@ msgstr "Supervisor"
 msgid "Test results are at a ${lab_confidence}% confidence level"
 msgstr "Os resultados do teste estão em um nível de confiança de ${lab_confidence}%"
 
-#: senaite/impress/controlpanel.py:90
+#: senaite/impress/controlpanel.py:82
 msgid "The footer text will be rendered on every PDF page and may contain arbitrary HTML"
 msgstr "O texto do rodapé será renderizado em cada página PDF e pode conter HTML arbitrário"
 
@@ -371,7 +419,19 @@ msgstr "Esta solicitação de análise foi substituída por"
 msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
 msgstr "Este documento não deve ser reproduzido, exceto na íntegra, sem a aprovação por escrito de ${name_lab}"
 
+#: senaite/impress/browser/publish/content.py:64
+msgid "Title"
+msgstr ""
+
 #: senaite/impress/templates/reports/Default.pt:409
 #: senaite/impress/templates/reports/MultiDefault.pt:422
 msgid "Unit"
 msgstr "Unidade"
+
+#: senaite/impress/browser/publish/content.py:104
+msgid "Workflow State"
+msgstr ""
+
+#: senaite/impress/browser/publish/content.py:100
+msgid "Workflow State ID"
+msgstr ""
