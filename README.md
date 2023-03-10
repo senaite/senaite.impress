@@ -526,3 +526,18 @@ that the results of all models (Analysis Requests) will be rendered in columns
 side by side.
 
 <img src="static/10_multi_default_by_column_template.png" alt="senaite.impress:MultiDefaultByColumn.pt" />
+
+
+## License
+
+**SENAITE.IMPRESS** Copyright (C) RIDING BYTES & NARALABS
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the [GNU General Public License version
+2](https://github.com/senaite/senaite.impress/blob/master/LICENSE)
+as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
