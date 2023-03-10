@@ -1,4 +1,4 @@
-2.4.0 (unreleased)
+2.4.0 (2023-03-10)
 ------------------
 
 - #136 Change default browserlayer
