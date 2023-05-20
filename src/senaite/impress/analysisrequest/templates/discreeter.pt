@@ -1,0 +1,50 @@
+<tal:t define="collection view/collection;
+               laboratory python:view.laboratory;
+               accredited_symbol string:★;
+               outofrange_symbol string:⚠;"
+       i18n:domain="senaite.impress">
+
+  <div class="row section-discreeter no-gutters">
+    <div class="w-100 text-muted font-weight-light small">
+      <div class="discreeter-outofrange">
+        <span class="outofrange text-danger"
+              style="font-family:Lucida Console, Courier, monospace;"
+              tal:content="outofrange_symbol">
+        </span>
+        <span i18n:translate="">Result out of client specified range.</span>
+      </div>
+      <div class="discreeter-not-invoiced"
+           tal:condition="python:all(map(lambda m: m.InvoiceExclude, collection))"
+           i18n:translate="">
+        Not invoiced
+      </div>
+      <div class="discreeter-methods"
+           tal:condition="laboratory/LaboratoryAccredited">
+        <span class="accredited-symbol text-success"
+              style="font-family:Lucida Console, Courier, monospace;"
+              tal:content="accredited_symbol">
+        </span>
+        <span class="" i18n:translate="">
+          Methods included in the
+          <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+          schedule of Accreditation for this Laboratory. Analysis remarks are not
+          accredited
+        </span>
+      </div>
+      <div class="discreeter-disclaimer"
+           i18n:translate="">
+        Analysis results relate only to the samples tested.
+      </div>
+      <div class="discreeter-copyright"
+           i18n:translate="">
+        This document shall not be reproduced except in full, without the written approval of
+        <tal:block replace="laboratory/title" i18n:name="name_lab"/>
+      </div>
+      <div tal:define="confidence_level laboratory/Confidence"
+           tal:condition="confidence_level" i18n:translate="">
+        Test results are at a <tal:block replace="confidence_level" i18n:name="lab_confidence"/>% confidence level
+      </div>
+    </div>
+  </div>
+
+</tal:t>
