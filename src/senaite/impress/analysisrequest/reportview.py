@@ -27,16 +27,16 @@ from string import Template
 
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
+from bika.lims import api
 from bika.lims.interfaces import IInternalUse
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
-from bika.lims import api
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as PT
 from senaite.app.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base
-
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
 <div class="report" uids="${uids}" client_uid="${client_uid}">
@@ -60,6 +60,14 @@ MULTI_TEMPLATE = Template("""<!-- Multi Report -->
 class ReportView(Base):
     """AR specific Report View
     """
+    JS_TEMPLATE = PT("templates/js.pt")
+    CSS_TEMPLATE = PT("templates/css.pt")
+
+    def render_js(self, context, **kw):
+        return self.JS_TEMPLATE(context, **kw)
+
+    def render_css(self, context, **kw):
+        return self.CSS_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):

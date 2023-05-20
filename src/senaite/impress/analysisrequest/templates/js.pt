@@ -1,0 +1,8 @@
+<tal:t i18n:domain="senaite.impress">
+  <script type="text/javascript">
+   console.info("######################################################################");
+   window.options = "<tal:t replace='options'/>";
+   console.log(window.options);
+   console.info("######################################################################");
+  </script>
+</tal:t>
