@@ -25,32 +25,8 @@
   <!-- REPORT CSS -->
   <tal:t replace="structure python:view.render_css(context, **options)" />
 
-  <!-- HEADER -->
-  <tal:render condition="python:True">
-    <div class="row section-header no-gutters">
-      <!-- Header Table -->
-      <div class="w-100 mb-2">
-        <table class="w-100 mb-0 noborder">
-          <colgroup>
-            <col style="width:50%"/>
-            <col style="width:50%;"/>
-          </colgroup>
-          <tr>
-            <!-- Header Left -->
-            <td class="align-middle text-left">
-              <h1 i18n:translate="">Analysis Report</h1>
-            </td>
-            <!-- Header Right -->
-            <td class="align-middle text-right">
-              <img class="logo"
-                   tal:attributes="src string:++plone++senaite.core.static/images/senaite.svg"/>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </tal:render>
-  <!-- /HEADER -->
+  <!-- REPORT HEADER -->
+  <tal:t replace="structure python:view.render_header(context, **options)" />
 
   <!-- INFO -->
   <tal:render condition="python:True">

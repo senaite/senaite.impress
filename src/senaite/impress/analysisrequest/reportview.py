@@ -63,6 +63,7 @@ class ReportView(Base):
     JS_TEMPLATE = PT("templates/js.pt")
     CSS_TEMPLATE = PT("templates/css.pt")
     CONTROLS_TEMPLATE = PT("templates/controls.pt")
+    HEADER_TEMPLATE = PT("templates/header.pt")
 
     def render_js(self, context, **kw):
         return self.JS_TEMPLATE(context, **kw)
@@ -72,6 +73,9 @@ class ReportView(Base):
 
     def render_controls(self, context, **kw):
         return self.CONTROLS_TEMPLATE(context, **kw)
+
+    def render_header(self, context, **kw):
+        return self.HEADER_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):

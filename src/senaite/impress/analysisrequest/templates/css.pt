@@ -25,7 +25,7 @@
    .report table th { border-bottom: 1px solid black; }
    .report table.range-table td { padding: 0 0.3rem 0 0; border: none; }
    .report .section-header h1 { font-size: 175%; }
-   .report .section-header img.logo { height: 50px; margin: 20px 0; }
+   .report .section-header img.logo { height: 30px; margin: 20px 0; }
    .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
    .report .section-results .methodtitle { font-size: 85%; }
    .report .section-footer table td { border: none; }
