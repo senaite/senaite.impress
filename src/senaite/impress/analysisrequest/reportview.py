@@ -68,6 +68,7 @@ class ReportView(Base):
     ALERTS_TEMPLATE = PT("templates/alerts.pt")
     SUMMARY_TEMPLATE = PT("templates/summary.pt")
     INTERPRETATIONS_TEMPLATE = PT("templates/interpretations.pt")
+    REMARKS_TEMPLATE = PT("templates/remarks.pt")
 
     def render_js(self, context, **kw):
         return self.JS_TEMPLATE(context, **kw)
@@ -93,6 +94,8 @@ class ReportView(Base):
     def render_interpretations(self, context, **kw):
         return self.INTERPRETATIONS_TEMPLATE(context, **kw)
 
+    def render_remarks(self, context, **kw):
+        return self.REMARKS_TEMPLATE(context, **kw)
     @property
     def points_of_capture(self):
         items = POINTS_OF_CAPTURE.items()
