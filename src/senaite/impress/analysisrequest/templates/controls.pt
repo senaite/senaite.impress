@@ -1,0 +1,51 @@
+<tal:t define="report_options python:options.get('report_options', {});
+               attachments_per_row python:int(report_options.get('attachments_per_row', 2));
+               show_remarks python:bool(report_options.get('show_remarks', False));"
+       i18n:domain="senaite.impress">
+
+  <!-- Custom Report Controls -->
+  <div id="controls" class="noprint">
+    <a href="#" style="text-decoration:none;" data-toggle="collapse" data-target="#report-controls">
+      <span class="fas fa-cogs"></span>
+      <span i18n:translate="" class="text-secondary mb-2">
+        Report Options
+      </span>
+    </a>
+    <div id="report-controls"
+         tal:attributes="class python:report_options and 'collapse show mt-2' or 'collapse mt-2'">
+      <!-- Show Remarks -->
+      <div class="mb-3">
+        <div class="input-group">
+          <div class="custom-control custom-checkbox">
+            <input tal:attributes="checked python:show_remarks" name="show_remarks" type="checkbox" class="custom-control-input" id="show-remarks">
+            <label class="custom-control-label" for="show-remarks">
+              Remarks
+            </label>
+          </div>
+        </div>
+        <small class="form-text text-muted" i18n:translate="">
+          Show Sample Remarks
+        </small>
+      </div>
+      <!-- Attachments per row -->
+      <div class="mb-3">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="attachments_per_row" i18n:translate="">
+              Attachments per Row
+            </label>
+          </div>
+          <input tal:attributes="value attachments_per_row"
+                 type="number"
+                 class="form-control"
+                 name="attachments_per_row"
+                 min="1"/>
+        </div>
+        <small class="form-text text-muted" i18n:translate="">
+          Number of attachments rendered within one row per Analysis Request
+        </small>
+      </div>
+    </div>
+  </div>
+
+</tal:t>

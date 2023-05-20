@@ -62,12 +62,16 @@ class ReportView(Base):
     """
     JS_TEMPLATE = PT("templates/js.pt")
     CSS_TEMPLATE = PT("templates/css.pt")
+    CONTROLS_TEMPLATE = PT("templates/controls.pt")
 
     def render_js(self, context, **kw):
         return self.JS_TEMPLATE(context, **kw)
 
     def render_css(self, context, **kw):
         return self.CSS_TEMPLATE(context, **kw)
+
+    def render_controls(self, context, **kw):
+        return self.CONTROLS_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):

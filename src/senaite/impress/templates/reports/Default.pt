@@ -16,42 +16,8 @@
           content_width options/content_width|nothing;
           content_height options/content_height|nothing;">
 
-  <!-- Custom Report Controls -->
-  <div id="controls" class="noprint">
-    <div i18n:translate="" class="text-secondary mb-2">Custom Report Options</div>
-    <!-- Show Remarks -->
-    <div class="mb-3">
-      <div class="input-group">
-        <div class="custom-control custom-checkbox">
-          <input name="show_remarks" type="checkbox" class="custom-control-input" id="show-remarks">
-          <label class="custom-control-label" for="show-remarks">
-            Remarks
-          </label>
-        </div>
-      </div>
-      <small class="form-text text-muted" i18n:translate="">
-        Show Sample Remarks
-      </small>
-    </div>
-    <!-- Attachments per row -->
-    <div class="mb-3">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="attachments_per_row" i18n:translate="">
-            Attachments per Row
-          </label>
-        </div>
-        <input tal:attributes="value attachments_per_row"
-               type="number"
-               class="form-control"
-               name="attachments_per_row"
-               min="1"/>
-      </div>
-      <small class="form-text text-muted" i18n:translate="">
-        Number of attachments rendered within one row per Analysis Request
-      </small>
-    </div>
-  </div>
+  <!-- REPORT CONTROLS -->
+  <tal:t replace="structure python:view.render_controls(context, **options)" />
 
   <!-- REPORT JS -->
   <tal:t replace="structure python:view.render_js(context, **options)" />
