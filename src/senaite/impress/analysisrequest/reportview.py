@@ -367,6 +367,8 @@ class SingleReportView(ReportView):
         logger.info("SingleReportView::__init__:model={}"
                     .format(model))
         super(SingleReportView, self).__init__(model, request)
+        # always provide a collection for simplicity
+        self.collection = [model]
         self.model = model
         self.request = request
 
@@ -393,6 +395,7 @@ class MultiReportView(ReportView):
                     .format(collection))
         super(MultiReportView, self).__init__(collection, request)
         self.collection = collection
+        # consider the first sample of the collection as the primary model
         self.model = collection[0] if len(collection) > 0 else None
         self.request = request
 
