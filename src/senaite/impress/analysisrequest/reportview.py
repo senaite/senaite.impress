@@ -64,6 +64,7 @@ class ReportView(Base):
     CSS_TEMPLATE = PT("templates/css.pt")
     CONTROLS_TEMPLATE = PT("templates/controls.pt")
     HEADER_TEMPLATE = PT("templates/header.pt")
+    INFO_TEMPLATE = PT("templates/info.pt")
 
     def render_js(self, context, **kw):
         return self.JS_TEMPLATE(context, **kw)
@@ -76,6 +77,9 @@ class ReportView(Base):
 
     def render_header(self, context, **kw):
         return self.HEADER_TEMPLATE(context, **kw)
+
+    def render_info(self, context, **kw):
+        return self.INFO_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):
@@ -347,6 +351,7 @@ class MultiReportView(ReportView):
                     .format(collection))
         super(MultiReportView, self).__init__(collection, request)
         self.collection = collection
+        self.model = collection[0] if len(collection) > 0 else None
         self.request = request
 
     def render(self, template, **kw):
