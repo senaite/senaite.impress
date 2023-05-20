@@ -68,6 +68,7 @@ class ReportView(Base):
     ALERTS_TEMPLATE = PT("templates/alerts.pt")
     SUMMARY_TEMPLATE = PT("templates/summary.pt")
     RESULTS_TEMPLATE = PT("templates/results.pt")
+    RESULTS_TRANSPOSED_TEMPLATE = PT("templates/results_transposed.pt")
     INTERPRETATIONS_TEMPLATE = PT("templates/interpretations.pt")
     REMARKS_TEMPLATE = PT("templates/remarks.pt")
     ATTACHMENTS_TEMPLATE = PT("templates/attachments.pt")
@@ -98,6 +99,9 @@ class ReportView(Base):
 
     def render_results(self, context, **kw):
         return self.RESULTS_TEMPLATE(context, **kw)
+
+    def render_results_transposed(self, context, **kw):
+        return self.RESULTS_TRANSPOSED_TEMPLATE(context, **kw)
 
     def render_interpretations(self, context, **kw):
         return self.INTERPRETATIONS_TEMPLATE(context, **kw)
@@ -206,7 +210,7 @@ class ReportView(Base):
         return self.sort_items(analyses)
 
     def get_analyses_by(self, model_or_collection,
-                        title=None, service_title=None,
+                        title=None, keyword=None, service_title=None,
                         poc=None, category=None,
                         hidden=False, retracted=False, rejected=False):
         """Returns a sorted list of Analyses for the given POC which are in the
@@ -215,6 +219,8 @@ class ReportView(Base):
         analyses = self.get_analyses(model_or_collection)
         if title is not None:
             analyses = filter(lambda an: an.Title() == title, analyses)
+        if keyword is not None:
+            analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
         if service_title is not None:
             def get_service_title(analysis):
                 service = analysis.getAnalysisService()

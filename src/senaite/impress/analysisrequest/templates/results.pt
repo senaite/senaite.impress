@@ -1,6 +1,8 @@
 <tal:t define="collection python:view.collection;
                accredited_symbol string:★;
-               outofrange_symbol string:⚠;">
+               outofrange_symbol string:⚠;"
+       i18n:domain="senaite.impress">
+
   <tal:model repeat="model collection">
 
     <div class="row section-results no-gutters">
