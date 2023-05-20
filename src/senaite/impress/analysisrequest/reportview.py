@@ -67,6 +67,7 @@ class ReportView(Base):
     INFO_TEMPLATE = PT("templates/info.pt")
     ALERTS_TEMPLATE = PT("templates/alerts.pt")
     SUMMARY_TEMPLATE = PT("templates/summary.pt")
+    RESULTS_TEMPLATE = PT("templates/results.pt")
     INTERPRETATIONS_TEMPLATE = PT("templates/interpretations.pt")
     REMARKS_TEMPLATE = PT("templates/remarks.pt")
     ATTACHMENTS_TEMPLATE = PT("templates/attachments.pt")
@@ -94,6 +95,9 @@ class ReportView(Base):
 
     def render_summary(self, context, **kw):
         return self.SUMMARY_TEMPLATE(context, **kw)
+
+    def render_results(self, context, **kw):
+        return self.RESULTS_TEMPLATE(context, **kw)
 
     def render_interpretations(self, context, **kw):
         return self.INTERPRETATIONS_TEMPLATE(context, **kw)
