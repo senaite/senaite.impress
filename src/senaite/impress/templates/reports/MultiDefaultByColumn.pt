@@ -21,7 +21,7 @@
   <!-- REPORT SUMMARY -->
   <tal:t replace="structure python:view.render_summary(context, **options)" />
 
-  <!-- REPORT RESULTS -->
+  <!-- REPORT RESULTS (TRANSPOSED) -->
   <tal:t replace="structure python:view.render_results_transposed(context, **options)" />
 
   <!-- RESULTS INTERPRETATION -->
