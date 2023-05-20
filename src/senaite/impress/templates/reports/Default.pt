@@ -6,7 +6,6 @@
           contact model/Contact;
           accredited_symbol string:★;
           outofrange_symbol string:⚠;
-          footer python:view.get_footer_text();
           report_options python:options.get('report_options', {});
           attachments_per_row python:int(report_options.get('attachments_per_row', 2));
           attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;
@@ -161,48 +160,7 @@
   <!-- REPORT DISCREETER -->
   <tal:t replace="structure python:view.render_discreeter(context, **options)" />
 
-
-  <!-- CUSTOM FOOTER -->
-  <tal:render condition="python:footer">
-    <div class="row section-footer no-gutters">
-      <!-- Footer Line -->
-      <div id="footer-line"></div>
-      <div tal:replace="structure footer"/>
-    </div>
-  </tal:render>
-
-  <!-- DEFAULT FOOTER -->
-  <tal:render condition="python:not footer"
-              define="laboratory python:view.laboratory;">
-    <div class="row section-footer no-gutters">
-      <!-- Footer Line -->
-      <div id="footer-line"></div>
-      <table class="w-100">
-        <tr>
-          <td>
-            <div>
-              <strong tal:content="laboratory/Name|nothing">Lab Name</strong>
-              • <span tal:content="laboratory/PhysicalAddress/address|nothing">Lab Street and Number</span>
-              • <span tal:content="laboratory/PhysicalAddress/zip|nothing">Lab ZIP</span>
-                <span tal:content="laboratory/PhysicalAddress/city|nothing">Lab City</span>
-              • <span tal:content="laboratory/PhysicalAddress/country|nothing">Lab Country</span>
-            </div>
-            <div>
-              <span i18n:translate="">Phone</span>:
-              <span tal:content="laboratory/Phone|nothing">Lab Phone Number</span>
-              • <span i18n:translate="">Fax</span>:
-                <span tal:content="laboratory/Fax|nothing">Lab Fax Number</span>
-              • <a href="#" tal:attributes="href string:mailto:${laboratory/EmailAddress|nothing}">
-                <span tal:content="laboratory/EmailAddress|nothing">Lab Email</span>
-              </a>
-              • <a href="#" tal:attributes="href laboratory/LabURL|nothing">
-                <span tal:content="laboratory/LabURL|nothing">Lab URL</span>
-              </a>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </tal:render>
+  <!-- REPORT FOOTER -->
+  <tal:t replace="structure python:view.render_footer(context, **options)" />
 
 </tal:report>

@@ -72,6 +72,7 @@ class ReportView(Base):
     ATTACHMENTS_TEMPLATE = PT("templates/attachments.pt")
     SIGNATURE_TEMPLATE = PT("templates/signatures.pt")
     DISCREETER_TEMPLATE = PT("templates/discreeter.pt")
+    FOOTER_TEMPLATE = PT("templates/footer.pt")
 
     def render_js(self, context, **kw):
         return self.JS_TEMPLATE(context, **kw)
@@ -108,6 +109,9 @@ class ReportView(Base):
 
     def render_discreeter(self, context, **kw):
         return self.DISCREETER_TEMPLATE(context, **kw)
+
+    def render_footer(self, context, **kw):
+        return self.FOOTER_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):
