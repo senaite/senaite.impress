@@ -1,7 +1,7 @@
 2.5.0 (unreleased)
 ------------------
 
-- no changes yet
+- #140 Refactor report sections into separate components
 
 
 2.4.0 (2023-03-10)
