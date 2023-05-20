@@ -31,25 +31,8 @@
   <!-- REPORT INFO -->
   <tal:t replace="structure python:view.render_info(context, **options)" />
 
-  <!-- ALERTS -->
-  <tal:render condition="python:True">
-    <div class="row section-alerts no-gutters">
-      <div class="w-100 mb-2">
-        <div class="alert alert-danger" tal:condition="model/is_invalid">
-          <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
-          <tal:invalidreport tal:define="child python:model.getRetest()"
-                             tal:condition="child">
-            <span i18n:translate="">This Analysis request has been replaced by</span>
-            <a tal:attributes="href child/absolute_url"
-               tal:content="child/getId"></a>
-          </tal:invalidreport>
-        </div>
-        <div class="alert alert-info" tal:condition="model/is_provisional">
-          <div i18n:translate="">Provisional report</div>
-        </div>
-      </div>
-    </div>
-  </tal:render>
+  <!-- REPORT ALERTS -->
+  <tal:t replace="structure python:view.render_alerts(context, **options)" />
 
   <!-- SUMMARY -->
   <tal:render condition="python:True"
