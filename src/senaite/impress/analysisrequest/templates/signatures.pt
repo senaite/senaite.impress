@@ -1,0 +1,47 @@
+<tal:t define="collection view/collection;
+               managers python:view.uniquify_items(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))"
+       i18n:domain="senaite.impress">
+
+  <div class="row section-signatures no-gutters">
+    <div class="w-100">
+      <h1 i18n:translate="">Responsibles</h1>
+      <table class="table table-sm table-condensed">
+        <tr>
+          <tal:manager repeat="manager managers">
+            <td style="border:none">
+              <div>
+                <img tal:condition="manager/Signature"
+                     tal:attributes="src string:${manager/absolute_url}/Signature" style="height:75px"/>
+              </div>
+              <div class="font-weight-bold">
+                <span tal:content="manager/Salutation"></span>
+                <span tal:condition="manager/Salutation">&nbsp;</span>
+                <span tal:content="manager/Fullname"></span>
+              </div>
+              <div>
+                <span tal:content="manager/JobTitle"></span>
+              </div>
+              <div>
+                <span tal:content="manager/DefaultDepartment/title|nothing"></span>
+              </div>
+            </td>
+          </tal:manager>
+          <tal:reporter define="reporter python:view.current_user" condition="reporter">
+            <td style="border:none">
+              <div class="label" i18n:translate="">Published by</div>
+              <div>
+                <span tal:content="reporter/fullname|reporter/username"></span>
+                <tal:email tal:condition="reporter/email|nothing"
+                           tal:define="email reporter/email|nothing">
+                  (<a tal:content="email"
+                      tal:attributes="href string:mailto:${email}"></a>)
+                </tal:email>
+              </div>
+            </td>
+          </tal:reporter>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</tal:t>

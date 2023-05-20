@@ -70,6 +70,7 @@ class ReportView(Base):
     INTERPRETATIONS_TEMPLATE = PT("templates/interpretations.pt")
     REMARKS_TEMPLATE = PT("templates/remarks.pt")
     ATTACHMENTS_TEMPLATE = PT("templates/attachments.pt")
+    SIGNATURE_TEMPLATE = PT("templates/signatures.pt")
 
     def render_js(self, context, **kw):
         return self.JS_TEMPLATE(context, **kw)
@@ -100,6 +101,9 @@ class ReportView(Base):
 
     def render_attachments(self, context, **kw):
         return self.ATTACHMENTS_TEMPLATE(context, **kw)
+
+    def render_signatures(self, context, **kw):
+        return self.SIGNATURE_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):
