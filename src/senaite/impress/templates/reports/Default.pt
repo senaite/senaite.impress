@@ -146,31 +146,8 @@
     </div>
   </tal:render>
 
-  <!--  RESULTS INTERPRETATION -->
-  <tal:render condition="python:True">
-    <div class="row section-resultsinterpretation no-gutters"
-         tal:define="ris python:model.get_resultsinterpretation();
-                     has_ri python:any(map(lambda r: r.get('richtext'), ris));">
-      <div class="" tal:condition="has_ri">
-        <h1 i18n:translate="">Results interpretation</h1>
-
-        <tal:ri repeat="ri ris">
-          <h2 tal:condition="ri/richtext|nothing" tal:content="ri/title|nothing">Department</h2>
-          <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
-        </tal:ri>
-      </div>
-    </div>
-  </tal:render>
-
-  <!-- QC RESULTS -->
-  <tal:render condition="python:False"
-              define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
-    <div class="row section-results no-gutters" tal:condition="qcanalyses">
-      <div class="small">
-        <h1 i18n:translate="">QC Results</h1>
-      </div>
-    </div>
-  </tal:render>
+  <!-- RESULTS INTERPRETATION -->
+  <tal:t replace="structure python:view.render_interpretations(context, **options)" />
 
   <!-- REMARKS -->
   <tal:render condition="show_remarks">

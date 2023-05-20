@@ -1,0 +1,19 @@
+<tal:t define="collection python:view.collection;"
+       i18n:domain="senaite.impress">
+
+  <tal:model repeat="model collection">
+    <div class="row section-resultsinterpretation no-gutters"
+         tal:define="ris python:model.get_resultsinterpretation();
+                     has_ri python:any(map(lambda r: r.get('richtext'), ris));"
+         tal:condition="ris">
+      <div class="" tal:condition="has_ri">
+        <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
+        <tal:ri repeat="ri ris">
+          <h2 tal:condition="ri/richtext|nothing" tal:content="ri/title|nothing">Department</h2>
+          <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+        </tal:ri>
+      </div>
+    </div>
+  </tal:model>
+
+</tal:t>
