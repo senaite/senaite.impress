@@ -27,16 +27,16 @@ from string import Template
 
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
+from bika.lims import api
 from bika.lims.interfaces import IInternalUse
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
-from bika.lims import api
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as PT
 from senaite.app.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base
-
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
 <div class="report" uids="${uids}" client_uid="${client_uid}">
@@ -60,6 +60,66 @@ MULTI_TEMPLATE = Template("""<!-- Multi Report -->
 class ReportView(Base):
     """AR specific Report View
     """
+    JS_TEMPLATE = PT("templates/js.pt")
+    CSS_TEMPLATE = PT("templates/css.pt")
+    CONTROLS_TEMPLATE = PT("templates/controls.pt")
+    HEADER_TEMPLATE = PT("templates/header.pt")
+    INFO_TEMPLATE = PT("templates/info.pt")
+    ALERTS_TEMPLATE = PT("templates/alerts.pt")
+    SUMMARY_TEMPLATE = PT("templates/summary.pt")
+    RESULTS_TEMPLATE = PT("templates/results.pt")
+    RESULTS_TRANSPOSED_TEMPLATE = PT("templates/results_transposed.pt")
+    INTERPRETATIONS_TEMPLATE = PT("templates/interpretations.pt")
+    REMARKS_TEMPLATE = PT("templates/remarks.pt")
+    ATTACHMENTS_TEMPLATE = PT("templates/attachments.pt")
+    SIGNATURE_TEMPLATE = PT("templates/signatures.pt")
+    DISCREETER_TEMPLATE = PT("templates/discreeter.pt")
+    FOOTER_TEMPLATE = PT("templates/footer.pt")
+
+    def render_js(self, context, **kw):
+        return self.JS_TEMPLATE(context, **kw)
+
+    def render_css(self, context, **kw):
+        return self.CSS_TEMPLATE(context, **kw)
+
+    def render_controls(self, context, **kw):
+        return self.CONTROLS_TEMPLATE(context, **kw)
+
+    def render_header(self, context, **kw):
+        return self.HEADER_TEMPLATE(context, **kw)
+
+    def render_info(self, context, **kw):
+        return self.INFO_TEMPLATE(context, **kw)
+
+    def render_alerts(self, context, **kw):
+        return self.ALERTS_TEMPLATE(context, **kw)
+
+    def render_summary(self, context, **kw):
+        return self.SUMMARY_TEMPLATE(context, **kw)
+
+    def render_results(self, context, **kw):
+        return self.RESULTS_TEMPLATE(context, **kw)
+
+    def render_results_transposed(self, context, **kw):
+        return self.RESULTS_TRANSPOSED_TEMPLATE(context, **kw)
+
+    def render_interpretations(self, context, **kw):
+        return self.INTERPRETATIONS_TEMPLATE(context, **kw)
+
+    def render_remarks(self, context, **kw):
+        return self.REMARKS_TEMPLATE(context, **kw)
+
+    def render_attachments(self, context, **kw):
+        return self.ATTACHMENTS_TEMPLATE(context, **kw)
+
+    def render_signatures(self, context, **kw):
+        return self.SIGNATURE_TEMPLATE(context, **kw)
+
+    def render_discreeter(self, context, **kw):
+        return self.DISCREETER_TEMPLATE(context, **kw)
+
+    def render_footer(self, context, **kw):
+        return self.FOOTER_TEMPLATE(context, **kw)
 
     @property
     def points_of_capture(self):
@@ -150,7 +210,7 @@ class ReportView(Base):
         return self.sort_items(analyses)
 
     def get_analyses_by(self, model_or_collection,
-                        title=None, service_title=None,
+                        title=None, keyword=None, service_title=None,
                         poc=None, category=None,
                         hidden=False, retracted=False, rejected=False):
         """Returns a sorted list of Analyses for the given POC which are in the
@@ -159,6 +219,8 @@ class ReportView(Base):
         analyses = self.get_analyses(model_or_collection)
         if title is not None:
             analyses = filter(lambda an: an.Title() == title, analyses)
+        if keyword is not None:
+            analyses = filter(lambda an: an.getKeyword() == keyword, analyses)
         if service_title is not None:
             def get_service_title(analysis):
                 service = analysis.getAnalysisService()
@@ -305,6 +367,8 @@ class SingleReportView(ReportView):
         logger.info("SingleReportView::__init__:model={}"
                     .format(model))
         super(SingleReportView, self).__init__(model, request)
+        # always provide a collection for simplicity
+        self.collection = [model]
         self.model = model
         self.request = request
 
@@ -331,6 +395,8 @@ class MultiReportView(ReportView):
                     .format(collection))
         super(MultiReportView, self).__init__(collection, request)
         self.collection = collection
+        # consider the first sample of the collection as the primary model
+        self.model = collection[0] if len(collection) > 0 else None
         self.request = request
 
     def render(self, template, **kw):

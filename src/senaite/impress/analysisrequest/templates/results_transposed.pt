@@ -1,0 +1,88 @@
+<tal:t define="collection python:view.collection;
+               outofrange_symbol string:⚠;
+               analyses_by_poc python:view.get_analyses_by_poc(collection);
+               categories_by_poc python:view.get_categories_by_poc(collection)"
+       i18n:domain="senaite.impress">
+
+  <div class="row section-results no-gutters">
+    <div class="w-100">
+      <h1 i18n:translate="">Results</h1>
+
+      <!-- Point of Captures -->
+      <tal:poc tal:repeat="poc analyses_by_poc">
+        <h2 tal:content="python:view.points_of_capture.get(poc)"></h2>
+
+        <!-- Results table per PoC -->
+        <table class="table table-sm table-condensed small">
+          <thead>
+            <tr>
+              <th></th>
+              <tal:ar repeat="model collection">
+                <th colspan="2" class="font-weight-normal text-center">
+                  <div class="text-primary text-right"
+                       tal:content="model/Title"/>
+                </th>
+                <th></th>
+              </tal:ar>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Categories in PoC -->
+            <tal:categories_in_poc tal:repeat="category python:view.sort_items(categories_by_poc.get(poc))">
+              <tr>
+                <td class="font-weight-bold table-warning"
+                    tal:attributes="colspan python:len(collection) * 3 + 1">
+                  <span tal:content="category/Title"/>
+                </td>
+              </tr>
+              <tr tal:define="analyses python:view.get_analyses_by(collection, poc=poc, category=category);
+                              analyses_by_keyword python:map(lambda a: a.getKeyword(), analyses);
+                              methods_by_keyword python:dict(zip(analyses_by_keyword, map(lambda a: a.getMethodTitle(), analyses)));
+                              analyses_titles_by_keyword python:dict(zip(analyses_by_keyword, map(lambda a: a.Title(), analyses)));
+                              analyses_keywords python:view.uniquify_items(analyses_by_keyword)"
+                  tal:repeat="analysis_keyword python:analyses_keywords">
+                <td class="text-secondary">
+                  <span tal:content="python:analyses_titles_by_keyword[analysis_keyword]"/>
+                  <!-- Method -->
+                  <div class="text-secondary methodtitle"
+                       i18n:translate=""
+                       tal:define="method_title python:methods_by_keyword.get(analysis_keyword, '');"
+                       tal:content="structure python:view.hyphenize(method_title)"/>
+                </td>
+                <tal:results repeat="model collection">
+                  <tal:analyses tal:define="analyses python:view.get_analyses_by(model, keyword=analysis_keyword);">
+                    <tal:analysis tal:repeat="analysis analyses">
+                      <td class="text-right">
+                        <span class="font-weight-normal"
+                              tal:content="structure python:model.get_formatted_result(analysis)"/>
+                      </td>
+                      <td class="text-left">
+                        <span class="font-italic font-weight-normal text-secondary text-nowrap"
+                              tal:content="structure python:model.get_formatted_unit(analysis)"/>
+                      </td>
+                      <td class="text-left">
+                        <span tal:condition="python:model.is_out_of_range(analysis)"
+                              class="font-weight-normal">
+                          <span class="outofrange text-danger"
+                                style="font-family:Lucida Console, Courier, monospace;"
+                                tal:content="outofrange_symbol">
+                          </span>
+                        </span>
+                      </td>
+                    </tal:analysis>
+                    <tal:analysis condition="not:analyses">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tal:analysis>
+                  </tal:analyses>
+                </tal:results>
+              </tr>
+            </tal:categories_in_poc>
+          </tbody>
+        </table>
+      </tal:poc>
+    </div>
+  </div>
+
+</tal:t>

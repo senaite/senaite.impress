@@ -1,0 +1,48 @@
+<tal:t define="collection view/collection;
+               model view/model;
+               report_options python:options.get('report_options', {});
+               attachments_per_row python:int(report_options.get('attachments_per_row', 2));
+               attachments_per_row python:attachments_per_row<1 and 1 or attachments_per_row;"
+       i18n:domain="senaite.impress">
+
+  <tal:model repeat="model collection">
+    <div class="row section-attachments no-gutters mb-2">
+      <tal:attachment tal:define="attachments python:model.get_sorted_attachments('r');">
+        <h2 i18n:translate=""
+            tal:condition="attachments">
+          Attachments for <span tal:replace="model/getId"/>
+        </h2>
+        <table class="table w-100" tal:condition="attachments">
+          <colgroup tal:condition="python:len(attachments) > 1">
+            <col tal:repeat="col python:range(attachments_per_row)"
+                 tal:attributes="style python:'width:{}%'.format(100/attachments_per_row)">
+          </colgroup>
+          <tr tal:repeat="chunk python:view.group_into_chunks(attachments, attachments_per_row)">
+            <td class="align-bottom"
+                style="border:none;padding-left:0;"
+                tal:repeat="attachment chunk">
+              <figure class="figure">
+                <img class="figure-img img-fluid"
+                     tal:attributes="src string:${attachment/absolute_url}/AttachmentFile;"/>
+                <figcaption class="figure-caption pt-2">
+                  <div class="att_for">
+                    <span i18n:translate="">Attachment for</span>
+                    <span tal:content="attachment/getTextTitle|model/getId"/>
+                  </div>
+                  <div class="att_keys">
+                    <span tal:content="attachment/AttachmentKeys"/>
+                  </div>
+                  <div class="att_filename">
+                    <span i18n:translate="">Filename:</span>
+                    <span tal:content="attachment/AttachmentFile/filename"/>
+                  </div>
+                </figcaption>
+              </figure>
+            </td>
+          </tr>
+        </table>
+      </tal:attachment>
+    </div>
+  </tal:model>
+
+</tal:t>
