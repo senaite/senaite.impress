@@ -1,6 +1,7 @@
 <tal:t define="collection python:view.collection;
                accredited_symbol string:★;
-               outofrange_symbol string:⚠;"
+               outofrange_symbol string:⚠;
+               global results_interims python:[]"
        i18n:domain="senaite.impress">
 
   <tal:model repeat="model collection">
@@ -66,6 +67,14 @@
                       <span tal:condition="analysis/ScientificName">
                         <span class="font-italic" tal:content="analysis/title"></span>
                       </span>
+
+                      <tal:interim_fields
+                          define="interims python:view.get_result_variables(analysis)"
+                          condition="interims">
+                        <sup tal:define="dummy python:results_interims.append(interims)"
+                             tal:content="python: len(results_interims)"/>
+                      </tal:interim_fields>
+
                       <!-- Method -->
                       <div class="text-secondary methodtitle"
                            i18n:translate=""
@@ -104,6 +113,25 @@
                          tal:content="category_comments">
                       Category Comments
                     </div>
+                  </td>
+                </tr>
+                <tr tal:condition="results_interims">
+                  <td colspan="3">
+                    <ul class="list-unstyled results_interims">
+                      <li tal:repeat="interims results_interims" class="mt-2">
+                        <sup tal:content="repeat/interims/number"/>
+                        <tal:interims repeat="interim interims">
+                          <tal:interim>
+                            <br tal:condition="repeat/interim/index"/>
+                            <span tal:condition="repeat/interim/index" class="pl-2"/>
+                            <span tal:content="interim/title"/>
+                            (<span tal:content="interim/keyword"/>):
+                            <span tal:content="interim/formatted_value"/>
+                            <span tal:content="interim/formatted_unit"/>
+                          </tal:interim>
+                        </tal:interims>
+                      </li>
+                    </ul>
                   </td>
                 </tr>
               </tfoot>
