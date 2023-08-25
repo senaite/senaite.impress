@@ -28,6 +28,7 @@
    .report .section-header img.logo { height: 30px; margin: 20px 0; }
    .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
    .report .section-results .methodtitle { font-size: 85%; }
+   .report .section-results .results_interims { font-size: 85%; }
    .report .section-footer table td { border: none; }
    .report .section-footer {
      position: fixed;

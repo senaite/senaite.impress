@@ -1,6 +1,7 @@
 2.5.0 (unreleased)
 ------------------
 
+- #141 Display reportable interim fields as result variables in results report
 - #140 Refactor report sections into separate components
 
 

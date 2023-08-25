@@ -29,6 +29,7 @@ import DateTime
 from bika.lims import POINTS_OF_CAPTURE
 from bika.lims import api
 from bika.lims.interfaces import IInternalUse
+from bika.lims.utils.analysis import format_interim
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
@@ -357,6 +358,31 @@ class ReportView(Base):
         """Check if the given object is a SuperModel
         """
         return ISuperModel.providedBy(obj)
+
+    def get_result_variables(self, analysis, report_only=True):
+        """Returns the result variables (aka interim fields) from the given
+        analysis, with additional attributes formatted_result and
+        formatted_unit. If report_only is True, only result variables that are
+        flagged with attribute "report" are returned.
+
+        :param analysis: Analysis' object/supermodel/brain or UID
+        :param report_only: Only result variables flagged with 'report:True'
+        :returns: List of result variable items
+        """
+        items = []
+        obj = api.get_object(analysis)
+        interim_fields = obj.getInterimFields() or []
+        for interim_field in interim_fields:
+
+            # skip interim not fields flagged with report
+            if report_only and not interim_field.get("report", False):
+                continue
+
+            # apply formatting
+            item = format_interim(interim_field)
+            items.append(item)
+
+        return items
 
 
 class SingleReportView(ReportView):
