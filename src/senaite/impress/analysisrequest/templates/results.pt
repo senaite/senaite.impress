@@ -47,7 +47,7 @@
                     <span i18n:translate="">Range</span>
                   </th>
                   <th class="outofrange">
-                    <span i18n:translate=""></span>
+                    <span/>
                   </th>
                 </tr>
               </thead>
@@ -93,14 +93,25 @@
                       <span tal:content="python:'(RT)' if model.is_retest(analysis) else ''"></span>
                       <span tal:content="python:model.get_formatted_specs(analysis)">50 - 60</span>
                     </td>
-                    <td class="text-center align-middle">
-                      <span tal:condition="python:model.is_out_of_range(analysis)"
-                            class="font-weight-light">
-                        <span class="outofrange text-danger"
+
+                    <!-- Out of range column -->
+                    <td class="text-center align-middle"
+                        tal:define="out_of_range  python: model.is_out_of_range(analysis);
+                                    results_range python: analysis.getResultsRange();
+                                    comment       python: results_range.get('rangecomment');">
+                      <tal:out_of_range condition="out_of_range">
+
+                        <!-- Out of range symbol -->
+                        <span class="font-weight-light outofrange text-danger"
                               style="font-family:Lucida Console, Courier, monospace;"
                               tal:content="outofrange_symbol">
                         </span>
-                      </span>
+
+                        <!-- Out-of-range comment -->
+                        <span tal:condition="comment" tal:content="comment"/>
+
+                      </tal:out_of_range>
+
                     </td>
                   </tr>
                 </tal:analyses>
