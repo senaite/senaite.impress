@@ -108,7 +108,8 @@
                         </span>
 
                         <!-- Out-of-range comment -->
-                        <span tal:condition="comment" tal:content="comment"/>
+                        <span class="font-weight-light text-danger small"
+                              tal:condition="comment" tal:content="comment"/>
 
                       </tal:out_of_range>
 
