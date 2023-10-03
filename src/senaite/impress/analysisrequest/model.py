@@ -155,7 +155,7 @@ class SuperModel(BaseModel):
 
         # get the max operator
         max_operator = specs.get("max_operator")
-        max_operator = MIN_OPERATORS.getValue(max_operator, default=">")
+        max_operator = MIN_OPERATORS.getValue(max_operator, default="<")
 
         fs = ''
         if specs.get('min', None) and specs.get('max', None):
