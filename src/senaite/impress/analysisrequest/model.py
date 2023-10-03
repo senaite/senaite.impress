@@ -28,6 +28,8 @@ from bika.lims import api
 from senaite.app.supermodel import SuperModel as BaseModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
+from bika.lims.config import MAX_OPERATORS
+from bika.lims.config import MIN_OPERATORS
 
 
 class SuperModel(BaseModel):
@@ -146,13 +148,22 @@ class SuperModel(BaseModel):
 
     def get_formatted_specs(self, analysis):
         specs = analysis.getResultsRange()
+
+        # get the min operator
+        min_operator = specs.get("min_operator")
+        min_operator = MIN_OPERATORS.getValue(min_operator, default=">")
+
+        # get the max operator
+        max_operator = specs.get("max_operator")
+        max_operator = MIN_OPERATORS.getValue(max_operator, default=">")
+
         fs = ''
         if specs.get('min', None) and specs.get('max', None):
             fs = '%s - %s' % (specs['min'], specs['max'])
         elif specs.get('min', None):
-            fs = '> %s' % specs['min']
+            fs = '%s %s' % (min_operator, specs['min'])
         elif specs.get('max', None):
-            fs = '< %s' % specs['max']
+            fs = '%s %s' % (max_operator, specs['max'])
         return formatDecimalMark(fs, self.decimal_mark)
 
     def get_resultsinterpretation(self):
