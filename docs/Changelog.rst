@@ -1,6 +1,7 @@
 2.5.0 (unreleased)
 ------------------
 
+- #143 Fix user defined range operators are omitted in results report
 - #142 Display custom comment for out of range results
 - #141 Display reportable interim fields as result variables in results report
 - #140 Refactor report sections into separate components
