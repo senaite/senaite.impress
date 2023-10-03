@@ -20,16 +20,16 @@
 
 import itertools
 
+from bika.lims import api
+from bika.lims.config import MAX_OPERATORS
+from bika.lims.config import MIN_OPERATORS
 from bika.lims.utils import format_supsub
 from bika.lims.utils import formatDecimalMark
 from bika.lims.utils import to_utf8
 from bika.lims.utils.analysis import format_uncertainty
-from bika.lims import api
 from senaite.app.supermodel import SuperModel as BaseModel
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
-from bika.lims.config import MAX_OPERATORS
-from bika.lims.config import MIN_OPERATORS
 
 
 class SuperModel(BaseModel):
@@ -155,7 +155,7 @@ class SuperModel(BaseModel):
 
         # get the max operator
         max_operator = specs.get("max_operator")
-        max_operator = MIN_OPERATORS.getValue(max_operator, default="<")
+        max_operator = MAX_OPERATORS.getValue(max_operator, default="<")
 
         fs = ''
         if specs.get('min', None) and specs.get('max', None):
