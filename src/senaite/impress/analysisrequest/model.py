@@ -150,11 +150,11 @@ class SuperModel(BaseModel):
         specs = analysis.getResultsRange()
 
         # get the min operator
-        min_operator = specs.get("min_operator")
+        min_operator = specs.get("min_operator") or ""
         min_operator = MIN_OPERATORS.getValue(min_operator, default=">")
 
         # get the max operator
-        max_operator = specs.get("max_operator")
+        max_operator = specs.get("max_operator") or ""
         max_operator = MAX_OPERATORS.getValue(max_operator, default="<")
 
         fs = ''
