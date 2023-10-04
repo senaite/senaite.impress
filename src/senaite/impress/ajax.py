@@ -202,7 +202,7 @@ class AjaxPublishView(PublishView):
 
         # generate the reports
         reports = self.generate_reports_for(uids,
-                                            group_by="getClientUID",
+                                            group_by=self.make_group_key,
                                             template=template,
                                             paperformat=paperformat,
                                             orientation=orientation,

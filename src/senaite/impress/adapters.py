@@ -21,7 +21,23 @@
 from bika.lims import api
 from senaite.impress import senaiteMessageFactory as _
 from senaite.impress.interfaces import ICustomActionProvider
+from senaite.impress.interfaces import IGroupKeyProvider
 from zope.interface import implementer
+
+
+@implementer(IGroupKeyProvider)
+class GroupKeyProvider(object):
+    """Provide a grouping key for PDF separation
+    """
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self):
+        try:
+            # split samples from different clients
+            return self.context.getClientUID()
+        except AttributeError:
+            return "_nogroup_"
 
 
 @implementer(ICustomActionProvider)
