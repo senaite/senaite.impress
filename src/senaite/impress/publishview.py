@@ -23,8 +23,6 @@ from collections import OrderedDict
 from functools import reduce
 from string import Template
 
-from six.moves.collections_abc import Iterable
-
 from bika.lims import api
 from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
@@ -32,12 +30,14 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite.app.supermodel.interfaces import ISuperModel
 from senaite.impress import logger
 from senaite.impress.config import PAPERFORMATS
+from senaite.impress.interfaces import IGroupKeyProvider
 from senaite.impress.interfaces import IMultiReportView
 from senaite.impress.interfaces import IPublisher
 from senaite.impress.interfaces import IPublishView
 from senaite.impress.interfaces import IReportView
 from senaite.impress.interfaces import IReportWrapper
 from senaite.impress.interfaces import ITemplateFinder
+from six.moves.collections_abc import Iterable
 from zope.component import ComponentLookupError
 from zope.component import getAdapter
 from zope.component import getMultiAdapter
@@ -97,6 +97,12 @@ class PublishView(BrowserView):
         if self.request.form.get("download", False):
             return self.download()
         return self.template()
+
+    def make_group_key(self, item):
+        """Generate a group key for the given item
+        """
+        obj = api.get_object(item)
+        return IGroupKeyProvider(obj)
 
     def generate_reports_for(self,
                              uids,
@@ -247,7 +253,7 @@ class PublishView(BrowserView):
         """Wraps the given UIDs into a collection of SuperModels
 
         :param uids: list of UIDs
-        :param group_by: Grouping field accessor, e.g getClientUID
+        :param group_by: Grouping key, field accessor, or callable
         :returns: list of SuperModels
         """
         collection = []
@@ -556,7 +562,12 @@ class PublishView(BrowserView):
             raise TypeError("Items must be iterable")
         results = OrderedDict()
         for item in items:
-            group_key = item.get(key, key)
+            # allow a callable that accepts the item as parameter
+            if callable(key):
+                group_key = key(item)
+            else:
+                # lookup the group key on the item
+                group_key = item.get(key, key)
             if callable(group_key):
                 group_key = group_key()
             if group_key in results:

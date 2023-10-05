@@ -152,6 +152,12 @@
       factory=".adapters.SendPDFActionProvider"
       />
 
+  <!-- PDF Grouping Key Provider -->
+  <adapter
+      for="*"
+      factory=".adapters.GroupKeyProvider"
+      />
+
   <!-- Report resource directory -->
   <plone:static
       directory="templates/reports"

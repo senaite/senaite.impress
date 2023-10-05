@@ -103,3 +103,11 @@ class ICustomActionProvider(Interface):
     def get_action_data():
         """Returns the known attributes to the ReactJS component
         """
+
+
+class IGroupKeyProvider(Interface):
+    """Adapter to provide a grouping key to split report PDFs
+    """
+    def __call__():
+        """Return a grouping key string
+        """
