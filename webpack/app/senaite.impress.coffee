@@ -79,6 +79,9 @@ class PublishController extends React.Component
     # render the barcodes
     @api.render_barcodes()
 
+    # render the qr codes
+    @api.render_qrcodes()
+
     # render range graphs
     @api.render_ranges()
 

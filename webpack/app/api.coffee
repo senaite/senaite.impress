@@ -226,6 +226,24 @@ class PublishAPI
         barcode_hri = '<div class=\'barcode-hri\'>' + id + '</div>'
         $(this).append barcode_hri
 
+
+  render_qrcodes: ->
+    ###
+     * Render QR codes
+    ###
+    $('.qrcode').each ->
+      text = $(this).attr('data-text')
+      console.debug "Render QR Code #{text}"
+      size = $(this).attr('data-size')
+      color = $(this).attr('data-color')
+
+      $(this).qrcode
+        'size': size
+        'color': color
+        'text': text
+        'render': 'image'
+
+
   render_ranges: ->
     ###
      * Render ranges (graphs)
