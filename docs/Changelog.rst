@@ -1,6 +1,7 @@
 2.5.0 (unreleased)
 ------------------
 
+- #146 Support for QR codes
 - #145 Dynamic PDF group key lookup
 - #143 Fix user defined range operators are omitted in results report
 - #142 Display custom comment for out of range results

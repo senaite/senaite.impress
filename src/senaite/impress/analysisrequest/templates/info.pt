@@ -13,7 +13,7 @@
           <col style="width: 40%;">
           <!-- Lab Address -->
           <col style="width: 40%">
-          <!-- Accreditation Logo -->
+          <!-- Accreditation Logo and QR -->
           <col style="width: 20%">
         </colgroup>
         <tr>
@@ -92,6 +92,14 @@
                    style="max-width:200px;"
                    tal:condition="not:accreditation_logo"
                    tal:attributes="src python:view.get_resource_url('AccreditationBodyLogo.png', prefix='bika.lims.images' )"/>
+            </div>
+            <div class="text-right">
+              <!-- QR Code -->
+              <div class="qrcode"
+                   data-size="80"
+                   data-color="#3a3"
+                   tal:attributes="data-text model/absolute_url">
+              </div>
             </div>
           </td>
         </tr>
