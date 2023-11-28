@@ -243,6 +243,8 @@ class PublishAPI
         'text': text
         'render': 'image'
 
+      # Render this QR only once
+      $(this).removeClass "qrcode"
 
   render_ranges: ->
     ###
