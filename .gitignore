@@ -111,3 +111,4 @@ yarn-error.log
 *.swp
 /include/
 /pyvenv.cfg
+/downloads
