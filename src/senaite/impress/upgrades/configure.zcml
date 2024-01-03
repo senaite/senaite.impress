@@ -5,6 +5,18 @@
 
   <genericsetup:upgradeStep
       title="Upgrade SENAITE IMPRESS"
+      description="Upgrade to version 2.6.0"
+      sortkey="1"
+      source="2500"
+      destination="2600"
+      handler="senaite.impress.upgrades.v02_06_000.upgrade"
+      profile="senaite.impress:default" />
+
+  <!-- Include all upgrade steps for 2.6.0 -->
+  <include file="v02_06_000.zcml" />
+
+  <genericsetup:upgradeStep
+      title="Upgrade SENAITE IMPRESS"
       description="Upgrade to version 2.5.0"
       sortkey="1"
       source="2404"
