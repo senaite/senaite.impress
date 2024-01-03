@@ -5,10 +5,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-03-10 14:50+0000\n"
+"POT-Creation-Date: 2024-01-03 09:08+0000\n"
 "PO-Revision-Date: 2018-06-06 17:12+0000\n"
 "Last-Translator: Bakir Helic <bakirh@gmail.com>, 2020\n"
-"Language-Team: Bosnian (https://www.transifex.com/senaite/teams/87187/bs/)\n"
+"Language-Team: Bosnian (https://app.transifex.com/senaite/teams/87187/bs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -47,33 +47,23 @@ msgstr ""
 msgid "Allow to share the generated PDF directly via email"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:141
-#: senaite/impress/templates/reports/MultiDefault.pt:139
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:138
+#: senaite/impress/analysisrequest/templates/header.pt:14
 msgid "Analysis Report"
 msgstr "Nalaz analize"
 
-#: senaite/impress/templates/reports/Default.pt:646
-#: senaite/impress/templates/reports/MultiDefault.pt:674
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:595
+#: senaite/impress/analysisrequest/templates/discreeter.pt:34
 msgid "Analysis results relate only to the samples tested."
 msgstr "Rezultati anallize se odnse samo na testirane uzorke"
 
-#: senaite/impress/templates/reports/Default.pt:551
-#: senaite/impress/templates/reports/MultiDefault.pt:577
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:498
+#: senaite/impress/analysisrequest/templates/attachments.pt:29
 msgid "Attachment for"
 msgstr "Dodatak za"
 
-#: senaite/impress/templates/reports/Default.pt:535
-#: senaite/impress/templates/reports/MultiDefault.pt:561
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:482
+#: senaite/impress/analysisrequest/templates/attachments.pt:13
 msgid "Attachments for ${DYNAMIC_CONTENT}"
 msgstr "Dodaci za ${DYNAMIC_CONTENT} "
 
-#: senaite/impress/templates/reports/Default.pt:40
-#: senaite/impress/templates/reports/MultiDefault.pt:38
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:38
+#: senaite/impress/analysisrequest/templates/controls.pt:34
 msgid "Attachments per Row"
 msgstr "Dodataka po redu"
 
@@ -81,25 +71,21 @@ msgstr "Dodataka po redu"
 msgid "Available Templates"
 msgstr ""
 
+#: senaite/impress/analysisrequest/templates/summary.pt:37
 #: senaite/impress/browser/publish/content.py:96
-#: senaite/impress/templates/reports/Default.pt:310
-#: senaite/impress/templates/reports/MultiDefault.pt:321
 msgid "Batch ID"
 msgstr "ID serije"
 
-#: senaite/impress/templates/reports/Default.pt:364
-#: senaite/impress/templates/reports/MultiDefault.pt:375
+#: senaite/impress/analysisrequest/templates/summary.pt:91
 msgid "Batch Labels"
 msgstr "Naljepnice serije"
 
+#: senaite/impress/analysisrequest/templates/summary.pt:49
 #: senaite/impress/browser/publish/content.py:84
-#: senaite/impress/templates/reports/Default.pt:322
-#: senaite/impress/templates/reports/MultiDefault.pt:333
 msgid "Client"
 msgstr "Pacijent"
 
-#: senaite/impress/templates/reports/Default.pt:318
-#: senaite/impress/templates/reports/MultiDefault.pt:329
+#: senaite/impress/analysisrequest/templates/summary.pt:45
 msgid "Client Batch ID"
 msgstr "ID serije pacijenta"
 
@@ -107,41 +93,19 @@ msgstr "ID serije pacijenta"
 msgid "Client ID"
 msgstr ""
 
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:197
-msgid "Client Order"
-msgstr "Nalog pacijenta"
-
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:188
-msgid "Client Reference"
-msgstr "Referenca pacijenta"
-
-#: senaite/impress/templates/reports/Default.pt:329
-#: senaite/impress/templates/reports/MultiDefault.pt:340
+#: senaite/impress/analysisrequest/templates/summary.pt:56
 msgid "Client SID"
 msgstr "SID pacijenta"
 
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:206
-msgid "Client Sample ID"
-msgstr "ID uzorka pacijenta"
-
 #: senaite/impress/browser/publish/content.py:92
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:179
 msgid "Contact"
 msgstr "Kontakt"
 
-#: senaite/impress/templates/reports/Default.pt:21
-#: senaite/impress/templates/reports/MultiDefault.pt:19
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:19
-msgid "Custom Report Options"
-msgstr "Opcije prilagođavanja izvještaja"
-
-#: senaite/impress/templates/reports/Default.pt:349
-#: senaite/impress/templates/reports/MultiDefault.pt:360
+#: senaite/impress/analysisrequest/templates/summary.pt:76
 msgid "Date Published"
 msgstr "Datum printanja"
 
-#: senaite/impress/templates/reports/Default.pt:341
-#: senaite/impress/templates/reports/MultiDefault.pt:352
+#: senaite/impress/analysisrequest/templates/summary.pt:68
 msgid "Date Received"
 msgstr "Datum prijema"
 
@@ -149,8 +113,7 @@ msgstr "Datum prijema"
 msgid "Date Sampled"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:345
-#: senaite/impress/templates/reports/MultiDefault.pt:356
+#: senaite/impress/analysisrequest/templates/summary.pt:72
 msgid "Date Verified"
 msgstr "Datum verifikacije"
 
@@ -170,7 +133,7 @@ msgstr "Postavljeni šablon"
 msgid "Developer Mode"
 msgstr "Mod za developere"
 
-#: senaite/impress/adapters.py:65
+#: senaite/impress/adapters.py:81
 msgid "Download the generated PDF to your computer"
 msgstr ""
 
@@ -182,15 +145,7 @@ msgstr ""
 msgid "Failed to send Email"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:691
-#: senaite/impress/templates/reports/MultiDefault.pt:719
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:640
-msgid "Fax"
-msgstr "Faks"
-
-#: senaite/impress/templates/reports/Default.pt:558
-#: senaite/impress/templates/reports/MultiDefault.pt:584
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:505
+#: senaite/impress/analysisrequest/templates/attachments.pt:36
 msgid "Filename:"
 msgstr "Ime datoteke:"
 
@@ -202,7 +157,7 @@ msgstr "Tekst u podnožju stranice"
 msgid "Generated reports for: {}, "
 msgstr "Generirani izvještaji za: {},"
 
-#: senaite/impress/configure.zcml:169
+#: senaite/impress/configure.zcml:175
 msgid "HTML to PDF report engine for SENAITE"
 msgstr "HTML u PDF generator izvještaja za SENAITE"
 
@@ -227,21 +182,15 @@ msgstr "Početno učitan format papira"
 msgid "Initially loaded report template"
 msgstr "Početno učitan šablon izvještaja"
 
-#: senaite/impress/templates/reports/Default.pt:641
-#: senaite/impress/templates/reports/MultiDefault.pt:669
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:590
+#: senaite/impress/analysisrequest/templates/discreeter.pt:29
 msgid "Methods included in the ${accreditation_body} schedule of Accreditation for this Laboratory. Analysis remarks are not accredited"
 msgstr "Metode uključene u ${accreditation_body} raspored akreditacije za ovu laboratoriju. Primjedbe na analizu nisu akreditovane"
 
-#: senaite/impress/templates/reports/Default.pt:628
-#: senaite/impress/templates/reports/MultiDefault.pt:656
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:577
+#: senaite/impress/analysisrequest/templates/discreeter.pt:16
 msgid "Not invoiced"
 msgstr "Račun nije izdan"
 
-#: senaite/impress/templates/reports/Default.pt:50
-#: senaite/impress/templates/reports/MultiDefault.pt:48
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:48
+#: senaite/impress/analysisrequest/templates/controls.pt:44
 msgid "Number of attachments rendered within one row per Analysis Request"
 msgstr "Broj dodataka prikazanih po jednom redu zahtjeva za analizu"
 
@@ -249,36 +198,20 @@ msgstr "Broj dodataka prikazanih po jednom redu zahtjeva za analizu"
 msgid "PDF attachment is missing"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:689
-#: senaite/impress/templates/reports/MultiDefault.pt:717
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:638
-msgid "Phone"
-msgstr "Telefon"
-
 #: senaite/impress/controlpanel.py:47
 msgid "Please choose the templates that can be selected"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:271
-#: senaite/impress/templates/reports/MultiDefault.pt:278
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:326
+#: senaite/impress/analysisrequest/templates/alerts.pt:20
 msgid "Provisional report"
 msgstr "Preliminarni nalaz"
 
-#: senaite/impress/templates/reports/Default.pt:353
-#: senaite/impress/templates/reports/MultiDefault.pt:364
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:547
+#: senaite/impress/analysisrequest/templates/signatures.pt:31
+#: senaite/impress/analysisrequest/templates/summary.pt:80
 msgid "Published by"
 msgstr "Printao"
 
-#: senaite/impress/templates/reports/Default.pt:502
-#: senaite/impress/templates/reports/MultiDefault.pt:523
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:443
-msgid "QC Results"
-msgstr "QC rezultati"
-
-#: senaite/impress/templates/reports/Default.pt:412
-#: senaite/impress/templates/reports/MultiDefault.pt:425
+#: senaite/impress/analysisrequest/templates/results.pt:47
 msgid "Range"
 msgstr "Raspon"
 
@@ -294,41 +227,35 @@ msgstr ""
 msgid "Reload report automatically when items order changed"
 msgstr ""
 
+#: senaite/impress/analysisrequest/templates/controls.pt:10
+msgid "Report Options"
+msgstr ""
+
 #: senaite/impress/controlpanel.py:130
 msgid "Report Settings"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:574
-#: senaite/impress/templates/reports/MultiDefault.pt:602
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:523
+#: senaite/impress/analysisrequest/templates/signatures.pt:7
 msgid "Responsibles"
 msgstr "Odgovornosti"
 
-#: senaite/impress/templates/reports/Default.pt:406
-#: senaite/impress/templates/reports/MultiDefault.pt:419
+#: senaite/impress/analysisrequest/templates/results.pt:41
 msgid "Result"
 msgstr "Rezultat"
 
-#: senaite/impress/templates/reports/Default.pt:626
-#: senaite/impress/templates/reports/MultiDefault.pt:654
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:575
+#: senaite/impress/analysisrequest/templates/discreeter.pt:14
 msgid "Result out of client specified range."
 msgstr "Rezultati izvan predviđenog raspona za pacijenta"
 
-#: senaite/impress/templates/reports/Default.pt:376
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:339
+#: senaite/impress/analysisrequest/templates/results_transposed.pt:9
 msgid "Results"
 msgstr "Rezultati"
-
-#: senaite/impress/templates/reports/Default.pt:487
-msgid "Results interpretation"
-msgstr "Interpretacija rezultata"
 
 #: senaite/impress/controlpanel.py:99
 msgid "Returns the raw HTML in the report preview."
 msgstr "Vraća sirovi HTML u pregledu izvještaja"
 
-#: senaite/impress/configure.zcml:169
+#: senaite/impress/configure.zcml:175
 #: senaite/impress/templates/publish.pt:9
 msgid "SENAITE IMPRESS"
 msgstr "SENAITE IMPRESS "
@@ -337,38 +264,28 @@ msgstr "SENAITE IMPRESS "
 msgid "SENAITE IMPRESS Settings"
 msgstr "Postavke SENAITE IMPRESS"
 
-#: senaite/impress/templates/reports/Default.pt:302
-#: senaite/impress/templates/reports/MultiDefault.pt:313
+#: senaite/impress/analysisrequest/templates/summary.pt:29
 msgid "Sample ID"
 msgstr "ID uzorka"
 
 #: senaite/impress/browser/publish/content.py:72
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:225
 msgid "Sample Point"
 msgstr "Lokacija uzimanja uzorka"
 
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:235
-msgid "Sample Remarks"
-msgstr "Primjedbe o uzorku"
-
+#: senaite/impress/analysisrequest/templates/summary.pt:60
 #: senaite/impress/browser/publish/content.py:68
-#: senaite/impress/templates/reports/Default.pt:333
-#: senaite/impress/templates/reports/MultiDefault.pt:344
 msgid "Sample Type"
 msgstr "Vrsta uzorka"
 
-#: senaite/impress/adapters.py:81
+#: senaite/impress/adapters.py:97
 msgid "Share PDF via email"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:32
-#: senaite/impress/templates/reports/MultiDefault.pt:30
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:30
+#: senaite/impress/analysisrequest/templates/controls.pt:26
 msgid "Show Sample Remarks"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:337
-#: senaite/impress/templates/reports/MultiDefault.pt:348
+#: senaite/impress/analysisrequest/templates/summary.pt:64
 msgid "Specification"
 msgstr "Specifikacija"
 
@@ -380,20 +297,15 @@ msgstr "Snimi generirane PDF multi-izvještaja individualno."
 msgid "Store generated multi-report PDFs individually. Turn off to store the multi-report PDF only for the primary item of the report"
 msgstr "Snimi generirane PDF multi-izvještaja individualno. Isključite ovu opciju da snimate PDF multi-izvještaja samo za primarnu stavku izvještaja"
 
-#: senaite/impress/templates/reports/Default.pt:299
-#: senaite/impress/templates/reports/MultiDefault.pt:309
+#: senaite/impress/analysisrequest/templates/summary.pt:25
 msgid "Summary"
 msgstr "Sažetak"
 
-#: senaite/impress/templates/reports/Default.pt:209
-#: senaite/impress/templates/reports/MultiDefault.pt:212
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:256
+#: senaite/impress/analysisrequest/templates/info.pt:59
 msgid "Supervisor"
 msgstr "Nadzornik"
 
-#: senaite/impress/templates/reports/Default.pt:657
-#: senaite/impress/templates/reports/MultiDefault.pt:685
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:606
+#: senaite/impress/analysisrequest/templates/discreeter.pt:45
 msgid "Test results are at a ${lab_confidence}% confidence level"
 msgstr "Rezultati testiranja su  ${lab_confidence}% nivou pouzdanosti"
 
@@ -401,21 +313,15 @@ msgstr "Rezultati testiranja su  ${lab_confidence}% nivou pouzdanosti"
 msgid "The footer text will be rendered on every PDF page and may contain arbitrary HTML"
 msgstr "Tekst u podnožju stranice koji se prikazuje na svakoj PDF stranici i može sadržavati proizvoljan HTML"
 
-#: senaite/impress/templates/reports/Default.pt:262
-#: senaite/impress/templates/reports/MultiDefault.pt:267
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:315
+#: senaite/impress/analysisrequest/templates/alerts.pt:9
 msgid "This Analysis Request has been invalidated due to erroneously published results"
 msgstr "Ovaj zahtjev za analizu je poništen zbog pogrešnih objavljenih rezultata"
 
-#: senaite/impress/templates/reports/Default.pt:265
-#: senaite/impress/templates/reports/MultiDefault.pt:270
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:318
+#: senaite/impress/analysisrequest/templates/alerts.pt:12
 msgid "This Analysis request has been replaced by"
 msgstr "Ovaj zahtjev za analizu je zamjenjen sa"
 
-#: senaite/impress/templates/reports/Default.pt:653
-#: senaite/impress/templates/reports/MultiDefault.pt:681
-#: senaite/impress/templates/reports/MultiDefaultByColumn.pt:602
+#: senaite/impress/analysisrequest/templates/discreeter.pt:41
 msgid "This document shall not be reproduced except in full, without the written approval of ${name_lab}"
 msgstr "Ovaj dokument se ne smije reproducirati osim u cijelosti, i bez pismenog odobrenja ${name_lab} "
 
@@ -423,8 +329,7 @@ msgstr "Ovaj dokument se ne smije reproducirati osim u cijelosti, i bez pismenog
 msgid "Title"
 msgstr ""
 
-#: senaite/impress/templates/reports/Default.pt:409
-#: senaite/impress/templates/reports/MultiDefault.pt:422
+#: senaite/impress/analysisrequest/templates/results.pt:44
 msgid "Unit"
 msgstr "Jedinica"
 
