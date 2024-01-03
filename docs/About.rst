@@ -88,8 +88,8 @@ Installation Requirements
 
 The following versions are required for SENAITE IMPRESS:
 
--  Plone 5.2.11
--  senaite.lims >= 2.4.0
+-  Plone 5.2.14
+-  senaite.lims >= 2.5.0
 
 
 .. _Plone 5: https://docs.plone.org/manage/installing/installation.html

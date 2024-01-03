@@ -1,4 +1,4 @@
-2.5.0 (unreleased)
+2.5.0 (2024-01-03)
 ------------------
 
 - #146 Support for QR codes
