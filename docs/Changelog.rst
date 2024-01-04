@@ -33,6 +33,7 @@
 2.3.0 (2022-10-03)
 ------------------
 
+- #125 Do not display multi-component analysis in report but analytes
 - #124 Fix mixed sorted PoC groups depending on the sample analyses
 
 
