@@ -226,6 +226,17 @@ class SuperModel(BaseModel):
 
     @property
     @returns_super_model
+    def Analyses(self):
+        """Returns the analyses of this sample, those from partitions included
+        """
+        # SuperModel uses getRawAnalyses by default, that only returns the
+        # analyses that belong to the current sample. On the other hand,
+        # getAnalyses() returns the analyses from the current sample, plus
+        # those from partitions
+        return self.getAnalyses()
+
+    @property
+    @returns_super_model
     def departments(self):
         return self.getDepartments()
 
