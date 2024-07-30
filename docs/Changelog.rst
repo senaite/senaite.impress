@@ -1,7 +1,7 @@
 2.5.0 (unreleased)
 ------------------
 
-- no changes yet
+- #149 Compatibility with senaite.app.supermodel#23
 
 
 2.5.0 (2024-01-03)
