@@ -1,7 +1,7 @@
 2.5.0 (unreleased)
 ------------------
 
-- no changes yet
+- #150 Fix URLFetchingError when generating report w/o HOST in request header
 
 
 2.5.0 (2024-01-03)
