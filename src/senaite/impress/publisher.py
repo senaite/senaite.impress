@@ -165,7 +165,7 @@ class Publisher(object):
         portal = api.get_portal()
         context = portal.restrictedTraverse(path, None)
 
-        if context is None or host not in url:
+        if context is None or (host and host not in url):
             logger.info("External URL, delegate to default URL fetcher...")
             return default_url_fetcher(url)
 
