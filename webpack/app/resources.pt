@@ -14,7 +14,7 @@
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/thirdparty/d3.js"></script>
 
 <!-- senaite.core: legacy JS -->
-<script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/js/bika.lims.graphics.range.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/js/senaite.core.graphics.range.js"></script>
 
 <!-- senaite.impress: print CSS files (get also hooked into WeasyPrint when generating the PDF) -->
 <link href="#" rel="stylesheet" tal:attributes="href string:${view/site_url}/++plone++senaite.impress.static/css/bootstrap.min.css" />
