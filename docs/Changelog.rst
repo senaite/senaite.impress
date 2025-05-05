@@ -1,7 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
-- no changes yet
+- #152 jQuery3 compatibility
 
 
 2.5.0 (2025-04-04)
