@@ -8,14 +8,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-const gitCmd = "git rev-list -1 HEAD -- `pwd`";
-let gitHash = childProcess.execSync(gitCmd).toString().substring(0, 7);
-
+const mode = process.env.mode;
+const isDev = mode === "development";
+const isProd = mode === "production";
 const staticPath = path.resolve(__dirname, "../src/senaite/impress/browser/static");
 
-const devMode = process.env.mode == "development";
-const prodMode = process.env.mode == "production";
-const mode = process.env.mode;
 console.log(`RUNNING WEBPACK IN '${mode}' MODE`);
 
 
@@ -32,8 +29,7 @@ module.exports = {
     ]
   },
   output: {
-    // filename: `[name]-${gitHash}.js`,
-    filename: "[name].js",
+    filename: isDev ? "[name].js" : `[name].[contenthash].js`,
     path: path.resolve(staticPath, "bundles"),
     publicPath: "/++plone++senaite.impress.static/bundles"
   },
@@ -63,18 +59,25 @@ module.exports = {
           },
           {
             // https://webpack.js.org/loaders/css-loader/
-            loader: "css-loader"
+            loader: "css-loader",
+            options: { sourceMap: isDev }
           },
           {
             // https://webpack.js.org/loaders/sass-loader/
-            loader: "sass-loader"
+            loader: "sass-loader",
+            options: { sourceMap: isDev }
           }
         ]
       }
     ]
   },
   optimization: {
-    minimize: prodMode,
+    splitChunks: {
+      chunks: "all",
+      name: false,
+    },
+    runtimeChunk: "single",
+    minimize: isProd,
     minimizer: [
       // https://v4.webpack.js.org/plugins/terser-webpack-plugin/
       new TerserPlugin({
@@ -136,8 +139,6 @@ module.exports = {
   ],
   externals: {
     // https://webpack.js.org/configuration/externals
-    react: "React",
-    "react-dom": "ReactDOM",
     $: "jQuery",
     jquery: "jQuery",
   }

@@ -2,7 +2,7 @@
  * ReactJS controlled component
 ###
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from 'react-dom/client';
 
 import PublishAPI from "./api.coffee"
 
@@ -21,8 +21,14 @@ import Modal from "./components/Modal.js"
 # DOCUMENT READY ENTRY POINT
 document.addEventListener "DOMContentLoaded", ->
   console.debug "*** SENAITE.IMPRESS::DOMContentLoaded: --> Loading ReactJS Controller"
-  # gather the <div> container from publish.pt and load the component
-  controller = ReactDOM.render <PublishController />, document.getElementById "publish_controller"
+  window.senaite ?= {}
+  window.senaite.core ?= {}
+  window.senaite.core.controllers ?= {}
+
+  el = document.getElementById "publish_controller"
+  if not el._reactRootContainer?
+    el._reactRootContainer = createRoot(el)
+  controller = el._reactRootContainer.render <PublishController root_el={el} />
 
 
 class PublishController extends React.Component

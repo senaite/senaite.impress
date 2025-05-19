@@ -8,7 +8,7 @@ class Modal extends React.Component {
 
   render() {
     return (
-      <div id={this.props.id} className="modal fade" tabindex="-1"></div>
+      <div id={this.props.id} className="modal fade" tabIndex="-1"></div>
     );
   }
 }

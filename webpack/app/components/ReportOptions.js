@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 class ReportOptions extends React.Component {
   constructor(props) {
     super(props);
+    this.containerRef = null;
   }
 
   componentDidUpdate() {
-    const formNode = ReactDOM.findDOMNode(this);
-    if (!formNode) return;
+    if (!this.containerRef) return;
 
-    // List of input types to bind
+    const formNode = this.containerRef;
     const tags = ['input', 'textarea', 'select'];
 
     tags.forEach(tag => {
@@ -27,6 +27,7 @@ class ReportOptions extends React.Component {
 
     return (
       <div
+        ref={(ref) => { this.containerRef = ref; }}
         name={this.props.name}
         className={this.props.className}
         dangerouslySetInnerHTML={{ __html: this.props.controls }}
