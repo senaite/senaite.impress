@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #153 Update ReactJS 18 -> 19
 - #152 jQuery3 compatibility
 
 
