@@ -4,12 +4,12 @@
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/modules/bootstrap/js/bootstrap.min.js"></script>
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/modules/bootstrap-confirmation2/bootstrap-confirmation.min.js"></script>
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/modules/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/modules/d3/d3.min.js"></script>
 <link href="#" rel="stylesheet" tal:attributes="href string:${view/site_url}/++plone++senaite.impress.static/modules/fontawesome-free/css/all.min.css" />
 
 <!-- senaite.core: thirdparty -->
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/thirdparty/jquery-barcode-2.2.0.min.js"></script>
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/thirdparty/jquery-qrcode-0.17.0.min.js"></script>
-<script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/thirdparty/d3.js"></script>
 
 <!-- senaite.core: legacy JS -->
 <script tal:attributes="src string:${view/site_url}/++plone++senaite.core.static/js/senaite.core.graphics.range.js"></script>
