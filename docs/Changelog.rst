@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #155 Support for analysis conditions
 - #153 Update ReactJS 18 -> 19
 - #152 jQuery3 compatibility
 
