@@ -152,6 +152,7 @@
                         <sup tal:content="repeat/analysis_footnotes/number"/>
                         <tal:footnotes repeat="footnote analysis_footnotes">
                           <tal:footnote>
+                            <br tal:condition="repeat/footnote/index"/>
                             <span tal:condition="repeat/footnote/index" class="pl-2"/>
                             <span tal:content="footnote/title"/>:
                             <span tal:content="footnote/formatted_value"/>

@@ -17,7 +17,7 @@
 #
 # Copyright 2018-2025 by it's authors.
 # Some rights reserved, see README and LICENSE.
-import copy
+
 from collections import Iterable
 from collections import OrderedDict
 from collections import Sequence
@@ -439,8 +439,9 @@ class ReportView(Base):
         conditions = analysis.getConditions() or []
         for condition in conditions:
 
-            # skip conditions flagged with report
-            if not condition.get("report", False):
+            # skip non-reportable conditions
+            report = condition.get("report", False)
+            if not self.is_true(report):
                 continue
 
             # skip those without a valid format
