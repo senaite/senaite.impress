@@ -1,7 +1,9 @@
 <tal:t define="collection python:view.collection;
                accredited_symbol string:★;
                outofrange_symbol string:⚠;
-               global results_interims python:[]"
+               global footnotes python:[];
+               report_options python:options.get('report_options', {});
+               show_conditions python:bool(report_options.get('show_conditions', True));"
        i18n:domain="senaite.impress">
 
   <tal:model repeat="model collection">
@@ -68,12 +70,28 @@
                         <span class="font-italic" tal:content="analysis/title"></span>
                       </span>
 
-                      <tal:interim_fields
-                          define="interims python:view.get_result_variables(analysis)"
-                          condition="interims">
-                        <sup tal:define="dummy python:results_interims.append(interims)"
-                             tal:content="python: len(results_interims)"/>
-                      </tal:interim_fields>
+                      <tal:analysis_footnotes define="analysis_footnotes python:[];">
+
+                        <!-- Include conditions in the footnotes for this analysis -->
+                        <tal:analysis_conditions
+                          define="conditions python:view.get_analysis_conditions(analysis)"
+                          condition="show_conditions">
+                          <tal:x define="dummy python:analysis_footnotes.extend(conditions)">
+                        </tal:analysis_conditions>
+
+                        <!-- Include interims in the footnotes for this analysis -->
+                        <tal:interim_fields
+                            define="interims python:view.get_result_variables(analysis);
+                                    dummy python:analysis_footnotes.extend(interims)">
+                        </tal:interim_fields>
+
+                        <!-- Add the analysis footnotes to the global footnotes -->
+                        <tal:x condition="analysis_footnotes">
+                          <sup tal:define="dummy python:footnotes.append(analysis_footnotes)"
+                               tal:content="python: len(footnotes)"/>
+                        </tal:x>
+
+                      </tal:analysis_footnotes>
 
                       <!-- Method -->
                       <div class="text-secondary methodtitle"
@@ -127,20 +145,19 @@
                     </div>
                   </td>
                 </tr>
-                <tr tal:condition="results_interims">
+                <tr tal:condition="footnotes">
                   <td colspan="3">
-                    <ul class="list-unstyled results_interims">
-                      <li tal:repeat="interims results_interims" class="mt-2">
-                        <sup tal:content="repeat/interims/number"/>
-                        <tal:interims repeat="interim interims">
-                          <tal:interim>
-                            <br tal:condition="repeat/interim/index"/>
-                            <span tal:condition="repeat/interim/index" class="pl-2"/>
-                            <span tal:content="interim/title"/>:
-                            <span tal:content="interim/formatted_value"/>
-                            <span tal:content="interim/formatted_unit"/>
-                          </tal:interim>
-                        </tal:interims>
+                    <ul class="list-unstyled footnotes">
+                      <li tal:repeat="analysis_footnotes footnotes" class="mt-2">
+                        <sup tal:content="repeat/analysis_footnotes/number"/>
+                        <tal:footnotes repeat="footnote analysis_footnotes">
+                          <tal:footnote>
+                            <span tal:condition="repeat/footnote/index" class="pl-2"/>
+                            <span tal:content="footnote/title"/>:
+                            <span tal:content="footnote/formatted_value"/>
+                            <span tal:content="footnote/formatted_unit|nothing"/>
+                          </tal:footnote>
+                        </tal:footnotes>
                       </li>
                     </ul>
                   </td>

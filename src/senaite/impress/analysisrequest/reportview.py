@@ -17,7 +17,7 @@
 #
 # Copyright 2018-2025 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
+import copy
 from collections import Iterable
 from collections import OrderedDict
 from collections import Sequence
@@ -29,12 +29,14 @@ import DateTime
 from bika.lims import POINTS_OF_CAPTURE
 from bika.lims import api
 from bika.lims.interfaces import IInternalUse
+from bika.lims.utils import get_link
 from bika.lims.utils.analysis import format_interim
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as PT
 from senaite.app.supermodel.interfaces import ISuperModel
+from senaite.impress import senaiteMessageFactory as _
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base
@@ -381,6 +383,74 @@ class ReportView(Base):
             # apply formatting
             item = format_interim(interim_field)
             items.append(item)
+
+        return items
+
+    def is_true(self, val):
+        """Returns whether val evaluates to True
+        """
+        if not val:
+            return False
+        val = str(val).strip().lower()
+        return val in ["y", "yes", "1", "true", "on"]
+
+    def get_attachment_link(self, attachment):
+        """Returns a well-formed link for the attachment passed in
+        """
+        filename = attachment.getFilename()
+        att_url = api.get_url(attachment)
+        url = "{}/at_download/AttachmentFile".format(att_url)
+        return get_link(url, filename, tabindex="-1")
+
+    def format_condition(self, condition):
+        """Returns a string representation of the analysis condition value
+        """
+        title = condition.get("title")
+        value = condition.get("value", "")
+        if not any([title, value]):
+            return None
+
+        texts = {True: _("Yes"), False: _("No")}
+        condition_type = condition.get("type")
+        if condition_type == "checkbox":
+            value = texts.get(self.is_true(value))
+
+        elif condition_type == "file":
+            attachment = api.get_object_by_uid(value, None)
+            if not attachment:
+                return None
+            value = self.get_attachment_link(attachment)
+
+        return api.to_utf8(str(value))
+
+    def get_analysis_conditions(self, analysis, report_only=True):
+        """Returns the (pre)conditions from the given analysis, that have a
+        valid value set, with the additional attribute 'formatted_value'. If
+        'report_only' is True, only conditions that are flagged with attribute
+        "report" are returned.
+
+        :param analysis: Analysis' object/supermodel/brain or UID
+        :param report_only: Only conditions flagged with 'report:True'
+        :returns: List of anaysis conditions items
+        """
+        # analysis (pre)conditions
+        items = []
+        analysis = api.get_object(analysis)
+        conditions = analysis.getConditions() or []
+        for condition in conditions:
+
+            # skip conditions flagged with report
+            if not condition.get("report", False):
+                continue
+
+            # skip those without a valid format
+            formatted = self.format_condition(condition)
+            if not formatted:
+                continue
+
+            # apply formatting
+            condition["formatted_value"] = formatted
+            items.append(condition)
 
         return items
 

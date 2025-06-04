@@ -1,6 +1,7 @@
 <tal:t define="report_options python:options.get('report_options', {});
                attachments_per_row python:int(report_options.get('attachments_per_row', 2));
-               show_remarks python:bool(report_options.get('show_remarks', False));"
+               show_remarks python:bool(report_options.get('show_remarks', False));
+               show_conditions python:bool(report_options.get('show_conditions', True));"
        i18n:domain="senaite.impress">
 
   <!-- Custom Report Controls -->
@@ -25,6 +26,20 @@
         </div>
         <small class="form-text text-muted" i18n:translate="">
           Show Sample Remarks
+        </small>
+      </div>
+      <!-- Show analysis conditions -->
+      <div class="mb-3">
+        <div class="input-group">
+          <div class="custom-control custom-checkbox">
+            <input tal:attributes="checked python:show_conditions" name="show_conditions" type="checkbox" class="custom-control-input" id="show-conditions">
+            <label class="custom-control-label" for="show-conditions">
+              Analysis conditions
+            </label>
+          </div>
+        </div>
+        <small class="form-text text-muted" i18n:translate="">
+          Display the analysis conditions with the 'Report' option selected as footnotes below the results table.
         </small>
       </div>
       <!-- Attachments per row -->
