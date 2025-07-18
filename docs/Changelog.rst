@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #156 Fix condition syntax in alerts template for invalid sample
 - #155 Support for analysis conditions
 - #153 Update ReactJS 18 -> 19
 - #152 jQuery3 compatibility
