@@ -247,6 +247,7 @@ class PublishController extends React.Component
     # Set the loader
     @toggleLoader on, loadtext: "Generating PDF ..."
 
+    @loadScripts()
     options = @getRequestOptions()
     promise = @api.create_pdf options
 
