@@ -129,6 +129,9 @@ class PublishController extends React.Component
      *      generating the Preview/PDF from it
     ###
 
+    # Ensure custom scripts from the reports are executed
+    @loadScripts()
+
     # ensure that the rendered HTML has the right format/orientation CSS classes
     el = document.getElementById "reports"
     return "" unless el
@@ -246,9 +249,6 @@ class PublishController extends React.Component
   createPDF: () ->
     # Set the loader
     @toggleLoader on, loadtext: "Generating PDF ..."
-
-    # Ensure custom scripts from the reports are executed
-    @loadScripts()
 
     options = @getRequestOptions()
     promise = @api.create_pdf options
