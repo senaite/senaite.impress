@@ -144,7 +144,7 @@ class SuperModel(BaseModel):
             analysis.instance,
             decimalmark=self.decimal_mark,
             sciformat=self.scientific_notation)
-        return "[&plusmn; {}]".format(uncertainty)
+        return "[&plusmn; {}]".format(uncertainty) if uncertainty else ""
 
     def get_formatted_specs(self, analysis):
         specs = analysis.getResultsRange()
