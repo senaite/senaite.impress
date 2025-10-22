@@ -33,9 +33,10 @@ from bika.lims.utils import get_link
 from bika.lims.utils.analysis import format_interim
 from bika.lims.workflow import getTransitionDate
 from Products.CMFPlone.i18nl10n import ulocalized_time
-from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import safe_callable
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile as PT
 from senaite.app.supermodel.interfaces import ISuperModel
+from senaite.core.catalog.utils import sortable_sortkey_title
 from senaite.impress import senaiteMessageFactory as _
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
@@ -276,9 +277,10 @@ class ReportView(Base):
         """Default sort which mixes in the sort key
         """
         def sortable_title(obj):
-            sort_key = obj.get("SortKey") or 0.0
-            title = obj.title.lower()
-            return u"{:010.3f}{}".format(sort_key, safe_unicode(title))
+            title = sortable_sortkey_title(obj)
+            if safe_callable(title):
+                title = title()
+            return title
 
         def _cmp(obj1, obj2):
             st1 = sortable_title(obj1)
