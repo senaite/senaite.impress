@@ -80,8 +80,19 @@ class PdfReportStorageAdapter(object):
         # generate the reports
         reports = []
         for obj in objs:
-            report = self.create_report(obj, pdf, html, uids, metadata)
-            reports.append(report)
+            # Create savepoint before each report for rollback capability
+            sp = transaction.savepoint()
+            try:
+                report = self.create_report(obj, pdf, html, uids, metadata)
+                reports.append(report)
+            except Exception as e:
+                logger.error("Failed to create report for {}: {}".format(
+                    api.get_id(obj), str(e)))
+                sp.rollback()
+                raise
+
+        # Commit all reports in a single transaction
+        transaction.commit()
 
         return reports
 
@@ -90,10 +101,12 @@ class PdfReportStorageAdapter(object):
         """Create a new report object
 
         NOTE: We limit the creation of reports to 1 to avoid conflict errors on
-              simultaneous publication.
+              simultaneous publication. The transaction is committed once for
+              all reports in the store() method using savepoints for rollback
+              capability.
 
         :param parent: parent object where to create the report inside
-        :returns: ARReport
+        :returns: ResultsReport
         """
 
         parent_id = api.get_id(parent)
@@ -105,15 +118,12 @@ class PdfReportStorageAdapter(object):
         # Create the report object
         report = api.create(
             parent,
-            "ARReport",
-            AnalysisRequest=api.get_uid(parent),
-            Pdf=pdf,
-            Html=html,
-            ContainedAnalysisRequests=uids,
-            Metadata=metadata)
-
-        # Commit the changes
-        transaction.commit()
+            "ResultsReport",
+            analysis_request=api.get_uid(parent),
+            pdf=pdf,
+            html=html,
+            contained_analysis_requests=uids,
+            metadata=metadata)
 
         logger.info("Create Report for {} [DONE]".format(parent_id))
 
