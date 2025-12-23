@@ -124,20 +124,18 @@ class PdfReportStorageAdapter(object):
             contentType="application/pdf"
         )
 
-        # Create the report object - metadata is now a plain dict (not DataGridField)
-        # NOTE: Don't pass UIDReferenceFields to api.create() as kwargs
-        # because they won't trigger backreference creation
+        # Create the report object
+        # Field setters are called automatically by api.create(), including
+        # UIDReferenceField.set() which creates backreferences via event
+        # handler
         report = api.create(
             parent,
             "ResultsReport",
+            sample=api.get_uid(parent),
+            contained_samples=uids if uids else [],
             pdf=pdf_blob,
             html=html,
             metadata=metadata if metadata else {})
-
-        # Set UIDReferenceFields using mutators to create backreferences
-        report.setSample(api.get_uid(parent))
-        if uids:
-            report.setContainedSamples(uids)
 
         logger.info("Create Report for {} [DONE]".format(parent_id))
 
