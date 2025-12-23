@@ -22,6 +22,7 @@ from operator import methodcaller
 
 import transaction
 from bika.lims import api
+from plone.namedfile.file import NamedBlobFile
 from senaite.impress import logger
 from senaite.impress.decorators import synchronized
 from senaite.impress.interfaces import IPdfReportStorage
@@ -115,15 +116,28 @@ class PdfReportStorageAdapter(object):
         # Manually update the view on the database to avoid conflict errors
         parent._p_jar.sync()
 
-        # Create the report object
+        # Convert PDF binary data to NamedBlobFile
+        pdf_filename = "{}.pdf".format(parent_id)
+        pdf_blob = NamedBlobFile(
+            data=pdf,
+            filename=api.safe_unicode(pdf_filename),
+            contentType="application/pdf"
+        )
+
+        # Create the report object - metadata is now a plain dict (not DataGridField)
+        # NOTE: Don't pass UIDReferenceFields to api.create() as kwargs
+        # because they won't trigger backreference creation
         report = api.create(
             parent,
             "ResultsReport",
-            analysis_request=api.get_uid(parent),
-            pdf=pdf,
+            pdf=pdf_blob,
             html=html,
-            contained_analysis_requests=uids,
-            metadata=metadata)
+            metadata=metadata if metadata else {})
+
+        # Set UIDReferenceFields using mutators to create backreferences
+        report.setSample(api.get_uid(parent))
+        if uids:
+            report.setContainedSamples(uids)
 
         logger.info("Create Report for {} [DONE]".format(parent_id))
 
