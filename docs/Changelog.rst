@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #161 Migrate ARReport to Dexterity
 - #160 Fix categories without SortKey are displayed first
 - #159 Fix [+- ] symbol is displayed when uncertainty does not apply
 - #157 Fix custom scripts not rendered in final PDF

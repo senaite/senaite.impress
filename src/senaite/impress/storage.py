@@ -22,6 +22,7 @@ from operator import methodcaller
 
 import transaction
 from bika.lims import api
+from plone.namedfile.file import NamedBlobFile
 from senaite.impress import logger
 from senaite.impress.decorators import synchronized
 from senaite.impress.interfaces import IPdfReportStorage
@@ -80,8 +81,19 @@ class PdfReportStorageAdapter(object):
         # generate the reports
         reports = []
         for obj in objs:
-            report = self.create_report(obj, pdf, html, uids, metadata)
-            reports.append(report)
+            # Create savepoint before each report for rollback capability
+            sp = transaction.savepoint()
+            try:
+                report = self.create_report(obj, pdf, html, uids, metadata)
+                reports.append(report)
+            except Exception as e:
+                logger.error("Failed to create report for {}: {}".format(
+                    api.get_id(obj), str(e)))
+                sp.rollback()
+                raise
+
+        # Commit all reports in a single transaction
+        transaction.commit()
 
         return reports
 
@@ -90,10 +102,12 @@ class PdfReportStorageAdapter(object):
         """Create a new report object
 
         NOTE: We limit the creation of reports to 1 to avoid conflict errors on
-              simultaneous publication.
+              simultaneous publication. The transaction is committed once for
+              all reports in the store() method using savepoints for rollback
+              capability.
 
         :param parent: parent object where to create the report inside
-        :returns: ARReport
+        :returns: ResultsReport
         """
 
         parent_id = api.get_id(parent)
@@ -102,18 +116,25 @@ class PdfReportStorageAdapter(object):
         # Manually update the view on the database to avoid conflict errors
         parent._p_jar.sync()
 
+        # Convert PDF binary data to NamedBlobFile
+        pdf_filename = "{}.pdf".format(parent_id)
+        pdf_blob = NamedBlobFile(
+            data=pdf,
+            filename=api.safe_unicode(pdf_filename),
+            contentType="application/pdf"
+        )
+
         # Create the report object
+        # Field setters are called automatically by api.create(), including
+        # UIDReferenceField.set() which creates backreferences via event
+        # handler
         report = api.create(
             parent,
-            "ARReport",
-            AnalysisRequest=api.get_uid(parent),
-            Pdf=pdf,
-            Html=html,
-            ContainedAnalysisRequests=uids,
-            Metadata=metadata)
-
-        # Commit the changes
-        transaction.commit()
+            "ResultsReport",
+            sample=api.get_uid(parent),
+            contained_samples=uids if uids else [],
+            pdf=pdf_blob,
+            metadata=metadata if metadata else {})
 
         logger.info("Create Report for {} [DONE]".format(parent_id))
 
