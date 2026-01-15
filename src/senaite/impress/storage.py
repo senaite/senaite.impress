@@ -134,7 +134,6 @@ class PdfReportStorageAdapter(object):
             sample=api.get_uid(parent),
             contained_samples=uids if uids else [],
             pdf=pdf_blob,
-            html=html,
             metadata=metadata if metadata else {})
 
         logger.info("Create Report for {} [DONE]".format(parent_id))
