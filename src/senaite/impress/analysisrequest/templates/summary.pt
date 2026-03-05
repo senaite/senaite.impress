@@ -89,7 +89,7 @@
         </tr>
         <tr tal:condition="python: batch and batch.BatchLabels">
           <td class="label" i18n:translate="">Batch Labels</td>
-          <td tal:content="structure python:', '.join(batch.BatchLabels)"></td>
+          <td tal:content="structure python:', '.join(map(lambda x: x.Title(), batch.BatchLabels))"></td>
         </tr>
       </table>
     </div>
