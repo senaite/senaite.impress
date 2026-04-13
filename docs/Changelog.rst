@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #164 Allow to define custom paperformats per template
 - #162 Fix rendering Error for Batch Labels
 - #161 Migrate ARReport to Dexterity
 - #160 Fix categories without SortKey are displayed first
