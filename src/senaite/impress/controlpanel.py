@@ -32,6 +32,8 @@ from senaite.impress.interfaces import ITemplateFinder
 from zope import schema
 from zope.component import getUtility
 from zope.interface import Interface
+from zope.interface import Invalid
+from zope.interface import invariant
 from zope.interface import provider
 from zope.schema.interfaces import IContextAwareDefaultFactory
 
@@ -251,6 +253,39 @@ class IImpressControlPanel(model.Schema):
         required=False,
         default=[],
     )
+
+    ###
+    # Validators
+    ###
+    @invariant
+    def validate_paperformats(data):
+        """Ensure paper format keys are unique
+        """
+        keys = []
+        for record in (data.paperformats or []):
+            key = record.get("key")
+            if not key:
+                continue
+            if key in keys:
+                raise Invalid(
+                    _(u"Duplicate paper format key: {}".format(
+                        key)))
+            keys.append(key)
+
+    @invariant
+    def validate_template_format_mapping(data):
+        """Ensure each template is mapped only once
+        """
+        templates = []
+        for record in (data.template_format_mapping or []):
+            template = record.get("template")
+            if not template:
+                continue
+            if template in templates:
+                raise Invalid(
+                    _(u"Template already mapped: {}".format(
+                        template)))
+            templates.append(template)
 
     ###
     # Fieldsets
