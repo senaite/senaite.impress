@@ -165,8 +165,12 @@ class PublishView(BrowserView):
 
         # generate a PDF for each HTML report
         publisher = self.publisher
+        # Use per-template margins set during rendering.
+        # All reports in a batch share the same template/view.
+        page_margins = getattr(self, "_page_margins", None)
         report_css = self.get_print_css(
-            paperformat=paperformat, orientation=orientation)
+            paperformat=paperformat, orientation=orientation,
+            page_margins=page_margins)
         publisher.add_inline_css(report_css)
 
         # wrap the reports for further processing
@@ -317,35 +321,53 @@ class PublishView(BrowserView):
                 (model_or_collection, request), interface, name=name)
         return view
 
-    def render_report(self, model, template, paperformat, orientation, **kw):
+    def render_report(self, model, template, paperformat,
+                      orientation, **kw):
         """Render a SuperModel to HTML
         """
         # get the report view controller
-        view = self.get_report_view_controller(model, IReportView)
+        view = self.get_report_view_controller(
+            model, IReportView)
+
+        # get per-template margin overrides from the view
+        page_margins = view.get_page_margins()
+        self._page_margins = page_margins
 
         options = kw
         # pass through the calculated dimensions to the template
-        options.update(self.calculate_dimensions(paperformat, orientation))
+        options.update(self.calculate_dimensions(
+            paperformat, orientation,
+            page_margins=page_margins))
         template = self.read_template(template, view, **options)
         return view.render(template, **options)
 
-    def render_multi_report(self, collection, template, paperformat, orientation, **kw):  # noqa
+    def render_multi_report(self, collection, template,
+                            paperformat, orientation, **kw):
         """Render multiple SuperModels to HTML
         """
         # get the report view controller
-        view = self.get_report_view_controller(collection, IMultiReportView)
+        view = self.get_report_view_controller(
+            collection, IMultiReportView)
+
+        # get per-template margin overrides from the view
+        page_margins = view.get_page_margins()
+        self._page_margins = page_margins
 
         options = kw
         # pass through the calculated dimensions to the template
-        options.update(self.calculate_dimensions(paperformat, orientation))
+        options.update(self.calculate_dimensions(
+            paperformat, orientation,
+            page_margins=page_margins))
 
         template = self.read_template(template, view, **options)
         return view.render(template, **options)
 
-    def calculate_dimensions(self, paperformat="A4", orientation="portrait"):
+    def calculate_dimensions(self, paperformat="A4", orientation="portrait",
+                              page_margins=None):
         """Calculate the page and content dimensions
         """
-        pf = self.get_paperformat(paperformat)
+        pf = self.get_paperformat(paperformat,
+                                  page_margins=page_margins)
 
         margin_top = pf["margin_top"]
         margin_right = pf["margin_right"]
@@ -359,7 +381,7 @@ class PublishView(BrowserView):
             page_width = pf["page_height"]
             page_height = pf["page_width"]
 
-        # calculate content width/height accordding to the margins
+        # calculate content width/height according to the margins
         content_width = page_width - margin_left - margin_right
         content_height = page_height - margin_top - margin_bottom
 
@@ -374,26 +396,85 @@ class PublishView(BrowserView):
         })
         return dimensions
 
-    def get_print_css(self, paperformat="A4", orientation="portrait"):
+    def get_print_css(self, paperformat="A4", orientation="portrait",
+                       page_margins=None):
         """Returns the generated print CSS for the given format/orientation
         """
         dimensions = self.calculate_dimensions(
-            paperformat=paperformat, orientation=orientation)
+            paperformat=paperformat, orientation=orientation,
+            page_margins=page_margins)
         return CSS.safe_substitute(dimensions)
 
-    def get_paperformat(self, paperformat):
+    def get_paperformat(self, paperformat, page_margins=None):
         """Return the paperformat dictionary
+
+        Applies a cascading override:
+          1. Built-in PAPERFORMATS + custom formats from registry
+          2. Per-template overrides (page_margins dict)
         """
         paperformats = self.get_paperformats()
         if paperformat not in paperformats:
-            raise KeyError("Unknown Paper Format '{}'".format(paperformat))
-        return paperformats[paperformat].copy()
+            raise KeyError(
+                "Unknown Paper Format '{}'".format(paperformat))
+        pf = paperformats[paperformat].copy()
+
+        # Apply per-template margin overrides
+        if page_margins:
+            for key in ("margin_top", "margin_right",
+                        "margin_bottom", "margin_left"):
+                value = page_margins.get(key)
+                if value is not None:
+                    pf[key] = value
+
+        return pf
 
     def get_paperformats(self):
         """Returns a mapping of available paper formats
+
+        Merges built-in formats with custom formats from the
+        registry. Custom formats override built-in ones if
+        their key matches.
         """
-        # Todo: Implement cascading lookup: client->registry->config
-        return PAPERFORMATS
+        formats = PAPERFORMATS.copy()
+
+        custom = api.get_registry_record(
+            "senaite.impress.paperformats")
+        if not custom:
+            return formats
+
+        for record in custom:
+            key = record.get("key")
+            if not key:
+                continue
+            formats[key] = {
+                "name": record.get("title", key),
+                "format": key,
+                "page_width": record.get("page_width", 210.0),
+                "page_height": record.get("page_height", 297.0),
+                "margin_top": record.get("margin_top", 20.0),
+                "margin_right": record.get("margin_right", 20.0),
+                "margin_bottom": record.get("margin_bottom", 20.0),
+                "margin_left": record.get("margin_left", 20.0),
+            }
+
+        return formats
+
+    def get_template_format_mapping(self):
+        """Returns the template-to-format mapping as a dict
+
+        :returns: dict mapping template names to format keys
+        """
+        mapping = {}
+        records = api.get_registry_record(
+            "senaite.impress.template_format_mapping")
+        if not records:
+            return mapping
+        for record in records:
+            template = record.get("template")
+            fmt = record.get("format")
+            if template and fmt:
+                mapping[template] = fmt
+        return mapping
 
     def get_report_templates(self):
         """Returns selected templates

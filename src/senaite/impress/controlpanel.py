@@ -2,18 +2,19 @@
 #
 # This file is part of SENAITE.IMPRESS.
 #
-# SENAITE.IMPRESS is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the Free
-# Software Foundation, version 2.
+# SENAITE.IMPRESS is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, version 2.
 #
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-# details.
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 51
-# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301 USA.
 #
 # Copyright 2018-2025 by it's authors.
 # Some rights reserved, see README and LICENSE.
@@ -24,10 +25,13 @@ from plone.autoform import directives
 from plone.formwidget.namedfile.widget import NamedFileFieldWidget
 from plone.supermodel import model
 from plone.z3cform import layout
+from senaite.core.schema.registry import DataGridRow
+from senaite.core.z3cform.widgets.datagrid import DataGridWidgetFactory
 from senaite.impress import senaiteMessageFactory as _
 from senaite.impress.interfaces import ITemplateFinder
 from zope import schema
 from zope.component import getUtility
+from zope.interface import Interface
 from zope.interface import provider
 from zope.schema.interfaces import IContextAwareDefaultFactory
 
@@ -37,6 +41,70 @@ def default_templates(context):
     finder = getUtility(ITemplateFinder)
     templates = finder.get_templates()
     return [t[0] for t in templates]
+
+
+class IPaperFormat(Interface):
+    """Row schema for custom paper formats
+    """
+
+    key = schema.TextLine(
+        title=_(u"Key"),
+        description=_(u"Unique format identifier"),
+        required=True,
+    )
+
+    title = schema.TextLine(
+        title=_(u"Title"),
+        description=_(u"Display name"),
+        required=True,
+    )
+
+    page_width = schema.Float(
+        title=_(u"Width (mm)"),
+        required=True,
+    )
+
+    page_height = schema.Float(
+        title=_(u"Height (mm)"),
+        required=True,
+    )
+
+    margin_top = schema.Float(
+        title=_(u"Top (mm)"),
+        required=True,
+    )
+
+    margin_right = schema.Float(
+        title=_(u"Right (mm)"),
+        required=True,
+    )
+
+    margin_bottom = schema.Float(
+        title=_(u"Bottom (mm)"),
+        required=True,
+    )
+
+    margin_left = schema.Float(
+        title=_(u"Left (mm)"),
+        required=True,
+    )
+
+
+class ITemplateFormatMapping(Interface):
+    """Row schema for template-to-format mappings
+    """
+
+    template = schema.Choice(
+        title=_(u"Template"),
+        vocabulary="senaite.impress.vocabularies.Templates",
+        required=True,
+    )
+
+    format = schema.Choice(
+        title=_(u"Paper Format"),
+        vocabulary="senaite.impress.vocabularies.Paperformats",
+        required=True,
+    )
 
 
 class IImpressControlPanel(model.Schema):
@@ -143,6 +211,47 @@ class IImpressControlPanel(model.Schema):
         required=False,
     )
 
+    directives.widget(
+        "paperformats",
+        DataGridWidgetFactory,
+        allow_insert=True,
+        allow_delete=True,
+        allow_reorder=True,
+        auto_append=True)
+    paperformats = schema.List(
+        title=_(u"Custom Paper Formats"),
+        description=_(
+            u"Define custom paper formats with specific "
+            u"dimensions and margins. Use the key to reference "
+            u"the format in template mappings. If a key matches "
+            u"a built-in format (e.g. A4), it overrides it."),
+        value_type=DataGridRow(
+            title=u"Paper Format",
+            schema=IPaperFormat),
+        required=False,
+        default=[],
+    )
+
+    directives.widget(
+        "template_format_mapping",
+        DataGridWidgetFactory,
+        allow_insert=True,
+        allow_delete=True,
+        allow_reorder=True,
+        auto_append=True)
+    template_format_mapping = schema.List(
+        title=_(u"Template Format Mapping"),
+        description=_(
+            u"Map report templates to default paper formats. "
+            u"When a template is selected, the mapped format "
+            u"is automatically applied."),
+        value_type=DataGridRow(
+            title=u"Mapping",
+            schema=ITemplateFormatMapping),
+        required=False,
+        default=[],
+    )
+
     ###
     # Fieldsets
     ###
@@ -151,6 +260,8 @@ class IImpressControlPanel(model.Schema):
         label=_(u"Report Settings"),
         fields=[
             "report_logo",
+            "paperformats",
+            "template_format_mapping",
             "footer",
         ],
     )

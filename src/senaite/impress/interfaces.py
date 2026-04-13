@@ -46,6 +46,10 @@ class IReportView(Interface):
         """Returns the URL of the report logo
         """
 
+    def get_page_margins():
+        """Returns per-template margin overrides as a dict
+        """
+
 
 class IMultiReportView(Interface):
     """Multi Report View
@@ -53,6 +57,10 @@ class IMultiReportView(Interface):
 
     def get_report_logo_url():
         """Returns the URL of the report logo
+        """
+
+    def get_page_margins():
+        """Returns per-template margin overrides as a dict
         """
 
 

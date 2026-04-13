@@ -14,4 +14,15 @@
       handler="senaite.impress.upgrades.v02_07_000.import_report_logo_registry"
       profile="senaite.impress:default" />
 
+  <!-- Import registry for custom paper formats -->
+  <genericsetup:upgradeStep
+      title="Import registry"
+      description="Register custom paper formats and
+                   template format mapping"
+      sortkey="3"
+      source="2701"
+      destination="2702"
+      handler="senaite.impress.upgrades.v02_07_000.import_paperformats_registry"
+      profile="senaite.impress:default" />
+
 </configure>

@@ -174,14 +174,22 @@ class AjaxPublishView(PublishView):
                 continue
             custom_actions.append(adapter.get_action_data())
 
+        template = self.get_default_template()
+        mapping = self.get_template_format_mapping()
+
+        # Use mapped format for the default template if available
+        fmt = mapping.get(template,
+                          self.get_default_paperformat())
+
         config = {
-            "format": self.get_default_paperformat(),
+            "format": fmt,
             "orientation": self.get_default_orientation(),
-            "template": self.get_default_template(),
+            "template": template,
             "reload_after_reorder": self.get_reload_after_reorder(),
             "allow_save": self.get_allow_publish_save(),
             "allow_email": self.get_allow_publish_email(),
             "custom_actions": custom_actions,
+            "template_format_mapping": mapping,
         }
         return config
 
