@@ -16,7 +16,7 @@
           <!-- Header Right -->
           <td class="align-middle text-right">
             <img class="logo"
-                 tal:attributes="src string:++plone++senaite.core.static/images/senaite.svg"/>
+                 tal:attributes="src view/get_report_logo_url"/>
           </td>
         </tr>
       </table>

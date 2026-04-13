@@ -4,4 +4,14 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="senaite.impress">
 
+  <!-- Import registry for report logo field -->
+  <genericsetup:upgradeStep
+      title="Import registry"
+      description="Register report logo field"
+      sortkey="2"
+      source="2700"
+      destination="2701"
+      handler="senaite.impress.upgrades.v02_07_000.import_report_logo_registry"
+      profile="senaite.impress:default" />
+
 </configure>
