@@ -181,30 +181,55 @@ class SuperModel(BaseModel):
     def get_sorted_attachments(self, option="r"):
         """Return the sorted AR/AN Attachments with the given Report Option set
         """
-        ar_attachments = self.Attachment
-        an_attachments = [a for a in itertools.chain(*map(
-            lambda an: an.Attachment, self.Analyses))]
-        attachments = filter(lambda a: a.getReportOption() == option,
-                             ar_attachments + an_attachments)
-        return self.sort_attachments(attachments)
+        ar_attachments = self.Attachment or []
+        an_analyses = self.Analyses or []
+        an_attachments = []
+        for an in an_analyses:
+            an_att = an.Attachment
+            if an_att:
+                an_attachments.extend(an_att)
+        all_attachments = list(ar_attachments) + an_attachments
+        # Filter out attachments with stale catalog entries
+        valid = []
+        for a in all_attachments:
+            if a.brain is None:
+                logger.warn(
+                    "Skipping stale attachment UID=%s",
+                    getattr(a, "uid", "unknown"))
+                continue
+            try:
+                if a.getReportOption() == option:
+                    valid.append(a)
+            except Exception:
+                logger.warn(
+                    "Cannot read attachment UID=%s",
+                    getattr(a, "uid", "unknown"))
+        return self.sort_attachments(valid)
 
     def get_sorted_ar_attachments(self, option="r"):
-        """Return the sorted AR Attchments with the given Report Option set
+        """Return the sorted AR Attachments with the given Report Option set
         """
-        # AR attachments in the correct order
-        attachments = self.sort_attachments(self.Attachment)
-        # Return filtered list by report option
-        return filter(lambda a: a.getReportOption() == option, attachments)
+        ar_attachments = self.Attachment or []
+        valid = [a for a in ar_attachments if a.brain is not None]
+        attachments = self.sort_attachments(valid)
+        return filter(
+            lambda a: a.getReportOption() == option,
+            attachments,
+        )
 
     def get_sorted_an_attachments(self, option="r"):
-        """Return the sorted AN Attchments with the given Report Option set
+        """Return the sorted AN Attachments with the given Report Option set
         """
         attachments = []
-        for analysis in self.Analyses:
-            for attachment in self.sort_attachments(analysis.Attachment):
-                if attachment.getReportOption() != option:
+        for analysis in (self.Analyses or []):
+            an_att = analysis.Attachment or []
+            valid = [a for a in an_att if a.brain is not None]
+            for attachment in self.sort_attachments(valid):
+                try:
+                    if attachment.getReportOption() != option:
+                        continue
+                except Exception:
                     continue
-                # Append a tuples of analysis, attachment
                 attachments.append((analysis, attachment))
         return attachments
 
