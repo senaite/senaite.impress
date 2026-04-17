@@ -22,6 +22,8 @@ from bika.lims import api
 from senaite.impress.interfaces import IReportView
 from zope.interface import implements
 
+DEFAULT_LOGO = "++plone++senaite.core.static/images/senaite.svg"
+
 
 class ReportView(object):
     """Generic Report View
@@ -35,4 +37,18 @@ class ReportView(object):
         self.context = api.get_portal()
 
     def render(self, template, **kw):
-        raise NotImplementedError("Must be implemented by subclass")
+        raise NotImplementedError(
+            "Must be implemented by subclass")
+
+    def get_report_logo_url(self):
+        """Returns the URL of the report logo
+
+        Falls back to the default SENAITE logo if no custom
+        logo has been uploaded in the impress control panel.
+        """
+        report_logo = api.get_registry_record(
+            "senaite.impress.report_logo")
+        portal_url = api.get_portal().absolute_url()
+        if report_logo:
+            return "{}/@@report-logo".format(portal_url)
+        return "{}/{}".format(portal_url, DEFAULT_LOGO)

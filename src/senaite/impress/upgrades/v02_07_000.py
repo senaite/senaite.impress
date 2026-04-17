@@ -31,3 +31,12 @@ def upgrade(portal_setup):
     logger.info("Run all import steps from SENAITE IMPRESS ...")
     portal_setup.runAllImportStepsFromProfile(PROFILE_ID)
     logger.info("Run all import steps from SENAITE IMPRESS [DONE]")
+
+
+def import_report_logo_registry(portal_setup):
+    """Import registry to register report_logo field
+    """
+    logger.info("Import registry from SENAITE IMPRESS ...")
+    portal_setup.runImportStepFromProfile(
+        PROFILE_ID, "plone.app.registry")
+    logger.info("Import registry from SENAITE IMPRESS [DONE]")
