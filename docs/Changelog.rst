@@ -2,6 +2,7 @@
 ------------------
 
 - #165 Fix attachment lookup with stale catalog brains in report
+- #163 Allow custom report logo upload via control panel
 - #162 Fix rendering Error for Batch Labels
 - #161 Migrate ARReport to Dexterity
 - #160 Fix categories without SortKey are displayed first

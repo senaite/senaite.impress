@@ -42,10 +42,18 @@ class IReportView(Interface):
     """Single Report View
     """
 
+    def get_report_logo_url():
+        """Returns the URL of the report logo
+        """
+
 
 class IMultiReportView(Interface):
     """Multi Report View
     """
+
+    def get_report_logo_url():
+        """Returns the URL of the report logo
+        """
 
 
 class IPublisher(Interface):

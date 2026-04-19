@@ -20,13 +20,14 @@
 
 from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 from plone.app.registry.browser.controlpanel import RegistryEditForm
+from plone.autoform import directives
+from plone.formwidget.namedfile.widget import NamedFileFieldWidget
+from plone.supermodel import model
 from plone.z3cform import layout
 from senaite.impress import senaiteMessageFactory as _
 from senaite.impress.interfaces import ITemplateFinder
-from plone.supermodel import model
 from zope import schema
 from zope.component import getUtility
-from zope.interface import Interface
 from zope.interface import provider
 from zope.schema.interfaces import IContextAwareDefaultFactory
 
@@ -38,13 +39,14 @@ def default_templates(context):
     return [t[0] for t in templates]
 
 
-class IImpressControlPanel(Interface):
+class IImpressControlPanel(model.Schema):
     """Controlpanel Settings
     """
 
     templates = schema.List(
         title=_(u"Available Templates"),
-        description=_("Please choose the templates that can be selected"),
+        description=_(
+            "Please choose the templates that can be selected"),
         required=True,
         defaultFactory=default_templates,
         value_type=schema.Choice(
@@ -79,46 +81,65 @@ class IImpressControlPanel(Interface):
 
     footer = schema.Text(
         title=_(u"Footer Text"),
-        description=_("The footer text will be rendered on every PDF page "
-                      "and may contain arbitrary HTML"),
+        description=_(
+            "The footer text will be rendered on every PDF page "
+            "and may contain arbitrary HTML"),
         default=u"",
         required=False,
     )
 
     store_multireports_individually = schema.Bool(
         title=_(u"Store Multi-Report PDFs Individually"),
-        description=_("Store generated multi-report PDFs individually. "
-                      "Turn off to store the multi-report PDF only for the "
-                      "primary item of the report"),
+        description=_(
+            "Store generated multi-report PDFs individually. "
+            "Turn off to store the multi-report PDF only for "
+            "the primary item of the report"),
         default=True,
         required=False,
     )
 
     developer_mode = schema.Bool(
         title=_(u"Developer Mode"),
-        description=_("Returns the raw HTML in the report preview."),
+        description=_(
+            "Returns the raw HTML in the report preview."),
         default=False,
         required=False,
     )
 
     allow_pdf_download = schema.Bool(
         title=_(u"Allow PDF download"),
-        description=_(u"Allow direct download of the generated report"),
+        description=_(
+            u"Allow direct download of the generated report"),
         default=False,
         required=False,
     )
 
     allow_pdf_email_share = schema.Bool(
         title=_(u"Allow PDF email share"),
-        description=_(u"Allow to share the generated PDF directly via email"),
+        description=_(
+            u"Allow to share the generated PDF directly "
+            u"via email"),
         default=False,
         required=False,
     )
 
     reload_after_reorder = schema.Bool(
         title=_(u"Reload after reorder"),
-        description=_(u"Reload report automatically when items order changed"),
+        description=_(
+            u"Reload report automatically when items "
+            u"order changed"),
         default=False,
+        required=False,
+    )
+
+    # Use NamedFileFieldWidget to avoid PIL errors
+    # (same pattern as site_logo in senaite.core)
+    directives.widget("report_logo", NamedFileFieldWidget)
+    report_logo = schema.Bytes(
+        title=_(u"Report Logo"),
+        description=_(
+            u"Custom logo to display in report headers. "
+            u"If not set, the default SENAITE logo is used."),
         required=False,
     )
 
@@ -128,8 +149,8 @@ class IImpressControlPanel(Interface):
     model.fieldset(
         "report_settings",
         label=_(u"Report Settings"),
-        # description=_(""),
         fields=[
+            "report_logo",
             "footer",
         ],
     )
@@ -137,7 +158,6 @@ class IImpressControlPanel(Interface):
     model.fieldset(
         "advanced",
         label=_(u"Advanced"),
-        # description=_(""),
         fields=[
             "reload_after_reorder",
             "allow_pdf_download",
