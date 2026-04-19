@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #165 Fix attachment lookup with stale catalog brains in report
 - #163 Allow custom report logo upload via control panel
 - #162 Fix rendering Error for Batch Labels
 - #161 Migrate ARReport to Dexterity
