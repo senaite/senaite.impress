@@ -178,35 +178,68 @@ class SuperModel(BaseModel):
 
         return out
 
-    def get_sorted_attachments(self, option="r"):
-        """Return the sorted AR/AN Attachments with the given Report Option set
+    def get_attachment_objects(self, obj):
+        """Resolve attachment UIDs to full objects.
+
+        Bypasses the catalog lookup to avoid issues with
+        attachments that are not indexed in the primary catalog
+        but exist in the ZODB.
         """
-        ar_attachments = self.Attachment
-        an_attachments = [a for a in itertools.chain(*map(
-            lambda an: an.Attachment, self.Analyses))]
-        attachments = filter(lambda a: a.getReportOption() == option,
-                             ar_attachments + an_attachments)
-        return self.sort_attachments(attachments)
+        uids = obj.getAttachment() or []
+        attachments = []
+        for uid in uids:
+            if not api.is_uid(uid):
+                uid = api.get_uid(uid)
+            try:
+                att = api.get_object_by_uid(uid)
+                attachments.append(att)
+            except api.APIError:
+                logger.warn(
+                    "Cannot resolve attachment UID=%s", uid)
+        return attachments
+
+    def get_sorted_attachments(self, option="r"):
+        """Return the sorted AR/AN Attachments with the
+        given Report Option set
+        """
+        instance = self.instance
+        ar_attachments = self.get_attachment_objects(instance)
+        an_attachments = []
+        for an in instance.getAnalyses(full_objects=True):
+            an_attachments.extend(
+                self.get_attachment_objects(an))
+        attachments = ar_attachments + an_attachments
+        filtered = [
+            a for a in attachments
+            if a.getReportOption() == option
+        ]
+        return self.sort_attachments(filtered)
 
     def get_sorted_ar_attachments(self, option="r"):
-        """Return the sorted AR Attchments with the given Report Option set
+        """Return the sorted AR Attachments with the given
+        Report Option set
         """
-        # AR attachments in the correct order
-        attachments = self.sort_attachments(self.Attachment)
-        # Return filtered list by report option
-        return filter(lambda a: a.getReportOption() == option, attachments)
+        instance = self.instance
+        attachments = self.get_attachment_objects(instance)
+        attachments = self.sort_attachments(attachments)
+        return [
+            a for a in attachments
+            if a.getReportOption() == option
+        ]
 
     def get_sorted_an_attachments(self, option="r"):
-        """Return the sorted AN Attchments with the given Report Option set
+        """Return the sorted AN Attachments with the given
+        Report Option set
         """
-        attachments = []
-        for analysis in self.Analyses:
-            for attachment in self.sort_attachments(analysis.Attachment):
-                if attachment.getReportOption() != option:
+        instance = self.instance
+        result = []
+        for an in instance.getAnalyses(full_objects=True):
+            attachments = self.get_attachment_objects(an)
+            for att in self.sort_attachments(attachments):
+                if att.getReportOption() != option:
                     continue
-                # Append a tuples of analysis, attachment
-                attachments.append((analysis, attachment))
-        return attachments
+                result.append((an, att))
+        return result
 
     def sort_attachments(self, attachments=[]):
         """Attachment sorter

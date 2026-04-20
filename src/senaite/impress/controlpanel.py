@@ -31,7 +31,6 @@ from senaite.impress import senaiteMessageFactory as _
 from senaite.impress.interfaces import ITemplateFinder
 from zope import schema
 from zope.component import getUtility
-from zope.interface import Interface
 from zope.interface import provider
 from zope.schema.interfaces import IContextAwareDefaultFactory
 
