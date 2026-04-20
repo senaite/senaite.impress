@@ -33,6 +33,7 @@ from zope import schema
 from zope.component import getUtility
 from zope.interface import provider
 from zope.schema.interfaces import IContextAwareDefaultFactory
+from zope.interface import Interface
 
 
 @provider(IContextAwareDefaultFactory)
