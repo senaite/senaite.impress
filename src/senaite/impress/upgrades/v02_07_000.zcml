@@ -4,11 +4,20 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="senaite.impress">
 
+  <!-- Import registry for custom paper formats -->
+  <genericsetup:upgradeStep
+      title="Import registry"
+      description="Register custom paper formats and
+                   template format mapping"
+      source="2701"
+      destination="2702"
+      handler="senaite.impress.upgrades.v02_07_000.import_paperformats_registry"
+      profile="senaite.impress:default" />
+
   <!-- Import registry for report logo field -->
   <genericsetup:upgradeStep
       title="Import registry"
       description="Register report logo field"
-      sortkey="2"
       source="2700"
       destination="2701"
       handler="senaite.impress.upgrades.v02_07_000.import_report_logo_registry"

@@ -52,3 +52,18 @@ class ReportView(object):
         if report_logo:
             return "{}/@@report-logo".format(portal_url)
         return "{}/{}".format(portal_url, DEFAULT_LOGO)
+
+    def get_page_margins(self):
+        """Returns per-template margin overrides
+
+        Override this method in add-on report views to provide
+        custom margins for specific templates.
+
+        Returns a dict with any combination of:
+            margin_top, margin_right, margin_bottom, margin_left
+
+        Only keys present in the returned dict will override
+        the cascade (paperformat defaults -> registry globals).
+        Return an empty dict to use the default cascade.
+        """
+        return {}

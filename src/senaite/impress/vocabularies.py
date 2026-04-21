@@ -18,6 +18,7 @@
 # Copyright 2018-2025 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.lims import api
 from senaite.impress import config
 from senaite.impress import senaiteMessageFactory as _
 from senaite.impress.interfaces import ITemplateFinder
@@ -42,11 +43,31 @@ TemplateVocabularyFactory = TemplateVocabulary()  # noqa
 @implementer(IVocabularyFactory)
 class PaperformatVocabulary(object):
     def __call__(self, context):
-        # XXX make paperformats configurable
+        formats = dict(config.PAPERFORMATS)
+
+        # merge custom formats from the registry
+        custom = api.get_registry_record(
+            "senaite.impress.paperformats")
+        if custom:
+            for record in custom:
+                key = record.get("key")
+                if not key:
+                    continue
+                formats[key] = {
+                    "name": record.get("title", key),
+                    "page_width": record.get(
+                        "page_width", 210.0),
+                    "page_height": record.get(
+                        "page_height", 297.0),
+                }
+
         items = []
-        for k, v in config.PAPERFORMATS.items():
-            title = "{} {}x{}mm".format(k, v["page_width"], v["page_height"])
-            items.append(SimpleTerm(k, v, title))
+        for k, v in formats.items():
+            title = "{} {}x{}mm".format(
+                v.get("name", k),
+                v["page_width"],
+                v["page_height"])
+            items.append(SimpleTerm(k, k, title))
         return SimpleVocabulary(items)
 
 PaperformatVocabularyFactory = PaperformatVocabulary()  # noqa

@@ -68,6 +68,7 @@ class PublishController extends React.Component
       allow_save: yes
       allow_email: yes
       custom_actions: []
+      template_format_mapping: {}
       reload_after_reorder: no
       reload_required: no
 
@@ -437,6 +438,13 @@ class PublishController extends React.Component
       # These keys will be passed directly to the report in the `options` mapping
       option = @state.report_options
       option[name] = value
+
+    # Auto-select paper format when template changes
+    if name is "template"
+      mapping = @state.template_format_mapping or {}
+      if mapping[value]
+        option.format = mapping[value]
+        console.info "Auto-selected format: #{option.format}"
 
     # Reload the whole report
     @setState option, @loadReports

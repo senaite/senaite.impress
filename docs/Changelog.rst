@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #164 Allow to define custom paperformats per template
 - #165 Fix attachment lookup with stale catalog brains in report
 - #163 Allow custom report logo upload via control panel
 - #162 Fix rendering Error for Batch Labels

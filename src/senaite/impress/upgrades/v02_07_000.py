@@ -40,3 +40,12 @@ def import_report_logo_registry(portal_setup):
     portal_setup.runImportStepFromProfile(
         PROFILE_ID, "plone.app.registry")
     logger.info("Import registry from SENAITE IMPRESS [DONE]")
+
+
+def import_paperformats_registry(portal_setup):
+    """Import registry for custom paper formats and template mapping
+    """
+    logger.info("Import registry from SENAITE IMPRESS ...")
+    portal_setup.runImportStepFromProfile(
+        PROFILE_ID, "plone.app.registry")
+    logger.info("Import registry from SENAITE IMPRESS [DONE]")
