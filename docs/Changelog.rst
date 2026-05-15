@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #166 Resolve Laboratory from `setup` after DX migration in senaite.core
 - #164 Allow to define custom paperformats per template
 - #165 Fix attachment lookup with stale catalog brains in report
 - #163 Allow custom report logo upload via control panel

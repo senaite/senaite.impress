@@ -96,7 +96,7 @@ class SendPDF(CustomAction):
     def laboratory(self):
         """Laboratory object from the LIMS setup
         """
-        return api.get_setup().laboratory
+        return api.get_senaite_setup().laboratory
 
     def is_sample(self, obj):
         """Check if the given object is a sample
