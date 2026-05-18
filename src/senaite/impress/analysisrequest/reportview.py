@@ -147,7 +147,9 @@ class ReportView(Base):
     @property
     @returns_super_model
     def laboratory(self):
-        return self.setup.laboratory
+        # Laboratory was migrated to Dexterity in senaite.core 2.7 and
+        # now lives under `portal.setup` instead of `portal.bika_setup`.
+        return api.get_senaite_setup().laboratory
 
     @property
     def current_user(self):
