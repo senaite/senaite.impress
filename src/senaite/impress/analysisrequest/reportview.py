@@ -151,6 +151,21 @@ class ReportView(Base):
         # now lives under `portal.setup` instead of `portal.bika_setup`.
         return api.get_senaite_setup().laboratory
 
+    def get_accreditation_logo_url(self):
+        """Returns the URL of the laboratory's accreditation body logo
+
+        The laboratory was migrated to Dexterity in senaite.core 2.7, so the
+        logo is a `NamedBlobImage` served through the standard `@@images`
+        view instead of an Archetypes image with an `absolute_url`.
+
+        :returns: the accreditation logo URL, or None if no logo is set
+        """
+        laboratory = api.get_senaite_setup().laboratory
+        if not laboratory.getAccreditationBodyLogo():
+            return None
+        return "{}/@@images/accreditation_body_logo".format(
+            api.get_url(laboratory))
+
     @property
     def current_user(self):
         user = api.get_current_user()
