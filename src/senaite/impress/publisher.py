@@ -145,7 +145,12 @@ class Publisher(object):
 
     @synchronized(max_connections=2)
     def url_fetcher(self, url):
-        """Fetches internal URLs by path and not via an external request.
+        """Fetch internal URLs by path instead of via an external request.
+
+        Browser views such as ``@@images`` handle parts of their paths
+        dynamically. Therefore, the owning content object is used when checking
+        whether an image resource is local, while the complete path is passed to
+        the authenticated subrequest.
 
         N.B. Multiple calls to this method might exhaust the available threads
              of the server, which causes a hanging instance.
@@ -156,14 +161,19 @@ class Publisher(object):
 
         logger.info("Fetching URL '{}' for WeasyPrint".format(url))
 
-        # get the pyhsical path from the URL
         request = api.get_request()
+        portal = api.get_portal()
+
         host = request.get_header("HOST")
         path = "/".join(request.physicalPathFromURL(url))
 
-        # fetch the object by sub-request
-        portal = api.get_portal()
-        context = portal.restrictedTraverse(path, None)
+        # The final field segment after @@images is handled dynamically by the
+        # images browser view and might not resolve with restrictedTraverse.
+        traverse_path = path
+        if "/@@images/" in path:
+            traverse_path = path.split("/@@images/", 1)[0]
+
+        context = portal.restrictedTraverse(traverse_path, None)
 
         if context is None or (host and host not in url):
             logger.info("External URL, delegate to default URL fetcher...")
@@ -171,22 +181,24 @@ class Publisher(object):
 
         logger.info("Local URL, fetching data by path '{}'".format(path))
 
-        # get the data via an authenticated subrequest
+        # Fetch the local resource through an authenticated Zope subrequest.
         response = subrequest(path)
 
-        # Prepare the return data as required by WeasyPrint
         string = response.getBody()
-        filename = url.split("/")[-1]
-        mime_type = mimetypes.guess_type(url)[0]
-        redirected_url = url
+        filename = url.rstrip("/").split("/")[-1]
+
+        # Dynamic URLs such as @@images/accreditation_body_logo have no file
+        # extension, so prefer the response's actual Content-Type.
+        mime_type = response.getHeader("Content-Type")
+        if not mime_type:
+            mime_type = mimetypes.guess_type(url)[0]
 
         return {
             "string": string,
             "filename": filename,
             "mime_type": mime_type,
-            "redirected_url": redirected_url,
+            "redirected_url": url,
         }
-
     def write_png(self, html, resolution=96):
         """Write a PNG from the given HTML
         """
