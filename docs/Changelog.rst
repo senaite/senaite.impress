@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #170 Extend senaite.core's buildout.base.cfg instead of duplicating it
 - #167 Fix accreditation body logo rendering after Laboratory DX migration
 - #166 Resolve Laboratory from `setup` after DX migration in senaite.core
 - #164 Allow to define custom paperformats per template
