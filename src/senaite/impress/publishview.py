@@ -28,6 +28,7 @@ from plone.resource.utils import iterDirectoriesOfType
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from senaite.app.supermodel.interfaces import ISuperModel
+from senaite.core.permissions.sample import can_publish
 from senaite.impress import logger
 from senaite.impress.config import PAPERFORMATS
 from senaite.impress.interfaces import IGroupKeyProvider
@@ -531,13 +532,20 @@ class PublishView(BrowserView):
 
     def get_allow_publish_save(self, default=True):
         """Allow publish save
+
+        Note storing a report publishes the samples it contains, so the
+        button is only offered to users that are allowed to do so
         """
-        return not self.is_printview()
+        if self.is_printview():
+            return False
+        return can_publish(self.context)
 
     def get_allow_publish_email(self, default=True):
         """Allow publish email
         """
-        return not self.is_printview()
+        if self.is_printview():
+            return False
+        return can_publish(self.context)
 
     def get_default_template(self, default="senaite.lims:Default.pt"):
         """Returns the configured default template from the registry
