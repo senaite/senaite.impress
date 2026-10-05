@@ -28,6 +28,7 @@ from string import Template
 import DateTime
 from bika.lims import POINTS_OF_CAPTURE
 from bika.lims import api
+from senaite.core.api.choices import get_label as get_choice_label
 from bika.lims.interfaces import IInternalUse
 from bika.lims.utils import get_link
 from bika.lims.utils.analysis import format_interim
@@ -439,6 +440,13 @@ class ReportView(Base):
             if not attachment:
                 return None
             value = self.get_attachment_link(attachment)
+
+        else:
+            # A condition offering choices stores the key of the one
+            # that was picked. The report shows what the person picked,
+            # which for a condition written without keys is the same
+            # string.
+            value = get_choice_label(condition.get("choices"), value)
 
         return api.to_utf8(str(value))
 
