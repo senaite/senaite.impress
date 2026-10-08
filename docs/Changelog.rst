@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #175 Rework the default report for ISO/IEC 17025 reporting requirements
 - #170 Extend senaite.core's buildout.base.cfg instead of duplicating it
 - #167 Fix accreditation body logo rendering after Laboratory DX migration
 - #166 Resolve Laboratory from `setup` after DX migration in senaite.core
