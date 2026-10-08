@@ -21,7 +21,10 @@
    .report .mono { font-family: "IBM Plex Mono", "DejaVu Sans Mono", monospace; }
    .report .symbol { font-family: "DejaVu Sans", "IBM Plex Sans", sans-serif; }
    .report a { color: inherit; text-decoration: none; }
-   .report h1, .report h2, .report h3 { margin: 0; }
+   .report h1, .report h2, .report h3 { margin: 0 0 1.5mm 0; font-weight: 600; color: #0f4c5c; }
+   .report h1 { font-size: 11pt; }
+   .report h2 { font-size: 9pt; }
+   .report h3 { font-size: 8.5pt; }
    .report p { margin: 0; }
    .report .label {
      font-size: 6.4pt;
@@ -85,7 +88,7 @@
    .report .sample-band .barcode object { height: 8.5mm; width: auto; }
    .report .sample-band .barcode .barcode-hri { display: none; }
    .report .sample-band .qrcode-box img { width: 13mm; height: 13mm; }
-   .report table.sample-info { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+   .report table.sample-info { width: 100%; border-collapse: collapse; margin-top: 2mm; table-layout: fixed; }
    .report table.sample-info td { width: 33.3%; border: none; padding: 0 3mm 1.8mm 3mm; vertical-align: top; }
    .report table.sample-info .label { display: block; }
 
@@ -152,7 +155,7 @@
    .report table.legend td { border: none; padding: 0 3mm .8mm 0; vertical-align: top; }
    .report table.legend td.symbol { color: #0f4c5c; white-space: nowrap; }
    .report .section-release { page-break-inside: avoid; }
-   .report table.signatures { width: 100%; border-collapse: collapse; }
+   .report table.signatures { width: 100%; border-collapse: collapse; table-layout: fixed; }
    .report table.signatures td { width: 33.3%; border: none; padding: 0 6mm 2mm 0; vertical-align: bottom; }
    .report table.signatures img.signature { height: 12mm; width: auto; display: block; }
    .report table.signatures .who { font-weight: 600; border-top: .5pt solid #1b2328; padding-top: 1mm; }

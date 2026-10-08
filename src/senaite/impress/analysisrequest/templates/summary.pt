@@ -50,6 +50,11 @@
 
       <!-- Sample details, only filled values -->
       <table class="sample-info" tal:condition="info">
+        <colgroup>
+          <col style="width:33.3%"/>
+          <col style="width:33.3%"/>
+          <col style="width:33.4%"/>
+        </colgroup>
         <tr tal:repeat="row python:view.group_into_chunks(info, 3)">
           <td tal:repeat="item row">
             <span class="label" tal:content="item/label">Label</span>

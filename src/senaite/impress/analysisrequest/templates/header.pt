@@ -1,5 +1,5 @@
 <tal:t define="model python:view.model;
-               provisional python:any(map(lambda m: m.is_provisional(), view.collection));"
+               provisional view/is_provisional_report;"
        i18n:domain="senaite.impress">
 
   <div class="row section-masthead no-gutters">

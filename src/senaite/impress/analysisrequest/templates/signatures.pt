@@ -2,6 +2,7 @@
                show_signatures python:release_mode in ['signatures', 'both'];
                show_statement python:release_mode in ['electronic', 'both'];
                responsibles view/get_responsibles;"
+       condition="python:show_statement or (show_signatures and responsibles)"
        i18n:domain="senaite.impress">
 
   <div class="row section-block section-release no-gutters">
@@ -11,6 +12,11 @@
       <!-- Verifying persons -->
       <table class="signatures"
              tal:condition="python:show_signatures and responsibles">
+        <colgroup>
+          <col style="width:33.3%"/>
+          <col style="width:33.3%"/>
+          <col style="width:33.4%"/>
+        </colgroup>
         <tr tal:repeat="row python:view.group_into_chunks(responsibles, 3)">
           <td tal:repeat="person row">
             <img class="signature"

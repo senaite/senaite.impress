@@ -118,6 +118,12 @@ def get_capture_date(analysis):
     return analysis.getResultCaptureDate()
 
 
+def get_verifier_ids(analysis):
+    """Returns the user IDs of the persons who verified the analysis
+    """
+    return filter(None, analysis.getVerificators() or [])
+
+
 def is_same_day(date1, date2):
     """Checks if both DateTime objects fall on the same calendar day
     """
@@ -580,8 +586,12 @@ class ReportView(Base):
         """
         if not self.model:
             return 1
-        reports = filter(is_results_report, self.model.instance.objectValues())
-        return len(reports) + 1
+        revision = self.__dict__.get("_report_revision")
+        if revision is None:
+            objs = self.model.instance.objectValues()
+            revision = len(filter(is_results_report, objs)) + 1
+            self._report_revision = revision
+        return revision
 
     def get_report_id(self):
         """Returns the identifier of the report, e.g. `W-0001-R1`
@@ -620,8 +630,17 @@ class ReportView(Base):
 
     def get_reported_analyses(self, model_or_collection):
         """Returns the analyses that are visible in the report
+
+        The analyses of a single sample are cached for the lifetime of the
+        view, because several sections of the report need them.
         """
-        return self.get_analyses_by(model_or_collection)
+        if not ISuperModel.providedBy(model_or_collection):
+            return self.get_analyses_by(model_or_collection)
+        cache = self.__dict__.setdefault("_reported_analyses", {})
+        uid = model_or_collection.UID()
+        if uid not in cache:
+            cache[uid] = self.get_analyses_by(model_or_collection)
+        return cache[uid]
 
     def get_sampler_fullname(self, model):
         """Returns the full name of the sampler of the sample
@@ -697,15 +716,27 @@ class ReportView(Base):
         if not model.is_out_of_range(analysis):
             return u""
         result = api.to_float(analysis.getResult(), None)
-        maximum = api.to_float(analysis.getResultsRange().get("max"), None)
-        if None not in [result, maximum] and result > maximum:
+        if result is None:
+            # e.g. a multi choice result, the direction is unknown
+            return u""
+        specs = analysis.getResultsRange()
+        maximum = api.to_float(specs.get("max"), None)
+        if maximum is not None and result > maximum:
             return SYMBOL_ABOVE_RANGE
-        return SYMBOL_BELOW_RANGE
+        minimum = api.to_float(specs.get("min"), None)
+        if minimum is not None and result < minimum:
+            return SYMBOL_BELOW_RANGE
+        return u""
 
     def is_below_detection_limit(self, analysis):
         """Checks if the result is below the lower detection limit
         """
         return analysis.instance.isBelowLowerDetectionLimit()
+
+    def is_above_detection_limit(self, analysis):
+        """Checks if the result is above the upper detection limit
+        """
+        return analysis.instance.isAboveUpperDetectionLimit()
 
     def any_analysis(self, predicate):
         """Checks if the predicate is true for any reported analysis
@@ -730,7 +761,10 @@ class ReportView(Base):
                 _("Result above or below the specified range")))
         if self.any_analysis(self.is_below_detection_limit):
             items.append((u"<", _(
-                "Result below the limit of detection; the limit is given")))
+                "Result below the lower detection limit; the limit is given")))
+        if self.any_analysis(self.is_above_detection_limit):
+            items.append((u">", _(
+                "Result above the upper detection limit; the limit is given")))
         if self.any_analysis(lambda an: an.isRetest()):
             items.append((u"RT", _("Result of a retest")))
         if self.any_sample(self.has_uncertainties):
@@ -790,13 +824,21 @@ class ReportView(Base):
         Falls back to the department managers when no verifier is known,
         e.g. for samples that were verified automatically.
         """
-        verifiers = chain(*map(lambda model: model.verifiers,
-                               self.collection))
-        userids = self.uniquify_items(map(lambda u: u.getId(), verifiers))
-        if userids:
-            return map(self.get_person_info, map(api.get_user, userids))
+        analyses = self.get_reported_analyses(self.collection)
+        userids = chain(*map(get_verifier_ids, analyses))
+        users = filter(None, map(api.get_user, self.uniquify_items(userids)))
+        if users:
+            return map(self.get_person_info, users)
         managers = chain(*map(lambda model: model.managers, self.collection))
         return map(self.get_manager_info, self.uniquify_items(managers))
+
+    def is_provisional_report(self):
+        """Checks if the report contains results that are not verified yet
+
+        Invalidated samples were verified, they are flagged by the alerts.
+        """
+        return self.any_sample(
+            lambda model: model.is_provisional() and not model.is_invalid())
 
     def get_publisher_fullname(self):
         """Returns the full name of the user publishing the report

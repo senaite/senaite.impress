@@ -1,5 +1,4 @@
 <tal:t define="collection python:view.collection;
-               outofrange_symbol string:⚠;
                analyses_by_poc python:view.get_analyses_by_poc(collection);
                categories_by_poc python:view.get_categories_by_poc(collection)"
        i18n:domain="senaite.impress">
@@ -61,12 +60,9 @@
                               tal:content="structure python:model.get_formatted_unit(analysis)"/>
                       </td>
                       <td class="text-left">
-                        <span tal:condition="python:model.is_out_of_range(analysis)"
-                              class="font-weight-normal">
-                          <span class="outofrange text-danger"
-                                style="font-family:Lucida Console, Courier, monospace;"
-                                tal:content="outofrange_symbol">
-                          </span>
+                        <span class="symbol"
+                              style="color:#b42318;"
+                              tal:content="python:view.get_out_of_range_symbol(model, analysis)">
                         </span>
                       </td>
                     </tal:analysis>
