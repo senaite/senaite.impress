@@ -1,25 +1,36 @@
-<tal:t define="collection view/collection;"
+<tal:t define="collection view/collection;
+               invalid python:filter(lambda m: m.is_invalid(), collection);
+               provisional python:filter(lambda m: m.is_provisional() and not m.is_invalid(), collection);"
+       condition="python:invalid or provisional"
        i18n:domain="senaite.impress">
 
   <div class="row section-alerts no-gutters">
     <div class="w-100">
-      <tal:model repeat="model collection">
-        <div class="alert alert-danger" tal:condition="model/is_invalid">
-          <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
-          <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
-          <tal:invalidreport tal:define="child python:model.getRetest()"
-                             tal:condition="python:child">
-            <span i18n:translate="">This Analysis request has been replaced by</span>
-            <a tal:attributes="href child/absolute_url"
-               tal:content="child/getId"></a>
-          </tal:invalidreport>
-        </div>
 
-        <div class="alert alert-info" tal:condition="model/is_provisional">
-          <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
-          <div i18n:translate="">Provisional report</div>
+      <!-- Invalidated samples -->
+      <div class="alert-line" tal:condition="invalid">
+        <b i18n:translate="">Invalid Report</b>
+        <div tal:repeat="model invalid">
+          <b class="mono" tal:content="string:${model/getId}:">W-0001:</b>
+          <span i18n:translate="">This sample has been invalidated due to erroneously published results.</span>
+          <tal:retest define="retest python:model.getRetest()"
+                      condition="retest">
+            <span i18n:translate="">It has been replaced by</span>
+            <b class="mono" tal:content="string:${retest/getId}.">W-0001-R01.</b>
+          </tal:retest>
         </div>
-      </tal:model>
+      </div>
+
+      <!-- Samples with provisional results -->
+      <div class="alert-line provisional" tal:condition="provisional">
+        <b i18n:translate="">Provisional Report</b>
+        <div>
+          <span i18n:translate="">The results of the following samples are provisional and not yet verified:</span>
+          <b class="mono"
+             tal:content="python:', '.join(map(lambda m: m.getId(), provisional))">W-0001, W-0002</b>
+        </div>
+      </div>
+
     </div>
   </div>
 

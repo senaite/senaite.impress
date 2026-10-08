@@ -42,6 +42,46 @@
           Display the analysis conditions with the 'Report' option selected as footnotes below the results table.
         </small>
       </div>
+      <!-- Sample code -->
+      <div class="mb-3"
+           tal:define="sample_code python:view.get_report_option(options, 'sample_code')">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="sample_code" i18n:translate="">
+              Sample Code
+            </label>
+          </div>
+          <select class="custom-select" name="sample_code" id="sample_code">
+            <option tal:repeat="choice python:view.get_choices('senaite.impress.vocabularies.SampleCodes')"
+                    tal:attributes="value choice/value;
+                                    selected python:choice['value'] == sample_code or None"
+                    tal:content="choice/title">Barcode</option>
+          </select>
+        </div>
+        <small class="form-text text-muted" i18n:translate="">
+          Machine readable code shown next to each sample
+        </small>
+      </div>
+      <!-- Report release -->
+      <div class="mb-3"
+           tal:define="release_mode python:view.get_report_option(options, 'release_mode')">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="release_mode" i18n:translate="">
+              Release
+            </label>
+          </div>
+          <select class="custom-select" name="release_mode" id="release_mode">
+            <option tal:repeat="choice python:view.get_choices('senaite.impress.vocabularies.ReleaseModes')"
+                    tal:attributes="value choice/value;
+                                    selected python:choice['value'] == release_mode or None"
+                    tal:content="choice/title">Signatures</option>
+          </select>
+        </div>
+        <small class="form-text text-muted" i18n:translate="">
+          Show the signatures of the verifying persons, an electronic release statement, or both
+        </small>
+      </div>
       <!-- Attachments per row -->
       <div class="mb-3">
         <div class="input-group">

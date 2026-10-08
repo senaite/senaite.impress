@@ -200,6 +200,29 @@ class IImpressControlPanel(model.Schema):
         required=False,
     )
 
+    sample_code = schema.Choice(
+        title=_(u"Sample Code"),
+        description=_(
+            u"Machine readable code rendered next to each sample "
+            u"in the report. The code can be changed for a single "
+            u"publication in the report options."),
+        vocabulary="senaite.impress.vocabularies.SampleCodes",
+        default="barcode",
+        required=True,
+    )
+
+    release_mode = schema.Choice(
+        title=_(u"Report Release"),
+        description=_(
+            u"How the release of the report is shown: signatures of "
+            u"the verifying persons, a statement that the report was "
+            u"released electronically, or both. The mode can be "
+            u"changed for a single publication in the report options."),
+        vocabulary="senaite.impress.vocabularies.ReleaseModes",
+        default="signatures",
+        required=True,
+    )
+
     # Use NamedFileFieldWidget to avoid PIL errors
     # (same pattern as site_logo in senaite.core)
     directives.widget("report_logo", NamedFileFieldWidget)
@@ -260,6 +283,8 @@ class IImpressControlPanel(model.Schema):
         label=_(u"Report Settings"),
         fields=[
             "report_logo",
+            "sample_code",
+            "release_mode",
             "paperformats",
             "template_format_mapping",
             "footer",

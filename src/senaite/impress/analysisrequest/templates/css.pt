@@ -4,53 +4,189 @@
                page_width options/page_width|nothing;
                page_height options/page_height|nothing;
                content_width options/content_width|nothing;
-               content_height options/content_height|nothing;"
+               content_height options/content_height|nothing;
+               report_id python:view.get_report_id();
+               revision python:view.get_report_revision();
+               custom_footer python:view.get_footer_text();"
        i18n:domain="senaite.impress">
 
   <style type="text/css">
-   .report * { font: 9pt; }
-   .report h1 { font-size: 140%; }
-   .report h2 { font-size: 120%; }
-   .report h3 { font-size: 110%; }
-   .report .font-size-140 { font-size: 140%; }
-   .report .font-size-120 { font-size: 120%; }
-   .report .font-size-100 { font-size: 100%; }
-   .report .colon-after:after { content: ":"; }
-   .report address { margin: 1rem 0; }
-   .report table.noborder td, .report table.noborder th { border: none; }
-   .report table.nopadding td { padding: 0; }
-   .report table td.label { padding-right: 0.3rem; font-weight: bold; }
-   .report table { border-color: black; }
-   .report table td, .report table th { border-top: 1px solid black; border-bottom: 1px solid black; }
-   .report table th { border-bottom: 1px solid black; }
-   .report table.range-table td { padding: 0 0.3rem 0 0; border: none; }
-   .report .section-header h1 { font-size: 175%; }
-   .report .section-header img.logo { height: 30px; margin: 20px 0; }
-   .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
-   .report .section-results .methodtitle { font-size: 85%; }
-   .report .section-results .results_interims { font-size: 85%; }
-   .report .section-footer table td { border: none; }
+   .report {
+     font-family: "IBM Plex Sans", "DejaVu Sans", Arial, sans-serif;
+     font-size: 8.5pt;
+     line-height: 1.38;
+     color: #1b2328;
+   }
+   .report * { font-family: inherit; }
+   .report .mono { font-family: "IBM Plex Mono", "DejaVu Sans Mono", monospace; }
+   .report .symbol { font-family: "DejaVu Sans", "IBM Plex Sans", sans-serif; }
+   .report a { color: inherit; text-decoration: none; }
+   .report h1, .report h2, .report h3 { margin: 0; }
+   .report p { margin: 0; }
+   .report .label {
+     font-size: 6.4pt;
+     font-weight: 500;
+     letter-spacing: .07em;
+     text-transform: uppercase;
+     color: #5f6d75;
+   }
+   .report .section-masthead,
+   .report .section-info,
+   .report .section-alerts,
+   .report .section-sample,
+   .report .section-results,
+   .report .section-block { margin-bottom: 5mm; }
+
+   /* Masthead */
+   .report .section-masthead table { width: 100%; border-collapse: collapse; }
+   .report .section-masthead td { padding: 0; border: none; vertical-align: top; }
+   .report .section-masthead img.logo { max-height: 9mm; max-width: 45mm; }
+   .report .section-masthead h1 {
+     font-size: 16pt;
+     font-weight: 600;
+     color: #0f4c5c;
+     line-height: 1.1;
+   }
+   .report .section-masthead .report-id { font-size: 9.5pt; font-weight: 500; margin-top: 1mm; }
+   .report .section-masthead .issued { font-size: 7.5pt; color: #5f6d75; }
+   .report .accent-rule { height: 1.2pt; background: #0f4c5c; margin-top: 4mm; }
+
+   /* Client and report facts */
+   .report .section-info table.parties { width: 100%; border-collapse: collapse; }
+   .report .section-info table.parties > tbody > tr > td { width: 50%; padding: 0; border: none; vertical-align: top; }
+   .report .section-info .addr .name { font-weight: 600; }
+   .report .section-info table.facts { border-collapse: collapse; }
+   .report .section-info table.facts td { padding: 0 4mm .5mm 0; border: none; vertical-align: top; }
+   .report .section-info table.facts td.key { color: #5f6d75; white-space: nowrap; }
+   .report .section-info .accreditation { margin-top: 2mm; font-size: 6.6pt; color: #5f6d75; }
+   .report .section-info .accreditation img { max-height: 11mm; max-width: 24mm; margin-right: 2.5mm; vertical-align: middle; }
+
+   /* Alerts */
+   .report .section-alerts .alert-line {
+     border-left: 1.2mm solid #b42318;
+     background: #fbeceb;
+     padding: 1.5mm 3mm;
+     margin-bottom: 1.5mm;
+   }
+   .report .section-alerts .alert-line.provisional { border-left-color: #5f6d75; background: #eef3f4; }
+   .report .section-alerts .alert-line b { font-weight: 600; }
+
+   /* Sample header */
+   .report .section-sample { page-break-inside: avoid; page-break-after: avoid; margin-bottom: 2.5mm; }
+   .report .sample-band { width: 100%; border-collapse: collapse; background: #eef3f4; }
+   .report .sample-band td { border: none; padding: 2mm 3mm; vertical-align: middle; }
+   .report .sample-band td.ident { border-left: 1.2mm solid #0f4c5c; }
+   .report .sample-band td.code { text-align: right; width: 1%; white-space: nowrap; }
+   .report .sample-band .sample-id { font-size: 10pt; font-weight: 500; }
+   .report .sample-band .what { font-size: 8pt; color: #5f6d75; }
+   .report .sample-band .what b { color: #1b2328; font-weight: 500; }
+   .report .sample-band .barcode { display: inline-block; }
+   .report .sample-band .barcode img,
+   .report .sample-band .barcode object { height: 8.5mm; width: auto; }
+   .report .sample-band .barcode .barcode-hri { display: none; }
+   .report .sample-band .qrcode-box img { width: 13mm; height: 13mm; }
+   .report table.sample-info { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+   .report table.sample-info td { width: 33.3%; border: none; padding: 0 3mm 1.8mm 3mm; vertical-align: top; }
+   .report table.sample-info .label { display: block; }
+
+   /* Results */
+   .report .section-results { page-break-inside: auto; }
+   .report table.results { width: 100%; border-collapse: collapse; font-size: 8pt; }
+   .report table.results thead { display: table-header-group; }
+   .report table.results tr { page-break-inside: avoid; }
+   .report table.results th {
+     text-align: left;
+     font-size: 6.4pt;
+     font-weight: 500;
+     letter-spacing: .07em;
+     text-transform: uppercase;
+     color: #5f6d75;
+     padding: 0 2mm 1.2mm 0;
+     border: none;
+     border-bottom: .8pt solid #1b2328;
+     white-space: nowrap;
+   }
+   .report table.results td {
+     padding: 1mm 2mm 1mm 0;
+     border: none;
+     border-bottom: .4pt solid #cfd8dc;
+     vertical-align: baseline;
+   }
+   .report table.results .num { text-align: right; white-space: nowrap; }
+   .report table.results .unit { color: #5f6d75; white-space: nowrap; }
+   .report table.results .method { color: #5f6d75; font-size: 7.2pt; }
+   .report table.results tr.category td {
+     padding-top: 2.6mm;
+     border-bottom: none;
+     font-weight: 600;
+     font-size: 7.6pt;
+     color: #0f4c5c;
+     page-break-after: avoid;
+   }
+   .report table.results .accredited { display: inline-block; width: 3mm; color: #0f4c5c; font-size: 7pt; }
+   .report table.results sup { font-size: 6pt; line-height: 0; }
+   .report table.results tr.out-of-range td { font-weight: 600; }
+   .report table.results tr.out-of-range .result { color: #b42318; }
+   .report table.results .flag { color: #b42318; font-size: 6.5pt; padding-left: .8mm; }
+   .report table.results .retest { color: #5f6d75; font-size: 6pt; padding-left: .8mm; }
+   .report table.results .category-comment td { border-bottom: none; color: #5f6d75; font-size: 7pt; padding-top: 0; }
+   .report .footnotes { font-size: 7pt; color: #5f6d75; margin-top: 1.5mm; }
+   .report .footnotes .key { display: inline-block; width: 3.5mm; color: #1b2328; }
+
+   /* Closing blocks */
+   .report .section-block h2 {
+     font-size: 6.4pt;
+     font-weight: 500;
+     letter-spacing: .07em;
+     text-transform: uppercase;
+     color: #0f4c5c;
+     padding-bottom: 1mm;
+     margin-bottom: 1.6mm;
+     border-bottom: .5pt solid #cfd8dc;
+     page-break-after: avoid;
+   }
+   .report .section-block h3 { font-size: 7.6pt; font-weight: 600; margin: 1.5mm 0 .5mm 0; }
+   .report .section-block .remark { margin-bottom: 1.5mm; }
+   .report .section-block .remark-meta { font-size: 7pt; color: #5f6d75; }
+   .report table.legend { border-collapse: collapse; font-size: 7.4pt; }
+   .report table.legend td { border: none; padding: 0 3mm .8mm 0; vertical-align: top; }
+   .report table.legend td.symbol { color: #0f4c5c; white-space: nowrap; }
+   .report .section-release { page-break-inside: avoid; }
+   .report table.signatures { width: 100%; border-collapse: collapse; }
+   .report table.signatures td { width: 33.3%; border: none; padding: 0 6mm 2mm 0; vertical-align: bottom; }
+   .report table.signatures img.signature { height: 12mm; width: auto; display: block; }
+   .report table.signatures .who { font-weight: 600; border-top: .5pt solid #1b2328; padding-top: 1mm; }
+   .report table.signatures .role { font-size: 7pt; color: #5f6d75; }
+   .report .e-release { font-size: 7.4pt; background: #eef3f4; padding: 2mm 3mm; margin-top: 1mm; }
+   .report .section-fine { font-size: 6.8pt; color: #5f6d75; margin-bottom: 4mm; page-break-inside: avoid; }
+   .report .end-of-report {
+     text-align: center;
+     font-size: 6.6pt;
+     letter-spacing: .12em;
+     text-transform: uppercase;
+     color: #5f6d75;
+     border-top: .5pt solid #cfd8dc;
+     padding-top: 1.5mm;
+   }
+
+   /* Attachments */
+   .report .section-attachments h2 { font-size: 6.4pt; text-transform: uppercase; letter-spacing: .07em; color: #0f4c5c; }
+
+   /* Custom footer from the control panel, repeated on every page */
    .report .section-footer {
      position: fixed;
-     left: -20mm;
-     bottom: -20mm;
-     margin-left: 20mm;
-     margin-top: 10mm;
-     height: 20mm;
-     width: 100%;
-     text-align: left;
-     font-size: 9pt;
-   }
-   .report .section-footer #footer-line {
-     width: 100%;
-     height: 2mm;
-     border-top: 1px solid black;
+     left: 0;
+     right: 30mm;
+     bottom: -13mm;
+     height: 10mm;
+     font-size: 6.4pt;
+     color: #5f6d75;
    }
 
    <tal:block condition="python:content_width and content_height">
    <tal:block condition="python:all([content_width, content_height])"
-                 define="cw python:float(content_width);
-                         ch python:float(content_height);">
+              define="cw python:float(content_width);
+                      ch python:float(content_height);">
    /* Ensure that the images stay within the borders */
    .report .section-attachments img {
      max-width: <tal:t replace="python:'{:.2f}mm'.format(cw / attachments_per_row)"/>;
@@ -61,13 +197,46 @@
      max-height: <tal:t replace="python:'{:.2f}mm'.format(ch * 0.75)"/>;
    }
    </tal:block>
+   </tal:block>
+
+   /* Running header and footer in the page margins */
    @page {
+     @top-left {
+       vertical-align: bottom;
+       padding-bottom: 3mm;
+       font-family: "IBM Plex Sans", "DejaVu Sans", sans-serif;
+       font-size: 7pt;
+       color: #5f6d75;
+       content: <tal:t replace="python:view.get_css_string(view.laboratory.Title())"/>;
+     }
+     @top-right {
+       vertical-align: bottom;
+       padding-bottom: 3mm;
+       font-family: "IBM Plex Mono", "DejaVu Sans Mono", monospace;
+       font-size: 7pt;
+       color: #1b2328;
+       content: <tal:t replace="python:view.get_css_string(u'{} · Rev. {}'.format(report_id, revision))"/>;
+     }
+     @bottom-left {
+       vertical-align: top;
+       padding-top: 3mm;
+       font-family: "IBM Plex Sans", "DejaVu Sans", sans-serif;
+       font-size: 6.4pt;
+       color: #5f6d75;
+       content: <tal:t replace="python:view.get_css_string('' if custom_footer else view.get_laboratory_line())"/>;
+     }
      @bottom-right {
        vertical-align: top;
-       margin-top: 2mm;
-       font-size: 9pt;
+       padding-top: 3mm;
+       font-family: "IBM Plex Sans", "DejaVu Sans", sans-serif;
+       font-size: 6.4pt;
+       color: #5f6d75;
        content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
      }
+   }
+   @page :first {
+     @top-left { content: none; }
+     @top-right { content: none; }
    }
   </style>
 

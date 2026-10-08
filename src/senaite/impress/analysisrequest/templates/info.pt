@@ -1,114 +1,71 @@
 <tal:t define="model python:view.model;
+               collection view/collection;
                client model/Client;
-               contact model/Contact;
+               batch model/Batch;
                laboratory python:view.laboratory;"
        i18n:domain="senaite.impress">
 
   <div class="row section-info no-gutters">
     <div class="w-100">
-      <!-- Client Info -->
-      <table class="table table-sm table-condensed">
-        <colgroup>
-          <!-- Client Address -->
-          <col style="width: 40%;">
-          <!-- Lab Address -->
-          <col style="width: 40%">
-          <!-- Accreditation Logo and QR -->
-          <col style="width: 20%">
-        </colgroup>
+      <table class="parties">
         <tr>
+          <!-- Client address -->
           <td>
-            <address class="client-address">
-              <div class="client-name font-weight-bold">
-                <div tal:replace="client/Name|nothing"></div>
-              </div>
-              <div class="contact-fullname">
-                <div tal:replace="contact/Fullname|nothing"></div>
-              </div>
-              <div class="client-street">
-                <div tal:replace="client/PostalAddress/address|nothing"></div>
-              </div>
-              <span class="client-zip">
-                <div tal:replace="client/PostalAddress/zip|nothing"></div>
-              </span>
-              <span class="client-city">
-                <div tal:replace="client/PostalAddress/city|nothing"></div>
-              </span>
-              <div class="client-country">
-                <div tal:replace="client/PostalAddress/country|nothing"></div>
-              </div>
-              <div class="contact-email">
-                <a tal:content="contact/EmailAddress|nothing"
-                   tal:attributes="href string:mailto:${contact/EmailAddress}"></a>
-              </div>
-              <div class="contact-phone">
-                <div tal:replace="contact/Phone|nothing"></div>
-              </div>
-              <div class="contact-fax">
-                <div tal:replace="contact/Fax|nothing"></div>
-              </div>
-            </address>
-          </td>
-          <td>
-            <!-- Laboratory Info -->
-            <address class="laboratory-address">
-              <div class="lab-title font-weight-bold">
-                <div tal:replace="laboratory/title|nothing"/>
-              </div>
-              <div class="lab-supervisor" tal:condition="laboratory/Supervisor">
-                <span i18n:translate="">Supervisor</span>:
-                <div tal:replace="laboratory/Supervisor/Fullname|nothing"/>
-              </div>
-              <div class="lab-address">
-                <div class="lab-street">
-                  <div tal:replace="laboratory/PostalAddress/address|nothing"></div>
-                </div>
-                <span class="lab-zip">
-                  <div tal:replace="laboratory/PostalAddress/zip|nothing"></div>
-                </span>
-                <span class="lab-city">
-                  <div tal:replace="laboratory/PostalAddress/city|nothing"></div>
-                </span>
-                <div class="lab-country">
-                  <div tal:replace="laboratory/PostalAddress/country|nothing"></div>
-                </div>
-              </div>
-              <div class="lab-url">
-                <a tal:attributes="href laboratory/LabURL"
-                   tal:content="laboratory/LabURL"></a>
-              </div>
-            </address>
-          </td>
-          <td>
-            <div class="accreditation-logo text-left"
-                 tal:define="accredited laboratory/LaboratoryAccredited;
-                        accreditation_logo_url python:view.get_accreditation_logo_url()"
-                 tal:condition="accredited">
-              <img class="img-fluid"
-                   style="max-width:200px;"
-                   tal:condition="accreditation_logo_url"
-                   tal:attributes="src accreditation_logo_url"/>
-              <img class="img-fluid"
-                   style="max-width:200px;"
-                   tal:condition="not:accreditation_logo_url"
-                   tal:attributes="src python:view.get_resource_url('AccreditationBodyLogo.png', prefix='bika.lims.images' )"/>
+            <div class="label" i18n:translate="">Client</div>
+            <div class="addr">
+              <div class="name" tal:content="client/Name|nothing">Client</div>
+              <div tal:define="contact python:view.get_contact_fullname(model)"
+                   tal:condition="contact"
+                   tal:content="contact">Contact</div>
+              <div tal:repeat="line python:view.get_client_address(model)"
+                   tal:content="line">Street</div>
             </div>
-            <div class="text-right">
-              <!-- QR Code -->
-              <div class="qrcode"
-                   data-size="80"
-                   data-color="#3a3"
-                   tal:attributes="data-text model/absolute_url">
-              </div>
+          </td>
+          <!-- Report facts -->
+          <td>
+            <table class="facts">
+              <tr>
+                <td class="key" i18n:translate="">Revision</td>
+                <td tal:content="view/get_report_revision">1</td>
+              </tr>
+              <tr tal:condition="batch">
+                <td class="key" i18n:translate="">Batch</td>
+                <td class="mono" tal:content="batch/getId">B-0001</td>
+              </tr>
+              <tr tal:condition="batch/ClientBatchID|nothing">
+                <td class="key" i18n:translate="">Client Batch ID</td>
+                <td tal:content="batch/ClientBatchID"></td>
+              </tr>
+              <tr tal:condition="model/ClientOrderNumber|nothing">
+                <td class="key" i18n:translate="">Client Order</td>
+                <td tal:content="model/ClientOrderNumber"></td>
+              </tr>
+              <tr>
+                <td class="key" i18n:translate="">Samples</td>
+                <td tal:content="python:len(collection)">1</td>
+              </tr>
+            </table>
+
+            <!-- Accreditation -->
+            <div class="accreditation"
+                 tal:condition="view/show_accreditation"
+                 tal:define="logo_url view/get_accreditation_logo_url">
+              <img tal:condition="logo_url" tal:attributes="src logo_url"/>
+              <span i18n:translate="">
+                Accredited by
+                <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+                according to
+                <tal:block replace="python:laboratory.Accreditation or 'ISO/IEC 17025'" i18n:name="accreditation_standard"/>.
+                Accredited methods are marked with
+                <span class="symbol" i18n:name="symbol">★</span>.
+              </span>
+              <span tal:condition="laboratory/AccreditationReference"
+                    tal:content="laboratory/AccreditationReference">D-PL-00000</span>
             </div>
           </td>
         </tr>
       </table>
     </div>
-    <!-- Clear Floats
-         https://github.com/Kozea/WeasyPrint/issues/36
-    -->
-    <div class="clearfix"></div>
   </div>
 
 </tal:t>

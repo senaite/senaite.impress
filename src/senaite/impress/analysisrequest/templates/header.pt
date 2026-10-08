@@ -1,25 +1,29 @@
-<tal:t i18n:domain="senaite.impress">
+<tal:t define="model python:view.model;
+               provisional python:any(map(lambda m: m.is_provisional(), view.collection));"
+       i18n:domain="senaite.impress">
 
-  <div class="row section-header no-gutters">
-    <!-- Header Table -->
-    <div class="w-100 mb-2">
-      <table class="w-100 mb-0 noborder">
-        <colgroup>
-          <col style="width:50%"/>
-          <col style="width:50%;"/>
-        </colgroup>
+  <div class="row section-masthead no-gutters">
+    <div class="w-100">
+      <table>
         <tr>
-          <!-- Header Left -->
-          <td class="align-middle text-left">
-            <h1 i18n:translate="">Analysis Report</h1>
-          </td>
-          <!-- Header Right -->
-          <td class="align-middle text-right">
+          <!-- Laboratory logo -->
+          <td>
             <img class="logo"
                  tal:attributes="src view/get_report_logo_url"/>
           </td>
+          <!-- Title, report ID and date of issue -->
+          <td class="text-right">
+            <h1 tal:condition="not:provisional" i18n:translate="">Test Report</h1>
+            <h1 tal:condition="provisional" i18n:translate="">Provisional Test Report</h1>
+            <div class="report-id mono" tal:content="view/get_report_id">W-0001-R1</div>
+            <div class="issued">
+              <span i18n:translate="">Issued on</span>
+              <span tal:replace="python:view.to_localized_time(view.timestamp, long_format=0)"/>
+            </div>
+          </td>
         </tr>
       </table>
+      <div class="accent-rule"></div>
     </div>
   </div>
 

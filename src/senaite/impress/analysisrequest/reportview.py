@@ -41,6 +41,8 @@ from senaite.impress import senaiteMessageFactory as _
 from senaite.impress import logger
 from senaite.impress.decorators import returns_super_model
 from senaite.impress.reportview import ReportView as Base
+from zope.component import getUtility
+from zope.schema.interfaces import IVocabularyFactory
 
 SINGLE_TEMPLATE = Template("""<!-- Single Report -->
 <div class="report" uids="${uids}" client_uid="${client_uid}">
@@ -59,6 +61,67 @@ MULTI_TEMPLATE = Template("""<!-- Multi Report -->
   ${template}
 </div>
 """)
+
+# Registry fallbacks for report options that can be set per publication
+REPORT_OPTION_DEFAULTS = {
+    "sample_code": "barcode",
+    "release_mode": "signatures",
+}
+
+# Symbols used in the results table and explained in the legend
+SYMBOL_ACCREDITED = u"★"
+SYMBOL_ABOVE_RANGE = u"▲"
+SYMBOL_BELOW_RANGE = u"▼"
+
+
+def is_results_report(obj):
+    """Checks if the given object is a stored PDF results report
+    """
+    return api.get_portal_type(obj) == "ResultsReport"
+
+
+def format_address(address):
+    """Returns the non-empty lines of an address record
+
+    :param address: address record with the keys address, zip, city, country
+    :returns: list of address lines
+    """
+    if not address:
+        return []
+    # AT address fields might return a list of records
+    if isinstance(address, (list, tuple)):
+        address = address[0]
+    zip_city = u" ".join(filter(None, [
+        address.get("zip"), address.get("city")]))
+    lines = [address.get("address"), zip_city, address.get("country")]
+    return filter(None, map(api.safe_unicode, lines))
+
+
+def get_first_address(obj):
+    """Returns the postal address of the object or its physical address
+    """
+    postal = format_address(obj.getPostalAddress())
+    return postal or format_address(obj.getPhysicalAddress())
+
+
+def css_string(value):
+    """Returns the value as a quoted CSS string for the `content` property
+    """
+    value = api.safe_unicode(value or u"")
+    value = value.replace(u"\\", u"\\\\").replace(u"\"", u"\\\"")
+    return u"\"{}\"".format(value.replace(u"\n", u" "))
+
+
+def get_capture_date(analysis):
+    """Returns the result capture date of the analysis
+    """
+    return analysis.getResultCaptureDate()
+
+
+def is_same_day(date1, date2):
+    """Checks if both DateTime objects fall on the same calendar day
+    """
+    return date1.Date() == date2.Date()
 
 
 class ReportView(Base):
@@ -473,6 +536,273 @@ class ReportView(Base):
             items.append(condition)
 
         return items
+
+    def format_footnote(self, note, last=True):
+        """Returns a condition or result variable as a single footnote text
+
+        :param note: condition or interim mapping with title and value
+        :param last: whether the note is the last one of the footnote
+        :returns: text like `Title: Value Unit;`
+        """
+        value = u" ".join(filter(None, map(api.safe_unicode, [
+            note.get("formatted_value"), note.get("formatted_unit")])))
+        text = u"{}: {}".format(api.safe_unicode(note.get("title")), value)
+        return text if last else u"{};".format(text)
+
+    def get_report_option(self, options, name):
+        """Returns the report option, falling back to the registry setting
+
+        :param options: template options with the `report_options` mapping
+        :param name: name of the report option and the registry record
+        :returns: value of the option
+        """
+        report_options = options.get("report_options") or {}
+        value = report_options.get(name)
+        if value:
+            return value
+        default = REPORT_OPTION_DEFAULTS.get(name)
+        record = "senaite.impress.{}".format(name)
+        return api.get_registry_record(record, default=default) or default
+
+    def get_choices(self, vocabulary_name):
+        """Returns the terms of the named vocabulary as value/title dicts
+        """
+        factory = getUtility(IVocabularyFactory, vocabulary_name)
+        vocabulary = factory(api.get_portal())
+        return [{"value": term.value, "title": term.title}
+                for term in vocabulary]
+
+    def get_report_revision(self):
+        """Returns the revision of the report for the primary sample
+
+        The first publication is revision 1, every stored report of the
+        primary sample increases the revision by one.
+        """
+        if not self.model:
+            return 1
+        reports = filter(is_results_report, self.model.instance.objectValues())
+        return len(reports) + 1
+
+    def get_report_id(self):
+        """Returns the identifier of the report, e.g. `W-0001-R1`
+        """
+        if not self.model:
+            return u""
+        return u"{}-R{}".format(
+            self.model.getId(), self.get_report_revision())
+
+    def get_client_address(self, model):
+        """Returns the address lines of the client of the sample
+        """
+        client = model.instance.getClient()
+        if not client:
+            return []
+        return get_first_address(client)
+
+    def get_contact_fullname(self, model):
+        """Returns the full name of the primary contact of the sample
+        """
+        contact = model.instance.getContact()
+        return contact.getFullname() if contact else u""
+
+    def get_laboratory_line(self):
+        """Returns the laboratory name and address in a single line
+        """
+        laboratory = api.get_senaite_setup().laboratory
+        name = laboratory.getName() or laboratory.Title()
+        address = format_address(laboratory.getPhysicalAddress())
+        return u" · ".join(map(api.safe_unicode, [name] + address))
+
+    def get_css_string(self, value):
+        """Returns the value as a quoted CSS string
+        """
+        return css_string(value)
+
+    def get_reported_analyses(self, model_or_collection):
+        """Returns the analyses that are visible in the report
+        """
+        return self.get_analyses_by(model_or_collection)
+
+    def get_sampler_fullname(self, model):
+        """Returns the full name of the sampler of the sample
+        """
+        sampler = model.instance.getSampler()
+        if not sampler:
+            return u""
+        return api.get_user_fullname(sampler) or sampler
+
+    def get_specification_title(self, model):
+        """Returns the title of the specification used for the results
+        """
+        sample = model.instance
+        spec = sample.getPublicationSpecification() or \
+            sample.getSpecification()
+        return api.get_title(spec) if spec else u""
+
+    def format_date_range(self, start, end):
+        """Returns a localized date or date range for the given dates
+        """
+        start_date = self.to_localized_time(start, long_format=0)
+        if is_same_day(start, end):
+            return start_date
+        end_date = self.to_localized_time(end, long_format=0)
+        return u"{} – {}".format(start_date, end_date)
+
+    def get_test_period(self, model):
+        """Returns the period in which the results were captured
+        """
+        analyses = self.get_reported_analyses(model)
+        dates = filter(None, map(get_capture_date, analyses))
+        if not dates:
+            return u""
+        return self.format_date_range(min(dates), max(dates))
+
+    def get_sample_info(self, model):
+        """Returns the label/value pairs shown below the sample header
+
+        Only pairs with a value are returned.
+        """
+        sample = model.instance
+        items = [
+            (_("Date Sampled"),
+             self.to_localized_time(sample.getDateSampled())),
+            (_("Sampler"), self.get_sampler_fullname(model)),
+            (_("Sampling Deviation"), sample.getSamplingDeviationTitle()),
+            (_("Date Received"),
+             self.to_localized_time(sample.getDateReceived())),
+            (_("Condition on Receipt"), sample.getSampleConditionTitle()),
+            (_("Environmental Conditions"),
+             sample.getEnvironmentalConditions()),
+            (_("Test Period"), self.get_test_period(model)),
+            (_("Specification"), self.get_specification_title(model)),
+        ]
+        return [{"label": label, "value": value}
+                for label, value in items if value]
+
+    def has_uncertainties(self, model):
+        """Checks if any reported analysis of the sample has an uncertainty
+        """
+        analyses = self.get_reported_analyses(model)
+        return any(map(model.get_uncertainty, analyses))
+
+    def has_specifications(self, model):
+        """Checks if any reported analysis of the sample has a valid range
+        """
+        analyses = self.get_reported_analyses(model)
+        return any(map(model.get_formatted_specs, analyses))
+
+    def get_out_of_range_symbol(self, model, analysis):
+        """Returns the symbol for a result above or below the valid range
+        """
+        if not model.is_out_of_range(analysis):
+            return u""
+        result = api.to_float(analysis.getResult(), None)
+        maximum = api.to_float(analysis.getResultsRange().get("max"), None)
+        if None not in [result, maximum] and result > maximum:
+            return SYMBOL_ABOVE_RANGE
+        return SYMBOL_BELOW_RANGE
+
+    def is_below_detection_limit(self, analysis):
+        """Checks if the result is below the lower detection limit
+        """
+        return analysis.instance.isBelowLowerDetectionLimit()
+
+    def any_analysis(self, predicate):
+        """Checks if the predicate is true for any reported analysis
+        """
+        return any(map(predicate, self.get_reported_analyses(
+            self.collection)))
+
+    def any_sample(self, predicate):
+        """Checks if the predicate is true for any sample in the report
+        """
+        return any(map(predicate, self.collection))
+
+    def get_legend(self):
+        """Returns the symbols used in the report with their meaning
+        """
+        items = []
+        if self.show_accreditation():
+            items.append((SYMBOL_ACCREDITED, _("Accredited method")))
+        if self.any_sample(self.has_out_of_range_results):
+            items.append((u"{} {}".format(
+                SYMBOL_ABOVE_RANGE, SYMBOL_BELOW_RANGE),
+                _("Result above or below the specified range")))
+        if self.any_analysis(self.is_below_detection_limit):
+            items.append((u"<", _(
+                "Result below the limit of detection; the limit is given")))
+        if self.any_analysis(lambda an: an.isRetest()):
+            items.append((u"RT", _("Result of a retest")))
+        if self.any_sample(self.has_uncertainties):
+            items.append((u"U", _("Expanded measurement uncertainty")))
+        return [{"symbol": symbol, "text": text} for symbol, text in items]
+
+    def has_out_of_range_results(self, model):
+        """Checks if any reported result of the sample is out of range
+        """
+        analyses = self.get_reported_analyses(model)
+        return any(map(model.is_out_of_range, analyses))
+
+    def show_accreditation(self):
+        """Checks if the accreditation statement is shown
+
+        Only valid reports of an accredited laboratory with at least one
+        accredited analysis carry the accreditation statement.
+        """
+        laboratory = api.get_senaite_setup().laboratory
+        if not laboratory.getLaboratoryAccredited():
+            return False
+        if self.any_sample(lambda model: model.is_provisional()):
+            return False
+        return self.any_analysis(lambda an: an.getAccredited())
+
+    def get_person_info(self, user):
+        """Returns name, job title and signature URL for the given user
+        """
+        contact = api.get_user_contact(user, contact_types=["LabContact"])
+        if not contact:
+            return {
+                "fullname": api.get_user_fullname(user),
+                "jobtitle": u"",
+                "signature_url": None,
+            }
+        signature = contact.getSignature()
+        return {
+            "fullname": contact.getFullname(),
+            "jobtitle": contact.getJobTitle(),
+            "signature_url": "{}/Signature".format(
+                api.get_url(contact)) if signature else None,
+        }
+
+    def get_manager_info(self, manager):
+        """Returns name, job title and signature URL for a lab manager
+        """
+        return {
+            "fullname": manager.getFullname(),
+            "jobtitle": manager.getJobTitle(),
+            "signature_url": "{}/Signature".format(
+                manager.absolute_url()) if manager.getSignature() else None,
+        }
+
+    def get_responsibles(self):
+        """Returns the persons that verified the results of the report
+
+        Falls back to the department managers when no verifier is known,
+        e.g. for samples that were verified automatically.
+        """
+        verifiers = chain(*map(lambda model: model.verifiers,
+                               self.collection))
+        userids = self.uniquify_items(map(lambda u: u.getId(), verifiers))
+        if userids:
+            return map(self.get_person_info, map(api.get_user, userids))
+        managers = chain(*map(lambda model: model.managers, self.collection))
+        return map(self.get_manager_info, self.uniquify_items(managers))
+
+    def get_publisher_fullname(self):
+        """Returns the full name of the user publishing the report
+        """
+        user = api.get_current_user()
+        return api.get_user_fullname(user) or user.getId()
 
 
 class SingleReportView(ReportView):
