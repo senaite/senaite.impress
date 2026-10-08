@@ -112,3 +112,17 @@ class ReleaseModeVocabulary(object):
 
 
 ReleaseModeVocabularyFactory = ReleaseModeVocabulary()  # noqa
+
+
+@implementer(IVocabularyFactory)
+class AccreditationLogoVocabulary(object):
+    def __call__(self, context):
+        items = [
+            SimpleTerm("auto", "auto", _(u"Automatic")),
+            SimpleTerm("show", "show", _(u"Always")),
+            SimpleTerm("hide", "hide", _(u"Never")),
+        ]
+        return SimpleVocabulary(items)
+
+
+AccreditationLogoVocabularyFactory = AccreditationLogoVocabulary()  # noqa
