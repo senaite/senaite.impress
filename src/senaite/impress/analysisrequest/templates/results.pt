@@ -48,8 +48,9 @@
                   </tr>
 
                   <!-- Analysis rows -->
-                  <tr tal:repeat="analysis analyses"
-                      tal:attributes="class python:'out-of-range' if model.is_out_of_range(analysis) else None">
+                  <tal:analysis repeat="analysis analyses">
+                  <tal:comment define="range_comment python:view.get_range_comment(model, analysis)">
+                  <tr tal:attributes="class python:' '.join(filter(None, ['out-of-range' if model.is_out_of_range(analysis) else '', 'has-range-comment' if range_comment else ''])) or None">
                     <tal:row define="symbol python:view.get_out_of_range_symbol(model, analysis);
                                      notes python:(show_conditions and view.get_analysis_conditions(analysis) or []) + view.get_result_variables(analysis);
                                      dummy python:notes and footnotes.append(notes);">
@@ -82,6 +83,15 @@
                           tal:content="structure python:view.hyphenize(analysis.getMethodTitle() or '')">Method</td>
                     </tal:row>
                   </tr>
+
+                  <!-- Comment of the specification for results out of range -->
+                  <tr class="range-comment"
+                      tal:condition="range_comment">
+                    <td tal:attributes="colspan columns"
+                        tal:content="range_comment">Comment</td>
+                  </tr>
+                  </tal:comment>
+                  </tal:analysis>
 
                   <!-- Category comments -->
                   <tr class="category-comment" tal:condition="category/Comments">

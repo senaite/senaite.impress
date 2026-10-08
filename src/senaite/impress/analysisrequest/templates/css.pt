@@ -139,6 +139,9 @@
    .report table.results.transposed .uncertainty,
    .report table.results.transposed .unit { font-size: 6.8pt; color: #5f6d75; }
    .report .section-results h2.poc-title { font-size: 6.4pt; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; margin-top: 2mm; }
+   .report table.results tr.range-comment td { border-bottom: .4pt solid #cfd8dc; padding-top: 0; padding-left: 3mm; font-size: 7pt; color: #b42318; }
+   .report table.results tr.has-range-comment td { border-bottom: none; }
+   .report table.results.transposed .range-comment { font-size: 6.8pt; color: #b42318; }
    .report table.results .category-comment td { border-bottom: none; color: #5f6d75; font-size: 7pt; padding-top: 0; }
    .report .footnotes { font-size: 7pt; color: #5f6d75; margin-top: 1.5mm; }
    .report .footnotes .key { display: inline-block; width: 3.5mm; color: #1b2328; }

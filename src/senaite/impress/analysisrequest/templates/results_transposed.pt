@@ -70,6 +70,10 @@
                         </div>
                         <div class="unit"
                              tal:content="structure python:model.get_formatted_unit(analysis)">mg/l</div>
+                        <div class="range-comment"
+                             tal:define="range_comment python:view.get_range_comment(model, analysis)"
+                             tal:condition="range_comment"
+                             tal:content="range_comment">Comment</div>
                       </tal:result>
                     </tal:analysis>
                   </td>
