@@ -132,6 +132,13 @@
    .report table.results tr.out-of-range .result { color: #b42318; }
    .report table.results .flag { color: #b42318; font-size: 6.5pt; padding-left: .8mm; }
    .report table.results .retest { color: #5f6d75; font-size: 6pt; padding-left: .8mm; }
+   .report table.results.transposed { table-layout: fixed; }
+   .report table.results.transposed th.num { overflow: hidden; text-overflow: ellipsis; }
+   .report table.results.transposed td.num { vertical-align: top; white-space: normal; }
+   .report table.results.transposed .result.out-of-range { color: #b42318; font-weight: 600; }
+   .report table.results.transposed .uncertainty,
+   .report table.results.transposed .unit { font-size: 6.8pt; color: #5f6d75; }
+   .report .section-results h2.poc-title { font-size: 6.4pt; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; margin-top: 2mm; }
    .report table.results .category-comment td { border-bottom: none; color: #5f6d75; font-size: 7pt; padding-top: 0; }
    .report .footnotes { font-size: 7pt; color: #5f6d75; margin-top: 1.5mm; }
    .report .footnotes .key { display: inline-block; width: 3.5mm; color: #1b2328; }
