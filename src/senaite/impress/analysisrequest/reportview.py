@@ -729,6 +729,17 @@ class ReportView(Base):
             return SYMBOL_BELOW_RANGE
         return u""
 
+    def get_range_comment(self, model, analysis):
+        """Returns the comment of the specification for a result out of range
+
+        The comment is set per analysis in the specification and is only
+        reported when the result is out of the specified range.
+        """
+        if not model.is_out_of_range(analysis):
+            return u""
+        comment = analysis.getResultsRange().get("rangecomment")
+        return api.safe_unicode(comment or u"").strip()
+
     def is_below_detection_limit(self, analysis):
         """Checks if the result is below the lower detection limit
         """
