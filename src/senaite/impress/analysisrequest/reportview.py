@@ -783,6 +783,19 @@ class ReportView(Base):
             items.append((u"U", _("Expanded measurement uncertainty")))
         return [{"symbol": symbol, "text": text} for symbol, text in items]
 
+    def get_decision_rule(self):
+        """Returns the decision rule for reports with specified limits
+
+        The rule is only returned when at least one sample of the report
+        has results with a specification, because only then the report
+        makes a statement of conformity.
+        """
+        if not self.any_sample(self.has_specifications):
+            return u""
+        rule = api.get_registry_record(
+            "senaite.impress.decision_rule", default=None)
+        return api.safe_unicode(rule or u"").strip()
+
     def has_out_of_range_results(self, model):
         """Checks if any reported result of the sample is out of range
         """

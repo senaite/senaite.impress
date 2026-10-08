@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #176 Show the decision rule for statements of conformity on the report
 - #175 Rework the default report for ISO/IEC 17025 reporting requirements
 - #170 Extend senaite.core's buildout.base.cfg instead of duplicating it
 - #167 Fix accreditation body logo rendering after Laboratory DX migration
