@@ -66,6 +66,7 @@ MULTI_TEMPLATE = Template("""<!-- Multi Report -->
 REPORT_OPTION_DEFAULTS = {
     "sample_code": "barcode",
     "release_mode": "signatures",
+    "accreditation_logo": "auto",
 }
 
 # Symbols used in the results table and explained in the legend
@@ -789,6 +790,38 @@ class ReportView(Base):
         if self.any_sample(lambda model: model.is_provisional()):
             return False
         return self.any_analysis(lambda an: an.getAccredited())
+
+    def get_accreditation_body(self):
+        """Returns the accreditation body with the accreditation reference
+
+        :returns: text like `ANAB (L-2291)`
+        """
+        laboratory = api.get_senaite_setup().laboratory
+        body = api.safe_unicode(laboratory.getAccreditationBody() or u"")
+        reference = api.safe_unicode(
+            laboratory.getAccreditationReference() or u"")
+        if not reference:
+            return body
+        return u"{} ({})".format(body, reference)
+
+    def show_accreditation_logo(self, options):
+        """Checks if the accreditation logo and statement are shown
+
+        The report option `accreditation_logo` shows them always or never.
+        Automatic applies the rules of `show_accreditation`. In any case
+        the laboratory must be accredited.
+
+        :param options: template options with the `report_options` mapping
+        """
+        laboratory = api.get_senaite_setup().laboratory
+        if not laboratory.getLaboratoryAccredited():
+            return False
+        mode = self.get_report_option(options, "accreditation_logo")
+        if mode == "hide":
+            return False
+        if mode == "show":
+            return True
+        return self.show_accreditation()
 
     def get_person_info(self, user):
         """Returns name, job title and signature URL for the given user

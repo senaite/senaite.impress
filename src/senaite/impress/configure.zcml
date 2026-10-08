@@ -148,6 +148,12 @@
       component="senaite.impress.vocabularies.ReleaseModeVocabularyFactory"
       />
 
+  <!-- Accreditation Logo Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.AccreditationLogo"
+      component="senaite.impress.vocabularies.AccreditationLogoVocabularyFactory"
+      />
+
   <!-- PDF Report Storage Adapter -->
   <adapter
       for="zope.interface.Interface

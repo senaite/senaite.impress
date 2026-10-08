@@ -48,19 +48,17 @@
 
             <!-- Accreditation -->
             <div class="accreditation"
-                 tal:condition="view/show_accreditation"
+                 tal:condition="python:view.show_accreditation_logo(options)"
                  tal:define="logo_url view/get_accreditation_logo_url">
               <img tal:condition="logo_url" tal:attributes="src logo_url"/>
               <span i18n:translate="">
                 Accredited by
-                <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+                <tal:block replace="view/get_accreditation_body" i18n:name="accreditation_body"/>
                 according to
                 <tal:block replace="python:laboratory.Accreditation or 'ISO/IEC 17025'" i18n:name="accreditation_standard"/>.
                 Accredited methods are marked with
                 <span class="symbol" i18n:name="symbol">★</span>.
               </span>
-              <span tal:condition="laboratory/AccreditationReference"
-                    tal:content="laboratory/AccreditationReference">D-PL-00000</span>
             </div>
           </td>
         </tr>
