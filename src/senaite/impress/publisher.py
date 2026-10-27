@@ -147,10 +147,10 @@ class Publisher(object):
     def url_fetcher(self, url):
         """Fetch internal URLs by path instead of via an external request.
 
-        Browser views such as ``@@images`` handle parts of their paths
+        Browser views such as `@@images` handle parts of their paths
         dynamically. Therefore, the owning content object is used when checking
-        whether an image resource is local, while the complete path is passed to
-        the authenticated subrequest.
+        whether an image resource is local. The complete path is passed to the
+        authenticated subrequest.
 
         N.B. Multiple calls to this method might exhaust the available threads
              of the server, which causes a hanging instance.
@@ -167,11 +167,9 @@ class Publisher(object):
         host = request.get_header("HOST")
         path = "/".join(request.physicalPathFromURL(url))
 
-        # The final field segment after @@images is handled dynamically by the
-        # images browser view and might not resolve with restrictedTraverse.
-        traverse_path = path
-        if "/@@images/" in path:
-            traverse_path = path.split("/@@images/", 1)[0]
+        # A browser view such as @@images or @@download consumes the rest
+        # of the path, which does not resolve with restrictedTraverse.
+        traverse_path = path.split("/@@", 1)[0]
 
         context = portal.restrictedTraverse(traverse_path, None)
 
@@ -189,7 +187,8 @@ class Publisher(object):
 
         # Dynamic URLs such as @@images/accreditation_body_logo have no file
         # extension, so prefer the response's actual Content-Type.
-        mime_type = response.getHeader("Content-Type")
+        content_type = response.getHeader("Content-Type") or ""
+        mime_type = content_type.split(";")[0].strip()
         if not mime_type:
             mime_type = mimetypes.guess_type(url)[0]
 
@@ -199,6 +198,7 @@ class Publisher(object):
             "mime_type": mime_type,
             "redirected_url": url,
         }
+
     def write_png(self, html, resolution=96):
         """Write a PNG from the given HTML
         """
