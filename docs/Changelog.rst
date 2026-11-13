@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #174 Show the picked label for an analysis condition on the report
 - #172 Require the publish permission to open the publish view
 - #173 Fix TypeError in is_printview when the request has no referer
 - #169 Fix local detection of Dexterity @@images resources in Impress url_fetcher
