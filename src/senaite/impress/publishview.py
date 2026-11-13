@@ -488,7 +488,8 @@ class PublishView(BrowserView):
         """
         if self.__name__ == PRINTVIEW:
             return True
-        referer = self.request.get_header("referer")
+        # the header is absent e.g. when the view is called directly
+        referer = self.request.get_header("referer") or ""
         if PRINTVIEW in referer:
             return True
         return False
