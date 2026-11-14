@@ -164,6 +164,8 @@
    .report table.legend { border-collapse: collapse; font-size: 7.4pt; }
    .report table.legend td { border: none; padding: 0 3mm .8mm 0; vertical-align: top; }
    .report table.legend td.symbol { color: #0f4c5c; white-space: nowrap; }
+   .report .decision-rule { font-size: 7.4pt; margin-top: 1.5mm; }
+   .report .decision-rule .label { display: block; }
    .report .section-release { page-break-inside: avoid; }
    .report table.signatures { width: 100%; border-collapse: collapse; table-layout: fixed; }
    .report table.signatures td { width: 33.3%; border: none; padding: 0 6mm 2mm 0; vertical-align: bottom; }

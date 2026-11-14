@@ -223,6 +223,21 @@ class IImpressControlPanel(model.Schema):
         required=True,
     )
 
+    decision_rule = schema.Text(
+        title=_(u"Decision Rule"),
+        description=_(
+            u"Decision rule applied when results are compared with "
+            u"specified limits (ISO/IEC 17025, 7.8.6). The text is "
+            u"shown in the legend of reports that contain results "
+            u"with a specification. Leave empty to omit it."),
+        default=(
+            u"Conformity with the specified limits is stated by simple "
+            u"acceptance according to ILAC-G8:09/2019, section 4.2.1: "
+            u"the measured value is compared with the limits, the "
+            u"measurement uncertainty is not taken into account."),
+        required=False,
+    )
+
     # Use NamedFileFieldWidget to avoid PIL errors
     # (same pattern as site_logo in senaite.core)
     directives.widget("report_logo", NamedFileFieldWidget)
@@ -285,6 +300,7 @@ class IImpressControlPanel(model.Schema):
             "report_logo",
             "sample_code",
             "release_mode",
+            "decision_rule",
             "paperformats",
             "template_format_mapping",
             "footer",
