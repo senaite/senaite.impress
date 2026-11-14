@@ -1,97 +1,68 @@
-<tal:t define="collection view/collection;
-               model view/model;
-               batch model/Batch;
-               client model/Client;
-               reporter python:view.current_user;
-               specification model/Specification;
-               publication_specification model/PublicationSpecification;
-               spec python:publication_specification or specification;"
+<tal:t define="model options/model|view/model;
+               sample_code python:view.get_report_option(options, 'sample_code');
+               sample_point model/SamplePoint|nothing;
+               info python:view.get_sample_info(model);"
        i18n:domain="senaite.impress">
 
-  <div class="row section-summary no-gutters">
+  <div class="row section-sample no-gutters">
     <div class="w-100">
 
-      <!-- Barcode -->
-      <div class="text-center float-right barcode-container">
-        <div class="barcode"
-             data-code="code128"
-             data-showHRI="true"
-             data-barHeight="15"
-             data-addQuietZone="true"
-             tal:attributes="data-id model/getId">
-        </div>
-      </div>
-
-      <h1 i18n:translate="">Summary</h1>
-
-      <table class="table table-sm table-condensed">
+      <!-- Sample header with ID, type, point and machine readable code -->
+      <table class="sample-band">
         <tr>
-          <td style="width:20%" class="label" i18n:translate="">Sample ID</td>
-          <td>
-            <a tal:content="model/getId"
-               tal:attributes="href model/absolute_url;">
-            </a>
+          <td class="ident">
+            <div class="sample-id mono" tal:content="model/getId">W-0001</div>
+            <div class="what">
+              <b tal:content="model/SampleType/title|nothing">Water</b>
+              <tal:point condition="sample_point">
+                &middot; <span tal:replace="sample_point/title">Sample Point</span>
+              </tal:point>
+              <tal:csid condition="model/ClientSampleID">
+                &middot; <span i18n:translate="">Client SID</span>
+                <b tal:content="model/ClientSampleID">CSID</b>
+              </tal:csid>
+              <tal:cref condition="model/ClientReference|nothing">
+                &middot; <span i18n:translate="">Client Reference</span>
+                <b tal:content="model/ClientReference">CREF</b>
+              </tal:cref>
+            </div>
           </td>
-        </tr>
-        <tr tal:condition="batch">
-          <td class="label" i18n:translate="">Batch ID</td>
-          <td>
-            <a tal:content="batch/id"
-               tal:attributes="href batch/absolute_url">
-            </a>
+          <td class="code" tal:condition="python:sample_code != 'none'">
+            <div class="barcode"
+                 tal:condition="python:sample_code == 'barcode'"
+                 data-code="code128"
+                 data-showHRI="false"
+                 data-barHeight="30"
+                 data-addQuietZone="false"
+                 tal:attributes="data-id model/getId">
+            </div>
+            <div class="qrcode-box"
+                 tal:condition="python:sample_code == 'qrcode'">
+              <div class="qrcode"
+                   data-size="120"
+                   data-color="#1b2328"
+                   tal:attributes="data-text model/absolute_url">
+              </div>
+            </div>
           </td>
-        </tr>
-        <tr tal:condition="batch">
-          <td class="label" i18n:translate="">Client Batch ID</td>
-          <td tal:content="batch/ClientBatchID"></td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Client</td>
-          <td>
-            <a tal:attributes="href client/absolute_url"
-               tal:content="client/Name"></a>
-          </td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Client SID</td>
-          <td tal:content="model/ClientSampleID"></td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Sample Type</td>
-          <td tal:content="model/SampleType/title|nothing"></td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Specification</td>
-          <td tal:content="spec/contextual_title|nothing"></td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Date Received</td>
-          <td tal:content="python:view.to_localized_time(model.DateReceived)"></td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Date Verified</td>
-          <td tal:content="python:view.to_localized_time(model.getDateVerified())"></td>
-        </tr>
-        <tr>
-          <td class="label" i18n:translate="">Date Published</td>
-          <td tal:content="python:view.to_localized_time(view.timestamp)"></td>
-        </tr>
-        <tr tal:condition="reporter">
-          <td class="label" i18n:translate="">Published by</td>
-          <td>
-            <span tal:content="reporter/fullname|reporter/username"/>
-            <tal:email tal:condition="reporter/email|nothing"
-                       tal:define="email reporter/email">
-              (<a tal:content="email"
-                  tal:attributes="href string:mailto:${email}"></a>)
-            </tal:email>
-          </td>
-        </tr>
-        <tr tal:condition="python: batch and batch.BatchLabels">
-          <td class="label" i18n:translate="">Batch Labels</td>
-          <td tal:content="structure python:', '.join(map(lambda x: x.Title(), batch.BatchLabels))"></td>
         </tr>
       </table>
+
+      <!-- Sample details, only filled values -->
+      <table class="sample-info" tal:condition="info">
+        <colgroup>
+          <col style="width:33.3%"/>
+          <col style="width:33.3%"/>
+          <col style="width:33.4%"/>
+        </colgroup>
+        <tr tal:repeat="row python:view.group_into_chunks(info, 3)">
+          <td tal:repeat="item row">
+            <span class="label" tal:content="item/label">Label</span>
+            <span tal:content="item/value">Value</span>
+          </td>
+        </tr>
+      </table>
+
     </div>
   </div>
 

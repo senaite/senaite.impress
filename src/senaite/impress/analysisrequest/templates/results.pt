@@ -1,174 +1,121 @@
 <tal:t define="collection python:view.collection;
-               accredited_symbol string:★;
-               outofrange_symbol string:⚠;
-               global footnotes python:[];
                report_options python:options.get('report_options', {});
-               show_conditions python:bool(report_options.get('show_conditions', True));"
+               show_conditions python:bool(report_options.get('show_conditions', True));
+               show_accreditation view/show_accreditation;"
        i18n:domain="senaite.impress">
 
   <tal:model repeat="model collection">
 
-    <div class="row section-results no-gutters">
+    <!-- Sample header -->
+    <tal:summary replace="structure python:view.render_summary(context, model=model, **options)"/>
+
+    <div class="row section-results no-gutters"
+         tal:define="footnotes python:[];
+                     show_uncertainty python:view.has_uncertainties(model);
+                     show_specs python:view.has_specifications(model);
+                     columns python:4 + int(show_uncertainty) + int(show_specs);">
       <div class="w-100">
-        <h1 i18n:translate>Results for <span tal:replace="model/getId"/></h1>
+        <table class="results">
+          <colgroup>
+            <col style="width:31%"/>
+            <col style="width:12%"/>
+            <col tal:condition="show_uncertainty" style="width:9%"/>
+            <col style="width:10%"/>
+            <col tal:condition="show_specs" style="width:11%"/>
+            <col/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th i18n:translate="">Parameter</th>
+              <th class="num" i18n:translate="">Result</th>
+              <th class="num" tal:condition="show_uncertainty" i18n:translate="">U</th>
+              <th i18n:translate="">Unit</th>
+              <th class="num" tal:condition="show_specs" i18n:translate="">Range</th>
+              <th i18n:translate="">Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tal:poc repeat="poc python:view.get_analyses_by_poc(model)">
+              <tal:category define="categories_by_poc python:view.get_categories_by_poc(model)"
+                            repeat="category python:view.sort_items(categories_by_poc.get(poc))">
+                <tal:analyses define="analyses python:view.get_analyses_by(model, poc=poc, category=category)"
+                              condition="analyses">
 
-        <!-- Point of Capture -->
-        <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
-                 tal:repeat="poc analyses_by_poc">
-
-          <!-- Analysis Category -->
-          <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
-                                 repeat="category python:view.sort_items(categories_by_poc.get(poc))">
-
-            <!-- Analysis in POC and Category -->
-            <table class="table table-sm table-condensed">
-              <colgroup>
-                <!-- Category -->
-                <col style="width: 40%;">
-                <!-- Result -->
-                <col style="width: 30%">
-                <!-- Unit -->
-                <col style="width: 15%">
-                <!-- Range -->
-                <col style="width: 10%">
-                <!-- Out of Range -->
-                <col style="width: 5%">
-              </colgroup>
-              <thead>
-                <tr class="small">
-                  <th class="analysis">
-                    <span tal:content="category/Title">Category</span>
-                  </th>
-                  <th class="text-right result">
-                    <span i18n:translate="">Result</span>
-                  </th>
-                  <th class="text-left unit">
-                    <span i18n:translate="">Unit</span>
-                  </th>
-                  <th class="specs">
-                    <span i18n:translate="">Range</span>
-                  </th>
-                  <th class="outofrange">
-                    <span/>
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tal:analyses tal:repeat="analysis python:view.get_analyses_by(model, poc=poc , category=category)">
-                  <tr>
-                    <td class="analysis">
-                      <span class="text-success"
-                            style="font-family:sans;"
-                            tal:content="accredited_symbol"
-                            tal:condition="analysis/Accredited">
-                      </span>
-                      <span tal:condition="not:analysis/ScientificName">
-                        <span class="font-weight-normal" tal:content="analysis/title"></span>
-                      </span>
-                      <span tal:condition="analysis/ScientificName">
-                        <span class="font-italic" tal:content="analysis/title"></span>
-                      </span>
-
-                      <tal:analysis_footnotes define="analysis_footnotes python:[];">
-
-                        <!-- Include conditions in the footnotes for this analysis -->
-                        <tal:analysis_conditions
-                          define="conditions python:view.get_analysis_conditions(analysis)"
-                          condition="show_conditions">
-                          <tal:x define="dummy python:analysis_footnotes.extend(conditions)">
-                        </tal:analysis_conditions>
-
-                        <!-- Include interims in the footnotes for this analysis -->
-                        <tal:interim_fields
-                            define="interims python:view.get_result_variables(analysis);
-                                    dummy python:analysis_footnotes.extend(interims)">
-                        </tal:interim_fields>
-
-                        <!-- Add the analysis footnotes to the global footnotes -->
-                        <tal:x condition="analysis_footnotes">
-                          <sup tal:define="dummy python:footnotes.append(analysis_footnotes)"
-                               tal:content="python: len(footnotes)"/>
-                        </tal:x>
-
-                      </tal:analysis_footnotes>
-
-                      <!-- Method -->
-                      <div class="text-secondary methodtitle"
-                           i18n:translate=""
-                           tal:define="method_title python:analysis and analysis.getMethodTitle() or '';"
-                           tal:content="structure python:view.hyphenize(method_title)"/>
-                    </td>
-                    <td class="text-right">
-                      <span class="result" tal:content="structure python:model.get_formatted_result(analysis)">23</span>
-                    </td>
-                    <td class="text-left text-muted font-italic">
-                      <span class="units" tal:content="structure python:model.get_formatted_unit(analysis)"></span>
-                    </td>
-                    <td class="specs">
-                      <span tal:condition="analysis/Uncertainty"
-                            tal:content="structure python:model.get_formatted_uncertainty(analysis)"></span>
-                      <span tal:content="python:'(RT)' if model.is_retest(analysis) else ''"></span>
-                      <span tal:content="python:model.get_formatted_specs(analysis)">50 - 60</span>
-                    </td>
-
-                    <!-- Out of range column -->
-                    <td class="text-center align-middle"
-                        tal:define="out_of_range  python: model.is_out_of_range(analysis);
-                                    results_range python: analysis.getResultsRange();
-                                    comment       python: results_range.get('rangecomment');">
-                      <tal:out_of_range condition="out_of_range">
-
-                        <!-- Out of range symbol -->
-                        <span class="font-weight-light outofrange text-danger"
-                              style="font-family:Lucida Console, Courier, monospace;"
-                              tal:content="outofrange_symbol">
-                        </span>
-
-                        <!-- Out-of-range comment -->
-                        <span class="text-danger small"
-                              tal:condition="comment" tal:content="comment"/>
-
-                      </tal:out_of_range>
-
-                    </td>
+                  <!-- Category row -->
+                  <tr class="category">
+                    <td tal:attributes="colspan columns"
+                        tal:content="category/Title">Category</td>
                   </tr>
+
+                  <!-- Analysis rows -->
+                  <tal:analysis repeat="analysis analyses">
+                  <tal:comment define="range_comment python:view.get_range_comment(model, analysis)">
+                  <tr tal:attributes="class python:' '.join(filter(None, ['out-of-range' if model.is_out_of_range(analysis) else '', 'has-range-comment' if range_comment else ''])) or None">
+                    <tal:row define="symbol python:view.get_out_of_range_symbol(model, analysis);
+                                     notes python:(show_conditions and view.get_analysis_conditions(analysis) or []) + view.get_result_variables(analysis);
+                                     dummy python:notes and footnotes.append(notes);">
+                      <td>
+                        <span class="accredited symbol"><tal:accredited
+                          condition="python:show_accreditation and analysis.Accredited">★</tal:accredited></span>
+                        <span tal:attributes="class python:'font-italic' if analysis.ScientificName else None"
+                              tal:content="analysis/title">Analysis</span>
+                        <sup tal:condition="notes"
+                             tal:content="python:len(footnotes)">1</sup>
+                      </td>
+                      <td class="num">
+                        <span class="result"
+                              tal:content="structure python:model.get_formatted_result(analysis)">23</span>
+                        <span class="flag symbol"
+                              tal:condition="symbol"
+                              tal:content="symbol">▲</span>
+                        <span class="retest"
+                              tal:condition="python:model.is_retest(analysis)">RT</span>
+                      </td>
+                      <td class="num" tal:condition="show_uncertainty">
+                        <tal:u define="u python:model.get_uncertainty(analysis)"
+                               condition="u">&plusmn;&nbsp;<span tal:replace="u"/></tal:u>
+                      </td>
+                      <td class="unit"
+                          tal:content="structure python:model.get_formatted_unit(analysis)">mg/l</td>
+                      <td class="num" tal:condition="show_specs"
+                          tal:content="python:model.get_formatted_specs(analysis)">50 - 60</td>
+                      <td class="method"
+                          tal:content="structure python:view.hyphenize(analysis.getMethodTitle() or '')">Method</td>
+                    </tal:row>
+                  </tr>
+
+                  <!-- Comment of the specification for results out of range -->
+                  <tr class="range-comment"
+                      tal:condition="range_comment">
+                    <td tal:attributes="colspan columns"
+                        tal:content="range_comment">Comment</td>
+                  </tr>
+                  </tal:comment>
+                  </tal:analysis>
+
+                  <!-- Category comments -->
+                  <tr class="category-comment" tal:condition="category/Comments">
+                    <td tal:attributes="colspan columns"
+                        tal:content="category/Comments">Comments</td>
+                  </tr>
+
                 </tal:analyses>
-              </tbody>
+              </tal:category>
+            </tal:poc>
+          </tbody>
+        </table>
 
-              <tfoot tal:define="category_comments python:category.Comments">
-                <tr tal:condition="category_comments">
-                  <td colspan="3">
-                    <div class="category_comments"
-                         tal:content="category_comments">
-                      Category Comments
-                    </div>
-                  </td>
-                </tr>
-                <tr tal:condition="footnotes">
-                  <td colspan="3">
-                    <ul class="list-unstyled footnotes">
-                      <li tal:repeat="analysis_footnotes footnotes" class="mt-2">
-                        <sup tal:content="repeat/analysis_footnotes/number"/>
-                        <tal:footnotes repeat="footnote analysis_footnotes">
-                          <tal:footnote>
-                            <br tal:condition="repeat/footnote/index"/>
-                            <span tal:condition="repeat/footnote/index" class="pl-2"/>
-                            <span tal:content="footnote/title"/>:
-                            <span tal:content="footnote/formatted_value"/>
-                            <span tal:content="footnote/formatted_unit|nothing"/>
-                          </tal:footnote>
-                        </tal:footnotes>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </tal:categories_in_poc>
-
-        </tal:poc>
+        <!-- Footnotes of this sample -->
+        <div class="footnotes" tal:condition="footnotes">
+          <div tal:repeat="notes footnotes">
+            <span class="key" tal:content="repeat/notes/number">1</span>
+            <tal:note repeat="note notes">
+              <span tal:content="python:view.format_footnote(note, last=repeat['note'].end)">Title: Value Unit;</span>
+            </tal:note>
+          </div>
+        </div>
       </div>
     </div>
+
   </tal:model>
 </tal:t>

@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #175 Rework the default report for ISO/IEC 17025 reporting requirements
 - #174 Show the picked label for an analysis condition on the report
 - #172 Require the publish permission to open the publish view
 - #173 Fix TypeError in is_printview when the request has no referer

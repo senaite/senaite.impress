@@ -1,28 +1,28 @@
 <tal:t define="collection python:view.collection;
                report_options python:options.get('report_options', {});
-               show_remarks python:bool(report_options.get('show_remarks', False));"
-       condition="python:show_remarks"
+               show_remarks python:bool(report_options.get('show_remarks', False));
+               samples python:filter(lambda m: m.getRemarks(), collection) if show_remarks else [];"
+       condition="samples"
        i18n:domain="senaite.impress">
 
-  <tal:model repeat="model collection">
-    <div class="row section-remarks no-gutters"
-         tal:define="remarks python:model.getRemarks()"
-         tal:condition="remarks">
-      <div class="remarks_history">
-        <h2 i18n:translate>Remarks for <span tal:replace="model/getId"/></h2>
-        <tal:record repeat="record remarks">
-          <div class="record" tal:attributes="id record/id;">
-            <div class="record-header border-bottom" tal:condition="record/user_id">
-              <span class="record-user" tal:content="record/user_id"/>
-              <span class="record-username" tal:content="record/user_name"/>
-              <span class="record-date" tal:content="record/created_ulocalized"/>
-            </div>
-            <div class="record-content"
-                 tal:content="structure record/html_content"></div>
+  <div class="row section-block section-remarks no-gutters">
+    <div class="w-100">
+      <h2 i18n:translate="">Remarks</h2>
+      <tal:model repeat="model samples">
+        <div class="remark"
+             tal:repeat="record python:model.getRemarks()"
+             tal:attributes="id record/id">
+          <div class="remark-meta">
+            <span class="mono" tal:content="model/getId">W-0001</span>
+            <tal:user condition="record/user_name">
+              &middot; <span tal:replace="record/user_name">User</span>
+            </tal:user>
+            &middot; <span tal:replace="record/created_ulocalized">Date</span>
           </div>
-        </tal:record>
-      </div>
+          <div tal:content="structure record/html_content">Remark</div>
+        </div>
+      </tal:model>
     </div>
-  </tal:model>
+  </div>
 
 </tal:t>

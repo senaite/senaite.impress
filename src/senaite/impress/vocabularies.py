@@ -82,3 +82,47 @@ class OrientationVocabulary(object):
         return SimpleVocabulary(items)
 
 OrientationVocabularyFactory = OrientationVocabulary()  # noqa
+
+
+@implementer(IVocabularyFactory)
+class SampleCodeVocabulary(object):
+    def __call__(self, context):
+        items = [
+            SimpleTerm("barcode", "barcode", _(u"Barcode")),
+            SimpleTerm("qrcode", "qrcode", _(u"QR code")),
+            SimpleTerm("none", "none", _(u"None")),
+        ]
+        return SimpleVocabulary(items)
+
+
+SampleCodeVocabularyFactory = SampleCodeVocabulary()  # noqa
+
+
+@implementer(IVocabularyFactory)
+class ReleaseModeVocabulary(object):
+    def __call__(self, context):
+        items = [
+            SimpleTerm("signatures", "signatures", _(u"Signatures")),
+            SimpleTerm("electronic", "electronic",
+                       _(u"Electronic release statement")),
+            SimpleTerm("both", "both",
+                       _(u"Signatures and electronic release statement")),
+        ]
+        return SimpleVocabulary(items)
+
+
+ReleaseModeVocabularyFactory = ReleaseModeVocabulary()  # noqa
+
+
+@implementer(IVocabularyFactory)
+class AccreditationLogoVocabulary(object):
+    def __call__(self, context):
+        items = [
+            SimpleTerm("auto", "auto", _(u"Automatic")),
+            SimpleTerm("show", "show", _(u"Always")),
+            SimpleTerm("hide", "hide", _(u"Never")),
+        ]
+        return SimpleVocabulary(items)
+
+
+AccreditationLogoVocabularyFactory = AccreditationLogoVocabulary()  # noqa
