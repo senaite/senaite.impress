@@ -18,9 +18,6 @@
   <!-- REPORT ALERTS -->
   <tal:t replace="structure python:view.render_alerts(context, **options)" />
 
-  <!-- REPORT SUMMARY -->
-  <tal:t replace="structure python:view.render_summary(context, **options)" />
-
   <!-- REPORT RESULTS (TRANSPOSED) -->
   <tal:t replace="structure python:view.render_results_transposed(context, **options)" />
 
@@ -33,11 +30,11 @@
   <!-- REPORT ATTACHMENTS -->
   <tal:t replace="structure python:view.render_attachments(context, **options)" />
 
+  <!-- REPORT LEGEND AND STATEMENTS -->
+  <tal:t replace="structure python:view.render_discreeter(context, **options)" />
+
   <!-- REPORT SIGNATURES -->
   <tal:t replace="structure python:view.render_signatures(context, **options)" />
-
-  <!-- REPORT DISCREETER -->
-  <tal:t replace="structure python:view.render_discreeter(context, **options)" />
 
   <!-- REPORT FOOTER -->
   <tal:t replace="structure python:view.render_footer(context, **options)" />

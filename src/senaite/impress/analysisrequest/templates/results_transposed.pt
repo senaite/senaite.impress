@@ -1,87 +1,90 @@
 <tal:t define="collection python:view.collection;
-               outofrange_symbol string:⚠;
                analyses_by_poc python:view.get_analyses_by_poc(collection);
-               categories_by_poc python:view.get_categories_by_poc(collection)"
+               categories_by_poc python:view.get_categories_by_poc(collection);
+               show_accreditation view/show_accreditation;
+               columns python:len(collection) + 1;"
        i18n:domain="senaite.impress">
 
   <div class="row section-results no-gutters">
     <div class="w-100">
-      <h1 i18n:translate="">Results</h1>
 
-      <!-- Point of Captures -->
-      <tal:poc tal:repeat="poc analyses_by_poc">
-        <h2 tal:content="python:view.points_of_capture.get(poc)"></h2>
+      <!-- Results table per point of capture -->
+      <tal:poc repeat="poc analyses_by_poc">
+        <h2 class="poc-title"
+            tal:condition="python:len(analyses_by_poc) > 1"
+            tal:content="python:view.points_of_capture.get(poc)">Lab Analyses</h2>
 
-        <!-- Results table per PoC -->
-        <table class="table table-sm table-condensed small">
+        <table class="results transposed">
+          <colgroup>
+            <col style="width:28%"/>
+            <col tal:repeat="model collection"/>
+          </colgroup>
           <thead>
             <tr>
-              <th></th>
-              <tal:ar repeat="model collection">
-                <th colspan="2" class="font-weight-normal text-center">
-                  <div class="text-primary text-right"
-                       tal:content="model/Title"/>
-                </th>
-                <th></th>
-              </tal:ar>
+              <th i18n:translate="">Parameter</th>
+              <th class="num mono"
+                  tal:repeat="model collection"
+                  tal:content="model/getId">W-0001</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Categories in PoC -->
-            <tal:categories_in_poc tal:repeat="category python:view.sort_items(categories_by_poc.get(poc))">
-              <tr>
-                <td class="font-weight-bold table-warning"
-                    tal:attributes="colspan python:len(collection) * 3 + 1">
-                  <span tal:content="category/Title"/>
-                </td>
-              </tr>
-              <tr tal:define="analyses python:view.get_analyses_by(collection, poc=poc, category=category);
-                              analyses_by_keyword python:map(lambda a: a.getKeyword(), analyses);
-                              methods_by_keyword python:dict(zip(analyses_by_keyword, map(lambda a: a.getMethodTitle(), analyses)));
-                              analyses_titles_by_keyword python:dict(zip(analyses_by_keyword, map(lambda a: a.Title(), analyses)));
-                              analyses_keywords python:view.uniquify_items(analyses_by_keyword)"
-                  tal:repeat="analysis_keyword python:analyses_keywords">
-                <td class="text-secondary">
-                  <span tal:content="python:analyses_titles_by_keyword[analysis_keyword]"/>
-                  <!-- Method -->
-                  <div class="text-secondary methodtitle"
-                       i18n:translate=""
-                       tal:define="method_title python:methods_by_keyword.get(analysis_keyword, '');"
-                       tal:content="structure python:view.hyphenize(method_title)"/>
-                </td>
-                <tal:results repeat="model collection">
-                  <tal:analyses tal:define="analyses python:view.get_analyses_by(model, keyword=analysis_keyword);">
-                    <tal:analysis tal:repeat="analysis analyses">
-                      <td class="text-right">
-                        <span class="font-weight-normal"
-                              tal:content="structure python:model.get_formatted_result(analysis)"/>
-                      </td>
-                      <td class="text-left">
-                        <span class="font-italic font-weight-normal text-secondary text-nowrap"
-                              tal:content="structure python:model.get_formatted_unit(analysis)"/>
-                      </td>
-                      <td class="text-left">
-                        <span tal:condition="python:model.is_out_of_range(analysis)"
-                              class="font-weight-normal">
-                          <span class="outofrange text-danger"
-                                style="font-family:Lucida Console, Courier, monospace;"
-                                tal:content="outofrange_symbol">
-                          </span>
-                        </span>
-                      </td>
+            <tal:category repeat="category python:view.sort_items(categories_by_poc.get(poc))">
+              <tal:analyses define="analyses python:view.get_analyses_by(collection, poc=poc, category=category);
+                                    keywords python:view.uniquify_items(map(lambda a: a.getKeyword(), analyses));
+                                    first_by_keyword python:dict(map(lambda a: (a.getKeyword(), a), reversed(analyses)));"
+                            condition="analyses">
+
+                <!-- Category row -->
+                <tr class="category">
+                  <td tal:attributes="colspan columns"
+                      tal:content="category/Title">Category</td>
+                </tr>
+
+                <!-- One row per analysis keyword -->
+                <tr tal:repeat="keyword keywords">
+                  <td tal:define="first python:first_by_keyword[keyword]">
+                    <span class="accredited symbol"><tal:accredited
+                      condition="python:show_accreditation and first.Accredited">★</tal:accredited></span>
+                    <span tal:attributes="class python:'font-italic' if first.ScientificName else None"
+                          tal:content="first/Title">Analysis</span>
+                    <div class="method"
+                         tal:define="method_title python:first.getMethodTitle()"
+                         tal:condition="method_title"
+                         tal:content="structure python:view.hyphenize(method_title)">Method</div>
+                  </td>
+
+                  <!-- Result of each sample, the latest reported one wins -->
+                  <td class="num"
+                      tal:repeat="model collection">
+                    <tal:analysis define="analyses python:view.get_analyses_by(model, keyword=keyword)[-1:]"
+                                  repeat="analysis analyses">
+                      <tal:result define="out_of_range python:model.is_out_of_range(analysis);
+                                          symbol python:view.get_out_of_range_symbol(model, analysis);
+                                          uncertainty python:model.get_uncertainty(analysis);">
+                        <span tal:attributes="class python:'result out-of-range' if out_of_range else 'result'"
+                              tal:content="structure python:model.get_formatted_result(analysis)">23</span>
+                        <span class="flag symbol" tal:condition="symbol" tal:content="symbol">▲</span>
+                        <span class="retest" tal:condition="python:model.is_retest(analysis)">RT</span>
+                        <div class="uncertainty" tal:condition="uncertainty">
+                          &plusmn;&nbsp;<span tal:replace="uncertainty"/>
+                        </div>
+                        <div class="unit"
+                             tal:content="structure python:model.get_formatted_unit(analysis)">mg/l</div>
+                        <div class="range-comment"
+                             tal:define="range_comment python:view.get_range_comment(model, analysis)"
+                             tal:condition="range_comment"
+                             tal:content="range_comment">Comment</div>
+                      </tal:result>
                     </tal:analysis>
-                    <tal:analysis condition="not:analyses">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tal:analysis>
-                  </tal:analyses>
-                </tal:results>
-              </tr>
-            </tal:categories_in_poc>
+                  </td>
+                </tr>
+
+              </tal:analyses>
+            </tal:category>
           </tbody>
         </table>
       </tal:poc>
+
     </div>
   </div>
 

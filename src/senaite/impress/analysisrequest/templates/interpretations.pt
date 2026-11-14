@@ -1,19 +1,25 @@
-<tal:t define="collection python:view.collection;"
+<tal:t define="collection python:view.collection;
+               interpretations python:[(m, m.get_resultsinterpretation()) for m in collection];
+               interpretations python:[(m, filter(lambda ri: ri.get('richtext'), ris)) for m, ris in interpretations];
+               interpretations python:[(m, ris) for m, ris in interpretations if ris];"
+       condition="interpretations"
        i18n:domain="senaite.impress">
 
-  <tal:model repeat="model collection">
-    <div class="row section-resultsinterpretation no-gutters"
-         tal:define="ris python:model.get_resultsinterpretation();
-                     has_ri python:any(map(lambda r: r.get('richtext'), ris));"
-         tal:condition="ris">
-      <div class="" tal:condition="has_ri">
-        <h1 i18n:translate>Results Interpretation for <span tal:replace="model/getId"/></h1>
-        <tal:ri repeat="ri ris">
-          <h2 tal:condition="ri/richtext|nothing" tal:content="ri/title|nothing">Department</h2>
-          <div class="text-info" tal:content="structure ri/richtext|nothing"></div>
+  <div class="row section-block section-resultsinterpretation no-gutters">
+    <div class="w-100">
+      <h2 i18n:translate="">Results Interpretation</h2>
+      <tal:model repeat="item interpretations">
+        <tal:ri define="model python:item[0]" repeat="ri python:item[1]">
+          <h3>
+            <span class="mono" tal:content="model/getId">W-0001</span>
+            <tal:dept condition="ri/title|nothing">
+              &middot; <span tal:replace="ri/title">Department</span>
+            </tal:dept>
+          </h3>
+          <div tal:content="structure ri/richtext">Interpretation</div>
         </tal:ri>
-      </div>
+      </tal:model>
     </div>
-  </tal:model>
+  </div>
 
 </tal:t>

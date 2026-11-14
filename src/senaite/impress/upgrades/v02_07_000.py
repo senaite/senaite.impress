@@ -49,3 +49,12 @@ def import_paperformats_registry(portal_setup):
     portal_setup.runImportStepFromProfile(
         PROFILE_ID, "plone.app.registry")
     logger.info("Import registry from SENAITE IMPRESS [DONE]")
+
+
+def import_registry(portal_setup):
+    """Import the registry to register new control panel fields
+    """
+    logger.info("Import registry from SENAITE IMPRESS ...")
+    portal_setup.runImportStepFromProfile(
+        PROFILE_ID, "plone.app.registry")
+    logger.info("Import registry from SENAITE IMPRESS [DONE]")
