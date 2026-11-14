@@ -4,13 +4,13 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="senaite.impress">
 
-  <!-- Import registry for the decision rule -->
+  <!-- Register the decision rule, empty for existing sites -->
   <genericsetup:upgradeStep
-      title="Import registry"
-      description="Register decision rule field"
+      title="Add the decision rule to the registry"
+      description="Register the decision rule field, empty for existing sites"
       source="2703"
       destination="2704"
-      handler="senaite.impress.upgrades.v02_07_000.import_registry"
+      handler="senaite.impress.upgrades.v02_07_000.add_decision_rule_registry"
       profile="senaite.impress:default" />
 
   <!-- Import registry for sample code and release mode -->
