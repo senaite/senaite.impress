@@ -29,6 +29,7 @@ from plone.subrequest import subrequest
 from bika.lims import api
 from senaite.impress import logger
 from senaite.impress.decorators import synchronized
+from senaite.impress.fonts import get_font_config
 from senaite.impress.interfaces import IPublisher
 from weasyprint import CSS
 from weasyprint import HTML
@@ -137,7 +138,8 @@ class Publisher(object):
         # Lay out and paginate the document
         html = HTML(
             string=html, url_fetcher=self.url_fetcher, base_url=self.base_url)
-        document = html.render(stylesheets=self.css)
+        document = html.render(
+            stylesheets=self.css, font_config=get_font_config())
         end = time.time()
         logger.info("Publisher::Layout step took {:.2f}s for {} pages"
                     .format(end-start, len(document.pages)))

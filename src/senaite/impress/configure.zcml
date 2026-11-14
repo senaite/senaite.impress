@@ -37,7 +37,7 @@
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="senaite.core.permissions.ManageAnalysisRequests"
+      permission="senaite.core.permissions.TransitionPublishResults"
       layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
@@ -46,7 +46,7 @@
       for="bika.lims.interfaces.IClient"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="senaite.core.permissions.ManageAnalysisRequests"
+      permission="senaite.core.permissions.TransitionPublishResults"
       layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
@@ -55,7 +55,7 @@
       for="bika.lims.interfaces.IAnalysisRequest"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="senaite.core.permissions.ManageAnalysisRequests"
+      permission="senaite.core.permissions.TransitionPublishResults"
       layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
@@ -64,7 +64,7 @@
       for="bika.lims.interfaces.IBatch"
       name="publish"
       class="senaite.impress.publishview.PublishView"
-      permission="senaite.core.permissions.ManageAnalysisRequests"
+      permission="senaite.core.permissions.TransitionPublishResults"
       layer="senaite.impress.interfaces.ISenaiteImpressLayer"
       />
 
@@ -134,6 +134,24 @@
   <utility
       name="senaite.impress.vocabularies.Orientations"
       component="senaite.impress.vocabularies.OrientationVocabularyFactory"
+      />
+
+  <!-- Sample Code Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.SampleCodes"
+      component="senaite.impress.vocabularies.SampleCodeVocabularyFactory"
+      />
+
+  <!-- Release Mode Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.ReleaseModes"
+      component="senaite.impress.vocabularies.ReleaseModeVocabularyFactory"
+      />
+
+  <!-- Accreditation Logo Vocabulary -->
+  <utility
+      name="senaite.impress.vocabularies.AccreditationLogo"
+      component="senaite.impress.vocabularies.AccreditationLogoVocabularyFactory"
       />
 
   <!-- PDF Report Storage Adapter -->
