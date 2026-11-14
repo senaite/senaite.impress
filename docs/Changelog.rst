@@ -3,6 +3,10 @@
 
 - #176 Show the decision rule for statements of conformity on the report
 - #175 Rework the default report for ISO/IEC 17025 reporting requirements
+- #174 Show the picked label for an analysis condition on the report
+- #172 Require the publish permission to open the publish view
+- #173 Fix TypeError in is_printview when the request has no referer
+- #169 Fix local detection of Dexterity @@images resources in Impress url_fetcher
 - #170 Extend senaite.core's buildout.base.cfg instead of duplicating it
 - #167 Fix accreditation body logo rendering after Laboratory DX migration
 - #166 Resolve Laboratory from `setup` after DX migration in senaite.core
