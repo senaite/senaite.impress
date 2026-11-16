@@ -20,6 +20,7 @@
 
 from plone.registry.interfaces import IRegistry
 from senaite.impress import logger
+from senaite.impress.controlpanel import IImpressControlPanel
 from zope.component import getUtility
 
 PROFILE_ID = "profile-senaite.impress:default"
@@ -69,12 +70,15 @@ def add_decision_rule_registry(portal_setup):
     The decision rule is agreed with the customer (ISO/IEC 17025, 7.1.3), so
     an existing site does not get the default rule. Its reports state a rule
     only when the lab enters it. New sites get the default with the profile.
+
+    The former steps of this version import the whole registry, so the record
+    exists already with the default. A rule the lab entered is kept.
     """
     logger.info("Add the decision rule to the registry ...")
-    registry = getUtility(IRegistry)
-    exists = DECISION_RULE_RECORD in registry.records
     portal_setup.runImportStepFromProfile(
         PROFILE_ID, "plone.app.registry")
-    if not exists:
+    registry = getUtility(IRegistry)
+    default = IImpressControlPanel["decision_rule"].default
+    if registry.get(DECISION_RULE_RECORD) == default:
         registry[DECISION_RULE_RECORD] = None
     logger.info("Add the decision rule to the registry [DONE]")
