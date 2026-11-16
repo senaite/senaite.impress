@@ -2,6 +2,7 @@
 ------------------
 
 - #171 Notify a handler adapter after the reports have been stored
+- #177 Add a test runner for the doctests
 - #175 Rework the default report for ISO/IEC 17025 reporting requirements
 - #174 Show the picked label for an analysis condition on the report
 - #172 Require the publish permission to open the publish view
