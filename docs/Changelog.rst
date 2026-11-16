@@ -1,6 +1,7 @@
 2.7.0 (unreleased)
 ------------------
 
+- #176 Show the decision rule for statements of conformity on the report
 - #177 Add a test runner for the doctests
 - #175 Rework the default report for ISO/IEC 17025 reporting requirements
 - #174 Show the picked label for an analysis condition on the report
