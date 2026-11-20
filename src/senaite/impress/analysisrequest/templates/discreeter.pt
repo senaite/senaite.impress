@@ -1,19 +1,24 @@
 <tal:t define="collection view/collection;
                laboratory python:view.laboratory;
-               legend view/get_legend;"
+               legend view/get_legend;
+               decision_rule view/get_decision_rule;"
        i18n:domain="senaite.impress">
 
   <!-- Legend of the symbols used in the results -->
   <div class="row section-block section-legend no-gutters"
-       tal:condition="legend">
+       tal:condition="python:legend or decision_rule">
     <div class="w-100">
       <h2 i18n:translate="">Legend</h2>
-      <table class="legend">
+      <table class="legend" tal:condition="legend">
         <tr tal:repeat="item legend">
           <td class="symbol" tal:content="item/symbol">★</td>
           <td tal:content="item/text">Accredited method</td>
         </tr>
       </table>
+      <p class="decision-rule" tal:condition="decision_rule">
+        <span class="label" i18n:translate="">Decision Rule</span>
+        <span tal:content="decision_rule">Simple acceptance</span>
+      </p>
     </div>
   </div>
 
