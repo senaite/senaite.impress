@@ -584,13 +584,6 @@ class PublishView(BrowserView):
             return default
         return orientation
 
-    def store_multireports_individually(self):
-        """Returns the configured setting from the registry
-        """
-        store_individually = api.get_registry_record(
-            "senaite.impress.store_multireports_individually")
-        return store_individually
-
     def get_developer_mode(self):
         """Returns the configured setting from the registry
         """

@@ -4,6 +4,15 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="senaite.impress">
 
+  <!-- Remove the setting to store multi-reports individually -->
+  <genericsetup:upgradeStep
+      title="Remove the multi-report storage setting"
+      description="Multi-reports are stored once in the primary sample"
+      source="2704"
+      destination="2705"
+      handler="senaite.impress.upgrades.v02_07_000.remove_store_individually_registry"
+      profile="senaite.impress:default" />
+
   <!-- Register the decision rule, empty for existing sites -->
   <genericsetup:upgradeStep
       title="Add the decision rule to the registry"
