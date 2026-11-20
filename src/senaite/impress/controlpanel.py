@@ -156,16 +156,6 @@ class IImpressControlPanel(model.Schema):
         required=False,
     )
 
-    store_multireports_individually = schema.Bool(
-        title=_(u"Store Multi-Report PDFs Individually"),
-        description=_(
-            "Store generated multi-report PDFs individually. "
-            "Turn off to store the multi-report PDF only for "
-            "the primary item of the report"),
-        default=True,
-        required=False,
-    )
-
     developer_mode = schema.Bool(
         title=_(u"Developer Mode"),
         description=_(
@@ -314,7 +304,6 @@ class IImpressControlPanel(model.Schema):
             "reload_after_reorder",
             "allow_pdf_download",
             "allow_pdf_email_share",
-            "store_multireports_individually",
             "developer_mode",
         ],
     )
