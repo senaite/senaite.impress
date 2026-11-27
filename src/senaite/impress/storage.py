@@ -23,9 +23,11 @@ from operator import methodcaller
 import transaction
 from bika.lims import api
 from plone.namedfile.file import NamedBlobFile
+from senaite.core.interfaces import IReportStoredHandler
 from senaite.impress import logger
 from senaite.impress.decorators import synchronized
 from senaite.impress.interfaces import IPdfReportStorage
+from zope.component import queryMultiAdapter
 from zope.interface import implements
 
 
@@ -71,9 +73,36 @@ class PdfReportStorageAdapter(object):
         primary = self.get_primary_report(objs)
 
         report = self.create_report(primary, pdf, html, uids, metadata)
+
+        # Let the integrator react on the stored report, e.g. to transition
+        # the samples it contains. Note this takes place before the commit
+        # below on purpose, so the report and whatever the handler does end
+        # up in the same transaction
+        self.notify_stored([report])
+
         transaction.commit()
 
         return [report]
+
+    def notify_stored(self, reports):
+        """Hand the stored reports over to the `IReportStoredHandler` adapter
+
+        Does nothing when no adapter is registered, so senaite.impress keeps
+        working on its own.
+
+        :param reports: the newly created report objects
+        """
+        if not reports:
+            return
+
+        handler = queryMultiAdapter(
+            (self.context, self.request), IReportStoredHandler)
+        if handler is None:
+            logger.debug("No IReportStoredHandler registered for {}".format(
+                repr(self.context)))
+            return
+
+        handler(reports)
 
     @synchronized(max_connections=1)
     def create_report(self, parent, pdf, html, uids, metadata):

@@ -40,6 +40,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
+        "senaite.core",
         # The final version of Beautiful Soup to support Python 2 was 4.9.3.
         "beautifulsoup4==4.9.3",
         "CairoSVG==1.0.20",

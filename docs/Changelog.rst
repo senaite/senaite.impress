@@ -2,6 +2,7 @@
 ------------------
 
 - #178 Store multi-reports once in the primary sample
+- #171 Notify a handler adapter after the reports have been stored
 - #176 Show the decision rule for statements of conformity on the report
 - #177 Add a test runner for the doctests
 - #175 Rework the default report for ISO/IEC 17025 reporting requirements
