@@ -25,6 +25,7 @@ from zope.component import getUtility
 
 PROFILE_ID = "profile-senaite.impress:default"
 DECISION_RULE_RECORD = "senaite.impress.decision_rule"
+STORE_INDIVIDUALLY_RECORD = "senaite.impress.store_multireports_individually"
 
 
 def upgrade(portal_setup):
@@ -82,3 +83,17 @@ def add_decision_rule_registry(portal_setup):
     if registry.get(DECISION_RULE_RECORD) == default:
         registry[DECISION_RULE_RECORD] = None
     logger.info("Add the decision rule to the registry [DONE]")
+
+
+def remove_store_individually_registry(portal_setup):
+    """Remove the setting to store multi-reports individually
+
+    A multi-report is stored once in its primary sample. It references all
+    contained samples, so it shows up in the reports of each of them.
+    Reports that were stored individually before are kept.
+    """
+    logger.info("Remove the multi-report storage setting ...")
+    registry = getUtility(IRegistry)
+    if STORE_INDIVIDUALLY_RECORD in registry.records:
+        del registry.records[STORE_INDIVIDUALLY_RECORD]
+    logger.info("Remove the multi-report storage setting [DONE]")

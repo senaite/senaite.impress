@@ -44,8 +44,7 @@ class PdfReportStorageAdapter(object):
         """Get the primary report
 
         TODO: It would be better to provide a radio selection in the publish
-        view to let the user select the primary report when the option
-        "store_individually" is deselected.
+        view to let the user select the primary report.
 
         Also see here: https://github.com/senaite/senaite.impress/issues/58
         """
@@ -53,20 +52,17 @@ class PdfReportStorageAdapter(object):
         objs = sorted(objs, key=methodcaller("created"), reverse=True)
         return objs[0]
 
-    def store_multireports_individually(self):
-        """Returns the configured setting from the registry
-        """
-        store_individually = api.get_registry_record(
-            "senaite.impress.store_multireports_individually")
-        return store_individually
-
     def store(self, pdf, html, uids, metadata=None):
-        """Store the PDF
+        """Store the PDF in the primary object
+
+        A multi-report is stored once. It references all contained objects,
+        so it shows up in the reports of each of them.
 
         :param pdf: generated PDF report (binary)
         :param html: report HTML (string)
         :param uids: UIDs of the objects contained in the PDF
         :param metadata: dict of metadata to store
+        :returns: list with the created report
         """
 
         if metadata is None:
@@ -74,36 +70,19 @@ class PdfReportStorageAdapter(object):
 
         # get the contained objects
         objs = map(api.get_object_by_uid, uids)
+        primary = self.get_primary_report(objs)
 
-        # handle primary object storage
-        if not self.store_multireports_individually():
-            # reduce the list to the primary object only
-            objs = [self.get_primary_report(objs)]
+        report = self.create_report(primary, pdf, html, uids, metadata)
 
-        # generate the reports
-        reports = []
-        for obj in objs:
-            # Create savepoint before each report for rollback capability
-            sp = transaction.savepoint()
-            try:
-                report = self.create_report(obj, pdf, html, uids, metadata)
-                reports.append(report)
-            except Exception as e:
-                logger.error("Failed to create report for {}: {}".format(
-                    api.get_id(obj), str(e)))
-                sp.rollback()
-                raise
-
-        # Let the integrator react on the stored reports, e.g. to transition
-        # the samples they belong to. Note this takes place before the commit
-        # below on purpose, so the reports and whatever the handler does end
+        # Let the integrator react on the stored report, e.g. to transition
+        # the samples it contains. Note this takes place before the commit
+        # below on purpose, so the report and whatever the handler does end
         # up in the same transaction
-        self.notify_stored(reports)
+        self.notify_stored([report])
 
-        # Commit all reports in a single transaction
         transaction.commit()
 
-        return reports
+        return [report]
 
     def notify_stored(self, reports):
         """Hand the stored reports over to the `IReportStoredHandler` adapter
@@ -130,9 +109,8 @@ class PdfReportStorageAdapter(object):
         """Create a new report object
 
         NOTE: We limit the creation of reports to 1 to avoid conflict errors on
-              simultaneous publication. The transaction is committed once for
-              all reports in the store() method using savepoints for rollback
-              capability.
+              simultaneous publication. The transaction is committed in the
+              store() method.
 
         :param parent: parent object where to create the report inside
         :returns: ResultsReport
@@ -140,9 +118,6 @@ class PdfReportStorageAdapter(object):
 
         parent_id = api.get_id(parent)
         logger.info("Create Report for {} ...".format(parent_id))
-
-        # Manually update the view on the database to avoid conflict errors
-        parent._p_jar.sync()
 
         # Convert PDF binary data to NamedBlobFile
         pdf_filename = "{}.pdf".format(parent_id)
